@@ -29,6 +29,8 @@ export default {
 
     this.$nextTick(() => {
 
+      console.log(this.nativeApi);
+
       // 预加载处理
       setTimeout(() => {
         this.currentView = 'Home';
@@ -47,4 +49,4 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-</s
+</style>

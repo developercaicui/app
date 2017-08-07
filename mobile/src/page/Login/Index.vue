@@ -10,7 +10,7 @@ export default {
 
   data() {
     return {
-			tip: 'regs'
+			tip: '我是登录页面'
     }
   },
 

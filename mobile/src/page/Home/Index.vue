@@ -1,15 +1,8 @@
 <template lang="html">
 
   <div>
-
     <Headers></Headers>
-
-    <main>
-      <router-view></router-view>
-    </main>
-
-    <Footers></Footers>
-
+    <router-view></router-view>
   </div>
 
 
@@ -36,9 +29,9 @@ export default {
 
     this.$nextTick(() => {
 
-      // 临时跳转
+      // 做完判断处理后跳转
       this.$router.push({
-         path: 'reg'
+         path: 'index'
       })
 
     });
