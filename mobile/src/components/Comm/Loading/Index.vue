@@ -1,13 +1,16 @@
 <template lang="html">
 
-
 	<div>{{tip}}</div>
 
 </template>
 
 <script>
 
+
 export default {
+
+	components: {
+  },
 
   data() {
     return {
@@ -15,7 +18,12 @@ export default {
     }
   },
 
+	mounted() {
+
+  },
+
   methods: {
+
 
   }
 

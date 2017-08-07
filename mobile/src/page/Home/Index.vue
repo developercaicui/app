@@ -32,6 +32,19 @@ export default {
     }
   },
 
+  mounted() {
+
+    this.$nextTick(() => {
+
+      // 临时跳转
+      this.$router.push({
+         path: 'reg'
+      })
+
+    });
+
+  },
+
   methods: {
   }
 

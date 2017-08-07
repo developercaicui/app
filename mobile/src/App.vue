@@ -9,7 +9,7 @@
 <script>
 
 import Home from './page/Home/';
-import Loading from './page/Loading/';
+import Loading from './components/Comm/Loading';
 
 export default {
 
@@ -29,9 +29,10 @@ export default {
 
     this.$nextTick(() => {
 
+      // 预加载处理
       setTimeout(() => {
         this.currentView = 'Home';
-      },1000);
+      },2000);
 
     });
 
@@ -46,4 +47,4 @@ export default {
 </script>
 <style lang="scss" scoped>
 
-</style>
+</s
