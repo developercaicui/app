@@ -13,6 +13,13 @@ npm run dev
 npm run build
 ```
 
+## API接口跨域访问处理
+
+> 线上请求 `http://api.caicui.com/api/zbids/app/gettoken/v1.0/`
+> 删除 ~~http://api.caicui.com~~ 既可访问
+
+
+```
 
 ## 项目结构
 
@@ -22,6 +29,7 @@ npm run build
 ├── config                                      // 环境配置区分
 ├── dist                                        // 上线项目文件，放在服务器即可正常访问
 ├── static                                      // 静态文件
+│     └── public.js                             // 公用调取方法
 ├── src                                         // 源码目录
 │   ├── mock                                    // 数据交互假数据
 │
@@ -32,8 +40,10 @@ npm run build
 │   │   └── Header                              // 头部公共组件
 │ 
 │   ├── page
-│   │    └── Home/                              // 入口页面
-│   │    └── Reg/                               // 注册
+│   │    ├── Home/                              // 入口页面
+│   │    ├── Reg/                               // 注册
+│   │    ├── Index/                             // 首页
+│   │    ├── Login/                             // 登录页面
 │   │    └── findPwd/                           // 找回密码  
 │ 
 │   ├── router
