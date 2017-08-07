@@ -15,11 +15,14 @@ npm run build
 
 ## API接口跨域访问处理
 
-> 线上请求 `http://api.caicui.com/api/zbids/app/gettoken/v1.0/`
+> 原请求地址 `http://api.caicui.com/api/zbids/app/gettoken/v1.0/`
+
 > 删除 ~~http://api.caicui.com~~ 既可访问
 
 
-```
+
+
+
 
 ## 项目结构
 
