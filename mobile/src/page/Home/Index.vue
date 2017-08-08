@@ -47,5 +47,5 @@ export default {
 </script>
 
 <style scoped lang="scss">
-
+ // 无需CSS
 </style>

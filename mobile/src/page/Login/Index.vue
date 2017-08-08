@@ -135,40 +135,13 @@ export default {
 
 <style lang="scss" scoped>
 
-
- @import "../../assets/style/mixin";
-
-.g-login{
-
-	position: absolute;
-	left: 0; top: 0; right: 0; bottom: 0;
-	background-color: #f6f6f6;
-	z-index: 99;
-
-	input{
-		@extend .show;
-		@include wh(4rem, .5rem);
-		@include fc(.26rem, #000);
-		margin: .3rem auto;
-		padding: .2rem;
-		&:nth-of-type(1){
-			margin-top: 3rem;
-		}
+	@media screen and (min-width: 769px) {
+		@import "../../assets/style/ipad/login";
 	}
 
-	a{
-		@include wh(1.4rem, .45rem);
-		@include fc(.26rem, #fff);
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		background-color: #2B7FD2;
-		margin: 0 auto;
+	@media screen and (max-width: 768px) {
+		@import "../../assets/style/mobile/login";
 	}
-
-}
-
-
 
 
 </style>

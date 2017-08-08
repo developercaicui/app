@@ -1,0 +1,13 @@
+
+ @import "../mixin";
+
+.index-wrap{
+
+  padding-left: 2.7rem;
+  padding-top: .56rem;
+
+  .the-course{
+    @include fc(.32rem, #666);
+  }
+
+}

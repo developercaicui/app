@@ -10,15 +10,10 @@
   color: $color;
 }
 
-
-.ab{
-  position: absolute;
-}
-
-.show{
+@mixin show() {
   display: block;
 }
 
-.hide{
+@mixin hide() {
   display: none;
 }

@@ -15,17 +15,36 @@ export default {
   },
 
   /**
+    * 设备类型区分
+    * @return {String} 设备类型
+    */
+  getDeviceType() {
+
+    let device = window.navigator.userAgent.toLocaleLowerCase();
+
+    if(device.includes('ipad'))
+      return 'ipad';
+    else if(device.includes('mobile'))
+      return 'mobile';
+
+  },
+
+  /**
     * rem换算
     */
   remCount() {
 
     const OHTML = document.documentElement;
+    const screenWidth = OHTML.getBoundingClientRect().width || OHTML.clientWidth;
+    const deviceType = this.getDeviceType();
 
-    let initialRem = 2048 / 100;  // 换算基准值   2048(设计稿尺寸)/100(固定值)
-    let deviceWidth = OHTML.getBoundingClientRect().width || OHTML.clientWidth;
+    let designWidth = deviceType === 'mobile' ? 750 : 2048;
 
+    let initialRem = designWidth / 100;  // 换算基准值   (设计稿尺寸)/100(固定值)
+
+    OHTML.dataset.device = deviceType;
     OHTML.dataset.dpr = window.devicePixelRatio;
-    OHTML.style.fontSize = `${deviceWidth / initialRem}px`;
+    OHTML.style.fontSize = `${screenWidth / initialRem}px`;
 
   },
 
@@ -53,6 +72,7 @@ export default {
   /**
    * 读取Cookie
    * @type {String} key值
+   * @return {String} cookie值
    */
   getCookie(key) {
 
