@@ -57,10 +57,7 @@ export default {
   getCookie(key) {
 
 
-    if(window.localStorage){
-      window.localStorage.getItem(key);
-      return;
-    }
+    if(window.localStorage) return window.localStorage.getItem(key);
 
     let arr, reg = new RegExp(`(^| )${key}=([^;]*)(;|$)`);
 
