@@ -29,7 +29,7 @@ export default {
 
     this.$nextTick(() => {
 
-      console.log(this.nativeApi);
+      this.nativeApi.remCount();
 
       // 预加载处理
       setTimeout(() => {

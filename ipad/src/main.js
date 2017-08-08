@@ -1,9 +1,9 @@
 import Vue from 'vue';
 import App from './App';
 import router from './router/router';
+import VueResource from 'vue-resource';
 import nativeApi from '../static/public';
 import VueRouter from 'vue-router';
-import VueResource from 'vue-resource';
 
 
 

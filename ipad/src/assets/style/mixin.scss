@@ -1,4 +1,5 @@
 
+
 @mixin wh($w, $h) {
   width: $w;
   height: $h;
@@ -7,4 +8,17 @@
 @mixin fc($font, $color) {
   font-size: $font;
   color: $color;
+}
+
+
+.ab{
+  position: absolute;
+}
+
+.show{
+  display: block;
+}
+
+.hide{
+  display: none;
 }

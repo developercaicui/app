@@ -1,6 +1,7 @@
 <template lang="html">
 
   <div>
+    <Navs></Navs>
     <Headers></Headers>
     <router-view></router-view>
   </div>
@@ -11,12 +12,12 @@
 <script>
 
 import Headers from '../../components/Header';
-import Footers from '../../components/Footer';
+import Navs from '../../components/Nav';
 
 export default {
 
   components: {
-    Footers,
+    Navs,
     Headers
   },
 
@@ -31,7 +32,7 @@ export default {
 
       // 做完判断处理后跳转
       this.$router.push({
-         path: 'index'
+         path: 'login'
       })
 
     });
