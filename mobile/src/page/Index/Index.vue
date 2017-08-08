@@ -2,6 +2,8 @@
 
 	<main class="index-wrap">
 
+		<Headers></Headers>
+
 		<div class="the-course">
 			<h1>在学课程</h1>
 
@@ -26,7 +28,15 @@
 
 <script>
 
+import Headers from '../../components/Header';
+
+
 export default {
+
+	components: {
+    Headers,
+  },
+
 
   data() {
     return {

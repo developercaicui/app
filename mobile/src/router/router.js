@@ -4,7 +4,6 @@ import FindPwd from '../page/FindPwd';
 import Index from '../page/Index';
 import Login from '../page/Login';
 
-
 export default  new VueRouter({
   mode: 'hash',
   routes: [
