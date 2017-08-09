@@ -3,7 +3,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 
-const requestUrl = ''; // 请求地址， 本地开发不用写，node里已做转发
+const requestUrl = process.env.NODE_ENV === 'development' ? '' : 'http://api.caicui.com'; // 请求地址
 
 
 /**

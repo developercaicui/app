@@ -17,3 +17,19 @@
 @mixin hide() {
   display: none;
 }
+
+.show{
+  display: block;
+}
+
+.hide{
+  display: none;
+}
+
+.ab{
+  position: absolute;
+}
+
+.content-padding-left{
+  padding-left: 1.6rem;
+}

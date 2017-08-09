@@ -56,7 +56,7 @@ export default {
   remCount() {
 
     const OHTML = document.documentElement;
-    const screenWidth = OHTML.getBoundingClientRect().width || OHTML.clientWidth;
+    const screenWidth = OHTML.clientWidth;
     const deviceType = this.getDeviceType();
 
     let designWidth = deviceType === 'mobile' ? 750 : 2048;
@@ -124,10 +124,5 @@ export default {
     if( cval != null) document.cookie= `${key}=${cval};expires=${exp.toGMTString()}`;
 
   },
-
-  // 交互方法
-  // 1. 返回键
-  // 2. 录音
-  // 3. 网络状态
 
 };

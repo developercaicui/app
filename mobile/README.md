@@ -26,12 +26,14 @@ npm run dev
 npm run build
 ```
 
+## 技术栈 vue  + vue-router + webpack + ES6/7 + axios + sass + flex
+
+
 ## API接口跨域访问处理
 
 > 原请求地址 `http://api.caicui.com/api/zbids/app/gettoken/v1.0/`  , 删除 ~~http://api.caicui.com~~ 既可访问
 
 
-技术栈 vue  + vue-router + webpack + ES6/7 + axios + sass + flex
 
 
 ## 项目结构
@@ -50,8 +52,8 @@ npm run build
 │
 │   ├── components                              // 组件
 │   │   ├── Comm                                // 公共组件
+│   │         ├── Tip/                          // 提示组件
 │   │         └── Loading/                      // Loading动画
-│   │   ├── Footer                              // 底部公共组件
 │   │   └── Header                              // 头部公共组件
 │ 
 │   ├── page

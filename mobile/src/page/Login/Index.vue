@@ -1,9 +1,9 @@
 <template lang="html">
 
-	<main class="g-login">
+	<main class="login-wrap-all">
 		<input type="text" v-model="user" placeholder="请输入账号"/>
 		<input type="password" v-model="pwd" placeholder="请输入密码"/>
-		<a href="javascript:;" @click="submitLogin">登录</a>
+		<a href="javascript:;" @touchend="submitLogin">登录</a>
 		<Tip :error-msg='errorMsg' v-show="isShowTip"></Tip>
 	</main>
 
@@ -59,6 +59,9 @@ export default {
 				code: ''
 			};
 
+
+			this.showTip('正在登录，请耐心等待...');
+
 			getToken(tokenParams)
 
 			.then(res =>{
@@ -105,13 +108,35 @@ export default {
 
 <style lang="scss" scoped>
 
-	@media screen and (min-width: 769px) {
-		@import "../../assets/style/ipad/login";
-	}
+ @import "../../assets/style/mixin";
 
-	@media screen and (max-width: 768px) {
-		@import "../../assets/style/mobile/login";
-	}
+ .login-wrap-all{
+	 position: absolute;
+	 left: 0; top: 0; right: 0; bottom: 0;
+	 background-color: #f6f6f6;
+	 z-index: 99;
 
+	 input{
+		 @include wh(4rem, .5rem);
+		 @include fc(.26rem, #000);
+		 @include show();
+		 margin: .3rem auto;
+		 padding: .2rem;
+		 &:nth-of-type(1){
+			 margin-top: 3rem;
+		 }
+	 }
+
+	 a{
+		 @include wh(1.4rem, .45rem);
+		 @include fc(.26rem, #fff);
+		 display: flex;
+		 justify-content: center;
+		 align-items: center;
+		 background-color: #2B7FD2;
+		 margin: 0 auto;
+	 }
+
+	}
 
 </style>

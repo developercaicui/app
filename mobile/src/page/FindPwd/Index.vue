@@ -1,18 +1,40 @@
 <template lang="html">
 
-	<main>{{tip}}</main>
+	<div>
+		<findPwdIpad v-show="isIpad"></findPwdIpad>
+		<findPwdMobile v-show="isMobile"></findPwdMobile>
+	</div>
 
 </template>
 
 <script>
 
+import findPwdIpad from './Ipad';
+import findPwdMobile from './Mobile';
+
 export default {
+
+	components: {
+		findPwdMobile,
+		findPwdIpad,
+  },
 
   data() {
     return {
-			tip: 'findPwd'
+			isIpad: false,
+      isMobile: false
     }
   },
+
+	created() {
+
+		let oHtml = document.documentElement;
+
+		this.isIpad = oHtml.dataset.isipad == 'false' ? true : false ;
+		this.isMobile = oHtml.dataset.ismobile == 'false' ? true : false ;
+
+	},
+
 
   methods: {
 
@@ -23,13 +45,5 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
-	@media screen and (max-width: 768px) {
-		@import "../../assets/style/mobile/find_pwd";
-	}
-
-	@media screen and (min-width: 769px) {
-		 @import "../../assets/style/ipad/find_pwd";
-	}
 
 </style>
