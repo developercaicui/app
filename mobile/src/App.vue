@@ -29,12 +29,12 @@ export default {
 
     this.$nextTick(() => {
 
-      this.nativeApi.remCount();
+      this.webApi.remCount();
 
       // 预加载处理
       setTimeout(() => {
         this.currentView = 'Home';
-      },2000);
+      },1500);
 
     });
 

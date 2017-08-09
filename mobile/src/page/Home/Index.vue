@@ -27,16 +27,22 @@ export default {
 
     this.$nextTick(() => {
 
-      // 做完判断处理后跳转
+
+      let hashName = 'login';
+
+      if(this.webApi.isLogin()) hashName = 'index';
+
       this.$router.push({
-         path: 'index'
-      })
+         path: hashName
+      });
+
 
     });
 
   },
 
   methods: {
+
   }
 
 }

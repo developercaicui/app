@@ -1,10 +1,8 @@
 
+import { getUserInfo } from './port';
 
 
 export default {
-
-  // 请求地址， 本地开发不用写，node里已做转发
-  requestUrl: '',
 
   /**
     * 图片预加载
@@ -14,6 +12,29 @@ export default {
 
   },
 
+/**
+  * 是否登录
+  * @return {Boolean}  true为已登录 false为登录
+  */
+  isLogin() {
+
+    let params = {
+      token: this.getCookie('userInfo') ? JSON.parse(this.getCookie('userInfo')).token : null
+    };
+
+    if(params.token){
+
+      return getUserInfo(params)
+
+      .then(res => {
+        if(!res || res.state != 'success') return false;
+        else return true
+      })
+
+    }else return true;
+
+
+  },
   /**
     * 设备类型区分
     * @return {String} 设备类型

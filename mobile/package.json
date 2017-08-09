@@ -1,6 +1,6 @@
 {
   "name": "mobile",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "",
   "author": "",
   "scripts": {
@@ -9,9 +9,10 @@
   },
   "repository": "",
   "dependencies": {
+    "axios": "^0.16.2",
     "lodash": "^4.16.4",
+    "qs": "^6.5.0",
     "vue": "^2.0.1",
-    "vue-resource": "^1.0.3",
     "vue-router": "^2.0.1"
   },
   "devDependencies": {

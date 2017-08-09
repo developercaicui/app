@@ -12,6 +12,7 @@
 <script>
 
 import Tip from '../../components/Comm/Tip';
+import { getToken, login } from '../../api/port';
 
 export default {
 
@@ -31,81 +32,6 @@ export default {
 
   methods: {
 
-		// 获取token
-		getToken() {
-
-			let reqSetting = {
-				port: {
-					login: `${this.nativeApi.requestUrl}/api/zbids/member/login/v1.0`, // 登录
-					getToken: `${this.nativeApi.requestUrl}/api/zbids/app/gettoken/v1.0/`, // 获取token
-				},
-				parameter: {
-					getToken: {
-						appType: 'aPad',
-			      appId: 'aPadCourse',
-			      appKey: 'f7e4ebaa872f38db7b548b870c13e79e',
-					},
-					login: {
-						account: this.user,
-						password: this.pwd,
-						token: this.token,
-						code: ''
-					}
-				}
-			};
-
-			this.$http.post(reqSetting.port.getToken, reqSetting.parameter.getToken, {emulateJSON: true})
-
-			// 获取token
-			.then(res => {
-
-				if(res.status != 200 || res.body.state != 'success'){
-					this.showTip('token获取失败,请查看控制台。');
-					console.info(res, '获取token错误信息');
-					return;
-				}
-
-				this.showTip('token获取成功！');
-				this.token = res.body.data.token;
-
-				return this.token;
-
-			}, err => {
-				this.showTip('token获取失败,请查看控制台。');
-				console.info(err, '获取token错误信息');
-			})
-
-			// 登录
-			.then((token)=> {
-
-				reqSetting.parameter.login.token = token;
-
-				this.$http.post(reqSetting.port.login, reqSetting.parameter.login, {emulateJSON: true}).then(res => {
-
-					if(res.status != 200 || res.body.state != 'success'){
-						this.showTip('登录失败,请查看控制台。');
-						console.info(res, '登录失败');
-						return;
-					}
-
-					this.showTip('登录成功，请自己修改hash切换页面！');
-
-					this.nativeApi.setCookie('userInfo', JSON.stringify(res.body));
-
-					// 可跳转
-					// this.$router.push({
-		      //    path: 'index'
-		      // })
-
-				}, err => {
-					this.showTip('登录失败,请查看控制台。');
-					console.info(err, '登录失败');
-				});
-
-
-			});
-
-		},
 
 		// 提示信息
 		showTip(msg = '网络异常,请稍后再试。') {
@@ -119,10 +45,54 @@ export default {
 
 		},
 
-		// 提交表单
 		submitLogin() {
 
-			this.getToken();
+			let tokenParams = {
+				appType: 'aPad',
+				appId: 'aPadCourse',
+				appKey: 'f7e4ebaa872f38db7b548b870c13e79e'
+			};
+			let loginParams = {
+				account: this.user,
+				password: this.pwd,
+				token: '',
+				code: ''
+			};
+
+			getToken(tokenParams)
+
+			.then(res =>{
+
+				if(!res && !res.state == 'success'){
+					this.showTip('token获取失败,请查看控制台。');
+					console.error(res, '获取token错误信息');
+				}
+
+				this.token = res.data.token;
+
+				return this.token;
+
+			})
+
+			.then(token => {
+
+				loginParams.token = token;
+
+				return login(loginParams);
+			})
+
+			.then(res => {
+
+				if(!res && !res.state == 'success'){
+					this.showTip('登录失败,请查看控制台。');
+					console.error(res, '登录失败');
+				}
+
+				this.showTip('登录成功，请自行切换路由');
+				this.webApi.setCookie('userInfo', JSON.stringify(res.data));
+
+			});
+
 
 		},
 

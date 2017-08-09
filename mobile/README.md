@@ -31,8 +31,7 @@ npm run build
 > 原请求地址 `http://api.caicui.com/api/zbids/app/gettoken/v1.0/`  , 删除 ~~http://api.caicui.com~~ 既可访问
 
 
-
-
+技术栈 vue  + vue-router + webpack + ES6/7 + axios + sass + flex
 
 
 ## 项目结构
@@ -42,10 +41,12 @@ npm run build
 ├── build                                       // 配置文件
 ├── config                                      // 环境配置区分
 ├── dist                                        // 上线项目文件，放在服务器即可正常访问
-├── static                                      // 静态文件
-│     └── public.js                             // 公用调取方法
 ├── src                                         // 源码目录
 │   ├── mock                                    // 数据交互假数据
+
+│   ├── api                                     // 常用接口封装
+│   │    ├── api                                // 常用的api方法
+│   │    └── port                               // 常用的接口
 │
 │   ├── components                              // 组件
 │   │   ├── Comm                                // 公共组件
