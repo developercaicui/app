@@ -1,8 +1,38 @@
+<template lang="html">
 
- @import "../mixin";
+  <nav class="comm-nav-ipad">
+    <router-link to="index" class="active">学习中心</router-link>
+    <router-link to="">在线课程</router-link>
+    <router-link to="">我的笔记</router-link>
+    <router-link to="">我的问答</router-link>
+    <router-link to="">我的讨论</router-link>
+    <router-link to="">缓冲课程</router-link>
+    <router-link to="">设置</router-link>
+  </nav>
+
+</template>
+
+<script>
+export default {
+
+  data() {
+    return {
+    }
+  },
+
+  methods: {
+
+  }
+
+}
+</script>
+
+<style lang="scss" scoped>
+
+ @import "../../../assets/style/mixin";
 
 
- .comm-nav{
+ .comm-nav-ipad{
 
    @include wh(1.6rem, 100%);
    position: fixed;
@@ -13,7 +43,7 @@
 
    a{
 
-     @include show();
+     @extend .show;
      @include fc(.28rem, #fff);
      position: relative;
      height: 1.6rem; line-height: 7.5;
@@ -25,8 +55,7 @@
 
 
      &:before{
-       content: '';
-       @include show();
+       @extend .show;
        position: absolute;
        left: 0; right: 0; top: 0;
        transform: translate3d(0,-1.35rem,0);
@@ -68,3 +97,6 @@
    }
 
  }
+
+
+</style>

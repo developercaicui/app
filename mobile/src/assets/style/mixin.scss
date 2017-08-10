@@ -13,9 +13,14 @@
 @mixin show() {
   display: block;
 }
-
 @mixin hide() {
   display: none;
+}
+
+.flexCenter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .show{
@@ -30,6 +35,14 @@
   position: absolute;
 }
 
+.borderBox{
+  box-sizing: border-box;
+}
+
+
 .content-padding-left{
   padding-left: 1.6rem;
+}
+.mobile-wrap{
+  padding-bottom: 1rem;
 }

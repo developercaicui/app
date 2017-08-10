@@ -65,7 +65,7 @@ module.exports = {
         loader: ['css-loader','style-loader']
       },{
         test: /\.scss$/,
-        loader: 'style!css!sass!autoprefixer-loader?{ browsers: ["> 1%", "IE 7","Firefox 15"], cascade: false }',
+        loader: 'style!css!sass!autoprefixer-loader',
       }
 
     ]

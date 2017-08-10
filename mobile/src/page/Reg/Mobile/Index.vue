@@ -1,15 +1,16 @@
 <template lang="html">
 
-  <footer>{{tip}}</footer>
+	<main class="reg-wrap-mobile">{{tip}}</main>
 
 </template>
 
 <script>
+
 export default {
 
   data() {
     return {
-      tip: 'footer'
+			tip: 'Mobile > Reg'
     }
   },
 
@@ -18,8 +19,15 @@ export default {
   }
 
 }
+
 </script>
 
 <style lang="scss" scoped>
 
+ @import "../../../assets/style/mixin";
+
+ .reg-wrap-mobile{
+
+ }
+ 
 </style>

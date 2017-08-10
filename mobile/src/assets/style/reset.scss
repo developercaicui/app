@@ -131,11 +131,15 @@ a,button,input,textarea{
 	-webkit-tap-highlight-color:rgba(0,0,0,0);
 }
 
+h1, h2, h3, h4, h5, h6{
+  font-weight: normal;
+}
+
 @font-face {
   font-family: 'iconfont';  /* project id 376989 */
-  src: url('//at.alicdn.com/t/font_xnac34ij9kymn29.eot');
-  src: url('//at.alicdn.com/t/font_xnac34ij9kymn29.eot?#iefix') format('embedded-opentype'),
-  url('//at.alicdn.com/t/font_xnac34ij9kymn29.woff') format('woff'),
-  url('//at.alicdn.com/t/font_xnac34ij9kymn29.ttf') format('truetype'),
-  url('//at.alicdn.com/t/font_xnac34ij9kymn29.svg#iconfont') format('svg');
+  src: url('//at.alicdn.com/t/font_376989_wknkg40o4o2k2o6r.eot');
+  src: url('//at.alicdn.com/t/font_376989_wknkg40o4o2k2o6r.eot?#iefix') format('embedded-opentype'),
+  url('//at.alicdn.com/t/font_376989_wknkg40o4o2k2o6r.woff') format('woff'),
+  url('//at.alicdn.com/t/font_376989_wknkg40o4o2k2o6r.ttf') format('truetype'),
+  url('//at.alicdn.com/t/font_376989_wknkg40o4o2k2o6r.svg#iconfont') format('svg');
 }

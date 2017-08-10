@@ -125,4 +125,6 @@ export default {
 
   },
 
+  cdnImgUrl: 'http://cdnimg.caicui.com/',
+
 };
