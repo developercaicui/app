@@ -1,8 +1,10 @@
 <template lang="html">
 
-  <div class="spinner">
-    <div class="double-bounce1"></div>
-    <div class="double-bounce2"></div>
+  <div class="loading-wrap">
+    <div class="spinner">
+      <div class="double-bounce1"></div>
+      <div class="double-bounce2"></div>
+    </div>
   </div>
 
 </template>
@@ -26,10 +28,14 @@ export default {
 
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
-@import "../../../assets/style/mixin";
-@import "../../../assets/style/reset";
+.loading-wrap{
+  position: fixed;
+  left: 0; top: 0; right: 0; bottom: 0;
+  background-color: #fff;
+  z-index: 101;
+}
 
 .spinner {
 

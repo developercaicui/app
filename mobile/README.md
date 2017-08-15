@@ -26,7 +26,7 @@ npm run dev
 npm run build
 ```
 
-## 技术栈 vue  + vue-router + webpack + ES6/7 + axios + sass + flex
+## 技术栈 vue  + vue-router + vuex + webpack + ES6/7 + axios + sass + flex
 
 
 ## API接口跨域访问处理
@@ -55,9 +55,7 @@ npm run build
 │   │         ├── Tip/                          // 提示组件
 │   │         └── Loading/                      // Loading动画
 │   │   └── Header                              // 头部公共组件
-│ 
 │   ├── page
-│   │    ├── Home/                              // 入口页面
 │   │    ├── Reg/                               // 注册
 │   │    ├── Index/                             // 首页
 │   │    ├── Login/                             // 登录页面
@@ -66,7 +64,7 @@ npm run build
 │   ├── router
 │   │   └── router.js                           // 路由配置
 │ 
-│   ├── store                                   // 后续vuex的状态管理
+│   ├── store                                   // vuex状态管理
 │
 │   └── assets
 │       └── style
