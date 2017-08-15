@@ -2,3 +2,4 @@
 mobile/dist/
 ipad/node_modules/
 mobile/node_modules/
+mobile/src/store/modules/state.js

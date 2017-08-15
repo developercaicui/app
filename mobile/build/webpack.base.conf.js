@@ -28,6 +28,7 @@ module.exports = {
       'page': path.resolve(__dirname, '../src/page'),
       'router': path.resolve(__dirname, '../src/router'),
       'api': path.resolve(__dirname, '../src/api'),
+      'store': path.resolve(__dirname, '../src/store'),
     }
   },
   resolveLoader: {

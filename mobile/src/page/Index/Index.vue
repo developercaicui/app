@@ -31,14 +31,12 @@ export default {
 
 	created() {
 
-		let oHtml = document.documentElement;
-
-		this.isIpad = oHtml.dataset.isipad == 'false' ? true : false ;
-		this.isMobile = oHtml.dataset.ismobile == 'false' ? true : false ;
-
+		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
+		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
 		let oDiv = document.createElement('div');
 
+		return;
 		// 获取活动列表
 		getActivityList()
 
@@ -75,5 +73,4 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 </style>
