@@ -1,6 +1,6 @@
 <template lang="html">
 
-	<main class="reg-wrap-ipad">{{tip}}</main>
+	<main class="content-padding-left reg-wrap-ipad">{{tip}}</main>
 
 </template>
 

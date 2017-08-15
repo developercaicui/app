@@ -65,8 +65,8 @@ export default {
     // 更新值
     this.$store.commit('updateDeviceInfo', {
       type: oHtml.dataset.device,
-      isIpad: this.isIpad,
-      isMobile: this.isMobile
+      isIpad: !this.isIpad,
+      isMobile: !this.isMobile
     });
 
     // 3秒后跳到首页
@@ -87,6 +87,7 @@ export default {
 </script>
 <style lang="scss">
 
- @import "./assets/style/reset";
+@import "./assets/style/reset";
+@import "./assets/style/mixin";
 
 </style>

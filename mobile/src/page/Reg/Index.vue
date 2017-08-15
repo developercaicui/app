@@ -28,8 +28,8 @@ export default {
 
 	created() {
 
-		this.isIpad = this.$store.getters.getDeviceInfo.isipad == 'false' ? true : false ;
-		this.isMobile = this.$store.getters.getDeviceInfo.ismobile == 'false' ? true : false ;
+		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
+		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
 	},
 
