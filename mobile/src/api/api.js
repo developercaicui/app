@@ -125,6 +125,85 @@ export default {
 
   },
 
+  /**
+   * 是否小于10，小于填存0
+   * @type {Number}  数字
+   * @return {String} 字符串
+   */
+   isSmallTen: (num) => num < 10 ? `0${num}` : num,
+
   cdnImgUrl: 'http://cdnimg.caicui.com/',
+
+  /**
+   * 处理课程列表（在学，未激活，过期课程）
+   */
+  outCourseList(ret) {
+      let stooges = ret.data.courselist;
+      let categoryIdArr = [];
+      for(let i=0;i<stooges.length;i++){
+         if(categoryIdArr && categoryIdArr.length){
+               let isPush = true;
+               for(let j=0;j<categoryIdArr.length;j++){
+                     if(stooges[i].subjectID == categoryIdArr[j].subjectID){
+                           isPush = false;
+                     }
+               }
+               if(isPush){
+                     categoryIdArr.push({
+                           categoryId :　stooges[i].categoryId,
+                           subjectID :　stooges[i].subjectID,
+                           categoryIndex :　stooges[i].categoryIndex,
+                           subjectIndex : stooges[i].subjectIndex,
+                           categoryName : stooges[i].categoryName,
+                           subjectName : stooges[i].subjectName,
+                           courseLists : []
+                     })
+               }
+         }else{
+               categoryIdArr.push({
+                     categoryId :　stooges[i].categoryId,
+                     subjectID :　stooges[i].subjectID,
+                     categoryIndex :　stooges[i].categoryIndex,
+                     subjectIndex : stooges[i].subjectIndex,
+                     categoryName : stooges[i].categoryName,
+                     subjectName : stooges[i].subjectName,
+                     courseLists : []
+               })
+         }
+         
+      }
+      let courseLists = [];
+      for(let i=0;i<categoryIdArr.length;i++){
+         for(let j=0;j<stooges.length;j++){
+               if(categoryIdArr[i].subjectID == stooges[j].subjectID){
+                     categoryIdArr[i].courseLists.push(stooges[j]);
+               }
+         }
+      }
+      function down(x, y) {
+            return (x.subjectIndex > y.subjectIndex) ? 1 : -1
+      }
+      
+      let learningD = {};
+      categoryIdArr.forEach(function(val, i) {
+          let categoryName = val.categoryName;
+          let categoryId = val.categoryId; 
+          if (!learningD[categoryId]) {
+              learningD[categoryId] = {
+                 categoryName : categoryName,
+                 subjectIndex : categoryIdArr[i].subjectIndex,
+                 children: [categoryIdArr[i]]
+              }
+          }else{
+            learningD[categoryId].children.push(
+                  categoryIdArr[i]
+            )
+            learningD[categoryId].children.sort(down)
+          }
+          
+      });
+
+      return learningD
+  }
 
 };

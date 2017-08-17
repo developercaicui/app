@@ -1,8 +1,8 @@
 <template lang="html">
 
 	<div>
-		<indexIpad :activity-list='activityList' v-show="isIpad"></indexIpad>
-		<indexMobile :activity-list='activityList' v-show="isMobile"></indexMobile>
+		<indexIpad :learning-course-list="learningCourseList" :activity-list='activityList' v-show="isIpad"></indexIpad>
+		<indexMobile :learning-course-list="learningCourseList" :activity-list='activityList' v-show="isMobile"></indexMobile>
 	</div>
 
 </template>
@@ -11,7 +11,7 @@
 
 import indexIpad from './Ipad';
 import indexMobile from './Mobile';
-import { getActivityList } from '../../api/port';
+import { getActivityList, getLearningCourse, getCourseProgres, getExamDate } from '../../api/port';
 
 
 export default {
@@ -26,6 +26,7 @@ export default {
 			isIpad: false,
       isMobile: false,
 			activityList: [], // 活动列表
+			learningCourseList: [], // 最近在学课程
     }
   },
 
@@ -36,11 +37,10 @@ export default {
 
 		let oDiv = document.createElement('div');
 
-		return;
 		// 获取活动列表
 		getActivityList()
 
-		.then(res =>{
+		.then(res => {
 
 			if(res && res.state == 'success'){
 
@@ -58,6 +58,90 @@ export default {
 				});
 
 			}
+
+		})
+
+		// 最近所学课程
+		getLearningCourse({
+			verTT: new Date().getTime(),
+			token: this.webApi.getCookie('token'),
+			pageNo: 1,
+			pageSize: 999
+		})
+
+		.then(res =>{
+
+			if(!res || res.state != 'success'){
+
+					return;
+			}
+
+			this.learningCourseList = res.data.courselist.map( item => {
+
+				let expirationDate = new Date(item.expirationTime*1000);
+
+				return {
+					courseName: item.courseName,
+					courseId: item.courseId,
+					categoryId: item.categoryId,
+					courseGroupId: item.courseGroupId,
+					expirationTime: `${expirationDate.getFullYear()}/${this.webApi.isSmallTen(expirationDate.getMonth())}/${this.webApi.isSmallTen(expirationDate.getDate())}`,
+					courseGroupId: item.courseGroupId,
+					subjectID: item.subjectID,
+					taskTotal: item.taskTotal,
+					courseProgress: 0,
+					examinationDate: '暂无考试'
+				}
+
+			});
+
+
+		})
+		.then(() =>{
+
+			let userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
+			let courseIds =  this.learningCourseList.map(item => item.courseId);
+
+
+			// 进度
+			return getCourseProgres({
+				token: userInfo.token,
+				memberId: userInfo.memberId,
+				courseId: courseIds.toString()
+			})
+
+		})
+
+		.then(res =>{
+
+			if(!res || res.state != 'success'){
+				return;
+			}
+
+			res.data.map((item, index) =>{
+
+				let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;
+
+				this.learningCourseList[index].courseProgress = item.courseProgress;
+				this.learningCourseList[index].studyProportion = num > 100 ? 100 : num;
+			});
+
+			return getExamDate({
+				verTT: new Date().getTime(),
+				memberId: JSON.parse(this.webApi.getCookie('userInfo')).memberId,
+			})
+
+		})
+		.then(res =>{
+
+
+			if(!res || res.state != 'success'){
+
+				return;
+			}
+
+			// courseId 做比较
+			res.data.map(item => this.learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth())}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
 
 		})
 

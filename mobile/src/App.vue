@@ -1,12 +1,10 @@
 <template lang="html">
 
-  <transition name="fade" mode="out-in">
-    <div>
-      <NavIpad v-show="isIpad"></NavIpad>
-      <NavMobile v-show="isMobile"></NavMobile>
-      <router-view></router-view>
-    </div>
- </transition>
+  <div>
+    <NavIpad v-show="isIpad"></NavIpad>
+    <NavMobile v-show="isMobile"></NavMobile>
+    <router-view></router-view>
+  </div>
 
 </template>
 
@@ -21,7 +19,7 @@ export default {
   components: {
     Loading,
     NavMobile,
-    NavIpad
+    NavIpad,
   },
 
 
@@ -71,15 +69,14 @@ export default {
 
     // 3秒后跳到首页
     setTimeout(() =>{
-      this.$router.push({
-        path: 'index'
-      });
-    },3000);
+      // this.$router.push({
+        // path: 'index'
+      // });
+    },5000);
 
   },
 
   methods: {
-
   }
 
 }

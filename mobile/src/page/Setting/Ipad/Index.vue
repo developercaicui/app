@@ -13,21 +13,19 @@
 					<h1>在学课程</h1>
 				</div>
 
-				<a href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-if="index<3">
+				<a href="javascript:;" class="list">
 					<div class="info">
-						<h1>{{item.courseName}}</h1>
-						<time>有效期至：{{item.examinationDate}}</time>
-						<time>课程到期：{{item.expirationTime}}</time>
+						<h1>复习串讲－ACCA F2 AccoACCA ntant inBusiness</h1>
+						<time>有效期至：2017/05/03</time>
+						<time>课程到期：2017/08/12</time>
 					</div>
 					<div class="process">
 						<div class="round">
-							<canvas :data-progress="item.studyProportion" class="canvas-list"></canvas>
-							<div class="num">{{item.studyProportion}}</div>
+							<canvas data-progress="25" class="canvas-list"></canvas>
 						</div>
-						<aside>{{`${item.courseProgress}/${item.taskTotal}`}}</aside>
+						<aside>4/68</aside>
 					</div>
 				</a>
-
 
 			</div>
 
@@ -58,12 +56,73 @@
 
 import Headers from '../../../components/Header/Ipad';
 
+
 export default {
 
 	props: {
-    'activity-list': [Array],
-		'learning-course-list': [Array]
+    'activity-list': [Array]
   },
+
+
+	updated() {
+
+		let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
+
+		canvasList.forEach(obj =>{
+
+				let ctx = obj.getContext('2d');
+				let r = obj.parentNode.getBoundingClientRect().width / 2;
+
+				obj.width = obj.height = r * 2;
+
+				drawArc(ctx, r, obj.dataset.progress);
+		});
+
+
+		function drawArc(ctx, r, num){
+
+			// 底图
+			ctx.beginPath();
+			ctx.fillStyle = '#fff';
+			ctx.arc(r, r, r, 0, 2*Math.PI);
+			ctx.fill();
+
+
+			// 动画层
+		  let sAngel = 0 * Math.PI;
+		  let EAngel = 0 * Math.PI;
+		  let aAngle = Math.PI*1.5;
+
+		  ctx.beginPath();
+		  ctx.fillStyle = '#f60';
+		  ctx.moveTo(r, r);
+		  ctx.arc(r, r, r, sAngel, aAngle);
+		  ctx.fill();
+
+
+			// 覆盖层
+			ctx.beginPath();
+			ctx.fillStyle = '#4a90e2';
+			ctx.arc(r, r, r-r/15, 0, 2*Math.PI);
+			ctx.fill();
+
+			// if(num < 10){
+			//
+			// }else if( num > 99){
+			//
+			// }
+
+			ctx.beginPath();
+			ctx.font = '.23rem';
+			ctx.fillStyle = '#fff';
+			ctx.fillText('%', r+r/4, r+r/15);
+
+			ctx.font = '.36rem PingFang SC, Helvetica Neue, Helvetica, STHeiTi, sans-serif';
+			ctx.fillText(num, r-r/2, r+r/15*3);
+
+		}
+
+	},
 
 	components: {
     Headers,
@@ -74,53 +133,6 @@ export default {
     return {
     }
   },
-
-	updated() {
-
-		let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
-		let arr = ['#4a90e2','#3E4F61','#408684'];
-
-		canvasList.forEach((obj, index) =>{
-
-				let ctx = obj.getContext('2d');
-				let r = obj.parentNode.getBoundingClientRect().width / 2;
-
-				obj.width = obj.height = r * 2;
-
-				drawArc(ctx, r, obj.dataset.progress, arr[index]);
-		});
-
-
-		function drawArc(ctx, r, num, backColor){
-
-			// 底图
-			ctx.beginPath();
-			ctx.fillStyle = 'rgba(255,255,255,.5)';
-			ctx.arc(r, r, r, 0, 2*Math.PI);
-			ctx.fill();
-
-
-			// 动画层
-		  let sAngel = 0 * Math.PI;
-		  let eAngel = 0 * Math.PI;
-		  let aAngle = Math.PI*1.5;
-
-			ctx.beginPath();
-		  ctx.fillStyle = '#fff';
-		  ctx.moveTo(r, r);
-		  ctx.arc(r, r, r, sAngel, Math.PI*2*(num*0.01));
-		  ctx.fill();
-
-			// 覆盖层
-			ctx.beginPath();
-			ctx.fillStyle = backColor;
-			ctx.arc(r, r, r-r/15, 0, 2*Math.PI);
-			ctx.fill();
-
-
-		}
-
-	},
 
   methods: {
 
@@ -154,18 +166,8 @@ export default {
 		 display: inline-block;
 		 @include wh(6.76rem, 2.1rem);
 		 @extend .borderBox;
+		 background-color: #4a90e2;
 		 padding: .26rem .28rem;
-		 margin-right: .4rem; margin-bottom: .7rem;
-
-		 &:nth-of-type(1){
-			 background-color: #4a90e2;
-		 }
-		 &:nth-of-type(2){
-			 background-color: #3E4F61;
-		 }
-		 &:nth-of-type(3){
-			 background-color: #408684;
-		 }
 
 		 .info{
 
@@ -200,23 +202,9 @@ export default {
 		 float: left;
 		 margin-left: .1rem;
 		 text-align: center;
-		 position: relative;
 
 		 .round{
 		 	@include wh(1.2rem, 1.2rem);
-		 }
-		 .num{
-		 	@include fc(.3rem, #fff);
-			@extend .ab;
-			left: 0; top: 0; right: 0; bottom: 0;
-			text-align: center; line-height: 4;
-			transform: translate3d(.1rem,.02rem,0);
-			&:after{
-				content: '%';
-				font-size: .24rem;
-				display: inline-block;
-				transform: scale(.8) translate3d(0rem,-.1rem,0);
-			}
 		 }
 		 aside{
 		 	@include fc(.20rem, #fff);
@@ -249,10 +237,6 @@ export default {
 		 	@include wh(100%, 100%);
 		 }
 
-	 }
-
-	 .canvas-list{
-	 	 transform: rotate(-90deg);
 	 }
 
 }

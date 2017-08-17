@@ -7,6 +7,7 @@ const FindPwd = r => require.ensure([], () => r(require('../page/FindPwd')), 'fi
 const Login = r => require.ensure([], () => r(require('../page/Login')), 'login')
 const Loading = r => require.ensure([], () => r(require('../components/Comm/Loading')), 'loading')
 const Course = r => require.ensure([], () => r(require('../page/Course')), 'course')
+const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'setting')
 
 
 
@@ -30,7 +31,10 @@ export default  new VueRouter({
       component: Login,
     },{
       path: '/course',
-      component: Course,
+      component: Course
+    },{
+      path: '/setting',
+      component: Setting
     }
    ]
 });

@@ -3,12 +3,14 @@
 	<main class="content-padding-left course-wrap-ipad">
 
 		<ul class="course-navBar">
-			<li class="active" @click="changeCourse('learning')">在学课程</li>
-			<li @click="changeCourse('noactive')">未激活课程</li>
-			<li @click="changeCourse('overdue')">已过期课程</li>
+			<li class="active" data-type="learning" @click="changeCourse">在学课程</li>
+			<li data-type="noactive" @click="changeCourse">未激活课程</li>
+			<li data-type="overdue"  @click="changeCourse">已过期课程</li>
 		</ul>
 		
-		<Course :learning-data='learningData'></Course>
+		<Courselearning v-show="currmodule=='learning'"></Courselearning>
+		<Coursenoactive v-show="currmodule=='noactive'"></Coursenoactive>
+		<Courseoverdue v-show="currmodule=='overdue'"></Courseoverdue>
 
 		
 	</main>
@@ -17,16 +19,12 @@
 
 <script>
 
-import Course from '../../../components/Course/Ipad';
+import Courselearning from './learning';
+import Coursenoactive from './noactive';
+import Courseoverdue from './overdue';
 
 export default {
 
-	props: {
-		learningData: {
-			type: Object,
-			default: {}
-		}
-  	},
   	created() {
   		// console.log(this.learningData)
   	},
@@ -37,21 +35,28 @@ export default {
 	},
 
 	components: {
-	   Course
+	   Courselearning,
+	   Coursenoactive,
+	   Courseoverdue
 	},
 
 
   data() {
     return {
-    	navBar: ["在学课程","未激活课程","已过期课程"],
-		courseList: learningData
+    	currmodule:"learning",
     }
   },
   mounted () {
 
   },
   methods: {
-  	 changeCourse(courseStyle) {
+  	 changeCourse(ev) {
+
+  	 	for(let obj of ev.target.parentNode.querySelectorAll('li')) obj.classList.remove('active')
+
+  	 	ev.target.classList.add('active');
+
+  	 	this.currmodule = ev.target.dataset.type;
 
   	 }
   	 
@@ -69,21 +74,21 @@ export default {
 	background-color:#fff;
 }
 .course-navBar{
-	width: 100%;
 	height: 1.4rem;
-	background-color: #f5f5f5;
-	@include fc(.32rem, #999999);
-	display: table;
-	padding-top: 0.5rem;
-	position: fixed;
-	z-index: 9999;
+    background-color: #f5f5f5;
+    font-size: 0.32rem;
+    color: #999999;
+    padding-top: 0.5rem;
+    position: fixed;
+    z-index: 11;
+    left: 1.6rem;
+    right: 0;
+    display: flex;
 	li{
-		width: 1.9rem;
 	    display: inline-block;
 	    text-align: center;
-	    height: 0.6rem;
+	    flex: 1;
 	    font-weight: bold;
-	    display: table-cell;
 	    line-height: 1rem;
 	    border: 1px solid #d2d2d2;
 	    border-top: none;
