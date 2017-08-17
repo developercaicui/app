@@ -4,20 +4,20 @@
 		<input type="text" v-model="user" placeholder="请输入账号"/>
 		<input type="password" v-model="pwd" placeholder="请输入密码"/>
 		<a href="javascript:;" @touchend="submitLogin">登录</a>
-		<Tip :error-msg='errorMsg' v-show="isShowTip"></Tip>
+		<SmallTip :error-msg='errorMsg' v-show="isShowTip"></SmallTip>
 	</main>
 
 </template>
 
 <script>
 
-import Tip from '../../components/Comm/Tip';
+import SmallTip from '../../components/Comm/SmallTip';
 import { getToken, login } from '../../api/port';
 
 export default {
 
 	components: {
-		Tip
+		SmallTip
 	},
 
   data() {
@@ -93,6 +93,7 @@ export default {
 
 				this.showTip('登录成功，请自行切换路由');
 				this.webApi.setCookie('userInfo', JSON.stringify(res.data));
+				this.webApi.setCookie('token', res.data.token);
 
 			});
 

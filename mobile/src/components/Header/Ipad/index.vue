@@ -4,34 +4,164 @@
 
     <section class="user-info">
       <div class="img-head">
-        <img src="http://cdnimg.caicui.com/upload/avatar/big_ff808081492d486801492d4a28f50004.jpg"/>
+        <img :src="headImg"/>
       </div>
       <address class="text">
-        <span>不粘锅</span>
-        <span>18273821212</span>
+        <span>{{name}}</span>
+        <span>{{phone}}</span>
       </address>
     </section>
     <aside class="user-log">
-      上次登录时间：<span>一天前</span>
-      最近考试：<span>ACCA P1  2017/12/13</span>
+      上次登录时间：<span>{{time}}</span>&nbsp;&nbsp;&nbsp;
+      最近考试：<span>{{courseName}}&nbsp;&nbsp;{{courseTime}}</span>
     </aside>
-    <aside href="javascript:;" class="is-msg">
+    <aside href="javascript:;" class="is-msg" @touchend="openMsgListAlert">
       <span>&#xe67e;</span>
       <span class="msg-num">9</span>
     </aside>
+    <MyMsg @close-msg-alert="closeMsgListAlert" :is-msg-wrap="isMsgWrap"></MyMsg>
   </header>
 
 </template>
 
 <script>
+
+import { getUserInfo, getLoginLog, getExamDate } from '../../../api/port';
+import MyMsg from '../../Comm/MyMsg';
+
 export default {
+
+  components: {
+		MyMsg,
+  },
 
   data() {
     return {
+      name: '',
+      headImg: '',
+      phone: '',
+      time: '', // 最新登录时间
+      courseName: '', // 最近考试名称
+      courseTime: '', // 最近考试时间
+      isMsgWrap: false, // 是否显示消息列表
     }
   },
 
+  created() {
+
+
+    if(!this.webApi.getCookie('userInfo')) return;
+
+    let userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
+
+    // 用户基本信息
+    getUserInfo({token: userInfo.token})
+
+    .then(res =>{
+
+      if(!res || res.msg == 'noLogin'){
+
+        this.$router.push({
+          path: 'login'
+        });
+
+        return;
+      }
+
+
+
+      return res.data;
+
+    })
+    .then(data =>{
+
+      this.name = data.nickName;
+      this.headImg = `${this.webApi.cdnImgUrl}${data.avatar}`;
+      this.phone = data.mobile ? data.mobile : data.email;
+    });
+
+    // 获取登录时间
+    getLoginLog({
+      verTT: new Date().getTime(),
+      memberid: userInfo.memberId,
+      pageSize: 1,
+      pageNo: 1
+    })
+
+    .then(res =>{
+      this.time = !res || res.state != 'success' ? new Date().getTime() : this.stringData(res.data[0].loginTime);
+    })
+
+
+    // 最近考试时间以及科目
+    getExamDate({
+      verTT: new Date().getTime(),
+      memberId: userInfo.memberId
+    })
+
+    .then(res =>{
+
+      if(!res || res.state != 'success'){
+
+        return;
+      }
+
+      if(res.data.length == 0){
+        this.courseName = '暂无考试';
+        return;
+      }
+
+      let {data: [{categorySign: courseName,examinationDate: courseDate}]} = res;
+      let courseTime = new Date(courseDate);
+
+      this.courseName = courseName;
+      this.courseTime = `${this.webApi.isSmallTen(courseTime.getFullYear())}/${this.webApi.isSmallTen(courseTime.getMonth())}/${this.webApi.isSmallTen(courseTime.getDate())}`;
+
+
+    });
+
+
+  },
+
   methods: {
+
+    // 打开消息列表
+    openMsgListAlert() {
+      this.isMsgWrap = true;
+    },
+
+    // 关闭消息弹框
+    closeMsgListAlert(isOff) {
+      this.isMsgWrap = isOff;
+    },
+
+    // PC端时间计算为例
+    stringData($_data) {
+       $_data = parseInt($_data);
+        var $_return_string = '1分钟前';
+        var $_timestamp=parseInt(new Date().getTime()/1000);
+        var $_reste = $_timestamp - $_data;
+        if($_reste<0){
+        	$_reste = 1;
+        }
+        // if($_reste<60){
+        //     $_return_string = $_reste+'秒前';
+        // }else
+       	// if($_reste>=60 && $_reste <3600){
+       	if($_reste <3600){
+            $_return_string = Math.ceil($_reste/60)+'分钟前';
+        }else if($_reste>=3600 && $_reste <(3600*24)){
+            $_return_string = Math.ceil($_reste/3600)+'小时前';
+        }else if($_reste>=(3600*24) && $_reste <(3600*24*30)){
+            $_return_string = Math.ceil($_reste/(3600*24))+'天前';
+        }else if($_reste>=(3600*24*30) && $_reste <(3600*24*30*12)){
+            $_return_string = Math.ceil($_reste/(3600*24*30))+'月前';
+        }else{
+            $_return_string = Math.ceil(parseInt($_reste/(3600*24*30*12)))+'年前';
+        }
+        return $_return_string;
+
+    }
 
   }
 
@@ -116,7 +246,7 @@ export default {
      }
 
    }
-   
+
 
  }
 

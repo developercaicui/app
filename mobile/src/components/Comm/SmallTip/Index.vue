@@ -1,6 +1,6 @@
 <template lang="html">
 
-  <div class="small-tip">12</div>
+  <div class="small-tip">{{errorMsg}}</div>
 
 </template>
 
@@ -16,12 +16,6 @@ export default {
   data() {
     return {
     }
-  },
-
-  created(){
-
-    // this.$emit('small-tip','测试测试');
-
   },
 
   methods: {

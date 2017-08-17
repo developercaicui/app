@@ -125,6 +125,13 @@ export default {
 
   },
 
+  /**
+   * 是否小于10，小于填存0
+   * @type {Number}  数字
+   * @return {String} 字符串
+   */
+   isSmallTen: (num) => num < 10 ? `0${num}` : num,
+
   cdnImgUrl: 'http://cdnimg.caicui.com/',
 
 };
