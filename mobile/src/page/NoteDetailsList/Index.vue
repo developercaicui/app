@@ -32,7 +32,6 @@ export default {
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
 
-
 	},
 
 

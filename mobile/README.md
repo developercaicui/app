@@ -51,11 +51,20 @@ npm run build
 │   │    └── port                               // 常用的接口
 │
 │   ├── components                              // 组件
-│   │   ├── Comm                                // 公共组件
-│   │         ├── Tip/                          // 提示组件
-│   │         └── Loading/                      // Loading动画
+│   │   ├── Nav                                 // 导航组件
 │   │   └── Header                              // 头部公共组件
 │   ├── page
+│   │    ├── Exchange/                          // 我的交流入口
+│   │    ├── ExchangeDetails/                   // 我的交流详情
+│   │    ├── ExchangeEdit/                      // 我的交流编辑
+│   │    ├── ExchangeList/                      // 我的交流列表
+│   │    ├── MeNote/                            // 我的笔记入口
+│   │    ├── NoteList/                          // 我的笔记列表
+│   │    ├── NodeDetailsList/                   // 我的笔记详情列表
+│   │    ├── NodeDetails/                       // 我的笔记详情
+│   │    ├── NodeEdit/                          // 我的笔记编辑
+│   │    ├── NodeSearch/                        // 我的笔记搜索
+│   │    ├── Msg/                               // 消息列表
 │   │    ├── Reg/                               // 注册
 │   │    ├── Index/                             // 首页
 │   │    ├── Login/                             // 登录页面

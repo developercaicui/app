@@ -1,6 +1,6 @@
 <template lang="html">
 
-	<main class="content-padding-left index-wrap-ipad">
+	<main class="index-wrap-ipad">
 
 		<Headers></Headers>
 
@@ -56,7 +56,7 @@
 
 <script>
 
-import Headers from '../../../components/Header/Ipad';
+import Headers from '../../../components/Header/';
 
 export default {
 
@@ -177,6 +177,7 @@ export default {
 			 h1{
 				 font-size: .28rem;
 				 margin-bottom: .15rem;
+				 @extend .text-ellipsis;
 			 }
 
 			 time{

@@ -1,8 +1,8 @@
 <template lang="html">
 
 	<div>
-		<findPwdIpad v-if="isIpad"></findPwdIpad>
-		<findPwdMobile v-if="isMobile"></findPwdMobile>
+		<findPwdIpad v-show="isIpad"></findPwdIpad>
+		<findPwdMobile v-show="isMobile"></findPwdMobile>
 	</div>
 
 </template>
@@ -30,7 +30,6 @@ export default {
 
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
-
 
 
 	},

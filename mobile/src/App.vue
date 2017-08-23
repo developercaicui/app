@@ -1,8 +1,6 @@
 <template lang="html">
 
   <div>
-    <NavIpad v-show="isIpad"></NavIpad>
-    <NavMobile v-show="isMobile"></NavMobile>
     <router-view></router-view>
   </div>
 
@@ -10,23 +8,23 @@
 
 <script>
 
-import Loading from './components/Comm/Loading';
-import NavIpad from './components/Nav/Mobile/';
-import NavMobile from './components/Nav/Ipad';
 
 export default {
 
   components: {
-    Loading,
-    NavMobile,
-    NavIpad,
+  },
+
+  mounted() {
+
   },
 
 
   data() {
     return {
       isIpad: false,
-      isMobile: false
+      isMobile: false,
+      message: '',
+      isShow: false,
     }
   },
 
@@ -67,16 +65,10 @@ export default {
       isMobile: !this.isMobile
     });
 
-    // 3秒后跳到首页
-    setTimeout(() =>{
-      // this.$router.push({
-        // path: 'index'
-      // });
-    },5000);
-
   },
 
   methods: {
+
   }
 
 }

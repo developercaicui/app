@@ -49,7 +49,7 @@
 
 <script>
 
-import Headers from '../../../components/Header/Mobile';
+import Headers from '../../../components/Header/';
 
 export default {
 

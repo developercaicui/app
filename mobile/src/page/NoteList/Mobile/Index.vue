@@ -1,8 +1,7 @@
 <template lang="html">
 
-	<main class="find-pwd-ipad">
-
-
+	<main class="find-pwd-mobile">
+		{{tip}}
 	</main>
 
 </template>
@@ -13,11 +12,11 @@ export default {
 
   data() {
     return {
-			tip: ''
+			tip: 'Mobile findPwd'
     }
   },
 
-  created() {
+  methods: {
 
   }
 
@@ -29,18 +28,9 @@ export default {
 
 	@import "../../../assets/style/mixin";
 
-	.find-pwd-ipad{
-
-		font-size: 0;
-
+	.find-pwd-mobile{
 
 	}
-
-
-
-
-
-
 
 
 </style>

@@ -1,8 +1,8 @@
 <template lang="html">
 
 	<div>
-		<indexIpad :learning-course-list="learningCourseList" :activity-list='activityList' v-show="isIpad"></indexIpad>
-		<indexMobile :learning-course-list="learningCourseList" :activity-list='activityList' v-show="isMobile"></indexMobile>
+		<indexIpad :learning-course-list="learningCourseList" :activity-list='activityList' v-if="isIpad"></indexIpad>
+		<indexMobile :learning-course-list="learningCourseList" :activity-list='activityList' v-if="isMobile"></indexMobile>
 	</div>
 
 </template>

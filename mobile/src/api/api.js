@@ -132,6 +132,68 @@ export default {
    */
    isSmallTen: (num) => num < 10 ? `0${num}` : num,
 
+   /**
+    * 递归父节点
+    * @type {String}  node 现在的节点
+    * @type {String}  target 目标父节点
+    * @return {String} 父节点
+    */
+   recursiveParentNode(node, target) {
+      return node.nodeName.toLowerCase() == target ? node : this.recursiveParentNode(node.parentNode, target) ;
+   },
+   /**
+    * 递归父节点
+    * @type {String}  message 提示消息
+    * @type {Number}  time   隐藏时间
+    */
+   alert(message = '网络异常，请稍后再试！', time = 2000) {
+
+     let oDiv = document.createElement('div');
+
+     oDiv.className = 'g-small-alert';
+     oDiv.innerText = message;
+
+     document.body.appendChild(oDiv);
+
+     if(typeof time != 'number') time = Number(time);
+
+     setTimeout(()=>{
+       document.body.removeChild(oDiv);
+     }, time);
+
+   },
+
+   /**
+    * 数据加载load动画
+    */
+   loadingData() {
+
+     let oDiv = document.createElement('div');
+
+     oDiv.className = 'g-data-loading';
+     oDiv.id = 'dataLoading';
+
+     oDiv.innerHTML = `
+       <div class="showbox">
+         <div class="loader">
+           <svg class="circular" viewBox="25 25 50 50">
+             <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+           </svg>
+         </div>
+       </div>
+       <h1>加载中...</h1>
+      `;
+     document.body.appendChild(oDiv);
+
+   },
+
+   /**
+    * 关闭数据加载load动画
+    */
+   cloasLoadingData() {
+     document.body.removeChild(document.querySelector('#dataLoading'));
+   },
+
   cdnImgUrl: 'http://cdnimg.caicui.com/',
 
 };

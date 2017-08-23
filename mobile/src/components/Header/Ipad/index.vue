@@ -17,17 +17,17 @@
     </aside>
     <aside href="javascript:;" class="is-msg" @touchend="openMsgListAlert">
       <span>&#xe67e;</span>
-      <span class="msg-num">9</span>
+      <span class="msg-num" v-if="totalCount>0">{{totalCount}}</span>
     </aside>
-    <MyMsg @close-msg-alert="closeMsgListAlert" :is-msg-wrap="isMsgWrap"></MyMsg>
+    <MyMsg :msg-list="msgList" @updata-msg-state="updataMsgState" @close-msg-alert="closeMsgListAlert" :is-msg-wrap="isMsgWrap"></MyMsg>
   </header>
 
 </template>
 
 <script>
 
-import { getUserInfo, getLoginLog, getExamDate } from '../../../api/port';
-import MyMsg from '../../Comm/MyMsg';
+import { getUserInfo, getLoginLog, getExamDate, getMsgList } from '../../../api/port';
+import MyMsg from '../../../page/Msg/Ipad';
 
 export default {
 
@@ -44,6 +44,8 @@ export default {
       courseName: '', // 最近考试名称
       courseTime: '', // 最近考试时间
       isMsgWrap: false, // 是否显示消息列表
+      totalCount: 0, // 消息数
+      msgList: [], // 消息列表
     }
   },
 
@@ -118,12 +120,49 @@ export default {
       this.courseTime = `${this.webApi.isSmallTen(courseTime.getFullYear())}/${this.webApi.isSmallTen(courseTime.getMonth())}/${this.webApi.isSmallTen(courseTime.getDate())}`;
 
 
-    });
+    })
+
+    // 获取消息
+    getMsgList({
+       verTT: new Date().getTime(),
+       pageNo: 1,
+       pageSize: 99,
+       type: 1,
+       isRead: 0,
+       token: this.webApi.getCookie('token'),
+    })
+
+    .then(res =>{
+
+      if(!res || res.state != 'success'){
+        // 失败
+      }
+
+      let {data: data, totalCount: totalCount} = res;
+      let _obj = document.createElement('div');
+
+      this.totalCount = totalCount;
+      this.msgList = data;
+      this.msgList.map(item => {
+
+        item.sentTime = this.stringData(item.sentTime);
+        _obj.innerHTML = item.content;
+        item.content = _obj.innerText;
+      })
+
+
+    })
 
 
   },
 
   methods: {
+
+    // 消息条目数更新
+    updataMsgState(data) {
+      this.totalCount = this.totalCount - data.num;
+      this.msgList = data.list;
+    },
 
     // 打开消息列表
     openMsgListAlert() {

@@ -1,22 +1,22 @@
 <template lang="html">
 
 	<div>
-		<findPwdIpad v-if="isIpad"></findPwdIpad>
-		<findPwdMobile v-if="isMobile"></findPwdMobile>
+		<msgIpad v-if="isIpad"></msgIpad>
+		<msgMobile v-if="isMobile"></msgMobile>
 	</div>
 
 </template>
 
 <script>
 
-import findPwdIpad from './Ipad';
-import findPwdMobile from './Mobile';
+import msgIpad from './Ipad';
+import msgMobile from './Mobile';
 
 export default {
 
 	components: {
-		findPwdMobile,
-		findPwdIpad,
+		msgMobile,
+		msgIpad,
   },
 
   data() {
@@ -30,8 +30,6 @@ export default {
 
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
-
-
 
 	},
 
