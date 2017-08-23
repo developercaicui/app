@@ -1,12 +1,11 @@
 
 import VueRouter from 'vue-router';
 
-
-
 const Index = r => require.ensure([], () => r(require('../page/Index')), 'index')
 const Reg = r => require.ensure([], () => r(require('../page/Reg')), 'reg')
 const FindPwd = r => require.ensure([], () => r(require('../page/FindPwd')), 'fidPwd')
 const Login = r => require.ensure([], () => r(require('../page/Login')), 'login')
+<<<<<<< HEAD
 const Loading = r => require.ensure([], () => r(require('../page/Loading')), 'loading')
 const Exchange = r => require.ensure([], () => r(require('../page/Exchange')), 'exchange')
 const ExchangeDetails = r => require.ensure([], () => r(require('../page/ExchangeDetails')), 'exchangeDetails')
@@ -18,6 +17,12 @@ const NoteDetailsList = r => require.ensure([], () => r(require('../page/NoteDet
 const NoteDetails = r => require.ensure([], () => r(require('../page/NoteDetails')), 'noteDetails');
 const NoteEdit = r => require.ensure([], () => r(require('../page/NoteEdit')), 'noteEdit');
 const NoteSearch = r => require.ensure([], () => r(require('../page/NoteSearch')), 'noteSearch');
+=======
+const Loading = r => require.ensure([], () => r(require('../components/Comm/Loading')), 'loading')
+const Course = r => require.ensure([], () => r(require('../page/Course')), 'course')
+const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'setting')
+
+>>>>>>> fa2f8739fabe28b69810f1fc2a13fc2ceae26662
 
 
 export default  new VueRouter({
@@ -39,6 +44,7 @@ export default  new VueRouter({
       path: '/login',
       component: Login,
     },{
+<<<<<<< HEAD
       path: '/note',
       component: Note,
       children: [{
@@ -73,5 +79,13 @@ export default  new VueRouter({
         },
       ]
     },
+=======
+      path: '/course',
+      component: Course
+    },{
+      path: '/setting',
+      component: Setting
+    }
+>>>>>>> fa2f8739fabe28b69810f1fc2a13fc2ceae26662
    ]
 });

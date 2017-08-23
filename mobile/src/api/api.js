@@ -195,5 +195,124 @@ export default {
    },
 
   cdnImgUrl: 'http://cdnimg.caicui.com/',
+  //判断是否为空
+  isEmpty(data) {
+    if (this.isEmpty1(data) || this.isEmpty2(data)) {
+      return true;
+    }
+    return false;
+  },
+
+  isEmpty1(data) {
+    if (data == undefined || data == null || data == 'null' || data == "" || data == 'NULL' || data == false || data == 'False' || data == 'false' || data == 'NaN' || data == NaN) {
+      return true;
+    }
+    return false;
+  },
+
+  isEmpty2(v) {
+    switch (typeof v) {
+      case 'undefined' :
+        return true;
+      case 'string' :
+        if (this.trim(v).length == 0)
+          return true;
+        break;
+      case 'boolean' :
+        if (!v)
+          return true;
+        break;
+      case 'number' :
+        if (0 === v)
+          return true;
+        break;
+      case 'object' :
+        if (null === v)
+          return true;
+        if (undefined !== v.length && v.length == 0)
+          return true;
+        for (var k in v) {
+          return false;
+        }
+        return true;
+        break;
+    }
+    return false;
+  },
+  trim(str) {
+    console.log(JSON.stringify(str))
+    return str.replace(/(^\s+)|(\s+$)/g, "");
+  },
+  /**
+   * 处理课程列表（在学，未激活，过期课程）
+   */
+  outCourseList(ret) {
+      let stooges = ret.data.courselist;
+      let categoryIdArr = [];
+      for(let i=0;i<stooges.length;i++){
+         if(categoryIdArr && categoryIdArr.length){
+               let isPush = true;
+               for(let j=0;j<categoryIdArr.length;j++){
+                     if(stooges[i].subjectID == categoryIdArr[j].subjectID){
+                           isPush = false;
+                     }
+               }
+               if(isPush){
+                     categoryIdArr.push({
+                           categoryId :　stooges[i].categoryId,
+                           subjectID :　stooges[i].subjectID,
+                           categoryIndex :　stooges[i].categoryIndex,
+                           subjectIndex : stooges[i].subjectIndex,
+                           categoryName : stooges[i].categoryName,
+                           subjectName : stooges[i].subjectName,
+                           courseLists : []
+                     })
+               }
+         }else{
+               categoryIdArr.push({
+                     categoryId :　stooges[i].categoryId,
+                     subjectID :　stooges[i].subjectID,
+                     categoryIndex :　stooges[i].categoryIndex,
+                     subjectIndex : stooges[i].subjectIndex,
+                     categoryName : stooges[i].categoryName,
+                     subjectName : stooges[i].subjectName,
+                     courseLists : []
+               })
+         }
+         
+      }
+      let courseLists = [];
+      for(let i=0;i<categoryIdArr.length;i++){
+         for(let j=0;j<stooges.length;j++){
+               if(categoryIdArr[i].subjectID == stooges[j].subjectID){
+                     categoryIdArr[i].courseLists.push(stooges[j]);
+               }
+         }
+      }
+      function down(x, y) {
+            return (x.subjectIndex > y.subjectIndex) ? 1 : -1
+      }
+      
+      let learningD = {};
+      categoryIdArr.forEach(function(val, i) {
+          let categoryName = val.categoryName;
+          let categoryId = val.categoryId; 
+          if (!learningD[categoryId]) {
+              learningD[categoryId] = {
+                 categoryName : categoryName,
+                 subjectIndex : categoryIdArr[i].subjectIndex,
+                 children: [categoryIdArr[i]]
+              }
+          }else{
+            learningD[categoryId].children.push(
+                  categoryIdArr[i]
+            )
+            learningD[categoryId].children.sort(down)
+          }
+          
+      });
+
+      return learningD
+  }
 
 };
