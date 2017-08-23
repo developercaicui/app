@@ -26,7 +26,7 @@ import Courseoverdue from './overdue';
 export default {
 
   	created() {
-  		// console.log(this.learningData)
+  		
   	},
 
 	updated() {
@@ -80,7 +80,7 @@ export default {
     color: #999999;
     padding-top: 0.5rem;
     position: fixed;
-    z-index: 11;
+    z-index: 1;
     left: 1.6rem;
     right: 0;
     display: flex;

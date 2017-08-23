@@ -133,7 +133,54 @@ export default {
    isSmallTen: (num) => num < 10 ? `0${num}` : num,
 
   cdnImgUrl: 'http://cdnimg.caicui.com/',
+  //判断是否为空
+  isEmpty(data) {
+    if (this.isEmpty1(data) || this.isEmpty2(data)) {
+      return true;
+    }
+    return false;
+  },
 
+  isEmpty1(data) {
+    if (data == undefined || data == null || data == 'null' || data == "" || data == 'NULL' || data == false || data == 'False' || data == 'false' || data == 'NaN' || data == NaN) {
+      return true;
+    }
+    return false;
+  },
+
+  isEmpty2(v) {
+    switch (typeof v) {
+      case 'undefined' :
+        return true;
+      case 'string' :
+        if (this.trim(v).length == 0)
+          return true;
+        break;
+      case 'boolean' :
+        if (!v)
+          return true;
+        break;
+      case 'number' :
+        if (0 === v)
+          return true;
+        break;
+      case 'object' :
+        if (null === v)
+          return true;
+        if (undefined !== v.length && v.length == 0)
+          return true;
+        for (var k in v) {
+          return false;
+        }
+        return true;
+        break;
+    }
+    return false;
+  },
+  trim(str) {
+    console.log(JSON.stringify(str))
+    return str.replace(/(^\s+)|(\s+$)/g, "");
+  },
   /**
    * 处理课程列表（在学，未激活，过期课程）
    */

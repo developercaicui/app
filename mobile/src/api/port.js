@@ -29,3 +29,10 @@ export const getCourseProgres = params => { return axios.get(`http://action.caic
 export const getNoactiveCourse = params => { return axios.get(`${requestUrl}/api/business/learning/noActivecourse/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 //获取已过期课程
 export const getOverdueCourse = params => { return axios.get(`${requestUrl}/api/business/learning/expirationcourse/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+//获取未激活课程介绍信息
+export const getExtendInfo = params => { return axios.get(`${requestUrl}/api/v2.1/course/courseExtendInfo?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+
+//查询课程考试时间
+export const timeList = params => { return axios.get(`${requestUrl}/api/v2/exam/timeList?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+//激活课程
+export const courseActive = params => { return axios.get(`${requestUrl}/api/business/order/courseActive/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
