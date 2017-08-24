@@ -2,60 +2,16 @@
 
 	<main class="mobile-wrap index-wrap-mobile">
 
-		<Headers></Headers>
-
-		<section class="the-course-wrap">
-
-			<div class="title">
-				<h1>在学课程</h1>
-				<a href="#">&#xe669;</a>
-			</div>
-
-			<a href="javascript:;" class="list">
-				<div class="info">
-					<h1>复习串讲－ACCA F2 AccoACCA ntant inBusiness</h1>
-					<time>有效期至：2017-05-03</time>
-				</div>
-				<div class="process">
-					<!-- <canvas class="canvas"></canvas> -->
-					<!-- <span>4/68</span> -->
-				</div>
-			</a>
-
-		</section>
-
-		<section class="the-course-wrap the-activity-wrap">
-
-			<div class="title">
-				<h1>财萃活动</h1>
-				<a href="#">&#xe669;</a>
-			</div> -->
-
-			<ul v-for="item in activityList">
-				<li :data-href="item.href" class="activity-list" :data-id="item.id">
-					<img :src="item.src"/>
-				</li>
-			</ul>
-
-
-		</section>
-
 	</main>
 
 </template>
 
 <script>
 
-import Headers from '../../../components/Header/Mobile';
 
 export default {
 
-	props: {
-    'activity-list': [Array]
-  },
-
 	components: {
-    Headers,
   },
 
 
