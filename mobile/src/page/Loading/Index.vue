@@ -11,6 +11,7 @@
 
 <script>
 
+import { getUserInfo } from '../../api/port'
 
 export default {
 
@@ -19,19 +20,35 @@ export default {
     }
   },
 
-  mounted() {
+  created() {
 
-    // 3秒后跳到首页
-    setTimeout(() =>{
-      this.$router.push({
-        path: 'login'
-      });
-    },3000);
+    let userToken = this.webApi.getCookie('token') || null;
+
+    if(!userToken) this.targetPage('login')
+
+
+    getUserInfo({
+      token: userToken
+    })
+
+    .then(res =>{
+
+      if(!res || res.state != 'success') this.targetPage('login');
+      else this.targetPage('index');
+
+    })
+
 
   },
 
   methods: {
 
+    // 跳转
+    targetPage(name = 'login') {
+      this.$router.push({
+        path: name
+      });
+    }
 
   }
 

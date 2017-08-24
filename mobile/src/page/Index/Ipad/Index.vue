@@ -75,6 +75,12 @@ export default {
     }
   },
 
+	created() {
+
+		// this.webApi.loadingData();
+
+	},
+
 	updated() {
 
 		let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
@@ -137,6 +143,7 @@ export default {
 .index-wrap-ipad{
 
 	font-size: 0;
+	padding-bottom: 2.5rem;
 
 
 	.index-content{

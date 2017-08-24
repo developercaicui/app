@@ -22,7 +22,6 @@ export default {
 			user: 'candy',
 			pwd: '123456',
 			token: '',
-			errorMsg: '网络异常，请稍后在试试!',
     }
   },
 
@@ -78,9 +77,15 @@ export default {
 					console.error(res, '登录失败');
 				}
 
-				this.webApi.alert('登录成功，请自行切换路由');
+				this.webApi.alert('登录成功，即将自动跳转');
 				this.webApi.setCookie('userInfo', JSON.stringify(res.data));
 				this.webApi.setCookie('token', res.data.token);
+
+				setTimeout(() =>{
+					this.$router.push({
+						path: 'index'
+					});
+				},1000)
 
 			});
 
