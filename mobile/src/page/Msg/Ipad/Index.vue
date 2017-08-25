@@ -6,8 +6,7 @@
       <section class="msg-content">
         <nav>
           <a href="javascript:;">消息中心</a>
-          <a href="javascript:;" class="active">个人动态</a>
-          <a href="javascript:;">站内短信</a>
+          <a href="javascript:;" @touchend.stop="switchMsgType" v-for="(item, index) in navList" :data-index="index" :class="index==defaultIndex ? 'active' : ''">{{item.name}}</a>
         </nav>
         <div class="list-wrap">
           <figure @click.stop="openMsgDetails" v-for="item in msgList" :data-id="item.id">
@@ -17,6 +16,7 @@
               <p>{{item.content.substr(0,22)}}</p>
             </section>
           </figure>
+          <span class="no-data" v-show="msgList.length==0?true:false"><img src="../../../assets/img/404.svg"></span>
         </div>
       </section>
       <section class="msg-content-details" ref="msgContentDetails">
@@ -54,6 +54,14 @@ export default {
   data() {
     return {
       details: [],
+      navList: [
+        {
+          name: '个人动态',
+        },{
+          name: '站内消息',
+        }
+      ],
+      defaultIndex: 0,
     }
   },
 
@@ -61,9 +69,23 @@ export default {
 
     this.msgListData = this.msgList;
 
+    // 默认显示个人动态
+    this.webApi.loadingData();
+    this.$emit('gain-msg-list', 0);
   },
 
   methods: {
+
+    // 切换消息类型
+    switchMsgType(ev) {
+
+      this.defaultIndex = ev.target.dataset.index;
+
+      this.webApi.loadingData();
+
+      this.$emit('gain-msg-list', this.defaultIndex);
+
+    },
 
     // 关闭消息弹框
     closeMsgAlert(ev) {
@@ -98,6 +120,7 @@ export default {
         num: 1,
         list: this.msgList.filter(item => item.id != id)
       });
+
       console.log('消息保留不让更新，已经return掉');
       return;
 
@@ -217,6 +240,12 @@ export default {
 
     height: 100%; padding-bottom: 2rem;
     overflow-y: auto;
+
+    > span.no-data{
+      @extend .show;
+      @include wh(2.4rem, 2.4rem);
+      transform: translate3d(1.6rem, 1.4rem, 0);
+    }
 
     figure{
 

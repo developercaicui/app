@@ -10,6 +10,7 @@
   "repository": "",
   "dependencies": {
     "axios": "^0.16.2",
+    "jquery": "^3.2.1",
     "lodash": "^4.16.4",
     "qs": "^6.5.0",
     "vue": "^2.0.1",

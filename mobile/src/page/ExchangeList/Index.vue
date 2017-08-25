@@ -26,10 +26,12 @@ export default {
     }
   },
 
-	created() {
+	mounted() {
 
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
+
+
 
 
 	},

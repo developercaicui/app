@@ -13,13 +13,13 @@
 				</header>
 
 				<main :class="isMobile?'reg-info reg-info-mobile':'reg-info'" :style="isMobile?'width:85%':''">
-					<input type="number" value="" placeholder="手机号">
-					<input type="number" value="" placeholder="验证码">
-					<input :type="pwdType" value="" placeholder="密码">
-					<a href="javascript:;" @touchend="gainCode" class="gainCode">{{gainCodeText}}</a>
+					<input type="number" v-model="mobile" placeholder="手机号">
+					<input type="number" v-model="code" placeholder="验证码">
+					<input type="password" v-model="pwd" placeholder="密码（请输入8-16位，不能有空格，纯数字需至少9位）" ref="pwd">
+					<a href="javascript:;" v-show="isShowBtn" @touchend="gainCode" class="gainCode">{{gainCodeText}}</a>
 					<a href="javascript:;" @touchend="lookPwd" class="look-pwd">&#xe62d;</a>
 					<div class="is-agree">
-						<a href="javascript:;" class="active">&#xe654;</a>
+						<a href="javascript:;" @touchend="isAgreement" class="active">&#xe654;</a>
 						我已阅读并同意<a href="http://www.caicui.com/help/ff80808147db71340147f60c159a0411" target="_blank">《财萃网服务协议》</a>
 					</div>
 					<a href="javascript:;" class="sub-ref-info" @touchend="subRegInfo">下一步</a>
@@ -36,14 +36,14 @@
 					<span class="step">2/2</span>
 				</header>
 				<main :class="isMobile?'reg-info reg-info-mobile':'reg-info'" :style="isMobile?'width:85%':''">
-					<div class="upload-img"></div>
+					<div class="upload-img" ref="uploadImgBtn" @touchend="uploadImg"></div>
 					<label>
-						<input type="number" value="" placeholder="用户名">
+						<input type="text" v-model="nickName" placeholder="用户名">
 						<span>可用于登录</span>
 					</label>
 					<a href="javascript:;" class="sub-ref-info last-sub-ref-info" @touchend="subPerfectInfo">注册</a>
 				</main>
-
+					<input type="file" name="" accept="image/png,image/gif,image/jpeg" @change="changeFile" ref="fileIpt" class="upload-img-ipt"/>
 			</div>
 		</transition>
 
@@ -57,7 +57,7 @@
 
 <script>
 
-import { getToken, phoneIsExist, sendCode, mobileReg } from '../../api/port';
+import { getToken, phoneIsExist, sendCode, mobileReg, uploadFile, changeUserName} from '../../api/port';
 
 export default {
 
@@ -67,32 +67,305 @@ export default {
 
   data() {
     return {
-			isIpad: false,
-      isMobile: false,
-			pwdType: 'password',
+			mobile: '',
+			code: '',
 			pwd: '',
+			isAgree: 1, // 默认同意协议
+			nickName: '',
 			gainCodeText: '获取验证码',
 			isLast: false,
+			isShowBtn: true, // 是否显示按钮
 			transformAName: 'slide-left-hide', // 动画过度方式
 			transformBName: 'slide-left',
+			token: '',
+			regSuccessToken: '',
     }
   },
 
-	created() {
+ created() {
 
-		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
-		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
+	//  this.transformAName = 'slide-left-hide';
+	//  this.transformBName =  'slide-left';
+	 //
+	//  this.isLast = true;
 
-	},
-
+ },
 
   methods: {
+
+		// 触发上传图片
+		uploadImg() {
+			this.$refs.fileIpt.click();
+		},
+
+		changeFile(ev) {
+
+			let file = ev.target.files[0];
+			let reader = new FileReader();
+
+			reader.readAsDataURL(file);
+
+			reader.onload = (evt) =>{
+        this.$refs.uploadImgBtn.style.cssText = `
+				   background:url(${evt.target.result});
+					 background-size: 2.7rem 2.7rem;
+				`;
+      }
+
+
+		},
+
+		// 获取验证码
+		gainCode() {
+
+
+			if(!/^\d{11}$/.test(this.mobile)){
+				this.webApi.alert('手机号格式有误');
+				return false;
+			}
+
+			this.isShowBtn = false;
+
+			// 手机号是否存在
+			phoneIsExist({
+				checkname: this.mobile,
+        checktype: '1', // 1为手机，2为邮箱
+			})
+
+			.then(res =>{
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert();
+					this.isShowBtn = true;
+					return false;
+				}
+
+				if(res.data == 'true'){
+					this.webApi.alert('此手机号码已注册');
+					this.isShowBtn = true;
+					return false;
+				}
+
+				// 获取Token
+				return getToken({
+					appType: 'aPad',
+					appId: 'aPadCourse',
+					appKey: 'f7e4ebaa872f38db7b548b870c13e79e'
+				});
+
+			})
+
+			.then(res =>{
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert();
+					this.isShowBtn = true;
+					return false;
+				}
+
+
+				this.token = res.data.token;
+
+				// 发送验证码
+				return sendCode({
+					templateSn: '08',
+					phone: this.mobile,
+					captcha: '', // 图片验证码
+					isResend: '1',
+					token: this.token
+				});
+
+			})
+
+			.then(res =>{
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert();
+					this.isShowBtn = true;
+					return false;
+				}
+
+				this.countDown();
+
+			})
+
+			.catch(err =>{
+				this.webApi.alert();
+				return false;
+			});
+
+		},
+
+		// 是否同意财萃协议
+		isAgreement(ev) {
+
+			if(ev.target.classList.contains('active')){
+				ev.target.classList.remove('active')
+				this.isAgree = 0;
+		  }else{
+				ev.target.classList.add('active')
+				this.isAgree = 1;
+			}
+
+		},
+
+		// 注册
+		subPerfectInfo() {
+
+
+			let formData = new FormData();
+			let file = this.$refs.fileIpt.files[0];
+
+
+			if(!file){
+				this.webApi.alert('请先上传一张头像');
+				return false;
+			}
+
+			if(!this.nickName){
+				this.webApi.alert('用户名不能为空');
+				return false;
+			}
+
+
+			phoneIsExist({
+				checkname: this.nickName,
+        checktype: '3', // 1为手机，2为邮箱, 3为用户名
+			})
+
+			.then(res =>{
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert();
+					return false;
+				}
+
+				if(res.data == 'true'){
+					this.webApi.alert('用户名已存在，请修改用户名！');
+					return false;
+				}
+
+				// 注册
+				mobileReg({
+					password: this.pwd,
+					phone: this.mobile,
+					code: this.code,
+					agreement: this.isAgree,
+					token: this.token
+				})
+
+			})
+
+			.then(res =>{
+
+				if(!res){
+					this.webApi.alert();
+				  return false;
+				}
+
+				if(res.state == 'error'){
+					this.webApi.alert(res.msg);
+				  return false;
+				}
+
+
+				this.regSuccessToken = this.data.token;
+
+				// 上传头像(token调试)
+				formData.append('file',file, file.name);
+				formData.append('token', this.regSuccessToken);
+
+				return uploadFile(formData)
+
+			})
+
+			.then(res =>{
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert('头像上传失败，请登录后到设置里重新上传');
+					return false;
+				}
+
+				return changeUserName({
+					nickName: this.nickName,
+					token: this.regSuccessToken,
+				})
+
+			})
+
+			.then(res =>{
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert('用户名修改失败，请登录后到设置里重新修改');
+					return false;
+				}
+
+				this.webApi.alert('密码修改成功, 3秒后即将跳转到登录页');
+
+				setTimeout(()=> {
+					this.$router.push({
+						path: 'login'
+					});
+				},3000);
+
+
+			})
+
+			.catch(err =>{
+				this.webApi.alert();
+				return false;
+			});
+
+
+		},
+
+		// 下一步
+		subRegInfo() {
+
+			if(!/^\d{11}$/.test(this.mobile)){
+				this.webApi.alert('手机号格式有误');
+				return false;
+			}
+
+			if(!/^\d{9,16}$|^(?!\d+$)\S{8,16}$/.test(this.pwd)){
+				this.webApi.alert('密码格式有误');
+				return false;
+			}
+
+			if(this.isAgree == 0){
+				this.webApi.alert('请先同意财萃网服务协议');
+			  return false;
+			}
+
+		  this.transformAName = 'slide-left-hide';
+	 	  this.transformBName =  'slide-left';
+
+	 	  this.isLast = true;
+
+		},
+		// 明文显示密码
+		lookPwd() {
+			this.$refs.pwd.getAttribute('type') == 'password' ? this.$refs.pwd.setAttribute('type', 'text') : this.$refs.pwd.setAttribute('type', 'password');
+		},
+
+		// 返回注册页面
+		backRegPage() {
+
+			this.transformAName = '';
+			this.transformBName =  '';
+
+			this.isLast = false;
+		},
 
 		// 倒计时
 		countDown() {
 
 			let num = 59;
 			let timer = void 0;
+
+			setTimeout(() =>{
+				this.isShowBtn = true;
+			},1000);
 
 			timer = setInterval(() =>{
 
@@ -107,100 +380,6 @@ export default {
 
 
 		},
-
-		// 获取验证码
-		gainCode() {
-
-			this.countDown();
-
-			return;
-			// 手机号是否存在
-			phoneIsExist({
-				checkname: '',
-        checktype: '1', // 1为手机，2为邮箱
-			})
-
-			.then(res =>{
-
-				if(!res || res.state != 'success'){
-
-				}
-
-
-				// return sendCode({
-
-				// })
-
-				// 获取Token
-				return getToken({
-					appType: 'aPad',
-					appId: 'aPadCourse',
-					appKey: 'f7e4ebaa872f38db7b548b870c13e79e'
-				});
-
-			})
-
-			.then(res =>{
-
-
-				// 发送验证码
-				return sendCode({
-					templateSn: '08',
-					phone: '',
-					captcha: '', // 图片验证码
-					isResend: '1',
-					token: ''
-				})
-
-			})
-
-		},
-
-		// 提交完善信息
-		subPerfectInfo() {
-
-
-
-		},
-
-		// 提交注册信息
-		subRegInfo() {
-
-
-			this.transformAName = 'slide-left-hide';
-			this.transformBName =  'slide-left';
-
-			this.isLast = true;
-
-			return;
-
-			mobileReg({
-				password: '',
-				phone: '',
-				code: '',
-				agreement: '',
-				token: ''
-			})
-
-			.then(res =>{
-
-			})
-
-		},
-		// 明文显示密码
-		lookPwd() {
-
-			// this.pwdType = this.pwdType=='password' ? 'text' : 'password' ;
-		},
-
-		// 返回注册页面
-		backRegPage() {
-
-			this.transformAName = '';
-			this.transformBName =  '';
-
-			this.isLast = false;
-		}
 
   }
 
@@ -318,13 +497,17 @@ export default {
 			 	 font-family: 'iconfont';
 				 color: #fff; font-size: 0;
 				 @include wh(.3rem, .3rem);
-				 display: inline-block; line-height: 1;
+				 display: inline-block; line-height: 1.3;
 				 border-radius: 2px;
 				 text-align: center;
+				 font-size: .24rem;
+ 				 background-color: #fff;
+				 border: 1px solid #ccc;
 			 }
 			 &.active{
 			 	font-size: .24rem;
 				background-color: $commGreen;
+				border: 1px solid $commGreen;
 			 }
 			 &:nth-of-type(2){
 			 	color: $commGreen;
@@ -381,6 +564,12 @@ export default {
 		 background-size: 2.7rem 2.7rem;
 		 border-radius: 100%; padding: .5rem;
 		 border: 1px solid #ccc;
+	 }
+
+	 .upload-img-ipt{
+		 @include wh(0, 0);
+		 position: absolute;
+		 opacity: 0;
 	 }
 
  }
