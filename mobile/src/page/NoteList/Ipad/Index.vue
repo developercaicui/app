@@ -12,6 +12,7 @@
 		<main class="list-wrap">
 
 			<section class="list">
+				<h1>asd测试测试adsad</h1>
 				<div href="javascript:;">
 					<span></span>
 					<h1>啊实打实的金卡撒大声地萨达所萨达所大声道撒</h1>
@@ -70,7 +71,7 @@ export default {
 
 	@import "../../../assets/style/mixin";
 
-	$green: #1ac3a7;
+	$green: #46C1AA;
 
 	.node-ipad-list{
 
@@ -80,6 +81,12 @@ export default {
 
 			padding: 0 .75rem;
 			border-bottom: 1px solid #f5f5f5;
+
+			> h1{
+				@include wh(100%, 1.2rem);
+				@include fc(.26rem, $green);
+				background-color:  #f7f7f7;
+			}
 
 			> section.list{
 			  padding-left: .6rem;

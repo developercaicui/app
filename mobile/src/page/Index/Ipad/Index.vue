@@ -22,7 +22,7 @@
 					<div class="process">
 						<div class="round">
 							<canvas :data-progress="item.studyProportion" class="canvas-list"></canvas>
-							<div class="num">{{item.studyProportion}}</div>
+							<div class="num">{{item.studyProportion || 0}}</div>
 						</div>
 						<aside>{{`${item.courseProgress}/${item.taskTotal}`}}</aside>
 					</div>
@@ -77,7 +77,7 @@ export default {
 
 	created() {
 
-		// this.webApi.loadingData();
+		// 
 
 	},
 

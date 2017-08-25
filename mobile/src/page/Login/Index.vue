@@ -19,8 +19,8 @@ export default {
 
   data() {
     return {
-			user: 'candy',
-			pwd: '123456',
+			user: 'rainy02',
+			pwd: '111111111',
 			token: '',
     }
   },
@@ -55,6 +55,7 @@ export default {
 				if(!res && !res.state == 'success'){
 					this.webApi.alert('token获取失败,请查看控制台。');
 					console.error(res, '获取token错误信息');
+					return false;
 				}
 
 				this.token = res.data.token;
@@ -72,9 +73,15 @@ export default {
 
 			.then(res => {
 
-				if(!res && !res.state == 'success'){
+				if(!res){
 					this.webApi.alert('登录失败,请查看控制台。');
 					console.error(res, '登录失败');
+					return false;
+				}
+
+				if(res.state == 'error'){
+					this.webApi.alert(res.msg);
+					return false;
 				}
 
 				this.webApi.alert('登录成功，即将自动跳转');

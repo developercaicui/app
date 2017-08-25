@@ -19,7 +19,7 @@
       <span>&#xe67e;</span>
       <span class="msg-num" v-if="totalCount>0">{{totalCount}}</span>
     </aside>
-    <MyMsg :msg-list="msgList" @updata-msg-state="updataMsgState" @close-msg-alert="closeMsgListAlert" :is-msg-wrap="isMsgWrap"></MyMsg>
+    <MyMsg :msg-list="msgList" @gain-msg-list="gainMsgList" @updata-msg-state="updataMsgState" @close-msg-alert="closeMsgListAlert" :is-msg-wrap="isMsgWrap"></MyMsg>
   </header>
 
 </template>
@@ -104,8 +104,8 @@ export default {
     .then(res =>{
 
       if(!res || res.state != 'success'){
-
-        return;
+        this.webApi.alert('消息获取失败，请稍后再试~');
+        return false;
       }
 
       if(res.data.length == 0){
@@ -122,41 +122,64 @@ export default {
 
     })
 
-    // 获取消息
-    getMsgList({
-       verTT: new Date().getTime(),
-       pageNo: 1,
-       pageSize: 99,
-       type: 1,
-       isRead: 0,
-       token: this.webApi.getCookie('token'),
+    .catch(err =>{
+      this.webApi.alert();
+      return false;
     })
 
-    .then(res =>{
 
-      if(!res || res.state != 'success'){
-        // 失败
-      }
-
-      let {data: data, totalCount: totalCount} = res;
-      let _obj = document.createElement('div');
-
-      this.totalCount = totalCount;
-      this.msgList = data;
-      this.msgList.map(item => {
-
-        item.sentTime = this.stringData(item.sentTime);
-        _obj.innerHTML = item.content;
-        item.content = _obj.innerText;
-      })
-
-
-    })
 
 
   },
 
   methods: {
+
+    // 获取消息列表
+    gainMsgList(type) {
+
+      // 获取消息
+      getMsgList({
+         verTT: new Date().getTime(),
+         pageNo: 1,
+         pageSize: 99,
+         type: type,
+         isRead: 0,
+         token: this.webApi.getCookie('token'),
+      })
+
+      .then(res =>{
+
+
+        if(!res || res.state != 'success'){
+          this.webApi.alert('消息获取失败，请稍后再试');
+          return false;
+        }
+
+        let {data: data, totalCount: totalCount} = res;
+        let _obj = document.createElement('div');
+
+        this.totalCount = totalCount;
+        this.msgList = data;
+        this.msgList.map(item => {
+
+          item.sentTime = this.stringData(item.sentTime);
+          _obj.innerHTML = item.content;
+          item.content = _obj.innerText;
+        })
+
+        this.webApi.closeLoadingData();
+
+
+      })
+
+      .catch(err =>{
+        this.webApi.alert('消息获取失败，请稍后再试');
+        this.webApi.closeLoadingData();
+        return false;
+      })
+
+
+    },
 
     // 消息条目数更新
     updataMsgState(data) {
