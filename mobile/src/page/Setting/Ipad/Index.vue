@@ -1,12 +1,12 @@
 <template lang="html">
-	<div class="set-info-modal">
+	<div class="set-info-modal" v-if="isShow">
 		<div class="backdrop"></div>
 	      <div id="mask0" class="modal">
-	        <div onclick="api.closeFrame()" class="set_tit">设置<i class="icon-close">x</i></div>
+	        <div @click="isShow = !isShow" class="set_tit">设置<i class="icon-close icon-guanbi">&#xe642;</i></div>
 	        <ul @click="modify" class="user-info">
 	          <li>
 	            <div class="left"><img class="avatar"><span class="user_nick"></span></div>
-	            <div class="right"><i class="icon-arrow-right"></i></div>
+	            <div class="right"><i class="icon-jiantou icon-arrow-right">&#xe619;</i></div>
 	          </li>
 	        </ul>
 	        <ul>
@@ -16,9 +16,13 @@
 	              <div class="on-off public_box"></div>
 	            </div>
 	          </li>
-	          <li id="setTime" onclick="setTime()">
-	            <div class="left">提醒时间</div>
-	            <div id="timeArea" class="right">19:30</div>
+	          <li id="setTime">
+	            <div class="input-group clockpicker">
+				    <input type="text" class="form-control" value="09:30">
+				    <span class="input-group-addon">
+				        <span class="glyphicon glyphicon-time"></span>
+				    </span>
+				</div>
 	          </li>
 	          <li class="cl chekquality" @click="chekquality">
 	            <div class="left">视频质量</div>
@@ -32,14 +36,14 @@
 	        <ul>
 	          <li @click="feedback">
 	            <div class="left">意见反馈</div>
-	            <div class="right"><i class="icon-arrow-right"></i></div>
+	            <div class="right"><i class="icon-jiantou icon-arrow-right">&#xe619;</i></div>
 	          </li>
 	          <li @click="showAbout">
 	            <div class="left">关于财萃</div>
-	            <div class="right"><i class="icon-arrow-right"></i></div>
+	            <div class="right"><i class="icon-jiantou icon-arrow-right">&#xe619;</i></div>
 	          </li>
 	        </ul>
-	        <ul class="logout">
+	        <ul class="logout" @click="logout">
 	          <li>
 	            <div class="left">退出登录</div>
 	          </li>
@@ -48,8 +52,8 @@
 	          <div class="exit_choice">
 	            <div class="exit_cur">你确定要退出吗？</div>
 	            <div class="ok_cancel cl">
-	              <div class="cancel">取消</div>
-	              <div onclick="out()" class="ok">确定</div>
+	              <div class="cancel" @click="cancel">取消</div>
+	              <div @click="out" class="ok">确定</div>
 	            </div>
 	          </div>
 	        </div>
@@ -57,9 +61,9 @@
 	      <div id="mask" class="modal">
 	        <!--头部-->
 	        <div class="set_tit">
-	          <div onclick="$('body').attr('show','index')" class="icon-arrow-left"></div><span>您的意见我会虚心接受的</span>
+	          <div onclick="$('body').attr('show','index')" class="icon-jiantou2 icon-arrow-left">&#xe669;</div><span>您的意见我会虚心接受的</span>
 	          <div class="right">
-	            <div onclick="sub()" class="send_btn">发送</div>
+	            <div @click="sub" class="send_btn">发送</div>
 	          </div>
 	        </div>
 	        <div id="pop-radios" class="pop-radios">
@@ -79,7 +83,7 @@
 	      <div id="mask2" class="modal">
 	        <!--头部-->
 	        <div class="set_tit">
-	          <div id="mask2-back" onclick="$('body').attr('show','index')" class="icon-arrow-left"></div><span>关于财萃课堂</span>
+	          <div id="mask2-back" onclick="$('body').attr('show','index')" class="icon-jiantou2 icon-arrow-left">&#xe669;</div><span>关于财萃课堂</span>
 	        </div>
 	        <div class="erweima">
 	          <div class="bb"><img src="../../../assets/img/logocircle.png">
@@ -109,11 +113,11 @@
 	        <ul class="list sel_quality">
 	          <li class="active" @click="selquality">
 	            <div class="left">标清</div>
-	            <div class="right"><i class="icon-check"></i></div>
+	            <div class="right"><i class="icon-duigou4 icon-check">&#xe654;</i></div>
 	          </li>
 	          <li @click="selquality">
 	            <div class="left">高清</div>
-	            <div class="right"><i class="icon-check"></i></div>
+	            <div class="right"><i class="icon-duigou4 icon-check">&#xe654;</i></div>
 	          </li>
 	        </ul>
 	      </div>
@@ -123,14 +127,18 @@
 
 <script>
 
-import $ from '../../../assets/js/zepto.js';
-import { getUserInfo } from '../../../api/port';
+import Vue from 'vue';
+
+import ClockPicker from '../../../assets/js/bootstrap-clockpicker.min.js';
+import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 
 
 export default {
 
 	data() {
 	    return {
+	    	isShow: true,
+	    	is_ok: true
 	    }
 	},
 
@@ -175,7 +183,6 @@ export default {
       	},
       	//投诉类型
       	selecType(ev) {
-      		console.log(ev)
       		ev.target.classList.add("active")
       	},
       	//视频质量
@@ -199,13 +206,150 @@ export default {
       	//微信公众号
       	togWx() {
           $('.erweima').toggleClass('xswx');
-      	}
+      	},
+      	//退出登录
+      	logout() {
+           $('.exit').removeClass('hide');
+      	},
+      	//取消退出登录
+      	cancel() {
+           $('.exit').addClass('hide');
+      	},
+      	out() {//退出登录
+
+      		loginout({"token":this.webApi.getCookie('token')})
+
+      		.then(res =>{
+
+	            alert("清除用户信息缓存记录并返回登录页")
+
+	        })
+      	},
+      	sub() {
+	        let content = $.trim($('textarea[name=content]').val());
+	        if (content == '') {
+	            this.webApi.alert('意见内容不能为空');
+	            return false;
+	        }
+	        //let title=content.substr(0,20);
+	        let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
+	        let param = {};
+	        let systype = "ios";
+	        param.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;//投诉人id
+	        param.memberName = nickName;//投诉人昵称
+	        param.cmptType = $(".pop-radio-label.active").find(".pop-radio-span").text();//投诉类型
+	        param.cmptContent = content;//投诉内容
+	        param.contactWay = $(".pop-input-tel").val();//联系方式
+	        param.deviceDesc = systype;//设备描述
+	        // api.showProgress({
+	        //     title: '发表中',
+	        //     modal: true
+	        // });
+	        this.webApi.loadingData();
+
+	        if (this.is_ok) {
+	            this.is_ok = false;
+	            complaintOpinion(param)
+
+	            .then(res =>{
+
+	               this.webApi.cloasLoadingData();
+
+		           if (res && res.state == 'success') {
+
+	                    this.webApi.alert('发表成功');
+
+	                    setTimeout(function () {
+	                        this.isShow = !this.isShow
+	                    }, 600);
+
+	                } else {
+	                    this.is_ok = true;
+	                    // this.webApi.alert('发表失败，请重试！');
+	                    this.webApi.alert(res.msg);
+	                }
+
+		        })
+	          
+	        }
+	      }
 	},
 	mounted() {
-		 //投诉类型
-          $('#pop-radios .pop-radio-label').on('click', function () {
-              $(this).addClass('active').siblings().removeClass('active');
-          });
+
+  	  	let that = this;
+	  	let is_notice;
+	  	let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
+      	let avatar = this.webApi.cdnImgUrl + JSON.parse(this.webApi.getCookie("userInfo")).avatar;
+  
+      	$('.user_nick').html(nickName);
+      	$('.avatar').attr('src', avatar+'?s='+Math.random());
+  
+      	let notice = this.webApi.isEmpty(this.webApi.getCookie('open_notice')) ? 0 : this.webApi.getCookie('open_notice');
+     	// $(this).addClass('private_box').removeClass('public_box');
+      	if (notice == 1) {
+          	$('.on-off').addClass('public_box').removeClass('private_box');
+          	let newTimer = this.webApi.getCookie('notice_time');
+          	let val = this.webApi.isEmpty(newTimer) ? '19:30' : newTimer;
+          	// clearInterval(push_timer);
+          	$('#setTime').removeClass('none');
+          	$('#timeArea').html(val);
+	
+          	// init_push();
+
+          	is_notice = 1;
+      	} else {
+          	$('#timeArea').html('19:30');
+          	$('#setTime').addClass('none');
+          	$('.on-off').addClass('private_box').removeClass('public_box');
+          	// clearInterval(push_timer);
+          	is_notice = 0;
+      	}
+
+
+		//投诉类型
+      	$('#pop-radios .pop-radio-label').on('click', function () {
+          	$(this).addClass('active').siblings().removeClass('active');
+      	});
+
+      	//学习提醒开关
+      	$('.on-off').on('click', function () {
+          if ($(this).hasClass('public_box')) {//关闭
+              $(this).addClass('private_box').removeClass('public_box');
+              // clearInterval(push_timer);
+              $('#timeArea').parent().addClass('none');
+              $('#setTime').addClass('none');
+              is_notice = 0;
+              that.webApi.setCookie('open_notice',0);
+              that.webApi.setCookie('notice_time','');
+          }
+          else {//开启
+              let newTimer = that.webApi.getCookie('notice_time');
+              let val = that.webApi.isEmpty(newTimer) ? '19:30' : newTimer;
+              $(this).addClass('public_box').removeClass('private_box');
+              // clearInterval(push_timer);
+              $('#setTime').removeClass('none');
+              $('#timeArea').html(val).parent().removeClass('none');
+              that.webApi.setCookie('open_notice', 1);
+
+              // init_push();
+
+              is_notice = 1;
+          }
+          that.webApi.setCookie('is_notice', is_notice);
+      	});
+
+      	let chekquality;
+      
+        $('#mask3 li').on('click', function () {
+	          let quality = $(this).find('.left').html();
+	          that.webApi.setCookie('quality', quality);
+	          $('.chekquality').find('.quality').html(quality);
+	          $('body').attr('show','index');
+	          $(this).addClass('active').siblings().removeClass('active');
+        });
+
+        $('.clockpicker').clockpicker();
+
 	}
 
 }
@@ -215,6 +359,40 @@ export default {
 <style lang="scss" scoped>
 
 @import "../../../assets/style/mixin";
+@import "../../../assets/style/bootstrap-clockpicker.min.css";
+.icon-guanbi{
+  font-family:"iconfont";
+  font-size:0.26rem;
+  font-weight: 700;
+  speak: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 100%;
+  vertical-align: middle;
+}
+.icon-jiantou,.icon-jiantou2{
+  font-family:"iconfont";
+  font-size:0.3rem;
+  font-weight: 700;
+  speak: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 100%;
+  vertical-align: middle;
+}
+.icon-duigou4{
+  font-family:"iconfont";
+  font-size:0.3rem;
+  font-weight: 700;
+  speak: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 100%;
+  vertical-align: middle;
+}
 .none{display:none;}
 .left{float: left;}
 .right {float: right;}

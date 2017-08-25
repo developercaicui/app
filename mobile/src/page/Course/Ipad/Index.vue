@@ -1,6 +1,6 @@
 <template lang="html">
 
-	<main class="content-padding-left course-wrap-ipad">
+	<main class="course-wrap-ipad">
 
 		<ul class="course-navBar">
 			<li class="active" data-type="learning" @click="changeCourse">在学课程</li>
@@ -81,7 +81,7 @@ export default {
     padding-top: 0.5rem;
     position: fixed;
     z-index: 1;
-    left: 1.6rem;
+    left: 0;
     right: 0;
     display: flex;
 	li{

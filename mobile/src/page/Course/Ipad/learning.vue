@@ -64,16 +64,21 @@ export default {
 	},
 
 	created() {
-
+		
 		let courseParams = {
 			pageNo: 1,
 			pageSize: 1000,
 			token: this.webApi.getCookie('token')
 		};
+
+		this.webApi.loadingData();
+
 		// 获取在学课程列表
 		getLearningCourse(courseParams)
 
 		.then(res =>{
+
+			this.webApi.cloasLoadingData();
 
 			if(res && res.state == 'success'){
 				let learningcourseData = res;
@@ -194,7 +199,12 @@ export default {
 	        if($val){
 	            $val.innerHTML = _num+'%';
 	        }	      
-
+	        if (_t.getAttribute('data')!='1') {
+	            setTimeout(function(){
+	                _t.style.width = _num + '%';
+	            },500);
+	            _t.setAttribute('data','1');
+	        }
 		}
 	},
 	setBackground(url) {

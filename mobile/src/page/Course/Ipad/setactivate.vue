@@ -15,8 +15,8 @@
               <li>{{ noactiveCourse.subjectName }}</li>
               <li>有效时间：{{ noactiveCourse.expirationDate }}天</li>
             </ul>
-            <div @click="closeAlert" class="btn btn-o btn-back"><i class="icon-back"></i><span>暂不激活</span></div>
-            <div @click="nextActive()" class="btn btn-o btn-go"><span>激活课程</span><i class="icon-back"></i></div>
+            <div @click="closeAlert" class="btn btn-o btn-back"><i class="icon-back">&#xe600;</i><span>暂不激活</span></div>
+            <div @click="nextActive()" class="btn btn-o btn-go"><span>激活课程</span><i class="icon-back">&#xe600;</i></div>
           </div>
         </div>
         <div class="course_tab">
@@ -52,7 +52,7 @@
 
 <script>
 
-import $ from '../../../assets/js/zepto.js';
+import $ from '../../../assets/js/jquery.min.js';
 
 import { getExtendInfo,timeList,courseActive } from '../../../api/port';
 
@@ -167,7 +167,7 @@ export default {
 
           if(!$('input[name=agree]').prop('checked')){
 
-              alert('请先同意激活');
+              this.webApi.alert('请先同意激活');
 
               return false;
           }
@@ -176,7 +176,7 @@ export default {
 
               if ($.trim($('select[name=setTime]').val()) == '选择考试时间'){
 
-                  alert("选择考试时间");
+                  this.webApi.alert("选择考试时间");
 
               }else{
 
@@ -217,12 +217,12 @@ export default {
 
             if(res && res.state == 'success'){
 
-                alert('您已成功激活该课程，请前往在学课程查看');
+                this.webApi.alert('您已成功激活该课程，请前往在学课程查看');
 
                 location.reload();
                   
             }else{
-                alert('激活失败，请重试！')
+                this.webApi.alert('激活失败，请重试！')
             }
 
           })
@@ -245,6 +245,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.icon-back{
+  font-family:"iconfont";
+  font-size:0.26rem;
+  font-weight: 700;
+  color: #00a185;
+  speak: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 100%;
+  vertical-align: middle;
+}
 .backdrop {
   position: fixed;
   top: 0;

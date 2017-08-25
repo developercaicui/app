@@ -50,3 +50,7 @@ export const getExtendInfo = params => { return axios.get(`${requestUrl}/api/v2.
 export const timeList = params => { return axios.get(`${requestUrl}/api/v2/exam/timeList?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 //激活课程
 export const courseActive = params => { return axios.get(`${requestUrl}/api/business/order/courseActive/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+//退出登录
+export const loginout = params => { return axios.get(`${requestUrl}/api/zbids/member/loginout/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+//发送反馈意见
+export const complaintOpinion = params => { return axios.post(`${requestUrl}/api/business/complaintOpinion/create/v1.0`, qs.stringify(params)).then(res => res.data).catch(err => err) };

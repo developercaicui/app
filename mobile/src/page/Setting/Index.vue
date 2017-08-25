@@ -9,6 +9,7 @@
 
 <script>
 
+import $ from './jquery.min.js';
 import settingIpad from './Ipad';
 import settingMobile from './Mobile';
 

@@ -137,7 +137,7 @@ export default {
           //     });
           // } 
         }else{
-            alert("只有U+课程可以免费申请重听！")
+            this.webApi.alert("只有U+课程可以免费申请重听！")
         }
         
     }

@@ -240,7 +240,6 @@ export default {
     return false;
   },
   trim(str) {
-    console.log(JSON.stringify(str))
     return str.replace(/(^\s+)|(\s+$)/g, "");
   },
   /**
