@@ -127,8 +127,7 @@
 
 <script>
 
-import Vue from 'vue';
-
+import jQuery  from 'jquery';
 import ClockPicker from '../../../assets/js/bootstrap-clockpicker.min.js';
 import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 

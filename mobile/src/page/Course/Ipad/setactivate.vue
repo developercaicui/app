@@ -52,7 +52,7 @@
 
 <script>
 
-import $ from '../../../assets/js/jquery.min.js';
+import $ from 'jquery';
 
 import { getExtendInfo,timeList,courseActive } from '../../../api/port';
 

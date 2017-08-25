@@ -15,6 +15,14 @@ export const phoneIsExist = params => { return axios.get(`${requestUrl}/api/zbid
 export const sendCode = params => { return axios.post(`${requestUrl}/api/base/sms/sendsms/v1.0/`, qs.stringify(params)).then(res => res.data).catch(err => err) };
 // 手机注册
 export const mobileReg = params => { return axios.post(`${requestUrl}/api/zbids/member/mobilereg`, qs.stringify(params)).then(res => res.data).catch(err => err) };
+// 手机找回密码
+export const changePwdByPhone = params => { return axios.post(`${requestUrl}/api/zbids/member/changePwdByPhone`, qs.stringify(params)).then(res => res.data).catch(err => err) };
+
+// 修改用户名
+export const changeUserName = params => { return axios.post(`${requestUrl}/api/zbids/member/editinfo`, qs.stringify(params)).then(res => res.data).catch(err => err) };
+// 上传图片
+export const uploadFile = params => { return axios.post(`${requestUrl}/api/zbids/member/edituserheadr`, params).then(res => res.data).catch(err => err) };
+
 
 
 
@@ -54,3 +62,9 @@ export const courseActive = params => { return axios.get(`${requestUrl}/api/busi
 export const loginout = params => { return axios.get(`${requestUrl}/api/zbids/member/loginout/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 //发送反馈意见
 export const complaintOpinion = params => { return axios.post(`${requestUrl}/api/business/complaintOpinion/create/v1.0`, qs.stringify(params)).then(res => res.data).catch(err => err) };
+
+
+
+// 获取我的笔记
+export const getNoteList = params => { return axios.post(`${requestUrl}/api/studytools/myallcoursechapternodecount/v2.1`, qs.stringify(params)).then(res => res.data).catch(err => err) };
+

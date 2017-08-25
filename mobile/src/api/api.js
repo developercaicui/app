@@ -146,7 +146,7 @@ export default {
     * @type {String}  message 提示消息
     * @type {Number}  time   隐藏时间
     */
-   alert(message = '网络异常，请稍后再试！', time = 2000) {
+   alert(message = '网络异常，请稍后再试', time = 2000) {
 
      let oDiv = document.createElement('div');
 
@@ -190,7 +190,7 @@ export default {
    /**
     * 关闭数据加载load动画
     */
-   cloasLoadingData() {
+   closeLoadingData() {
      document.body.removeChild(document.querySelector('#dataLoading'));
    },
 
@@ -278,7 +278,7 @@ export default {
                      courseLists : []
                })
          }
-         
+
       }
       let courseLists = [];
       for(let i=0;i<categoryIdArr.length;i++){
@@ -291,11 +291,11 @@ export default {
       function down(x, y) {
             return (x.subjectIndex > y.subjectIndex) ? 1 : -1
       }
-      
+
       let learningD = {};
       categoryIdArr.forEach(function(val, i) {
           let categoryName = val.categoryName;
-          let categoryId = val.categoryId; 
+          let categoryId = val.categoryId;
           if (!learningD[categoryId]) {
               learningD[categoryId] = {
                  categoryName : categoryName,
@@ -308,7 +308,7 @@ export default {
             )
             learningD[categoryId].children.sort(down)
           }
-          
+
       });
 
       return learningD

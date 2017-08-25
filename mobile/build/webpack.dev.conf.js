@@ -18,6 +18,11 @@ module.exports = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': config.dev.env
     }),
+    new webpack.ProvidePlugin({
+      $:"jquery",
+      jQuery:"jquery",
+      "window.jQuery":"jquery"
+    }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
     new webpack.NoErrorsPlugin(),
