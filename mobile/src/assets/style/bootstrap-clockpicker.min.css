@@ -24,12 +24,20 @@
 	top: auto;
 	bottom: 6px;
 }
+.clockpicker-popover{
+	position: absolute;
+	z-index: 4;
+	background: #fff;
+	top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+}
 .clockpicker-popover .popover-title {
 	background-color: #fff;
 	color: #999;
-	font-size: .24rem;
-	font-weight: bold;
-	line-height: .3rem;
+	font-size: .5rem;
+    font-weight: bold;
+    line-height: .6rem;
 	text-align: center;
 }
 .clockpicker-popover .popover-title span {

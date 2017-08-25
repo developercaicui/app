@@ -78,7 +78,7 @@ export default {
 
 		.then(res =>{
 
-			this.webApi.cloasLoadingData();
+			this.webApi.closeLoadingData();
 
 			if(res && res.state == 'success'){
 				let learningcourseData = res;

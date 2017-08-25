@@ -17,12 +17,13 @@
 	            </div>
 	          </li>
 	          <li id="setTime">
+              <div class="left">提醒时间</div>
 	            <div class="input-group clockpicker">
-				    <input type="text" class="form-control" value="09:30">
-				    <span class="input-group-addon">
-				        <span class="glyphicon glyphicon-time"></span>
-				    </span>
-				</div>
+				        <input  id="timeArea" type="text" class="form-control right" value="09:30" style="width: 1rem;padding-top: 0.3rem;margin-right: -0.3rem;">
+    				    <span class="input-group-addon">
+    				        <span class="glyphicon glyphicon-time"></span>
+    				    </span>
+    				</div>
 	          </li>
 	          <li class="cl chekquality" @click="chekquality">
 	            <div class="left">视频质量</div>
@@ -61,7 +62,7 @@
 	      <div id="mask" class="modal">
 	        <!--头部-->
 	        <div class="set_tit">
-	          <div onclick="$('body').attr('show','index')" class="icon-jiantou2 icon-arrow-left">&#xe669;</div><span>您的意见我会虚心接受的</span>
+	          <div @click="closeIndex" class="icon-jiantou2 icon-arrow-left">&#xe669;</div><span>您的意见我会虚心接受的</span>
 	          <div class="right">
 	            <div @click="sub" class="send_btn">发送</div>
 	          </div>
@@ -83,7 +84,7 @@
 	      <div id="mask2" class="modal">
 	        <!--头部-->
 	        <div class="set_tit">
-	          <div id="mask2-back" onclick="$('body').attr('show','index')" class="icon-jiantou2 icon-arrow-left">&#xe669;</div><span>关于财萃课堂</span>
+	          <div id="mask2-back" @click="closeIndex" class="icon-jiantou2 icon-arrow-left">&#xe669;</div><span>关于财萃课堂</span>
 	        </div>
 	        <div class="erweima">
 	          <div class="bb"><img src="../../../assets/img/logocircle.png">
@@ -108,7 +109,7 @@
 	      <div id="mask3" class="modal">
 	        <!--头部-->
 	        <div class="set_tit">
-	          <div onclick="$('body').attr('show','index')" class="icon-arrow-left"></div><span>视频质量</span>
+	          <div @click="closeIndex" class="icon-arrow-left"></div><span>视频质量</span>
 	        </div>
 	        <ul class="list sel_quality">
 	          <li class="active" @click="selquality">
@@ -127,7 +128,7 @@
 
 <script>
 
-import jQuery  from 'jquery';
+import jquery  from 'jquery';
 import ClockPicker from '../../../assets/js/bootstrap-clockpicker.min.js';
 import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 
@@ -214,6 +215,9 @@ export default {
       	cancel() {
            $('.exit').addClass('hide');
       	},
+        closeIndex() {
+          $('body').attr('show','index');
+        },
       	out() {//退出登录
 
       		loginout({"token":this.webApi.getCookie('token')})
@@ -252,7 +256,7 @@ export default {
 
 	            .then(res =>{
 
-	               this.webApi.cloasLoadingData();
+	               this.webApi.closeLoadingData();
 
 		           if (res && res.state == 'success') {
 
@@ -347,7 +351,11 @@ export default {
 	          $(this).addClass('active').siblings().removeClass('active');
         });
 
-        $('.clockpicker').clockpicker();
+        $('.clockpicker').clockpicker({
+            beforeShow : function(){
+              $("body").append('<div class="backdrop" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: rgba(0, 0, 0, 0.3);z-index: 3;"></div>')
+            }
+        });
 
 	}
 
@@ -359,6 +367,7 @@ export default {
 
 @import "../../../assets/style/mixin";
 @import "../../../assets/style/bootstrap-clockpicker.min.css";
+
 .icon-guanbi{
   font-family:"iconfont";
   font-size:0.26rem;
