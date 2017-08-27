@@ -1,8 +1,8 @@
 <template lang="html">
 
 	<div>
-		<courseIpad v-show="isIpad"></courseIpad>
-		<courseMobile v-show="isMobile"></courseMobile>
+		<courseIpad v-if="isIpad"></courseIpad>
+		<courseMobile v-if="isMobile"></courseMobile>
 	</div>
 
 </template>
@@ -35,10 +35,10 @@ export default {
 
 
   methods: {
-  	
+
   },
   mounted () {
-    
+
   }
 }
 

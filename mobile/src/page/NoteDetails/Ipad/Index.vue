@@ -2,12 +2,12 @@
 
 	<div class="node-wrap-ipad-details">
 
-		<header >
-			<a href="javascript:;">&#xe67f;</a>
+		<header>
+			<a href="javascript:;" @touchend="backDetailsList">&#xe67f;</a>
 			<h1>讨论详情</h1>
 			<div class="state-edit">
 				<a href="javascript:;">&#xe609;</a>
-				<a href="javascript:;">&#xe618;</a>
+				<a href="javascript:;" @touchend="removeDetails">&#xe618;</a>
 			</div>
 		</header>
 
@@ -15,10 +15,9 @@
 
 
 			<section class="list">
-				<h1><span>课程介绍</span><time>2017-04-21 18:16   candy</time></h1>
+				<h1><span>课程介绍</span><time>{{ detailsData.updateTime }}</time></h1>
 				<p>挨打了可视对讲啊看书建档立卡是简单看垃圾啊上连接</p>
 			</section>
-
 
 
 		</main>
@@ -32,12 +31,26 @@
 
 export default {
 
+	props: ["details-data"],
+
   data() {
     return {
     }
   },
 
+
   methods: {
+
+		// 返回上一页
+		backDetailsList() {
+			this.$router.go(-1);
+		},
+
+		// 删除详情
+		removeDetails() {
+			this.$emit('remove-details', {id: this.$route.query.id})
+		},
+
 
   }
 
