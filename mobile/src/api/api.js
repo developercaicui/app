@@ -165,13 +165,17 @@ export default {
 
    /**
     * 数据加载load动画
+    * @type {String}  message 提示消息
+    * @type {Object}  json   包含了一些课扩展值，，例如css
     */
-   loadingData() {
+   loadingData(message = '加载中', json = {}) {
 
      let oDiv = document.createElement('div');
 
      oDiv.className = 'g-data-loading';
      oDiv.id = 'dataLoading';
+
+     if(json.css) oDiv.style.cssText = json.css;
 
      oDiv.innerHTML = `
        <div class="showbox">
@@ -181,7 +185,7 @@ export default {
            </svg>
          </div>
        </div>
-       <h1>加载中...</h1>
+       <h1>${message}...</h1>
       `;
      document.body.appendChild(oDiv);
 

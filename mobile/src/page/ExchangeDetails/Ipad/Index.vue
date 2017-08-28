@@ -2,29 +2,31 @@
 
 	<div class="exchange-wrap-ipad-details">
 
+		<header class="one-top">
+			<router-link to="/list">&#xe67f;</router-link>
+			<h1>讨论详情</h1>
+			<div class="state-edit">
+				<a href="javascript:;">&#xe609;</a>
+				<a href="javascript:;" @touchend="removeDetails">&#xe618;</a>
+			</div>
+		</header>
+
 		<main class="one-list">
 
-			<header class="one-top">
-				<a href="javascript:;">&#xe67f;</a>
-				<h1>讨论详情</h1>
-				<div class="state-edit">
-					<a href="javascript:;">&#xe609;</a>
-					<a href="javascript:;">&#xe618;</a>
-				</div>
-			</header>
+
 
 			<section class="list">
-				<img src="http://img.caicui.com/upload/201606/2125a6460bcd46d7b0a1bb3a8f1ab614.png" class="user-head">
-				<div>candy<span class="msg-num">99</span></div>
-				<h1>一萨达是激动撒娇第三</h1>
-				<p>挨打了可视对讲啊看书建档立卡是简单看垃圾啊上连接</p>
-				<time>2017-04-21 18:16</time>
+			  <img :src="headImg" class="user-head">
+			  <div>{{ nikeName }}<span class="msg-num">{{ replyCount }}</span></div>
+			  <h1>{{ title }}</h1>
+			  <p v-html="contentHtml"></p>
+			  <time>{{ updateTime }}</time>
 			</section>
 
-			<section class="list reply-list">
-				<img src="http://img.caicui.com/upload/201606/2125a6460bcd46d7b0a1bb3a8f1ab614.png" class="user-head">
-				<div>candy<time class="time">2017-04-21 18:16</time></div>
-				<p>挨打了可视对讲啊看书建档立卡是简单看垃圾啊上连接</p>
+			<section class="list reply-list" v-for="item in data.replys">
+			  <img :src="item.headImg" class="user-head">
+			  <div>{{ item.nikeName }}<time class="time">{{ item.updateTime }}</time></div>
+			  <p v-html="item.contentHtml"></p>
 			</section>
 
 
@@ -59,14 +61,63 @@
 
 <script>
 
+import { removeExchangeDetails } from '../../../api/port';
+
 export default {
 
   data() {
     return {
+			data: [],
+			headImg: '', // 头像
+			title: '', // 标题
+			contentHtml: '', // 内容
+			updateTime: '', // 时间
+			replyCount: '', // 留言数量
+			nikeName: '', // 名字
+
     }
   },
 
+	mounted() {
+
+
+
+		this.data = JSON.parse(this.$route.params.data);
+
+
+		let date = new Date(this.data.updateTime*1000);
+
+		this.data.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}`;
+
+		this.headImg = `${this.webApi.cdnImgUrl}${this.data.headImg}`;
+		this.title = this.data.title;
+		this.contentHtml = this.data.contentHtml;
+		this.updateTime = this.data.updateTime;
+		this.replyCount = this.data.replyCount;
+		this.nikeName = this.data.nikeName;
+
+		this.data.replys.map(item =>{
+
+			let date = new Date(item.updateTime*1000);
+
+			item.headImg = `${this.webApi.cdnImgUrl}${item.headImg}`;
+			item.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}`;
+
+		});
+
+
+	},
+
   methods: {
+
+		// 删除详情
+		removeDetails() {
+
+			this.$emit('remove-details', {
+				id: this.data.id
+			})
+
+		},
 
   }
 

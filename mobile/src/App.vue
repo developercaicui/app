@@ -78,5 +78,6 @@ export default {
 
 @import "./assets/style/reset";
 @import "./assets/style/mixin";
+@import "../node_modules/mint-ui/lib/style.css";
 
 </style>

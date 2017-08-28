@@ -5,45 +5,41 @@
 		<header class="head">
 			<h1>章节列表</h1>
 			<div class="state-edit">
-				<a href="javascript:;">&#xe651;</a>
+				<router-link to="search">&#xe651;</router-link>
 				<a href="javascript:;">新建&nbsp;<span>+</span></a>
 			</div>
 		</header>
 		<main class="list-wrap">
 
-			<section class="list">
-				<h1>asd测试测试adsad</h1>
-				<div href="javascript:;">
-					<span></span>
-					<h1>啊实打实的金卡撒大声地萨达所萨达所大声道撒</h1>
-				</div>
+			<template v-for="item in sectionList">
 
-				<section class="list">
-					<div href="javascript:;">
-						<span></span>
-						<h1>啊实打实的金卡撒大声地萨达所萨达所大声道撒</h1>
-					</div>
+				<h1 :data-id="item.id">{{item.courseName}}</h1>
 
-					<section class="list">
-						<div href="javascript:;">
+				<template v-for="twoItem in item.children">
+
+					<section class="list" :data-id="twoItem.id" v-if="twoItem.nodeNum!=0">
+						<div>
 							<span></span>
-							<h1>啊实打实的金卡撒大声地萨达所萨达所大声道撒</h1>
-							<i>3</i>
+							<h1>{{twoItem.chapterTitle}}</h1>
 						</div>
+
+						<template v-for="threeItem in twoItem.children">
+
+						<section class="list" @touchend.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+							<div>
+								<h1>{{threeItem.chapterTitle}}</h1>
+								<i>{{threeItem.nodeNum}}</i>
+							</div>
+
+						</section>
+
+						</template>
+
 					</section>
 
-				</section>
+			   </template>
 
-			</section>
-
-			<section class="list">
-				<div href="javascript:;">
-					<span></span>
-					<h1>啊实打实的金卡撒大声地萨达所萨达所大声道撒</h1>
-				</div>
-			</section>
-
-
+			</template>
 
 		</main>
 	</div>
@@ -54,12 +50,29 @@
 
 export default {
 
+	props: {
+		'section-list': [Array]
+	},
+
   data() {
     return {
     }
   },
 
+	created(){
+	},
+
   methods: {
+
+		openNoteDetails(ev) {
+
+			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+
+			this.$router.push({
+				path: `detailslist?id=${oSection.dataset.id}`,
+			});
+
+		},
 
   }
 
@@ -82,14 +95,8 @@ export default {
 			padding: 0 .75rem;
 			border-bottom: 1px solid #f5f5f5;
 
-			> h1{
-				@include wh(100%, 1.2rem);
-				@include fc(.26rem, $green);
-				background-color:  #f7f7f7;
-			}
-
 			> section.list{
-			  padding-left: .6rem;
+			  padding-left: 0rem;
 				padding-right: 0;
 				> section.list{
 					padding-left: 0;
@@ -146,7 +153,19 @@ export default {
 		}
 
 		.list-wrap{
+
 			background-color: #fff;
+
+			> h1{
+				@include wh(100%, 1.2rem);
+				@include fc(.32rem, $green);
+				display: flex;
+				align-items: center;
+				justify-content: flex-start;
+				padding: 0 .75rem 0 .3rem;
+				background-color:  #f7f7f7;
+			}
+
 		}
 
 		header.head{

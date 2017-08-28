@@ -67,4 +67,18 @@ export const complaintOpinion = params => { return axios.post(`${requestUrl}/api
 
 // 获取我的笔记
 export const getNoteList = params => { return axios.post(`${requestUrl}/api/studytools/myallcoursechapternodecount/v2.1`, qs.stringify(params)).then(res => res.data).catch(err => err) };
+// 进入笔记详情列表
+export const getNoteDetailsList = params => { return axios.get(`${requestUrl}/api/studytools/nodelist/v2.1?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+// 笔记详情
+export const getNoteDetails = params => { return axios.get(`${requestUrl}/api/studytools/nodedetail/v2.1?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+// 删除笔记
+export const removeNoteDetails = params => { return axios.get(`${requestUrl}/api/studytools/delmycontent/v2.1?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+// 搜索笔记
+export const searchhNote = params => { return axios.get(`${requestUrl}/api/studytools/findcontent/v2.1?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 
+// 我的交流
+export const getExchangeList = params => { return axios.get(`${requestUrl}/api/studytools/bbslist/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+// 我的交流详情
+export const getExchangeDetails = params => { return axios.get(`${requestUrl}/api/studytools/bbsdetail/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+// 删除我的交流详情
+export const removeExchangeDetails = params => { return axios.get(`${requestUrl}/api/studytools/bbs_del/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };

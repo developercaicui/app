@@ -4,7 +4,7 @@
 	<div class="node-detailslist-wrap-ipad">
 
 		<header class="one-top">
-			<a href="javascript:;">章节列表</a>
+			<a href="javascript:;" @touchend="backList">章节列表</a>
 			<h1>知识点战略</h1>
 			<div class="state-edit">
 				<a href="javascript:;">新建&nbsp;<span>+</span></a>
@@ -13,11 +13,11 @@
 
 		<main>
 
-			<section class="list">
-				<div>candy</div>
-				<h1>一萨达是激动撒娇第三</h1>
-				<p>挨打了可视对讲啊看书建档立卡是简单看垃圾啊上连接</p>
-				<time>2017-04-21 18:16</time>
+			<section class="list" v-for="item in detailsList" :data-id="item.id" @touchend="openDetails">
+				<div>{{ item.nikeName }}</div>
+				<h1>{{ item.chaptername }}</h1>
+				<p>{{ item.contentSummary }}</p>
+				<time>{{ item.updateTime }}</time>
 			</section>
 
 		</main>
@@ -31,12 +31,32 @@
 
 export default {
 
+	props: {
+		'details-list': [Array],
+	},
+
   data() {
     return {
     }
   },
 
   methods: {
+
+		openDetails(ev) {
+
+			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+
+			this.$router.push({
+				path: `details?id=${oSection.dataset.id}`,
+			});
+
+
+		},
+
+		// 上一页
+		backList() {
+			this.$router.go(-1);
+		}
 
   }
 

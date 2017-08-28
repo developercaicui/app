@@ -1,22 +1,22 @@
 <template lang="html">
 
 	<div>
-		<msgIpad v-if="isIpad"></msgIpad>
-		<msgMobile v-if="isMobile"></msgMobile>
+		<Ipad v-if="isIpad"></Ipad>
+		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
 </template>
 
 <script>
 
-import msgIpad from './Ipad';
-import msgMobile from './Mobile';
+import Ipad from './Ipad';
+import Mobile from './Mobile';
 
 export default {
 
 	components: {
-		msgMobile,
-		msgIpad,
+		Mobile,
+		Ipad,
   },
 
   data() {

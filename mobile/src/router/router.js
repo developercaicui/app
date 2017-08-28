@@ -67,7 +67,7 @@ export default  new VueRouter({
           path: 'list',
           component: ExchangeList
         },{
-          path: 'details',
+          path: 'details/:data',
           component: ExchangeDetails
         },
       ]

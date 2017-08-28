@@ -1,24 +1,24 @@
 <template lang="html">
 
 	<div>
-		<indexIpad :learning-course-list="learningCourseList" :activity-list='activityList' v-if="isIpad"></indexIpad>
-		<indexMobile :learning-course-list="learningCourseList" :activity-list='activityList' v-if="isMobile"></indexMobile>
+		<Ipad :learning-course-list="learningCourseList" :activity-list='activityList' v-if="isIpad"></Ipad>
+		<Mobile :learning-course-list="learningCourseList" :activity-list='activityList' v-if="isMobile"></Mobile>
 	</div>
 
 </template>
 
 <script>
 
-import indexIpad from './Ipad';
-import indexMobile from './Mobile';
+import Ipad from './Ipad';
+import Mobile from './Mobile';
 import { getActivityList, getLearningCourse, getCourseProgres, getExamDate } from '../../api/port';
 
 
 export default {
 
 	components: {
-		indexMobile,
-		indexIpad,
+		Mobile,
+		Ipad,
   },
 
   data() {

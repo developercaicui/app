@@ -9,7 +9,7 @@
 				<a href="javascript:;">
 					最新回复
 				</a>
-				<ul class="type-list">
+				<ul class="type-list" v-show="typeShow">
 					<li>最新回复</li>
 					<li>发帖时间</li>
 					<li>精华讨论</li>
@@ -18,11 +18,11 @@
 				<h1>我的讨论</h1>
 			</header>
 
-			<section class="list">
-				<div>candy<span class="msg-num">99</span></div>
-				<h1>一萨达是激动撒娇第三</h1>
-				<p>挨打了可视对讲啊看书建档立卡是简单看垃圾啊上连接</p>
-				<time>2017-04-21 18:16</time>
+			<section class="list" v-for="item in exchangeData.list" :data-id="item.id" @touchend="openDetails">
+				<div>{{ item.nikeName }}<span class="msg-num">{{ item.replyCount }}</span></div>
+				<h1>{{ item.title }}</h1>
+				<p v-html="item.contentHtml"></p>
+				<time>{{ item.updateTime }}</time>
 			</section>
 
 		</main>
@@ -34,14 +34,61 @@
 
 <script>
 
+import { getExchangeDetails } from '../../../api/port';
+
 export default {
+
+
+	props: {
+	 'exchange-data': [Object]
+ },
+
+	mounted() {
+
+
+	},
 
   data() {
     return {
+			typeShow: false, //  留言排序类型
     }
   },
 
   methods: {
+
+		// 打开详情
+		openDetails(ev) {
+
+			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+
+			this.webApi.loadingData();
+
+			getExchangeDetails({
+				verTT: new Date().getTime(),
+				token: this.webApi.getCookie('token'),
+				id: oSection.dataset.id,
+				pageNo: 1,
+				pageSize: 20,
+			})
+
+			.then(res =>{
+
+				this.webApi.closeLoadingData();
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert('打开详情失败，请稍后再试');
+					return false;
+				}
+
+				this.$router.push({
+					path: `details/${encodeURIComponent(JSON.stringify(res.data))}`,
+				});
+
+			})
+
+
+
+		},
 
   }
 
