@@ -18,6 +18,9 @@ const NoteEdit = r => require.ensure([], () => r(require('../page/NoteEdit')), '
 const NoteSearch = r => require.ensure([], () => r(require('../page/NoteSearch')), 'noteSearch');
 const Course = r => require.ensure([], () => r(require('../page/Course')), 'course')
 const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'setting')
+const CourseExchange = r => require.ensure([], () => r(require('../page/CourseExchange')), 'courseExchange')
+const CourseExchangeDetails = r => require.ensure([], () => r(require('../page/CourseExchangeDetails')), 'courseExchangeDetails')
+const CourseExchangeList = r => require.ensure([], () => r(require('../page/CourseExchangeList')), 'courseExchangeList')
 
 export default  new VueRouter({
   mode: 'hash',
@@ -70,6 +73,19 @@ export default  new VueRouter({
           path: 'details/:data',
           component: ExchangeDetails
         },
+      ]
+    },{
+      path: '/courseexchange',
+      component: CourseExchange,
+      children: [
+        {
+          path: 'list',
+          component: CourseExchangeList
+        }
+        ,{
+          path: 'details/:data',
+          component: CourseExchangeDetails
+        }
       ]
     },{
       path: '/course',

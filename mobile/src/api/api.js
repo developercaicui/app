@@ -316,6 +316,100 @@ export default {
       });
 
       return learningD
-  }
+  },
+  formatDate(now, t) {//时间转换
+      let date = new Date(parseInt(now * 1000));
+      let Y,M,D,h,m,s;
+      if (t == 'Y') {
+          Y = date.getFullYear();
+          return Y;
+      }
+      if (t == 'M') {
+          M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+          return M;
+      }
+      if (t == 'D') {
+          D = date.getDate();
+          return this.extra(D);
+      }
+      if (t == 'h') {
+          h = date.getHours();
+          return this.extra(h);
+      }
+      if (t == 'm') {
+          m = date.getMinutes();
+          return this.extra(m);
+      }
+      if (t == 's') {
+          s = date.getSeconds();
+          return this.extra(s);
+      }
+    },
+     //补位函数。
+    extra(x) {
+        //如果传入数字小于10，数字前补一位0。
+        if (parseInt(x) < 10) {
+          return "0" + parseInt(x);
+        } else {
+          return x;
+        }
+    },
+    formatType(type, value) {//任务类型
+    //  if (isEmpty(value) || value == 0) {
+        if (value == "-1") {
+            return '';
+        } else {
+    //      switch (type) {
+    //          case 'video':
+                if(type == 'video'){
+                    var theTime = parseInt(value);
+                    // 秒
+                    var theTime1 = 0;
+                    // 分
+                    var theTime2 = 0;
+                    // 小时
+                    if (theTime >= 60) {
+                        theTime1 = parseInt(theTime / 60);
+                        theTime = parseInt(theTime % 60);
+                        if (theTime1 >= 60) {
+                            theTime2 = parseInt(theTime1 / 60);
+                            theTime1 = parseInt(theTime1 % 60);
+                        }
+                    }
+                    var i, s, h;
+                    if (theTime2 >= 10) {
+                        h = theTime2;
+                    } else {
+                        h = '0' + theTime2;
+                    }
+                    if (theTime1 >= 10) {
+                        i = theTime1;
+                    } else {
+                        i = '0' + theTime1;
+                    }
+                    if (theTime >= 10) {
+                        s = theTime;
+                    } else {
+                        s = '0' + theTime;
+                    }
+                    if (h > 0) {
+                        return parseInt(parseInt(i) + parseInt(h * 60)) + ':' + s;
+                    } else {
+                        return i + ':' + s;
+                    }
+                    //return h + ':' + i + ':' + s;
+                }else if(type == 'exam' || type == 'knowledgePointExercise'){
+                    return ' 第' + value + '题';
+                }
+    //              break;
+    //          case 'exam':
+    //              return ' 第' + value + '题';
+    //              break;
+    //          default:
+    //              return ' 第' + value + '页';
+    //              break;
+    //      }
+        }
+    }
 
 };

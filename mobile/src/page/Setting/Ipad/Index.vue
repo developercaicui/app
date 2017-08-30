@@ -16,15 +16,10 @@
 	              <div class="on-off public_box"></div>
 	            </div>
 	          </li>
-	          <li id="setTime">
+	          <li id="setTime" @click="setTime">
               <div class="left">提醒时间</div>
-	            <div class="input-group clockpicker">
-				        <input  id="timeArea" type="text" class="form-control right" value="09:30" style="width: 1rem;padding-top: 0.3rem;margin-right: -0.3rem;">
-    				    <span class="input-group-addon">
-    				        <span class="glyphicon glyphicon-time"></span>
-    				    </span>
-    				</div>
-	          </li>
+              <div id="timeArea" class="right">19:30</div>
+            </li>
 	          <li class="cl chekquality" @click="chekquality">
 	            <div class="left">视频质量</div>
 	            <div class="right quality">普通</div>
@@ -109,7 +104,7 @@
 	      <div id="mask3" class="modal">
 	        <!--头部-->
 	        <div class="set_tit">
-	          <div @click="closeIndex" class="icon-arrow-left"></div><span>视频质量</span>
+	          <div @click="closeIndex" class="icon-jiantou2 icon-arrow-left">&#xe669;</div><span>视频质量</span>
 	        </div>
 	        <ul class="list sel_quality">
 	          <li class="active" @click="selquality">
@@ -122,6 +117,13 @@
 	          </li>
 	        </ul>
 	      </div>
+        <template>
+          <mt-datetime-picker
+            ref="picker"
+            type="time"
+            v-model="pickerValue" @confirm="handleConfirm">
+          </mt-datetime-picker>
+        </template>
 	</div>
 
 </template>
@@ -129,7 +131,6 @@
 <script>
 
 import jquery  from 'jquery';
-import ClockPicker from '../../../assets/js/bootstrap-clockpicker.min.js';
 import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 
 
@@ -228,6 +229,14 @@ export default {
 
 	        })
       	},
+        setTime() {//选择时间提醒
+
+          this.$refs.picker.open();
+
+        },
+        handleConfirm(time) {
+          $('#timeArea').html(time);
+        },
       	sub() {
 	        let content = $.trim($('textarea[name=content]').val());
 	        if (content == '') {
@@ -351,11 +360,6 @@ export default {
 	          $(this).addClass('active').siblings().removeClass('active');
         });
 
-        $('.clockpicker').clockpicker({
-            beforeShow : function(){
-              $("body").append('<div class="backdrop" style="position: fixed;top: 0;left: 0;right: 0;bottom: 0;background: rgba(0, 0, 0, 0.3);z-index: 3;"></div>')
-            }
-        });
 
 	}
 
@@ -366,7 +370,6 @@ export default {
 <style lang="scss" scoped>
 
 @import "../../../assets/style/mixin";
-@import "../../../assets/style/bootstrap-clockpicker.min.css";
 
 .icon-guanbi{
   font-family:"iconfont";
