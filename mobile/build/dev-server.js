@@ -62,6 +62,7 @@ apiRouter.route('/:apiName')
   fs.readFile('./src/mock/db.json', 'utf8', function (err, data) {
     if (err) throw err
     var data = JSON.parse(data)
+    console.log(data)
     if (data[req.params.apiName]) {
       res.json(data[req.params.apiName])
     }
@@ -74,6 +75,7 @@ apiRouter.route('/:apiName')
 
 
 apiServer.use('/api', apiRouter);
+
 apiServer.listen(port + 1, function (err) {
   if (err) {
     console.log(err)

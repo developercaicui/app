@@ -1,0 +1,432 @@
+<template>
+	<div class="exam">
+		<div class="exam-header">
+			<a class="exam-return triangle" href="javascript:;"></a>
+			<h3 class="exam-title">试卷标题: 试卷类型:{{exam.examType}}</h3>
+			<!-- <a class="exam-menu" href="javascript:;">菜单</a> -->
+		</div>
+		<div class="exam-body">
+			<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev"></a>
+			<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext"></a>
+				<questions v-on:getexercisestatus="exerciseStatus"></questions>
+			
+		</div>
+		<div class="exam-footer">
+			<exam-cards @cardsPrev="exercisePrev" @cardsNext="exerciseNext" @clickExamCards="exerciseChange"></exam-cards>
+			<ul class="exam-button-ul">
+				<li class="exam-button-li"><a href="javascript:;" class="exam-button-a">交卷</a></li>
+				<li class="exam-button-li"><a href="javascript:;" class="exam-button-a">笔记</a></li>
+				<li class="exam-button-li"><a href="javascript:;" class="exam-button-a">提问</a></li>
+			</ul>
+		</div>
+	</div>
+</template>
+<script>
+	
+	import axios from 'axios';
+	import Request from '../../api/request';
+	import COMMON from '../../api/common';
+	import { mapState,mapMutations,mapActions } from 'vuex';
+
+	import examCards from '../../components/Exam/v-exam-cards';
+	import questions from '../../components/Exam/v-exam-questions';
+	export default {
+		components : {
+			examCards,
+			questions
+		},
+		data () {
+			return {
+				examType : this.$route.params.type ? this.$route.params.type : 'knowledge',
+				examId : this.$route.params.id ? this.$route.params.id : '40288af05823fe5c01582415c769000b',
+				exerciseContextSave : []
+			}
+		},
+		computed : {
+			...mapState(['exam'])
+		},
+
+		created() {
+
+			// 删除做题记录
+			// Request.delMemberExercise({
+			// 	"memberId" : 'ff8080815133db0d0151375bfdf30c0d',
+			// 	"knowledgePointId" : '8a22ecb551f699b60151f83229be030f',
+			// 	"examenNum" : 0
+			// }).then((res)=>{
+			// })
+			this.update({
+				"examType" : this.examType,
+				"examId" : this.examId
+			})
+			if(this.examType == "chapter"){
+				this.exerciseExam();
+			}else if(this.examType == "knowledge"){
+				this.exerciseKnowledge();
+			}
+			
+		},
+		methods : {
+			...mapMutations([
+				'update',
+				'setExamId',
+				'arrEntities'
+			]),
+			...mapActions([
+				'requestListDetail',
+				'requestExerciseList',
+				'requestExerciseDetail'
+			]),
+			exerciseExam (){
+				axios.all([Request.examStatus({
+					'knowledge_points' : this.examId,
+					'type' : '4',
+					'member_id' : COMMON.User.memberId,
+					'examenNum' : ''
+				}),Request.getExerciseBaseInfo({
+					'examenId' : this.examId
+				})]).then(axios.spread((status, baseInfo) => {
+					let exerciseNid = 0;
+					if(status.data && status.data.length){
+						exerciseNid = +status.data[0].last_exercise_nid
+					}
+					this.update({
+						"examNum" : status.data ? status.data.length : 0,
+						"examState" : status.data[0],
+						"examBaseInfo" : baseInfo.data,
+						"exerciseLastNid" : exerciseNid,
+						"exerciseActiveIndex" : exerciseNid,
+						"exerciseId" : baseInfo.data[exerciseNid].id
+					});
+					this.requestListDetail();
+					console.log(this.exam)
+				}))
+			},
+			exerciseKnowledge (){
+				axios.all([Request.examCache({
+					'knowledge_points' : this.examId,
+					'type' : '4'
+				}),Request.examStatus({
+					'knowledge_points' : this.examId,
+					'type' : '4',
+					'member_id' : COMMON.User.memberId,
+					'examenNum' : ''
+				})]).then(axios.spread((cache, status, baseInfo) => {
+
+					let exerciseKnowledgeIds = this.exerciseKnowledgeIds(); //cache.data[0].exercise_filename
+					let baseInfoData = [];
+					exerciseKnowledgeIds.forEach((item)=>{
+						baseInfoData.push({
+							"id" : item
+						})
+					})
+					let exerciseNid = 0;
+					if(status.data && status.data.length){
+						exerciseNid = +status.data[0].last_exercise_nid
+					}
+					
+					this.update({
+						"examCache" : cache.data,
+						"examState" : status.data[0],
+						"examBaseInfo" : baseInfoData,
+						"exerciseLastNid" : exerciseNid,
+						"exerciseActiveIndex" : exerciseNid,
+						"exerciseId" : baseInfoData[exerciseNid].id
+					});
+					this.requestListDetail();
+					console.log(this.exam)
+				}))
+			},
+			exerciseKnowledgeIds (src){
+				return "8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(",");
+
+				var iframe=document.createElement("iframe");
+				iframe.setAttribute("id", "knowledgeIds");
+				iframe.setAttribute("src", "http://www.caicui.com/upload/caicui_cache/exercise/"+src);
+				var body = document.getElementsByTagName("body");  
+				if(body.length){
+				  body[0].appendChild(iframe);
+				}else{
+				  document.documentElement.appendChild(iframe);
+				}
+				document.getElementById('knowledgeIds').onload=function(){
+					if(document.getElementById('knowledgeIds').contentWindow.document.body.innerHTML){
+						console.log(document.getElementById('knowledgeIds').contentWindow.document.body.innerHTML)
+					}
+				};
+				
+			},
+
+			exerciseChange (index){
+
+				let activeIndex = -1;
+				let exerciseId = this.exam.examBaseInfo[index].id;
+				let exerciseOptionIndex = this.exam.exerciseOptionsActiveIndex;
+				console.log(exerciseOptionIndex)
+				if(exerciseOptionIndex !== -1){
+
+					this.exerciseStatus(this.exam.exerciseActiveIndex);
+
+					// this.exerciseSaveContext();
+
+					this.exerciseSaveCache(exerciseId);
+					this.exerciseSave()
+				}
+
+				this.update({
+					exerciseId : exerciseId,
+					exerciseActiveIndex : index,
+					exerciseShowAnalysis : false,
+					exerciseOptionsActiveIndex : activeIndex,
+					exerciseStatus : -1
+				})
+				this.exerciseGetDetail(exerciseId, index);
+			},
+			exerciseGetDetail (exerciseId, exerciseIndex){
+
+				let context = '';
+				let exerciseIsCache = this.exerciseIsCache();
+				console.log(exerciseIsCache)
+				if(exerciseIsCache.isCacheContext){
+					context = this.exam.exerciseListCache[exerciseIsCache.indexCacheContext].context;
+				}
+				let exerciseListRequest = '';
+				this.exam.exerciseListRequest.forEach((item, index)=>{
+					if(item.count == exerciseIndex){
+						exerciseListRequest = item;
+					}
+				})
+				if(exerciseListRequest){
+					console.log(exerciseListRequest.detail)
+					console.log(context)
+					this.update({
+						"exerciseDetail" : exerciseListRequest.detail,
+						"exerciseType" : exerciseListRequest.detail.questionTypes,
+						"exerciseContext" : context ? context : exerciseListRequest.detail.context
+					})
+				}else{
+					Request.exerciseDetail({
+						'exerciseId' : this.exam.exerciseId
+					}).then((res) =>{
+						this.exam.exerciseListRequest.push({
+							"count" : exerciseIndex,
+							"detail" : res.data[0]
+						})
+						console.log(res.data[0].questionTypes)
+						this.update({
+							"exerciseDetail" : res.data[0],
+							"exerciseType" : res.data[0].questionTypes,
+							"exerciseContext" : context ? context : res.data[0].context
+						})
+					})
+				}
+			},
+			exercisePrev () {
+				var index = this.exam.exerciseActiveIndex;
+				index--;
+				if(this.exam.exerciseActiveIndex){
+					this.exerciseChange(index);
+				}
+			},
+			exerciseNext () {
+				var index = this.exam.exerciseActiveIndex;
+				index++;
+				if(index < this.exam.examBaseInfo.length){
+					this.exerciseChange(index);
+				}
+			},
+			exerciseSave (args){
+				Request.setMemberExerciseLog({
+					'status': this.exam.exerciseStatus,
+
+					'knowledgePointId': this.exam.examId,
+					'examenNum': this.exam.examNum,
+					'examenName': this.exam.title,
+					'examenTotalNum': this.exam.examBaseInfo.length,
+					'examenType': this.exam.examType,
+					'progress': this.exam.exerciseDoneCount,
+
+					'exerciseId': this.exam.exerciseId,
+					'memberId': COMMON.User.memberId,
+					'context': "'" + JSON.stringify(this.exam.exerciseContext) + "'",
+					'lastExerciseNid': this.exam.exerciseLastNid,
+					'errorNum': this.exam.exerciseErrorNum,
+					'correctNum': this.exam.exerciseRightCount,
+					'totalTime': this.exam.exerciseTotalTime,
+					'isFinish': this.exam.examIsFinish,
+					'exerciseTitle': this.exam.exerciseTitle,
+					'currentProgress': +this.exam.exerciseActiveIndex,
+
+					'subjectId': this.exam.subjectId,
+					'categoryId': this.exam.categoryId,
+					'courseId': this.exam.courseId,
+					'chapterId': this.exam.chapterId,
+					'taskId': this.exam.taskId,
+					'cacheKnowledgeLevel1Id': this.exam.cacheKnowledgeLevel1Id,
+					'cacheKnowledgeLevel2Id': this.exam.cacheKnowledgeLevel2Id,
+					'cacheKnowledgePath': this.exam.cacheKnowledgePath,
+				}).then( (res) => {
+
+				})
+			},
+			exerciseSaveContext (){
+				this.exerciseContextSave = [];
+				this.exam.exerciseContext.forEach((item, index) => {
+					let checked = false;
+					this.exerciseContextSave.push({
+						"title" : item.title,
+						"isChecked" : item.isChecked,
+						"myChecked" : checked
+					})
+				});
+			},
+			exerciseIsCache(){
+				let context = '';
+				let isCacheContext = false;
+				let indexCacheContext = '';
+				this.exam.exerciseListCache.forEach( (item, index) => {
+					if(item.exercise_id == this.exam.exerciseId || item.exerciseId == this.exam.exerciseId){
+						isCacheContext = true;
+						indexCacheContext = index;
+						context = item.context;
+					}
+				})
+				return {
+					"cacheContext" : context,
+					"isCacheContext" : isCacheContext,
+					"indexCacheContext" : indexCacheContext
+				}
+			},
+			exerciseSaveCache () {
+				let exerciseIsCache = this.exerciseIsCache();
+				if(exerciseIsCache.isCacheContext){
+					this.exam.exerciseListCache[exerciseIsCache.indexCacheContext].context = "'" + JSON.stringify(this.exam.exerciseContext) + "'";
+				}else{
+					this.exam.exerciseListCache.push({
+						"exercise_id" : this.exam.exerciseId,
+						"context" : "'" + JSON.stringify(this.exam.exerciseContext) + "'"
+					});
+				}
+			},
+			exerciseStatus () {
+				let question = '';
+				let statusNum = 0;
+				let type = this.exam.exerciseDetail.questionTypes;
+				this.arrEntities();
+				switch (type){
+					case "radio":
+						question = this.exerciseStatusRadio();
+						break;
+					case "checkbox":
+						question = this.exerciseStatusCheckbox();
+						break;
+					case "blank":
+						question = this.exerciseStatusBlank();
+						break;
+					case "question":
+						question = this.exerciseStatusQuestions();
+						break;
+				}
+				statusNum = question.status ? 1 : 0;
+				this.update({
+					"exerciseStatus" : statusNum,
+					"exerciseStatusText": question.text
+				})
+			},
+			exerciseStatusRadio () {
+
+				let status = true;
+				let text = '';
+				this.exam.exerciseContext.forEach((element, index) => {
+					if(element.isChecked){
+						if(element.myChecked){
+							status = true;
+							text = "正确答案是"+this.exam.exerciseOptionsArray[index]+"，回答正确";
+						}else{
+							status = false;
+							text = "正确答案是"+this.exam.exerciseOptionsArray[index]+"，回答错误";
+						}
+					}
+				})
+				return {
+					"status" : status,
+					"text" : text
+				};
+			},
+			exerciseStatusCheckbox () {
+				let status = true;
+				let text = '';
+				let isCheckedNum = 0;
+				let myCheckedNum = 0;
+				let isCheckedTotal = 0;
+				let myCheckedTotal = 0;
+				let rights = '';
+				this.exam.exerciseContext.forEach((element, index) => {
+					if(element.isChecked && element.myChecked){
+						myCheckedNum++;
+					}
+					if(element.isChecked){
+						isCheckedTotal++;
+						rights+= this.exam.exerciseOptionsArray[index]
+					}
+					if(element.myChecked){
+						myCheckedTotal++;
+					}
+				})
+				if(myCheckedTotal == isCheckedTotal){
+					if(isCheckedTotal && myCheckedNum && isCheckedTotal == myCheckedNum){
+						status = true;
+						text = "正确答案是"+rights+"，回答正确";
+					}else{
+						status = false;
+						text = "正确答案是"+rights+"，回答错误";
+					}
+				}else{
+					status = false;
+					text = "正确答案是"+rights+"，回答错误";
+				}
+				return {
+					"status" : status,
+					"text" : text
+				};
+			},
+			exerciseStatusBlank () {
+				let status = false;
+				let text = '';
+				let context = this.exam.exerciseContext[0];
+				if(context.blank == context.myBlank){
+					status = true;
+					text = "正确答案是"+context.blank+"，回答正确";
+				}else{
+					status = false;
+					text = "正确答案是"+context.blank+"，回答错误";
+				}
+				console.log(context)
+				return {
+					"status" : status,
+					"text" : text
+				};
+			},
+			exerciseStatusQuestions () {
+				let status = false;
+				let text = '';
+				let context = this.exam.exerciseContext[0];
+				if(context.blank == context.myBlank){
+					status = true;
+					text = "正确答案是"+context.blank+"，回答正确";
+				}else{
+					status = false;
+					text = "正确答案是"+context.blank+"，回答错误";
+				}
+				return {
+					"status" : status,
+					"text" : text
+				};
+			}
+
+		}
+	}
+</script>
+<style lang="scss">
+	@import "../../assets/style/exam";
+</style>
