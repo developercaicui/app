@@ -70,7 +70,6 @@ export default {
     this.msgListData = this.msgList;
 
     // 默认显示个人动态
-    this.webApi.loadingData();
     this.$emit('gain-msg-list', 0);
   },
 
@@ -80,8 +79,6 @@ export default {
     switchMsgType(ev) {
 
       this.defaultIndex = ev.target.dataset.index;
-
-      this.webApi.loadingData();
 
       this.$emit('gain-msg-list', this.defaultIndex);
 

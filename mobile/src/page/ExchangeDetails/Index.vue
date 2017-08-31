@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" @remove-details="removeDetails"></Ipad>
+		<Ipad v-if="isIpad" :user-info="userInfo" @upload-pic="uploadPic" @reply="reply" @remove-details="removeDetails"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
@@ -11,7 +11,7 @@
 
 import Ipad from './Ipad';
 import Mobile from './Mobile';
-import { removeExchangeDetails } from '../../api/port'
+import { removeExchangeDetails, exchangeReply, fileUpload } from '../../api/port'
 
 export default {
 
@@ -23,7 +23,8 @@ export default {
   data() {
     return {
 			isIpad: false,
-      isMobile: false
+      isMobile: false,
+			userInfo: {},
     }
   },
 
@@ -32,11 +33,66 @@ export default {
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
+		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
 	},
 
 
   methods: {
+
+		// 上传照片
+		uploadPic(data, callback) {
+
+			this.webApi.loadingData('新建中');
+
+			fileUpload(data)
+
+			.then(res =>{
+
+				this.webApi.closeLoadingData();
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert('图片上传失败');
+					return false;
+				}
+
+				callback(res.data);
+
+			});
+
+		},
+
+		// 回复
+		reply(data, callback) {
+
+			this.webApi.loadingData('回复中');
+
+			exchangeReply(data)
+
+			.then(res =>{
+
+				this.webApi.closeLoadingData();
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert('回复失败，请稍后重试');
+					return false;
+				}
+
+				this.webApi.alert('评论成功');
+
+				let date = new Date();
+				let time = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}`;
+
+				callback({
+					headImg: `${this.webApi.cdnImgUrl}${this.userInfo.avatar}`,
+					nikeName: this.userInfo.nickName,
+					updateTime: time,
+					contentHtml: data.content
+				});
+
+			})
+
+		},
 
 		// 删除讨论详请
 		removeDetails(data) {
