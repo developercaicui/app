@@ -36,11 +36,10 @@ export default {
 
 		this.webApi.loadingData();
 
-
 		getNoteDetailsList({
 		  pageNo: 1,
 		  pageSize: 20,
-		  charpterid: this.$route.query.id,
+		  charpterid: JSON.parse(this.$route.params.data).courseData.id,
 		  ordertype: 1,
 		  self: 1,
 		  token: this.webApi.getCookie('token')

@@ -21,7 +21,9 @@ const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'se
 const CourseExchange = r => require.ensure([], () => r(require('../page/CourseExchange')), 'courseExchange')
 const CourseExchangeDetails = r => require.ensure([], () => r(require('../page/CourseExchangeDetails')), 'courseExchangeDetails')
 const CourseExchangeList = r => require.ensure([], () => r(require('../page/CourseExchangeList')), 'courseExchangeList')
-
+const NoteSelected = r => require.ensure([], () => r(require('../page/NoteSelected')), 'noteSelected')
+const NoteSelectedSection = r => require.ensure([], () => r(require('../page/NoteSelectedSection')), 'noteSelectedSection')
+const Exam = r => require.ensure([], () => r(require('../page/Exam')), 'exam')
 export default  new VueRouter({
   mode: 'hash',
   routes: [
@@ -29,48 +31,54 @@ export default  new VueRouter({
       path: '/',
       component: Loading
     },{
-      path: '/index',
+      path: '/index', // 首页
       component: Index
     },{
-      path: '/findpwd',
-      component: FindPwd,
+      path: '/findpwd', // 找回密码
+      component: FindPwd
     },{
-      path: '/reg',
+      path: '/reg', // 注册
       component: Reg,
     },{
-      path: '/login',
+      path: '/login', //登录
       component: Login,
     },{
       path: '/note',
       component: Note,
       children: [{
-         path: 'list',
+         path: 'list', // 笔记列表
          component: NoteList,
        },{
-         path: 'detailslist',
+         path: 'detailslist/:data', // 笔记详情列表
          component: NoteDetailsList,
        },{
-         path: 'details',
+         path: 'details/:data', // 笔记详情
          component: NoteDetails
        },{
-         path: 'edit',
+         path: 'edit/:data', // 编辑新建笔记
          component: NoteEdit
        },{
-         path: 'search',
+         path: 'search', // 搜索
          component: NoteSearch
+       },{
+         path: 'selected', //选择课程
+         component: NoteSelected,
+       },{
+         path: 'selectedsection/:data', // 选择章节
+         component: NoteSelectedSection
        }
       ]
     },{
       path: '/exchange',
       component: Exchange,
       children: [{
-          path: 'edit',
+          path: 'edit/:data', // 新建交流
           component: ExchangeEdit
         },{
-          path: 'list',
+          path: 'list', // 交流列表
           component: ExchangeList
         },{
-          path: 'details/:data',
+          path: 'details/:data', // 交流详情
           component: ExchangeDetails
         },
       ]
@@ -93,6 +101,9 @@ export default  new VueRouter({
     },{
       path: '/setting',
       component: Setting
+    },{
+      path: '/exam/:type/:id',
+      component: Exam
     }
    ]
 });

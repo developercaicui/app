@@ -4,40 +4,36 @@
 
 
 		<header class="one-top">
-			<a href="javascript:;">&#xe67f;</a>
-			<h1>讨论详情</h1>
+			<a href="javascript:;" @touchend="handleBack">&#xe67f;</a>
+			<h1>{{ headerTitle }}</h1>
 			<div class="state-edit">
-				<a href="javascript:;">&#xe654;</a>
+				<a href="javascript:;" @touchend="handleSaveExchange">&#xe654;</a>
 			</div>
 		</header>
 
 		<div class="edit">
-			<input type="text" name="" value="acca重点">
-			<textarea name="name">阿萨达十大恐龙当家阿山莨菪碱奥斯卡达拉斯简单看拉手建档立卡时间登录科雷</textarea>
+			<input type="text" v-model="title" placeholder="请输入标题">
+			<textarea v-model="textDetails" placeholder="请输入内容"></textarea>
 		</div>
-
-
-
 
 		<footer class="leave-msg">
 			<div class="nav">
-				<a href="javascript:;" class="upload-pic-btn">&#xe6ab;</a>
+				<a href="javascript:;" class="upload-pic-btn" @touchend="handleIsUploadPic">&#xe6ab;</a>
+				<div @touchend.stop="handleCutStatus" ref="isPublicDiv"><span>{{ isPublicText }}</span><i></i></div>
 			</div>
-			<div class="upload-details">
+			<div class="upload-details" v-show="isFileOpen">
 				<h1>最多可添加五张图片</h1>
-				<a href="javascript:;" class="upload-btn"><span>+</span></a>
+				<a href="javascript:;" class="upload-btn" @touchend.stop="handleUploadBtn"><span>+</span></a>
 				<ul class="show-list-pic">
-					<li>
-						<img src="http://img.caicui.com/upload/201606/b207530895864676b9ed73cb622a16d2.png" />
-						<a href="javascript:;"></a>
-					</li>
-					<li>
-						<img src="http://img.caicui.com/upload/201606/b207530895864676b9ed73cb622a16d2.png" />
-						<a href="javascript:;"></a>
+					<li v-for="(item, index) in allUploadPic" >
+						<img :src="item.src" />
+						<a href="javascript:;" :data-index="index" @touchend="handleRemovePic">&#xe642;</a>
 					</li>
 				</ul>
 			</div>
 		</footer>
+
+		<input type="file" @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
 
 	</div>
 
@@ -49,10 +45,149 @@ export default {
 
   data() {
     return {
+			headerTitle: '发布新帖', // header 字
+			title: '', //  标题
+			textDetails: '', // 内容
+			isFileOpen: true, // 是否打开上传
+			isPublicText: '公开', //是否公开
+			allUploadPic: [], // 所有上传的图片
+			isUploadSuccess: 0, // 图片上传成功数量
+			type: 'new',
+			allPicPath: '', // 上传图片的路径
+			allPicPathHtml: '', // 上传图片的代码段
     }
   },
 
+	mounted() {
+
+		this.data = JSON.parse(this.$route.params.data);
+
+	},
+
   methods: {
+
+		// 上一步
+		handleBack() {
+			this.$router.go(-1);
+		},
+
+		// 是否打卡上传图片
+		handleIsUploadPic() {
+			this.isFileOpen = this.isFileOpen ? false : true;
+		},
+
+		// 触发上传
+		handleUploadBtn() {
+			this.$refs.iptFile.click();
+		},
+
+		// 删除这个照片
+		handleRemovePic(ev) {
+
+			let removeIndex = ev.target.dataset.index;
+
+			this.allUploadPic = this.allUploadPic.filter((item, index) => index != removeIndex && item);
+
+		},
+
+		// 选择图片
+		handleUploadPic(ev) {
+
+			let file = this.$refs.iptFile.files[0];
+			let reader = new FileReader();
+
+			reader.readAsDataURL(file);
+
+			reader.onload = (evt) =>{
+
+				this.allUploadPic.push({
+					src: evt.target.result,
+					file: file
+				});
+
+      }
+
+		},
+
+		// 是否公开
+		handleCutStatus(ev) {
+
+			let oDiv = this.webApi.recursiveParentNode(ev.target, 'div');
+
+			if(oDiv.classList.contains('select-btn-active')){
+				this.isPublicText = '公开';
+				oDiv.classList.remove('select-btn-active');
+				this.isPublic = '1';
+			}else{
+				this.isPublicText = '私人';
+				oDiv.classList.add('select-btn-active');
+				this.isPublic = '0';
+			}
+
+		},
+
+
+		// 提交
+		handleSaveExchange() {
+
+			if(!this.textDetails){
+				this.webApi.alert('内容不能为空');
+				return false;
+			}
+
+			if(!this.title){
+				this.webApi.alert('标题不能为空');
+				return false;
+			}
+
+			if(this.allUploadPic.length < 1){
+				this.subForm();
+				return false;
+			}
+
+			this.isUploadSuccess = 0;
+
+			this.allUploadPic.map((item, index) =>{
+
+				let formData = new FormData();
+
+				formData.append(`file`, item.file);
+				formData.append('token', this.webApi.getCookie('token'));
+
+				this.$emit('upload-pic', formData, res =>{
+
+					this.allPicPathHtml =  `${this.allPicPathHtml}<img src="${res.path}"/>`;
+					this.allPicPath = `${this.allPicPath}${res.path},`;
+
+					this.isUploadSuccess++;
+
+					// 成功以后提交表单内容
+					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+
+				});
+
+			});
+
+		},
+
+		// 发情save请求
+		subForm() {
+
+			this.$emit('submit-data', {
+				type: this.type,
+				data: {
+					content: `<p>${this.textDetails}</p><br/>${this.allPicPathHtml}`,
+			    imgPath: this.allPicPath,
+			    title: this.title,
+			    clientType: 'aPad',
+			    subjectId:	this.data.subjectId || 'null',
+			    token: this.webApi.getCookie('token'),
+			    taskProgress:	-1,  //任务进度
+			    type: 1, // 0是讨论  1是问答
+				}
+			});
+
+		},
 
   }
 
@@ -111,6 +246,19 @@ export default {
 					img{
 						@include wh(100%, 100%);
 					}
+				}
+				a{
+					@extend .ab;
+					@include wh(.4rem, .4rem);
+					@include fc(.24rem, #fff);
+					@extend .borderBox;
+					text-align: center; line-height: 1.5;
+					background-color: $green;
+					top: -.1rem;
+					transform: translate3d(-.26rem,0,0);
+					border-radius: 100%;
+					font-family: 'iconfont';
+					border: 1px solid #fff;
 				}
 			}
 
@@ -188,6 +336,12 @@ export default {
 
 	}
 
+	.ipt-file{
+		@extend .ab;
+		@include wh(0, 0);
+		overflow: hidden;
+		left: -99rem; top: -99rem;
+	}
 
 }
 

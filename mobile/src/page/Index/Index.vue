@@ -30,6 +30,10 @@ export default {
     }
   },
 
+	created() {
+		this.webApi.loadingData();
+	},
+
 	mounted() {
 
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
@@ -42,22 +46,25 @@ export default {
 
 		.then(res => {
 
-			if(res && res.state == 'success'){
-
-				this.activityList = res.data.map(item => {
-
-					oDiv.innerHTML = item.content;
-
-					return {
-						id: item.id,
-						title: item.title,
-						src: `${this.webApi.cdnImgUrl}${oDiv.querySelectorAll('img')[0].getAttribute('src')}`,
-						href: oDiv.querySelectorAll('a')[0].getAttribute('href')
-					};
-
-				});
-
+			if(!res || res.state != 'success'){
+				this.webApi.alert('获取失败，请稍后再试');
+				return false;
 			}
+
+
+			this.activityList = res.data.map(item => {
+
+				oDiv.innerHTML = item.content;
+
+				return {
+					id: item.id,
+					title: item.title,
+					src: `${this.webApi.cdnImgUrl}${oDiv.querySelectorAll('img')[0].getAttribute('src')}`,
+					href: oDiv.querySelectorAll('a')[0].getAttribute('href')
+				};
+
+			});
+
 
 		})
 
@@ -71,9 +78,11 @@ export default {
 
 		.then(res =>{
 
+			this.webApi.closeLoadingData();
+			
 			if(!res || res.state != 'success'){
-
-					return;
+				this.webApi.alert('网络异常，请稍后再试');
+				return false;
 			}
 
 			this.learningCourseList = res.data.courselist.map( item => {
@@ -115,7 +124,8 @@ export default {
 		.then(res =>{
 
 			if(!res || res.state != 'success'){
-				return;
+				this.webApi.alert('网络异常，请稍后再试');
+				return false;
 			}
 
 			res.data.map((item, index) =>{
@@ -136,8 +146,8 @@ export default {
 
 
 			if(!res || res.state != 'success'){
-
-				return;
+				this.webApi.alert('网络异常，请稍后再试');
+				return false;
 			}
 
 			// courseId 做比较

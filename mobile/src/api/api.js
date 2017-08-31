@@ -172,12 +172,13 @@ export default {
 
      let oDiv = document.createElement('div');
 
-     oDiv.className = 'g-data-loading';
+     oDiv.className = 'g-data-loading-wrap';
      oDiv.id = 'dataLoading';
 
      if(json.css) oDiv.style.cssText = json.css;
 
      oDiv.innerHTML = `
+     <div class="g-data-loading">
        <div class="showbox">
          <div class="loader">
            <svg class="circular" viewBox="25 25 50 50">
@@ -186,6 +187,7 @@ export default {
          </div>
        </div>
        <h1>${message}...</h1>
+     </div>
       `;
      document.body.appendChild(oDiv);
 
@@ -197,7 +199,7 @@ export default {
    closeLoadingData() {
      document.body.removeChild(document.querySelector('#dataLoading'));
    },
-
+  // cdn 地址
   cdnImgUrl: 'http://cdnimg.caicui.com/',
   //判断是否为空
   isEmpty(data) {
@@ -410,6 +412,14 @@ export default {
     //              break;
     //      }
         }
+    },
+    /**
+    * 没有数据
+    */
+    notDate() {
+
+        document.body.classList.contains("null") ? document.body.classList.remove("null") :document.body.classList.add("null")
+
     }
 
 };
