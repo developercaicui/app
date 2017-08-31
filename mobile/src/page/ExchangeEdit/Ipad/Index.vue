@@ -68,7 +68,7 @@ export default {
 
 		// 上一步
 		handleBack() {
-			this.$route.go(-1);
+			this.$router.go(-1);
 		},
 
 		// 是否打卡上传图片

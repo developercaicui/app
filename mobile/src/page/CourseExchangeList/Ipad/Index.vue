@@ -122,7 +122,7 @@ export default {
         },//提问
         new_answer() {
         	this.$router.push({
-				path: `/note/selected`,
+				path: `/exchange/edit/${encodeURIComponent(JSON.stringify(this.exchangeList[0]))}`,
 			});
         },//搜索
         goSearch() {
