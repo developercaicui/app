@@ -4,7 +4,7 @@
 
 
 		<header class="one-top">
-			<a href="javascript:;">&#xe67f;</a>
+			<a href="javascript:;" @touchend="handleBack">&#xe67f;</a>
 			<h1>{{ headerTitle }}</h1>
 			<div class="state-edit">
 				<a href="javascript:;" @touchend="handleSaveExchange">&#xe654;</a>
@@ -65,6 +65,11 @@ export default {
 	},
 
   methods: {
+
+		// 上一步
+		handleBack() {
+			this.$route.go(-1);
+		},
 
 		// 是否打卡上传图片
 		handleIsUploadPic() {
@@ -152,7 +157,7 @@ export default {
 				this.$emit('upload-pic', formData, res =>{
 
 					this.allPicPathHtml =  `${this.allPicPathHtml}<img src="${res.path}"/>`;
-					this.allPicPath = `${allPicPath}${res.path},`;
+					this.allPicPath = `${this.allPicPath}${res.path},`;
 
 					this.isUploadSuccess++;
 
@@ -168,8 +173,6 @@ export default {
 		// 发情save请求
 		subForm() {
 
-			console.log(`<p>${this.textDetails}</p><br/>${this.allPicPathHtml}`, this.allPicPath);
-			return;
 			this.$emit('submit-data', {
 				type: this.type,
 				data: {

@@ -41,6 +41,8 @@
 
 			</template>
 
+			<div class="no-data" v-show="totalCount == 0"><img src="../../../assets/img/404.svg"></div>
+
 		</main>
 	</div>
 
@@ -56,10 +58,12 @@ export default {
 
   data() {
     return {
+			totalCount: 0, //总条目数
     }
   },
 
-	created(){
+	updated() {
+		this.totalCount = this.sectionList.length || 0;
 	},
 
   methods: {
@@ -207,6 +211,13 @@ export default {
  				}
  			}
  		}
+
+		.no-data{
+			@extend .ab;
+			@include wh(2.4rem, 2.4rem);
+			left: 50%; top: 4rem;
+			margin-left: -1.2rem;
+		}
 
  }
 
