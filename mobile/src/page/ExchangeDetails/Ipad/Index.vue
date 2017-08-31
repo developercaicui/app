@@ -170,11 +170,14 @@ export default {
 				token: this.webApi.getCookie('token'),
 				pageNo: 1
 			}, data =>{
-				this.data.replys.push(data)
+
+				this.data.replys.push(data);
+				this.textDetails = '';
+				this.isFileOpen = false;
+
 			});
 
 
-			console.log(this.appendReplyHtml);
 
 		},
 
