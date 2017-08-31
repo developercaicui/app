@@ -23,7 +23,7 @@ const CourseExchangeDetails = r => require.ensure([], () => r(require('../page/C
 const CourseExchangeList = r => require.ensure([], () => r(require('../page/CourseExchangeList')), 'courseExchangeList')
 const NoteSelected = r => require.ensure([], () => r(require('../page/NoteSelected')), 'noteSelected')
 const NoteSelectedSection = r => require.ensure([], () => r(require('../page/NoteSelectedSection')), 'noteSelectedSection')
-
+const Exam = r => require.ensure([], () => r(require('../page/Exam')), 'exam')
 export default  new VueRouter({
   mode: 'hash',
   routes: [
@@ -101,6 +101,9 @@ export default  new VueRouter({
     },{
       path: '/setting',
       component: Setting
+    },{
+      path: '/exam/:type/:id',
+      component: Exam
     }
    ]
 });
