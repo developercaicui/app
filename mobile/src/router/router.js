@@ -33,7 +33,7 @@ export default  new VueRouter({
       component: Index
     },{
       path: '/findpwd',
-      component: FindPwd,
+      component: FindPwd
     },{
       path: '/reg',
       component: Reg,
@@ -47,24 +47,30 @@ export default  new VueRouter({
          path: 'list',
          component: NoteList,
        },{
-         path: 'detailslist',
+         path: 'detailslist/:data',
          component: NoteDetailsList,
        },{
-         path: 'details',
+         path: 'details/:data',
          component: NoteDetails
        },{
-         path: 'edit',
+         path: 'edit/:data',
          component: NoteEdit
        },{
          path: 'search',
          component: NoteSearch
+       },{
+         path: 'selected',
+         component: NoteSelected,
+       },{
+         path: 'selectedsection/:data',
+         component: NoteSelectedSection
        }
       ]
     },{
       path: '/exchange',
       component: Exchange,
       children: [{
-          path: 'edit',
+          path: 'edit/:data',
           component: ExchangeEdit
         },{
           path: 'list',

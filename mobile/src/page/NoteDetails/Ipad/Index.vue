@@ -6,7 +6,7 @@
 			<a href="javascript:;" @touchend="backDetailsList">&#xe67f;</a>
 			<h1>讨论详情</h1>
 			<div class="state-edit">
-				<a href="javascript:;">&#xe609;</a>
+				<a href="javascript:;" @touchend="handleEditNote">&#xe609;</a>
 				<a href="javascript:;" @touchend="removeDetails">&#xe618;</a>
 			</div>
 		</header>
@@ -16,7 +16,7 @@
 
 			<section class="list">
 				<h1><span>课程介绍</span><time>{{ detailsData.updateTime }}</time></h1>
-				<p>挨打了可视对讲啊看书建档立卡是简单看垃圾啊上连接</p>
+				<p>{{ detailsData.content }}</p>
 			</section>
 
 
@@ -31,12 +31,13 @@
 
 export default {
 
-	props: ["details-data"],
+	props: ["details-data", 'data'],
 
   data() {
     return {
     }
   },
+
 
 
   methods: {
@@ -48,8 +49,19 @@ export default {
 
 		// 删除详情
 		removeDetails() {
-			this.$emit('remove-details', {id: this.$route.query.id})
+			this.$emit('remove-details', {id: this.data.sectionData.id})
 		},
+
+		// 编辑日志
+		handleEditNote() {
+
+			console.log('noteDetails > edit');
+
+			this.$router.push({
+				path: `/note/edit/${encodeURIComponent(JSON.stringify(this.data))}`
+			});
+
+		}
 
 
   }

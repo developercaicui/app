@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" @remove-details="removeDetails" :details-data="detailsData"></Ipad>
+		<Ipad v-if="isIpad" :data="data" @remove-details="removeDetails" :details-data="detailsData"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
@@ -25,6 +25,7 @@ export default {
 			isIpad: false,
       isMobile: false,
 			detailsData: [],
+			data: {}
     }
   },
 
@@ -33,16 +34,23 @@ export default {
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
+		// 传递过来的值
+		this.data = JSON.parse(this.$route.params.data);
+
+		console.log();
 
 		this.webApi.loadingData();
 
 
 		getNoteDetails({
-		  id: this.$route.query.id,
+		  id: this.data.sectionData.id,
 		  token: this.webApi.getCookie('token')
 		})
 
 		.then(res =>{
+
+			this.webApi.closeLoadingData();
+
 
 			if(!res || res.state != 'success'){
 				this.webApi.alert('网络异常，请稍后再试');
@@ -54,11 +62,7 @@ export default {
 
 			res.data.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}  ${res.data.nikeName}`;
 
-			this.detailsData = res.data;
-
-
-			this.webApi.closeLoadingData();
-
+			this.data.detailsData = this.detailsData = res.data;
 
 		})
 

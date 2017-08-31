@@ -4,6 +4,15 @@ import qs from 'qs';
 
 const requestUrl = process.env.NODE_ENV === 'development' ? '' : 'http://api.caicui.com'; // 请求地址
 
+const headers = {
+
+  urlencoded: {
+    headers:{
+      'Content-Type':'application/x-www-form-urlencoded'
+    }
+  },
+
+};
 
 // 获取token
 export const getToken = params => { return axios.post(`${requestUrl}/api/zbids/app/gettoken/v1.0/`, qs.stringify(params)).then(res => res.data).catch(err => err) };
@@ -19,7 +28,7 @@ export const mobileReg = params => { return axios.post(`${requestUrl}/api/zbids/
 export const changePwdByPhone = params => { return axios.post(`${requestUrl}/api/zbids/member/changePwdByPhone`, qs.stringify(params)).then(res => res.data).catch(err => err) };
 
 // 修改用户名
-export const changeUserName = params => { return axios.post(`${requestUrl}/api/zbids/member/editinfo`, qs.stringify(params)).then(res => res.data).catch(err => err) };
+export const changeUserName = params => { return axios.post(`${requestUrl}/api/zbids/member/editinfo`, qs.stringify(params), headers).then(res => res.data).catch(err => err) };
 // 上传图片
 export const uploadFile = params => { return axios.post(`${requestUrl}/api/zbids/member/edituserheadr`, params).then(res => res.data).catch(err => err) };
 
@@ -82,3 +91,21 @@ export const getExchangeList = params => { return axios.get(`${requestUrl}/api/s
 export const getExchangeDetails = params => { return axios.get(`${requestUrl}/api/studytools/bbsdetail/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 // 删除我的交流详情
 export const removeExchangeDetails = params => { return axios.get(`${requestUrl}/api/studytools/bbs_del/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+
+
+// 新建笔记选择要创建的课程
+export const getNewNoteList = params => { return axios.get(`${requestUrl}/api/business/learning/learningcourse/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+// 新建笔记选择要创建的课程的章节
+export const getNewNoteSectionList = params => { return axios.get(`${requestUrl}/api/teachsource/course/courseDetail?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+
+// 新建笔记上传照片
+export const fileUpload = params => { return axios.post(`${requestUrl}/api/v2.1/commons/fileUpload`, params).then(res => res.data).catch(err => err) };
+// 新建笔记
+export const saveNote = params => { return axios.post(`${requestUrl}/api/studytools/nodesave/v2.1`, qs.stringify(params), headers.urlencoded).then(res => res.data).catch(err => err) };
+// 编辑笔记详情
+export const getNodeDetail = params => { return axios.get(`${requestUrl}/api/studytools/nodedetail/v2.1?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+
+// 交流回复
+export const exchangeReply = params => { return axios.post(`${requestUrl}/api/studytools/bbsreply/v1.0`, qs.stringify(params), headers.urlencoded).then(res => res.data).catch(err => err) };
+// 新建交流
+export const newExchange= params => { return axios.post(`${requestUrl}/api/studytools/bbssave/v1.0`, qs.stringify(params), headers.urlencoded).then(res => res.data).catch(err => err) };

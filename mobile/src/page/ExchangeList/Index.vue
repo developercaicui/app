@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" :exchange-data="exchangeData" @get-list="getList"></Ipad>
+		<Ipad v-if="isIpad" :exchange-data="exchangeData" @open-details="openDetails" @get-list="getList"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
@@ -11,7 +11,7 @@
 
 import Ipad from './Ipad';
 import Mobile from './Mobile';
-import { getExchangeList } from '../../api/port';
+import { getExchangeList, getExchangeDetails } from '../../api/port';
 
 export default {
 
@@ -29,42 +29,66 @@ export default {
   },
 
 
-	created() {
-
-		this.getList({
-			pageNo: 1
-		})
-
-	},
-
-
 	mounted() {
 
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
+
+		this.getList({
+			verTT: new Date().getTime(),
+			token: this.webApi.getCookie('token'),
+		  self: '1',
+		  pageNo: 1,
+		  pageSize: 15,
+		  type:	3,
+		  ordertype: 1,  // 1:是发帖时间    2:是最新回复    3是回复数量     4:是精华讨论
+		});
 
 	},
 
 
   methods: {
 
+
+		// 打开详情
+		openDetails(id) {
+
+
+			this.webApi.loadingData();
+
+			getExchangeDetails({
+				verTT: new Date().getTime(),
+				token: this.webApi.getCookie('token'),
+				id: id,
+				pageNo: 1,
+				pageSize: 20,
+			})
+
+			.then(res =>{
+
+				this.webApi.closeLoadingData();
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert('打开详情失败，请稍后再试');
+					return false;
+				}
+
+				this.$router.push({
+					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
+				});
+
+			})
+
+
+		},
+
+		// 获取我的交流列表
 		getList(data) {
 
 
 			this.webApi.loadingData();
 
-			// 获取我的交流列表
-			getExchangeList({
-				verTT: new Date().getTime(),
-				token: this.webApi.getCookie('token'),
-				type: 3,
-				subjectId: "",
-				keyWords:  "",
-				self: 1,
-				ordertype: 1,
-				pageNo: data.pageNo,
-				pageSize: 10,
-			})
+			getExchangeList(data)
 
 			.then(res =>{
 

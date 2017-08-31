@@ -6,24 +6,21 @@
 		<main class="one-list">
 
 			<header class="one-top">
-				<a href="javascript:;">
-					最新回复
-				</a>
+				<a href="javascript:;" @touchend="handleOpenSelect">{{ sortTypeText }}</a>
 				<ul class="type-list" v-show="typeShow">
-					<li>最新回复</li>
-					<li>发帖时间</li>
-					<li>精华讨论</li>
-					<li>回复数量</li>
+					<li v-for="(item, index) in msgTypeAll" :data-index="index" @touchend.stop="handleAffirmType">{{ item.text }}</li>
 				</ul>
 				<h1>我的讨论</h1>
 			</header>
 
-			<section class="list" v-for="item in exchangeData.list" :data-id="item.id" @touchend="openDetails">
+			<section class="list" v-for="item in exchangeData.list" :data-id="item.id" @touchend="targetDetails">
 				<div>{{ item.nikeName }}<span class="msg-num">{{ item.replyCount }}</span></div>
 				<h1>{{ item.title }}</h1>
 				<p v-html="item.contentHtml"></p>
 				<time>{{ item.updateTime }}</time>
 			</section>
+
+			<img src="../../../assets/img/404.svg" class="no-data" v-show="isNoData">
 
 		</main>
 
@@ -34,8 +31,6 @@
 
 <script>
 
-import { getExchangeDetails } from '../../../api/port';
-
 export default {
 
 
@@ -43,49 +38,63 @@ export default {
 	 'exchange-data': [Object]
  },
 
-	mounted() {
 
-
-	},
 
   data() {
     return {
 			typeShow: false, //  留言排序类型
+			sortTypeText: '发帖时间',
+			msgTypeAll: [{
+					text: '发帖时间',
+				},{
+					text: '最新回复',
+				},{
+					text: '回复数量',
+				},{
+					text: '精华讨论',
+				}],
+				isNoData: false
     }
   },
 
+	mounted() {
+
+		if(this.exchangeData.length == 0) this.isNoData = true;
+
+	},
+
+
   methods: {
 
+		// 打开排序类型
+		handleOpenSelect() {
+			this.typeShow = true;
+		},
+
+		// 选择排序类型
+		handleAffirmType(ev) {
+
+			this.sortTypeText = ev.target.innerHTML;
+			this.typeShow = false;
+
+			this.$emit('get-list', {
+				verTT: new Date().getTime(),
+				token: this.webApi.getCookie('token'),
+			  self: '1',
+			  pageNo: 1,
+			  pageSize: 15,
+			  type:	3,
+			  ordertype: ev.target.dataset.index + 1 || 1
+			});
+
+		},
+
 		// 打开详情
-		openDetails(ev) {
+		targetDetails(ev) {
 
 			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
 
-			this.webApi.loadingData();
-
-			getExchangeDetails({
-				verTT: new Date().getTime(),
-				token: this.webApi.getCookie('token'),
-				id: oSection.dataset.id,
-				pageNo: 1,
-				pageSize: 20,
-			})
-
-			.then(res =>{
-
-				this.webApi.closeLoadingData();
-
-				if(!res || res.state != 'success'){
-					this.webApi.alert('打开详情失败，请稍后再试');
-					return false;
-				}
-
-				this.$router.push({
-					path: `details/${encodeURIComponent(JSON.stringify(res.data))}`,
-				});
-
-			})
-
+			this.$emit('open-details', oSection.dataset.id);
 
 
 		},
@@ -105,6 +114,13 @@ export default {
 	.exchange-wrap-ipad{
 
 		font-size: 0;
+
+		.no-data{
+			@extend .ab;
+			@include wh(2.2rem, 2.2rem);
+			left: 50%; top: 40%;
+			margin-left: -1.1rem;
+		}
 
 		.list{
 			@include fc(.24rem, #333);

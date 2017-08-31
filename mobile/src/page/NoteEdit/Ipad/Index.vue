@@ -4,19 +4,19 @@
 
 
 		<header class="one-top">
-			<a href="javascript:;">&#xe67f;</a>
-			<h1>讨论详情</h1>
-			<div class="state-edit">
+			<a href="javascript:;" @touchend.stop="handleBackSection">&#xe67f;</a>
+			<h1>{{ headerTitle }}</h1>
+			<div class="state-edit" @touchend="handleSaveNote">
 				<a href="javascript:;">&#xe654;</a>
 			</div>
 		</header>
 
 		<div class="edit">
-			<div class="ban">
-				<input type="text" name="" value="acca重点" class="ban">
-				<span>2017-07-19</span>
+			<div class="ban" @touchend.stop="handleBackSection">
+				<input type="text" v-model="title" readonly="readonly" class="ban" ref="titleText">
+				<span v-show="!isEdit"></span>
 			</div>
-			<textarea name="name">阿萨达十大恐龙当家阿山莨菪碱奥斯卡达拉斯简单看拉手建档立卡时间登录科雷</textarea>
+			<textarea name="name" v-model="textDetails" placeholder="请输入内容"></textarea>
 		</div>
 
 
@@ -24,25 +24,22 @@
 
 		<footer class="leave-msg">
 			<div class="nav">
-				<a href="javascript:;" class="upload-pic-btn">&#xe6ab;</a>
-				<div class="select-btn select-btn-active"><span>公开</span><i></i></div>
+				<a href="javascript:;" class="upload-pic-btn" @touchend="handleIsUploadPic">&#xe6ab;</a>
+				<div class="" @touchend.stop="handleCutStatus" ref="isPublicDiv"><span>{{ isPublicText }}</span><i></i></div>
 			</div>
-			<div class="upload-details">
+			<div class="upload-details" v-show="isFileOpen">
 				<h1>最多可添加五张图片</h1>
-				<a href="javascript:;" class="upload-btn"><span>+</span></a>
+				<a href="javascript:;" class="upload-btn" @touchend.stop="handleUploadBtn"><span>+</span></a>
 				<ul class="show-list-pic">
-					<li>
-						<img src="http://img.caicui.com/upload/201606/b207530895864676b9ed73cb622a16d2.png" />
-						<a href="javascript:;"></a>
-					</li>
-					<li>
-						<img src="http://img.caicui.com/upload/201606/b207530895864676b9ed73cb622a16d2.png" />
-						<a href="javascript:;"></a>
+					<li v-for="(item, index) in allUploadPic" >
+						<img :src="item.src" />
+						<a href="javascript:;" :data-index="index" @touchend="handleRemovePic">&#xe642;</a>
 					</li>
 				</ul>
 			</div>
 		</footer>
 
+		<input type="file" @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
 	</div>
 
 </template>
@@ -53,10 +50,194 @@ export default {
 
   data() {
     return {
+			headerTitle: '',
+			data: {},
+			title: '', // 标题
+			textDetails: '', // 内容详情
+			allUploadPic: [], // 所有上传的图片
+			isPublic: '0',
+			allPicPath: '', // 上传图片的路径
+			isUploadSuccess: 0,
+			isFileOpen: true, // 是否打开上传
+			isEdit: false, // 是否是编辑
+			noteId: '', // 笔记ID，新建时为空
+			subjectId: 'subjectId',
+			subjectName: 'subjectName',
+			categoryName: 'categoryName',
+			categoryId: 'categoryId',
+			chapterId: 'chapterId',
+			type: '',
+			isPublicText: '公开'
     }
   },
 
+	mounted() {
+
+		this.data = JSON.parse(this.$route.params.data);
+
+		// 是否编辑
+		if('detailsData' in this.data){
+			this.textDetails = this.data.detailsData.content;
+			this.title = this.data.detailsData.chaptername;
+			this.noteId = this.data.detailsData.id;
+			this.isEdit = true;
+			this.subjectId = 'subjectId';
+			this.subjectName = 'subjectName';
+			this.categoryName = 'categoryName';
+			this.categoryId = 'categoryId';
+			this.chapterId = this.data.detailsData.charpterId;
+			this.type = 'edit';
+			this.isPublic = this.data.detailsDataisPublic;
+			this.isPublicText = this.isPublic == 1 ? '公开' : '私人';
+			this.$refs.isPublicDiv.className = this.isPublic == 1 ? 'select-btn select-btn-active' : 'select-btn';
+
+		}else{
+			this.title = this.data.sectionData.chapterTitle;
+			this.noteId = '';
+			this.isEdit = false;
+			this.categoryName = this.data.courseData.categoryName;
+			this.subjectId = this.data.courseData.subjectId;
+			this.subjectName = this.data.courseData.subjectName;
+			this.categoryId = this.data.courseData.categoryId;
+			this.chapterId = this.data.sectionData.chapterId;
+			this.type = 'new';
+		}
+
+		this.headerTitle = this.data.type == 'new' ? '新建笔记 ': '编辑笔记';
+
+	},
+
   methods: {
+
+		// 返回上一页重新选择文章
+		handleBackSection() {
+				this.$router.go(-1);
+		},
+
+		// 触发上传
+		handleUploadBtn() {
+			this.$refs.iptFile.click();
+		},
+
+		// 是否打卡上传图片
+		handleIsUploadPic() {
+			this.isFileOpen = this.isFileOpen ? false : true;
+		},
+
+		// 是否公开
+		handleCutStatus(ev) {
+
+			let oDiv = this.webApi.recursiveParentNode(ev.target, 'div');
+
+			if(oDiv.classList.contains('select-btn-active')){
+				this.isPublicText = '公开';
+				oDiv.classList.remove('select-btn-active');
+				this.isPublic = '1';
+			}else{
+				this.isPublicText = '私人';
+				oDiv.classList.add('select-btn-active');
+				this.isPublic = '0';
+			}
+
+		},
+
+		// 上传图片
+		handleUploadPic(ev) {
+
+			let file = this.$refs.iptFile.files[0];
+			let reader = new FileReader();
+
+			reader.readAsDataURL(file);
+
+			reader.onload = (evt) =>{
+
+				this.allUploadPic.push({
+					src: evt.target.result,
+					file: file
+				});
+
+      }
+
+		},
+
+		// 删除这个照片
+		handleRemovePic(ev) {
+
+			let removeIndex = ev.target.dataset.index;
+
+			this.allUploadPic = this.allUploadPic.filter((item, index) => index != removeIndex && item);
+
+		},
+
+		// 保存笔记
+		handleSaveNote() {
+
+			if(!this.textDetails) {
+				this.webApi.alert('标题不能为空')
+				return false;
+			}
+
+			if(this.allUploadPic.length < 1){
+				this.subForm();
+				return false;
+			}
+
+			this.isUploadSuccess = 0;
+
+			this.allUploadPic.map((item, index) =>{
+
+				let formData = new FormData();
+
+				formData.append(`file`, item.file);
+				formData.append('token', this.webApi.getCookie('token'));
+
+				this.$emit('upload-pic', formData, res =>{
+
+					this.allPicPath =  `${this.allPicPath}${res.path},`;
+					this.isUploadSuccess++;
+
+					// 成功以后提交表单内容
+					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+
+				});
+
+			});
+
+
+
+		},
+
+		subForm() {
+
+			this.$emit('submit-data', {
+				type: this.type,
+				data: {
+					content:	this.textDetails,   // 内容
+					soundPath:	'', // 声音
+					clientType:	this.data.detailsData.clientType || 'aPad', // 设备类型
+					title:	'title', //
+					categoryName:	this.categoryName,
+					chapterId: this.chapterId,
+					taskType:	'', // 任务类型
+					subjectName: this.subjectName,
+					id: this.noteId,
+					courseName:	this.data.courseData.courseName,
+					subjectId:	this.subjectId,
+					token:	this.webApi.getCookie('token'), // 用户token
+					courseId:	this.data.courseData.courseId,
+					chapterName:	this.data.sectionData.chapterName || this.data.sectionData.chaptername || 'chapterName',
+					isPublic:	this.isPublic || '0', // 是否公开
+					soundLen:	'', // 声音长度
+					taskName:	'taskName',
+					taskProgress:	0,
+					imgPath:	this.allPicPath, // 图片路径，逗号分隔
+					categoryId:	this.categoryId,
+					taskId: '',
+				}
+			});
+
+		},
+
 
   }
 
@@ -97,7 +278,7 @@ export default {
 				margin-bottom: .5rem;
 
 				input{
-					@include wh(8rem, .6rem);
+					@include wh(18rem, .6rem);
 					border: none;
 					outline: 0; color: #ccc;
 					margin-top: .2rem;
@@ -142,6 +323,19 @@ export default {
 					img{
 						@include wh(100%, 100%);
 					}
+				}
+				a{
+					@extend .ab;
+					@include wh(.4rem, .4rem);
+					@include fc(.24rem, #fff);
+					@extend .borderBox;
+					text-align: center; line-height: 1.5;
+					background-color: $green;
+					top: -.1rem;
+					transform: translate3d(-.26rem,0,0);
+					border-radius: 100%;
+					font-family: 'iconfont';
+					border: 1px solid #fff;
 				}
 			}
 
@@ -223,7 +417,7 @@ export default {
 			font-family: 'iconfont';
 			a{
 				color: $green;
-				font-size: .38rem;
+				font-size: .4rem;
 				margin-right: .3rem;
 			}
 		}
@@ -250,6 +444,12 @@ export default {
 
 	}
 
+	.ipt-file{
+		@extend .ab;
+		@include wh(0, 0);
+		overflow: hidden;
+		left: -99rem; top: -99rem;
+	}
 
 }
 

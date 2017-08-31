@@ -167,15 +167,8 @@ export default {
           item.content = _obj.innerText;
         })
 
-        this.webApi.closeLoadingData();
 
 
-      })
-
-      .catch(err =>{
-        this.webApi.alert('消息获取失败，请稍后再试');
-        this.webApi.closeLoadingData();
-        return false;
       })
 
 
