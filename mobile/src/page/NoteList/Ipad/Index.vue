@@ -6,7 +6,7 @@
 			<h1>章节列表</h1>
 			<div class="state-edit">
 				<router-link to="search">&#xe651;</router-link>
-				<a href="javascript:;">新建&nbsp;<span>+</span></a>
+				<router-link to="selected">新建&nbsp;<span>+</span></router-link>
 			</div>
 		</header>
 		<main class="list-wrap">
@@ -25,7 +25,7 @@
 
 						<template v-for="threeItem in twoItem.children">
 
-						<section class="list" @touchend.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+						<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @touchend.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
 							<div>
 								<h1>{{threeItem.chapterTitle}}</h1>
 								<i>{{threeItem.nodeNum}}</i>
@@ -67,9 +67,17 @@ export default {
 		openNoteDetails(ev) {
 
 			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+			let course = JSON.parse(oSection.dataset.course);
+			let chapter = JSON.parse(oSection.dataset.chapter);
+			let chapterTwo = JSON.parse(oSection.dataset.chaptertwo);
+			let data = {
+				courseData:  Object.assign(course, chapter, chapterTwo)
+			}
 
+			console.log(data, 'note > detailslist');
+			//
 			this.$router.push({
-				path: `detailslist?id=${oSection.dataset.id}`,
+				path: `detailslist/${encodeURIComponent(JSON.stringify(data))}`,
 			});
 
 		},

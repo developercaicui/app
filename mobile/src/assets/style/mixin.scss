@@ -91,7 +91,16 @@
 }
 
 
+
 // 全局loading等待
+
+.g-data-loading-wrap{
+  position: fixed;
+  left: 0; right: 0; bottom: 0; top: 0;
+  background-color: rgba(0,0,0,0);
+  z-index: 119;
+}
+
 .g-data-loading{
 
   @include wh(2rem, 2rem);
@@ -99,7 +108,7 @@
   left: 50%; top: 20%;
   transform: translate3d(-50%, 20%, 0);
   background-color: rgba(0,0,0,.7);
-  z-index: 119; border-radius: 5px;
+  border-radius: 5px;
   text-align: center;
 
   h1{

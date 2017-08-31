@@ -3,17 +3,15 @@
 	<div class="exchange-wrap-ipad-details">
 
 		<header class="one-top">
-			<router-link to="/list">&#xe67f;</router-link>
+			<router-link to="/exchange/list">&#xe67f;</router-link>
 			<h1>讨论详情</h1>
 			<div class="state-edit">
-				<a href="javascript:;">&#xe609;</a>
-				<a href="javascript:;" @touchend="removeDetails">&#xe618;</a>
+				<a href="javascript:;"></a>
+				<a href="javascript:;" @touchend="removeDetails" v-show="isRemoveMsg">&#xe618;</a>
 			</div>
 		</header>
 
 		<main class="one-list">
-
-
 
 			<section class="list">
 			  <img :src="headImg" class="user-head">
@@ -26,34 +24,31 @@
 			<section class="list reply-list" v-for="item in data.replys">
 			  <img :src="item.headImg" class="user-head">
 			  <div>{{ item.nikeName }}<time class="time">{{ item.updateTime }}</time></div>
-			  <p v-html="item.contentHtml"></p>
+			  <p v-html="item.contentHtml" class="content-html"></p>
 			</section>
-
 
 		</main>
 
 
 		<footer class="leave-msg">
 			<div class="nav">
-				<a href="javascript:;" class="upload-pic-btn">&#xe6ab;</a>
-				<input type="text" name="" value="" placeholder="评论...">
-				<a href="javascript:;" class="add-msg">发布</a>
+				<a href="javascript:;" class="upload-pic-btn" @touchend="handleIsUpload">&#xe6ab;</a>
+				<input type="text" name="" v-model="textDetails" placeholder="评论...">
+				<a href="javascript:;" class="add-msg" @touchend="handleSubPublish">发布</a>
 			</div>
-			<div class="upload-details">
+			<div class="upload-details" v-show="isFileOpen">
 				<h1>最多可添加五张图片</h1>
-				<a href="javascript:;" class="upload-btn"><span>+</span></a>
+				<a href="javascript:;" class="upload-btn" @touchend="handleUploadBtn"><span>+</span></a>
 				<ul class="show-list-pic">
-					<li>
-						<img src="http://img.caicui.com/upload/201606/b207530895864676b9ed73cb622a16d2.png" />
-						<a href="javascript:;"></a>
-					</li>
-					<li>
-						<img src="http://img.caicui.com/upload/201606/b207530895864676b9ed73cb622a16d2.png" />
-						<a href="javascript:;"></a>
+					<li v-for="(item, index) in allUploadPic" >
+						<img :src="item.src" />
+						<a href="javascript:;" :data-index="index" @touchend="handleRemovePic">&#xe642;</a>
 					</li>
 				</ul>
 			</div>
 		</footer>
+
+		<input type="file" @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
 
 	</div>
 
@@ -65,6 +60,10 @@ import { removeExchangeDetails } from '../../../api/port';
 
 export default {
 
+	props: {
+		'user-info': [Object]
+	},
+
   data() {
     return {
 			data: [],
@@ -74,21 +73,25 @@ export default {
 			updateTime: '', // 时间
 			replyCount: '', // 留言数量
 			nikeName: '', // 名字
-
+			isFileOpen: false, // 是否打开上传图片
+			allUploadPic: [], // 所有上传的图片
+			allPicPath: '', // 上传图片的内容
+			isUploadSuccess: 0,
+			textDetails: '', // 内容
+			appendReplyHtml: '',
+			isRemoveMsg: false, // 是否可以删除当前留言。默认可以
     }
   },
 
 	mounted() {
 
-
-
 		this.data = JSON.parse(this.$route.params.data);
-
 
 		let date = new Date(this.data.updateTime*1000);
 
 		this.data.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}`;
 
+		this.isRemoveMsg = this.userInfo.memberId === this.data.memberId ? true : false;
 		this.headImg = `${this.webApi.cdnImgUrl}${this.data.headImg}`;
 		this.title = this.data.title;
 		this.contentHtml = this.data.contentHtml;
@@ -119,13 +122,108 @@ export default {
 
 		},
 
+		// 发布，先提交照图片
+		handleSubPublish() {
+
+			if(!this.textDetails){
+				this.webApi.alert('评论内容不能为空');
+				return false;
+			}
+
+			if(this.allUploadPic.length < 1){
+				this.subForm();
+				return false;
+			}
+
+			this.isUploadSuccess = 0;
+
+			this.allUploadPic.map((item, index) =>{
+
+				let formData = new FormData();
+
+				formData.append(`file`, item.file);
+				formData.append('token', this.webApi.getCookie('token'));
+
+				this.$emit('upload-pic', formData, res =>{
+
+					this.allPicPath =  `${this.allPicPath}<img src="${this.webApi.cdnImgUrl}${res.path}"/>`;
+					this.isUploadSuccess++;
+
+					// 成功以后提交表单内容
+					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+
+				});
+
+			});
+
+		},
+
+		// 数据全部提交
+		subForm() {
+
+
+			this.$emit('reply', {
+				id: this.data.id,
+				content: `<p>${this.textDetails}</p><br>${this.allPicPath}`,
+				replaytype: 0,
+				pageSize: 20,
+				token: this.webApi.getCookie('token'),
+				pageNo: 1
+			}, data =>{
+				this.data.replys.push(data)
+			});
+
+
+			console.log(this.appendReplyHtml);
+
+		},
+
+		// 上传图片
+		handleUploadPic(ev) {
+
+			let file = this.$refs.iptFile.files[0];
+			let reader = new FileReader();
+
+			reader.readAsDataURL(file);
+
+			reader.onload = (evt) =>{
+
+				this.allUploadPic.push({
+					src: evt.target.result,
+					file: file
+				});
+
+      }
+
+		},
+
+
+		// 触发上传
+		handleUploadBtn() {
+			this.$refs.iptFile.click();
+		},
+
+		// 是否打卡上传图片
+		handleIsUpload() {
+			this.isFileOpen = this.isFileOpen ? false : true;
+		},
+
+		// 删除这个照片
+		handleRemovePic(ev) {
+
+			let removeIndex = ev.target.dataset.index;
+
+			this.allUploadPic = this.allUploadPic.filter((item, index) => index != removeIndex && item);
+
+		},
+
   }
 
 }
 
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 	@import "../../../assets/style/mixin";
 
@@ -142,6 +240,7 @@ export default {
 			position: fixed;
 			left: 0; bottom: 0; right: 0;
 			border-top: 1px solid #eee;
+			background-color: #F5F5F5;
 			z-index: 9;
 
 			.show-list-pic{
@@ -153,6 +252,19 @@ export default {
 					flex: 1; margin-right: .3rem;
 					img{
 						@include wh(100%, 100%);
+					}
+					a{
+						@extend .ab;
+						@include wh(.4rem, .4rem);
+						@include fc(.24rem, #fff);
+						@extend .borderBox;
+						text-align: center; line-height: 1.5;
+						background-color: $green;
+						top: -.1rem;
+						transform: translate3d(-.26rem,0,0);
+						border-radius: 100%;
+						font-family: 'iconfont';
+						border: 1px solid #fff;
 					}
 				}
 			}
@@ -220,11 +332,16 @@ export default {
 			border-radius: 100%;
 		}
 
+		> main {
+			@include wh(100%, 100%);
+			padding-bottom: 4.32rem;
+			background-color: #fff;
+		}
 		.list{
 			@include fc(.24rem, #333);
 			padding: .35rem .5rem .35rem 1.6rem; line-height: 1;
 			border-bottom: 1px solid #E2E2E2;
-			background-color: #f5f5f5;
+			background-color: #f7f7f7;
 			&:nth-of-type(1){
 				background-color: #fff;
 			}
@@ -320,10 +437,26 @@ export default {
 		p{
 			margin-top: .2rem;
 		}
-	}
-
 
 	}
+
+	.ipt-file{
+		@extend .ab;
+		@include wh(0, 0);
+		overflow: hidden;
+		left: -99rem; top: -99rem;
+	}
+
+	.content-html{
+		 img{
+			display: inline-block;
+			width: 1.5rem;
+			margin-right: .2rem;
+		}
+
+	}
+
+}
 
 
 </style>

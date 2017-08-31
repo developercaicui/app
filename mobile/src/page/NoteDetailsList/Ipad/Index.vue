@@ -7,13 +7,13 @@
 			<a href="javascript:;" @touchend="backList">章节列表</a>
 			<h1>知识点战略</h1>
 			<div class="state-edit">
-				<a href="javascript:;">新建&nbsp;<span>+</span></a>
+				<router-link to="/note/selected">新建&nbsp;<span>+</span></router-link>
 			</div>
 		</header>
 
 		<main>
 
-			<section class="list" v-for="item in detailsList" :data-id="item.id" @touchend="openDetails">
+			<section class="list" :data-section="JSON.stringify(item)" v-for="item in detailsList" :data-id="item.id" @touchend="openDetails">
 				<div>{{ item.nikeName }}</div>
 				<h1>{{ item.chaptername }}</h1>
 				<p>{{ item.contentSummary }}</p>
@@ -37,17 +37,30 @@ export default {
 
   data() {
     return {
+			data: {}
     }
   },
+
+	mounted() {
+
+		this.data = JSON.parse(this.$route.params.data);
+
+	},
 
   methods: {
 
 		openDetails(ev) {
 
 			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+			let data = {
+				courseData: this.data.courseData,
+				sectionData: JSON.parse(oSection.dataset.section)
+			};
+
+			console.log('detaislList > detaisl');
 
 			this.$router.push({
-				path: `details?id=${oSection.dataset.id}`,
+				path: `/note/details/${encodeURIComponent(JSON.stringify(data))}`,
 			});
 
 

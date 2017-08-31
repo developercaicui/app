@@ -16,8 +16,10 @@ const NoteDetailsList = r => require.ensure([], () => r(require('../page/NoteDet
 const NoteDetails = r => require.ensure([], () => r(require('../page/NoteDetails')), 'noteDetails');
 const NoteEdit = r => require.ensure([], () => r(require('../page/NoteEdit')), 'noteEdit');
 const NoteSearch = r => require.ensure([], () => r(require('../page/NoteSearch')), 'noteSearch');
-const Course = r => require.ensure([], () => r(require('../page/Course')), 'course')
-const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'setting')
+const NoteSelected = r => require.ensure([], () => r(require('../page/NoteSelected')), 'noteSelected');
+const NoteSelectedSection = r => require.ensure([], () => r(require('../page/NoteSelectedSection')), 'noteSelectedSection');
+const Course = r => require.ensure([], () => r(require('../page/Course')), 'course');
+const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'setting');
 
 export default  new VueRouter({
   mode: 'hash',
@@ -30,7 +32,7 @@ export default  new VueRouter({
       component: Index
     },{
       path: '/findpwd',
-      component: FindPwd,
+      component: FindPwd
     },{
       path: '/reg',
       component: Reg,
@@ -44,24 +46,30 @@ export default  new VueRouter({
          path: 'list',
          component: NoteList,
        },{
-         path: 'detailslist',
+         path: 'detailslist/:data',
          component: NoteDetailsList,
        },{
-         path: 'details',
+         path: 'details/:data',
          component: NoteDetails
        },{
-         path: 'edit',
+         path: 'edit/:data',
          component: NoteEdit
        },{
          path: 'search',
          component: NoteSearch
+       },{
+         path: 'selected',
+         component: NoteSelected,
+       },{
+         path: 'selectedsection/:data',
+         component: NoteSelectedSection
        }
       ]
     },{
       path: '/exchange',
       component: Exchange,
       children: [{
-          path: 'edit',
+          path: 'edit/:data',
           component: ExchangeEdit
         },{
           path: 'list',
