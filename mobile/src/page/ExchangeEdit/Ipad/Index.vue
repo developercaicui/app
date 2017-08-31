@@ -62,8 +62,6 @@ export default {
 
 		this.data = JSON.parse(this.$route.params.data);
 
-		console.log(this.data);
-
 	},
 
   methods: {
@@ -179,7 +177,7 @@ export default {
 			    imgPath: this.allPicPath,
 			    title: this.title,
 			    clientType: 'aPad',
-			    subjectId:	'ff808081486933e601489c7a1aa20869',
+			    subjectId:	this.data.subjectId || 'null',
 			    token: this.webApi.getCookie('token'),
 			    taskProgress:	-1,  //任务进度
 			    type: 1, // 0是讨论  1是问答

@@ -21,6 +21,8 @@ const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'se
 const CourseExchange = r => require.ensure([], () => r(require('../page/CourseExchange')), 'courseExchange')
 const CourseExchangeDetails = r => require.ensure([], () => r(require('../page/CourseExchangeDetails')), 'courseExchangeDetails')
 const CourseExchangeList = r => require.ensure([], () => r(require('../page/CourseExchangeList')), 'courseExchangeList')
+const NoteSelected = r => require.ensure([], () => r(require('../page/NoteSelected')), 'noteSelected')
+const NoteSelectedSection = r => require.ensure([], () => r(require('../page/NoteSelectedSection')), 'noteSelectedSection')
 
 export default  new VueRouter({
   mode: 'hash',

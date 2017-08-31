@@ -99,7 +99,7 @@ export default {
 	    }
 	},
 	created() {
-		
+
 		this.getDate(1,0);
 		this.getDate(1,1);
 
@@ -132,9 +132,9 @@ export default {
         		this.webApi.alert('请输入搜索关键字');
         	}
         	this.get_dt(1)
-        	
 
-   
+
+
         },
         get_dt(page) {
         	this.params.token = this.webApi.getCookie('token');
@@ -151,7 +151,7 @@ export default {
 		          this.webApi.closeLoadingData();
 
 		          this.searchData = {key1:res,page:page,keyword:this.params.keyWords}
-		          
+
 		          this.getDate(page)
 
 		      }
@@ -247,15 +247,15 @@ export default {
 		setImgPath(imgPaths) {
 			let imgPath=imgPaths.split(',');
 			let imgPathArr=[];
-            for(let i in imgPath) { 
-              if(!this.webApi.isEmpty(imgPath[i])) { 
+            for(let i in imgPath) {
+              if(!this.webApi.isEmpty(imgPath[i])) {
                 imgPathArr.push(imgPath[i]);
               }
             }
             return imgPathArr;
 		},
 		getImgPath(imgPath) {//处理图片路径
-			if(imgPath.length>0){	 
+			if(imgPath.length>0){
 				  if(imgPath.substr(0,4)!="http"){
 				     return this.webApi.cdnImgUrl+imgPath;
 				  }else{
