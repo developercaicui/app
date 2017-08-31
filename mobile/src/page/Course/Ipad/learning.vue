@@ -1,6 +1,6 @@
 <template lang="html">
 
-	<div class="course-content course-pic-list learning">
+	<div class="course-content course-pic-list learning" ref="courseContentlearn">
 		<div class="learning-navL">
         <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
@@ -123,7 +123,12 @@ export default {
 						}
 
 						this.learningData = this.webApi.outCourseList(ret);
-
+						
+					  	if(this.webApi.isEmpty(this.learningData)){
+						      this.$refs.courseContentlearn.classList.add("null")
+						      return false;
+						}
+					  	
 						let str = JSON.stringify(this.learningData);
 
 						this.activeBtn = str.substr(2, str.indexOf(':')-3);
@@ -146,7 +151,7 @@ export default {
   	learningNav(ind) {
 	    this.activeBtn = ind;
 	},
-	formatDate(now, t) {
+	formatDate(now, t) {//时间转换
 	    let date = new Date(parseInt(now * 1000));
 	    let Y,M,D,h,m,s;
 	    if (t == 'Y') {
@@ -215,6 +220,7 @@ export default {
 	this.progressBar();
   },
   mounted () {
+
     
   }
 }
@@ -224,6 +230,7 @@ export default {
 <style lang="scss" scoped>
 .course-content{
     padding-top:1.6rem;
+    min-height: 15rem;
 }
 .learning-navL {
     line-height: 1rem;

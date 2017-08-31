@@ -1,6 +1,6 @@
 <template lang="html">
 
-  <div class="course-content course-pic-list learning">
+  <div class="course-content course-pic-list learning" ref="courseContentnoact">
       <div class="learning-navL">
         <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in noactiveData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
@@ -73,6 +73,11 @@ export default {
             
         this.noactiveData = this.webApi.outCourseList(res);
 
+        if(this.webApi.isEmpty(this.noactiveData)){
+		      this.$refs.courseContentnoact.classList.add("null")
+		      return false;
+		}
+
         let str = JSON.stringify(this.noactiveData);
 
         this.activeBtn = str.substr(2, str.indexOf(':')-3);
@@ -114,6 +119,7 @@ export default {
 <style lang="scss" scoped>
 .course-content{
     padding-top:1.6rem;
+    min-height: 15rem;
 }
 .learning-navL {
     line-height: 1rem;

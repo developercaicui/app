@@ -20,7 +20,7 @@
 		        <div class="right"><i class="icon-sousuo icon-search2">&#xe651;</i><span @click="goSearch()" class="submit">搜索</span><span @click="hideSearchBar" class="cancel">取消</span></div>
 		      </div>
       		</div>
-			<div class="all" v-show="defaultAct==0">
+			<div class="all" v-show="defaultAct==0" ref="all">
 				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
@@ -45,7 +45,7 @@
 	          </dl>
 			</div>
 
-			<div class="me" v-show="defaultAct==1">
+			<div class="me" v-show="defaultAct==1" ref="me">
 				<dl id="li" class="cont-list" v-for="(item,index) in exchangeListMe">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
@@ -133,8 +133,6 @@ export default {
         	}
         	this.get_dt(1)
 
-
-
         },
         get_dt(page) {
         	this.params.token = this.webApi.getCookie('token');
@@ -199,20 +197,28 @@ export default {
 
 		          this.webApi.closeLoadingData();
 
-		          this.exchangeList = res.data;
-		          this.setListData();
+		          if(self == 0){
+		          	this.exchangeList = res.data;
+		          	this.setListData(this.exchangeList);
+
+		          }else{
+		          	this.exchangeListMe = res.data;
+		          	this.setListData(this.exchangeListMe);
+
+		          }
+
 		      }
 
 		    })
         },
-        setListData() {
-        	this.exchangeList.map(item =>{
+        setListData(list) {
+        	list.map(item =>{
 	          	item.headImg = `${this.webApi.cdnImgUrl}${item.headImg}`;
 	          	item.title = `${item.bbstype=='0'?"【讨论】":"【问答】"}${item.title}`;
 	          	item.imgPath = `${this.webApi.isEmpty(item.imgPath)?'':item.imgPath}`;
 	          	item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
 	          	item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' ' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
-	          });
+	        });
         },
 		// 打开详情
 		answerDetail(item) {
@@ -236,7 +242,7 @@ export default {
 				}
 
 				this.$router.push({
-					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
+					path: `details/${encodeURIComponent(JSON.stringify(res.data))}`,
 				});
 
 			})
@@ -266,8 +272,14 @@ export default {
 			 }
 		}
 
-
-
+	},
+	mounted() {
+		if(this.webApi.isEmpty(this.exchangeList) || this.exchangeList.length<1){
+          this.$refs.all.classList.add("null")
+      	}
+        if(this.webApi.isEmpty(this.exchangeListMe) || this.exchangeListMe.length<1){
+            this.$refs.me.classList.add("null")
+        }
 	}
 
 
@@ -276,6 +288,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+.all,.me{
+	min-height: 15rem;
+}
 .icon-sousuo{
   font-family:"iconfont";
   font-size:0.26rem;
