@@ -62,7 +62,36 @@ export default {
 				id: id,
 				pageNo: 1,
 				pageSize: 20,
+<<<<<<< HEAD
+=======
 			})
+
+			.then(res =>{
+
+				this.webApi.closeLoadingData();
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert('打开详情失败，请稍后再试');
+					return false;
+				}
+
+				this.$router.push({
+					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
+				});
+
+>>>>>>> dev
+			})
+
+
+		},
+
+		// 获取我的交流列表
+		getList(data) {
+
+
+			this.webApi.loadingData();
+
+			getExchangeList(data)
 
 			.then(res =>{
 
@@ -103,11 +132,12 @@ export default {
 					list: res.data,
 					totalCount: res.totalCount
 				};
-
+				
 				this.exchangeData.list.map(item =>{
 
 					let date = new Date(item.updateTime*1000);
 
+					item.contentHtml = item.contentHtml.replace(/(.+)src="(.+)"(.+)/g,`$1 src="${this.webApi.cdnImgUrl}$2"$3`);
 					item.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}`;
 
 				});

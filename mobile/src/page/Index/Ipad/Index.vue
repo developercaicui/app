@@ -1,11 +1,11 @@
 <template lang="html">
 
-	<main class="index-wrap-ipad">
+	<div class="index-wrap-ipad">
 
 		<Headers></Headers>
 
 
-		<div class="index-content">
+		<main class="index-content">
 
 			<div class="the-course" ref="canvasArc">
 
@@ -15,16 +15,16 @@
 
 				<a href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-if="index<3">
 					<div class="info">
-						<h1>{{item.courseName}}</h1>
-						<time>有效期至：{{item.examinationDate}}</time>
-						<time>课程到期：{{item.expirationTime}}</time>
+						<h1>{{ item.courseName }}</h1>
+						<time>有效期至：{{ item.examinationDate }}</time>
+						<time>课程到期：{{ item.expirationTime }}</time>
 					</div>
 					<div class="process">
 						<div class="round">
 							<canvas :data-progress="item.studyProportion" class="canvas-list"></canvas>
 							<div class="num">{{item.studyProportion || 0}}</div>
 						</div>
-						<aside>{{`${item.courseProgress}/${item.taskTotal}`}}</aside>
+						<aside>{{ `${item.courseProgress}/${item.taskTotal}` }}</aside>
 					</div>
 				</a>
 
@@ -40,7 +40,7 @@
 				<div class="activity-list" v-for="item in activityList">
 					<figure :data-href="item.href" :data-id="item.id">
 					  <img :src="item.src" />
-						<figcaption>{{item.title}}</figcaption>
+						<figcaption>{{ item.title }}</figcaption>
 					</figure>
 				</div>
 
@@ -48,9 +48,9 @@
 
 
 
-		</div>
+		</main>
 
-	</main>
+	</div>
 
 </template>
 
@@ -77,7 +77,7 @@ export default {
 
 	created() {
 
-		// 
+		//
 
 	},
 

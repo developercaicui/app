@@ -170,11 +170,22 @@ export default {
 				token: this.webApi.getCookie('token'),
 				pageNo: 1
 			}, data =>{
+<<<<<<< HEAD
 				this.data.replys.push(data)
 			});
 
 
 			console.log(this.appendReplyHtml);
+=======
+
+				this.data.replys.push(data);
+				this.textDetails = '';
+				this.isFileOpen = false;
+
+			});
+
+
+>>>>>>> dev
 
 		},
 

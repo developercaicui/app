@@ -4,7 +4,7 @@
 
 		<header>
 			<a href="javascript:;" @touchend="backDetailsList">&#xe67f;</a>
-			<h1>讨论详情</h1>
+			<h1>{{ detailsData.chaptername }}</h1>
 			<div class="state-edit">
 				<a href="javascript:;" @touchend="handleEditNote">&#xe609;</a>
 				<a href="javascript:;" @touchend="removeDetails">&#xe618;</a>
@@ -17,6 +17,12 @@
 			<section class="list">
 				<h1><span>课程介绍</span><time>{{ detailsData.updateTime }}</time></h1>
 				<p>{{ detailsData.content }}</p>
+<<<<<<< HEAD
+=======
+				<div class="pic-all">
+					<i v-for="item in detailsData.imgPath" :style="item"></i>
+				</div>
+>>>>>>> dev
 			</section>
 
 
@@ -39,6 +45,11 @@ export default {
   },
 
 
+<<<<<<< HEAD
+=======
+  updated() {
+	},
+>>>>>>> dev
 
   methods: {
 
@@ -80,6 +91,13 @@ export default {
 
 		font-size: 0;
 
+		.pic-all{
+			margin-top: .5rem;
+			i{
+				@include wh(3rem, 2rem);
+				display: inline-block; margin-right: .3rem;
+			}
+		}
 
 		.list{
 
