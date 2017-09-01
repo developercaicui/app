@@ -8,8 +8,8 @@
 			<!--头部-->
 		    <div class="s-head">
 		      <div @click="closeMe()" class="left"><i class="icon-back">&#xe600;</i></div>
-		      <div class="center">交流详情（未回复）</div>
-		      <div class="right"><i id="del" onclick="del();" class="icon-trash icon-icon_delete">&#xe618;</i></div>
+		      <div class="center" ref="reply">交流详情（未回复）</div>
+		      <div class="right"><i id="del" @click="del;" class="icon-trash icon-icon_delete">&#xe618;</i></div>
 		    </div>
 			<div id="content1">
 				<dl class="cont-list">
@@ -44,26 +44,27 @@
 		            </dd>
 		          </dl>
 			</div>
-			<div id="content2">
-				<dl class="cont-list">
-		            <dt><img src="http://cdnimg.caicui.com/upload/avatar/big_8a22ecb55474935701547591f52d044e.jpg" class="avatar"></dt>
+			<div id="content2" class="reply-list">
+				<dl class="cont-list" v-for="item in replys">
+		            <dt><img :src="item.headImg" class="avatar"></dt>
 		            <dd>
-		              <div class="name"><span>it[t].nikeName</span>
-		                <div class="time"><span></span><span></span></div>
+		              <div class="name"><span>{{ item.nikeName }}</span>
+		                <div class="time"><span>{{ item.updateTime }}</span><span></span></div>
 		              </div>
-		              <div class="describe">!isEmpty(it[t].content)?it[t].content:''</div>
-		              <div tapmode url="static_url+it[t].soundPath" onclick="playAudio(this)" bg time="it[t].soundlen" class="voice-player"></div>
-		              <ul class="pic-group">
-		               
-		                <li style="background-image:url(static_url + imgPath[i])" tapmode onclick="openImageBrower('it[t].imgPath','i')"></li><b>共 5 张</b>
-		              </ul>
-		                <ul class="pic-group">
-		                <li style="background-image:url(imgPath[i])" tapmode onclick="openImageBrower('imgPath[i]','i')"></li><b>共 5 张</b>
-		                </ul>
-
+		              <div class="describe">{{ item.content ? item.content : '' }}</div>
+		              <!-- <div url="" onclick="playAudio(this)" bg time="" class="voice-player"></div> -->
+		              <ul class="pic-group" v-if="item.imgPath">
+                    <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
+                    <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
+                  </ul>
+		              <ul class="pic-group" v-else-if="item.contentHtml && getreolyImg(item.contentHtml).length>0">
+                    <li v-for="(imgPath,index) in getreolyImg(item.contentHtml)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
+                    <b v-if="getreolyImg(item.contentHtml).length>=3">共{{ getreolyImg(item.contentHtml).length }}张</b>
+                  </ul>
 		            </dd>
 		          </dl>
 			</div>
+			
 		</main>
 
 
@@ -79,16 +80,24 @@ export default {
 
 	data() {
 	    return {
-			data: []
+			   data: [],
+         replys: []
 	    }
 	},
 
 	mounted() {
 		this.data = JSON.parse(this.$route.params.data);
-		this.data = {"categoryId":"ff808081473905e701475cd3c2080001","subjectId":"ff808081473905e701476204cb6c006f","courseId":"ff8080814dad5062014db32051b801a2","chapterId":"ff8080814dad5062014db32051d501a7","categoryName":"ACCA","subjectName":"F1","courseName":"ACCA F1 Accountant in Business","chapterName":"Chapter 1 Organisation and Types of Organisation","taskId":"ff8080814dad5062014db333f30d0255","taskType":"video","taskprogress":"4","favoriteCount":"0","replyCount":"4","clickCount":"21","title":"\u6d4b\u8bd5\u7ed3\u679c","denyReply":"false","toporder":"0","bestorder":"0","adpic":null,"fid":"10","taskCount":"0","taskCurrent":"0","uid":"19277","soundPath":" ","soundlen":"0","updateTime":"1500020083","clientType":"iphone","content":"\u6d4b\u8bd5\u7ed3\u679c\u770b\u663e\u793a\u662f\u5426\u6b63\u5e38","bbstype":"1","praiseCount":"0","replaytype":"0","imgPath":"","is_control":"0","userlevel":1,"userlevelid":"101","nikeName":"Rainy02","is_avatar":"1","avatar_default":"0","memberId":"8a22ecb55474935701547591f52d044e","isdelete":0,"id":"43028","levelimg":"\/upload\/usrlevel.png","headImg":"\/upload\/avatar\/big_8a22ecb55474935701547591f52d044e.jpg","contentHtml":"\u6d4b\u8bd5\u7ed3\u679c\u770b\u663e\u793a\u662f\u5426\u6b63\u5e38","isdisplay":true,"contentSummary":"\u6d4b\u8bd5\u7ed3\u679c\u770b\u663e\u793a\u662f\u5426\u6b63\u5e38","replys":[{"taskId":"ff8080814dad5062014db333f30d0255","taskType":"video","taskprogress":"4","favoriteCount":"0","replyCount":"4","clickCount":"21","denyReply":"false","toporder":"0","bestorder":"0","adpic":null,"fid":"10","taskCount":"0","taskCurrent":"0","pid":"59948","uid":"16838","soundPath":" ","soundlen":"0","updateTime":"1500083546","clientType":"aphone","content":"\u6b63\u5e38","bbstype":"1","praiseCount":"0","replaytype":"0","imgPath":"","is_control":"0","userlevel":1,"userlevelid":"101","nikeName":"cc69v6","is_avatar":"1","avatar_default":"7","memberId":"8a22ecb5532c7c88015331f559cf1a0a","isdelete":0,"id":"59948","levelimg":"\/upload\/usrlevel.png","headImg":"\/upload\/avatar\/big_8a22ecb5532c7c88015331f559cf1a0a.jpg","contentHtml":"\u6b63\u5e38","isdisplay":true,"contentSummary":"\u6b63\u5e38","del_permission":0},{"taskId":"ff8080814dad5062014db333f30d0255","taskType":"video","taskprogress":"4","favoriteCount":"0","replyCount":"4","clickCount":"21","denyReply":"false","toporder":"0","bestorder":"0","adpic":null,"fid":"10","taskCount":"0","taskCurrent":"0","pid":"61999","uid":"19277","soundPath":" ","soundlen":"0","updateTime":"1501143158","clientType":"pc","content":"\u6b63\u5e38\uff0b1","bbstype":"1","praiseCount":"0","replaytype":"0","imgPath":"","is_control":"0","userlevel":1,"userlevelid":"101","nikeName":"Rainy02","is_avatar":"1","avatar_default":"0","memberId":"8a22ecb55474935701547591f52d044e","isdelete":0,"id":"61999","levelimg":"\/upload\/usrlevel.png","headImg":"\/upload\/avatar\/big_8a22ecb55474935701547591f52d044e.jpg","contentHtml":"<p>\u6b63\u5e38\uff0b1<\/p><br>","isdisplay":true,"contentSummary":"\u6b63\u5e38\uff0b1","del_permission":1},{"taskId":"ff8080814dad5062014db333f30d0255","taskType":"video","taskprogress":"4","favoriteCount":"0","replyCount":"4","clickCount":"21","denyReply":"false","toporder":"0","bestorder":"0","adpic":null,"fid":"10","taskCount":"0","taskCurrent":"0","pid":"62001","uid":"19277","soundPath":" ","soundlen":"0","updateTime":"1501143358","clientType":"pc","content":"\u56fe\u7247\u4e0a\u4f20\u6d4b\u8bd5","bbstype":"1","praiseCount":"0","replaytype":"0","imgPath":"","is_control":"0","userlevel":1,"userlevelid":"101","nikeName":"Rainy02","is_avatar":"1","avatar_default":"0","memberId":"8a22ecb55474935701547591f52d044e","isdelete":0,"id":"62001","levelimg":"\/upload\/usrlevel.png","headImg":"\/upload\/avatar\/big_8a22ecb55474935701547591f52d044e.jpg","contentHtml":"<p>\u56fe\u7247\u4e0a\u4f20\u6d4b\u8bd5<\/p><br><img src=\"http:\/\/cdnstatic.caicui.com\/\/\/upload\/2017\/07\/27\/E1C2334DC40A48E1A13689ECD2CDF3E2.jpg\"><br>","isdisplay":true,"contentSummary":"\u56fe\u7247\u4e0a\u4f20\u6d4b\u8bd5","del_permission":1},{"taskId":"ff8080814dad5062014db333f30d0255","taskType":"video","taskprogress":"4","favoriteCount":"0","replyCount":"4","clickCount":"21","denyReply":"false","toporder":"0","bestorder":"0","adpic":null,"fid":"10","taskCount":"0","taskCurrent":"0","pid":"62002","uid":"19277","soundPath":" ","soundlen":"0","updateTime":"1501143489","clientType":"pc","content":"\u56de\u590d\u56fe\u7247\u6d4b\u8bd5","bbstype":"1","praiseCount":"0","replaytype":"0","imgPath":"","is_control":"0","userlevel":1,"userlevelid":"101","nikeName":"Rainy02","is_avatar":"1","avatar_default":"0","memberId":"8a22ecb55474935701547591f52d044e","isdelete":0,"id":"62002","levelimg":"\/upload\/usrlevel.png","headImg":"\/upload\/avatar\/big_8a22ecb55474935701547591f52d044e.jpg","contentHtml":"<p>\u56de\u590d\u56fe\u7247\u6d4b\u8bd5<\/p><br><img src=\"http:\/\/cdnstatic.caicui.com\/\/upload\/2017\/07\/27\/B894A79A5BCF4059BDDB0C46715EE53B.jpg\"><br>","isdisplay":true,"contentSummary":"\u56de\u590d\u56fe\u7247\u6d4b\u8bd5","del_permission":1}]}
 		
+	    this.replys = this.data.replys;
 
-		this.setListData(this.data)
+	    if(!this.webApi.isEmpty(this.replys) && this.replys.length>0){
+
+	    	this.$refs.reply.innerHTML = '交流详情 (已回复)'
+	    }
+
+	    this.setListData(this.data)
+
+		this.setReplysData(this.replys)
 	},
 
   
@@ -103,6 +112,15 @@ export default {
           	list.imgPath = `${this.webApi.isEmpty(list.imgPath)?'':list.imgPath}`;
           	list.updateTime = `${this.webApi.isEmpty(list.updateTime)?'':this.webApi.formatDate(list.updateTime,'Y')}-${this.webApi.formatDate(list.updateTime,'M')}-${this.webApi.formatDate(list.updateTime,'D')}   ${this.webApi.formatDate(list.updateTime,'h')}:${this.webApi.formatDate(list.updateTime,'m')}`;
           	list.taskprogress = `${list.taskprogress != '-1' && list.taskType != ' ' && list.courseId && list.courseId != ' ' && list.chapterId && list.chapterId != ' ' && list.taskId && list.taskId != ' '?this.webApi.formatType(list.taskType,list.taskprogress):''}`;
+        },
+        setReplysData(list) {
+          list.map(item =>{
+              item.headImg = `${this.webApi.cdnImgUrl}${item.headImg}`;
+              item.imgPath = `${this.webApi.isEmpty(item.imgPath)?'':item.imgPath}`;
+              item.contentHtml = `${this.webApi.isEmpty(item.contentHtml)?'':item.contentHtml}`;
+              item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
+              item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' ' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
+          });
         },
 		setBackground(url) {
 			return `background-image:url(${this.getImgPath(url)})`
@@ -127,9 +145,24 @@ export default {
 			 }else{
 			 	return imgPath;
 			 }
-		}
-	},
+		},
+	    getreolyImg(html) {
+	     //创建一个div  
+	       let divHtml = document.createElement("div");  
+	       divHtml.innerHTML = html;
+	       let divHtmlimg = divHtml.getElementsByTagName("img");
+	       if(divHtmlimg.length<1){
+	            return '';
+	       }
+	       let divHtmlimgArr = [];
+	       for(let i=0;i<divHtmlimg.length;i++){
+	          divHtmlimgArr.push(divHtmlimg[i].getAttribute("src"));
+	       }
+	       return divHtmlimgArr;
+	    }
 
+	},
+  
 
 }
 
@@ -323,6 +356,9 @@ export default {
 .cont-list dt img {
   width: 1rem;
   height: 1rem;
+}
+.avatar {
+    border-radius: 50%;
 }
 .cont-list dd .link-box:before {
   content: '';

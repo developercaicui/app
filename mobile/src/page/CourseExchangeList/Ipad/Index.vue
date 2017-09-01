@@ -95,7 +95,8 @@ export default {
 		    searchWord: '',
 		    searchData:'',
 		    page: 1,
-		    params:{}
+		    params:{},
+		    self: 0
 	    }
 	},
 	created() {
@@ -105,14 +106,24 @@ export default {
 
 	},
 
-	mounted() {
-
+	updated() {
+		if(this.webApi.isEmpty(this.exchangeList) || this.exchangeList.length<1){
+          this.$refs.all.classList.add("null")
+      	}else{
+      		this.$refs.all.classList.remove("null")
+      	}
+        if(this.webApi.isEmpty(this.exchangeListMe) || this.exchangeListMe.length<1){
+            this.$refs.me.classList.add("null")
+        }else{
+        	this.$refs.me.classList.remove("null")
+        }
 
 	},
 
   	methods: {
   		set_index(index) {
-  			this.defaultAct = index
+  			this.defaultAct = index;
+  			this.self = index;
   		},
   		showSearchBar() {
             $('.search-bar').show(300);
@@ -131,10 +142,10 @@ export default {
         	if(this.params.keyWords == ''){
         		this.webApi.alert('请输入搜索关键字');
         	}
-        	this.get_dt(1)
+        	this.get_dt(1,this.self)
 
         },
-        get_dt(page) {
+        get_dt(page,self) {
         	this.params.token = this.webApi.getCookie('token');
         	this.params.findType = 2;
         	this.params.pageNo = page;
@@ -150,7 +161,7 @@ export default {
 
 		          this.searchData = {key1:res,page:page,keyword:this.params.keyWords}
 
-		          this.getDate(page)
+		          this.getDate(page,self)
 
 		      }
 
@@ -171,7 +182,7 @@ export default {
               	}
               	$('body').removeClass('null');
               	this.exchangeList = data.key1.data;
-		        this.setListData();
+		        this.setListData(this.exchangeList);
 
               	return false;
         	}
@@ -242,8 +253,11 @@ export default {
 				}
 
 				this.$router.push({
-					path: `details/${encodeURIComponent(JSON.stringify(res.data))}`,
+					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
 				});
+				// this.$router.push({
+				// 	path: `details/${encodeURIComponent(JSON.stringify(res.data))}`,
+				// });
 
 			})
 		},
@@ -274,14 +288,8 @@ export default {
 
 	},
 	mounted() {
-		if(this.webApi.isEmpty(this.exchangeList) || this.exchangeList.length<1){
-          this.$refs.all.classList.add("null")
-      	}
-        if(this.webApi.isEmpty(this.exchangeListMe) || this.exchangeListMe.length<1){
-            this.$refs.me.classList.add("null")
-        }
-	}
 
+	}
 
 }
 

@@ -58,7 +58,7 @@ export default {
 			isPublic: '0',
 			allPicPath: '', // 上传图片的路径
 			isUploadSuccess: 0,
-			isFileOpen: true, // 是否打开上传
+			isFileOpen: false, // 是否打开上传
 			isEdit: false, // 是否是编辑
 			noteId: '', // 笔记ID，新建时为空
 			subjectId: 'subjectId',

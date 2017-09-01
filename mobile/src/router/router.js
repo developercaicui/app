@@ -18,12 +18,13 @@ const NoteEdit = r => require.ensure([], () => r(require('../page/NoteEdit')), '
 const NoteSearch = r => require.ensure([], () => r(require('../page/NoteSearch')), 'noteSearch');
 const Course = r => require.ensure([], () => r(require('../page/Course')), 'course')
 const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'setting')
+const Correction = r => require.ensure([], () => r(require('../page/Correction')), 'correction')
 const CourseExchange = r => require.ensure([], () => r(require('../page/CourseExchange')), 'courseExchange')
 const CourseExchangeDetails = r => require.ensure([], () => r(require('../page/CourseExchangeDetails')), 'courseExchangeDetails')
 const CourseExchangeList = r => require.ensure([], () => r(require('../page/CourseExchangeList')), 'courseExchangeList')
 const NoteSelected = r => require.ensure([], () => r(require('../page/NoteSelected')), 'noteSelected')
 const NoteSelectedSection = r => require.ensure([], () => r(require('../page/NoteSelectedSection')), 'noteSelectedSection')
-
+const Exam = r => require.ensure([], () => r(require('../page/Exam')), 'exam')
 export default  new VueRouter({
   mode: 'hash',
   routes: [
@@ -101,6 +102,12 @@ export default  new VueRouter({
     },{
       path: '/setting',
       component: Setting
+    },{
+      path: '/correction',
+      component: Correction
+    },{
+      path: '/exam/:type/:id',
+      component: Exam
     }
    ]
 });

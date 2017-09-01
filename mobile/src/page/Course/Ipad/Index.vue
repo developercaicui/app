@@ -7,11 +7,11 @@
 			<li data-type="noactive" @click="changeCourse">未激活课程</li>
 			<li data-type="overdue"  @click="changeCourse">已过期课程</li>
 		</ul>
-		
-		<Courselearning v-show="currmodule=='learning'"></Courselearning>
-		<Coursenoactive v-show="currmodule=='noactive'"></Coursenoactive>
-		<Courseoverdue v-show="currmodule=='overdue'"></Courseoverdue>
-
+		<transition-group name="drop">
+			<Courselearning v-show="currmodule=='learning'" key="learning"></Courselearning>
+			<Coursenoactive v-show="currmodule=='noactive'" key="noactive"></Coursenoactive>
+			<Courseoverdue v-show="currmodule=='overdue'" key="overdue"></Courseoverdue>
+		</transition-group>
 		
 	</main>
 
@@ -102,7 +102,13 @@ export default {
     }
 }
 
+.drop-enter-active, .drop-leave-active {
+    transition: all 0.5s ease;
+}
 
+.drop-enter, .drop-leave-active {
+    opacity: 0;
+}
 
 
 </style>

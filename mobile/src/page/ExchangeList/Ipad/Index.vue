@@ -16,11 +16,11 @@
 			<section class="list" v-for="item in exchangeData.list" :data-id="item.id" @touchend="targetDetails">
 				<div>{{ item.nikeName }}<span class="msg-num">{{ item.replyCount }}</span></div>
 				<h1>{{ item.title }}</h1>
-				<p v-html="item.contentHtml"></p>
+				<p v-html="item.contentHtml" class="content-html"></p>
 				<time>{{ item.updateTime }}</time>
 			</section>
 
-			<img src="../../../assets/img/404.svg" class="no-data" v-show="isNoData">
+			<img src="../../../assets/img/404.svg" class="no-data" v-show="exchangeData.totalCount == 0 ? true: false">
 
 		</main>
 
@@ -52,15 +52,11 @@ export default {
 					text: '回复数量',
 				},{
 					text: '精华讨论',
-				}],
-				isNoData: false
+				}]
     }
   },
 
 	mounted() {
-
-		if(this.exchangeData.length == 0) this.isNoData = true;
-
 	},
 
 

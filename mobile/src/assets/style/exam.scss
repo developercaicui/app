@@ -1,0 +1,328 @@
+$examFontSize : 18px;
+$triangleWidth : 10px;
+@mixin WH($width: 100%, $height: 100%){
+	width: $width;
+	height: $height;
+}
+@mixin relative($top : 0, $right : 0, $bottom : 0, $left : 0) {
+	position: relative;
+	top : $top;
+	right : $right;
+	bottom : $bottom;
+	left : $left;
+}
+@mixin absolute($top : 0, $right : 0, $bottom : 0, $left : 0) {
+	position: absolute;
+	top : $top;
+	right : $right;
+	bottom : $bottom;
+	left : $left;
+}
+@mixin BColor($background-color: #000) {
+	background-color: $background-color;
+}
+@mixin textOverflow() {
+	text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+@mixin Triangle ($border-width: 10px,$border-color-top: transparent,$border-color-right: transparent,$border-color-bottom: transparent,$border-color-left: transparent){
+	display: inline-block;
+	width: 0;
+	height: 0;
+	border-width: $border-width;
+	border-style: solid;
+	border-color: $border-color-top $border-color-right $border-color-bottom $border-color-left;
+}
+.exam{
+	@include absolute();
+	z-index: 100;
+	@include WH();
+	@include BColor(#ccc);
+	padding: 50px 0;
+}
+.exam-header{
+	@include absolute();
+	@include WH(100%,50px);
+	@include BColor(#1f1f1f);
+	padding: 0 50px;
+	.exam-return{
+		@include absolute($top: 10px,$left: 15px);
+		display: inline-block;
+		@include WH(30px,30px);
+		border-right: 1px solid #313131;
+
+	}
+	$triangleWidth : 12px;
+	.triangle{
+
+	}
+	.triangle::before{
+		@include absolute();
+		@include Triangle($border-width:$triangleWidth,$border-color-right: #7c7c7c);
+		margin-left: -12px;
+		margin-top: 4px;
+	}
+	.triangle::after{
+		@include absolute($left: 2px);
+		@include Triangle($border-width:$triangleWidth,$border-color-right: #1f1f1f);
+		margin-left: -12px;
+		margin-top: 4px;
+	}
+	.exam-title{
+		@include WH();
+		line-height: 50px;
+		padding-left: 10px;
+		font-size: $examFontSize;
+		color: #7c7c7c;
+	}
+	.exam-menu{
+		@include absolute($left: initial);
+		display: inline-block;
+		@include WH(50px,100%);
+		font-size: $examFontSize;
+		line-height: 50px;
+		text-align: center;
+	}
+}
+.exam-body{
+	@include relative();
+	@include WH();
+	padding: 20px 80px;
+	@include BColor(#fff);
+
+	$triangleWidth : 26px;
+	.triangle{
+		@include WH(80px,80px);
+		margin-top: -40px;
+
+	}
+	.exercises-prev{
+		@include absolute($top: 50%);
+	}
+	.exercises-prev.triangle::before{
+		@include absolute($top:50%);
+		@include Triangle($border-width:$triangleWidth,$border-color-right: #7c7c7c);
+		margin-top: -25px;
+	}
+	.exercises-prev.triangle::after{
+		@include absolute($top:50%,$left: 4px);
+		@include Triangle($border-width:$triangleWidth,$border-color-right: #fff);
+		margin-top: -25px;
+	}
+	.exercises-next{
+		@include absolute($top: 50%,$left: initial);
+	}
+	.exercises-next.triangle::before{
+		@include absolute($top:50%);
+		@include Triangle($border-width:$triangleWidth,$border-color-left: #7c7c7c);
+		margin-top: -25px;
+		margin-left: 27px;
+	}
+	.exercises-next.triangle::after{
+		@include absolute($top:50%,$left: -4px);
+		@include Triangle($border-width:$triangleWidth,$border-color-left: #fff);
+		margin-top: -25px;
+		margin-left: 27px;
+	}
+	.exercises{
+		@include WH();
+		overflow-y: auto;
+		.exercises-title{
+			color: #1f1f1f;
+			font-size: $examFontSize;
+			line-height: 1.5em;
+		}
+		.exercises-ul{
+			.exercises-li{
+				.exercises-a{
+					display: block;
+					padding: 10px 15px;
+					margin-top: 10px;
+					font-size: $examFontSize;
+					color: #767676;
+					border: 1px solid #d4d4d4;
+					border-radius: 4px;
+					background-color: #f7f8f8;
+				}
+				// .exercises-a:hover{
+				// 	color: #fff;
+				// 	background-color: #8cc152;
+				// }
+			}
+			.exercises-li.active{
+				.exercises-a{
+					color: #fff;
+					background-color: #8cc152;
+				}
+			}
+		}
+		$triangleWidth : 6px;
+		.analysis-button{
+			display: inline-block;
+			margin-top: 10px;
+			color: #fff;
+			background-color: #00a085;
+			font-size: $examFontSize;
+			padding: 10px;
+			border-radius: 4px;
+			.triangle{
+				@include WH(12px,14px);
+				margin-left: 5px;
+			}
+			.triangle::before{
+				@include absolute();
+				@include Triangle($border-width:$triangleWidth,$border-color-bottom: #fff);
+			}
+			.triangle::after{
+				@include absolute($top: 2px);
+				@include Triangle($border-width:$triangleWidth,$border-color-bottom: #00a085);
+			}
+			.triangle-top{
+
+			}
+		}
+		.analysis-button.active{
+			.triangle{
+				@include WH(12px,6px);
+			}
+			.triangle::before{
+				@include absolute();
+				@include Triangle($border-width:$triangleWidth,$border-color-top: #fff);
+			}
+			.triangle::after{
+				@include absolute($top: -2px);
+				@include Triangle($border-width:$triangleWidth,$border-color-top: #00a085);
+			}
+		}
+		.analysis{
+			margin-top: 10px;
+			padding: 10px 15px;
+			font-size: $examFontSize;
+			border: 1px solid #e6e6e6;
+			background-color: #f4fff8;
+
+			.analysis-answer{
+				line-height: 30px;
+			}
+			.analysis-answer-success{
+				color: #00a085;
+			}
+			.analysis-answer-error{
+				color: #ff0000;
+			}
+			.analysis-content{
+				line-height: 1.5em;
+			}
+		}
+	}
+}
+.exam-footer{
+	@include absolute($top: initial);
+	@include WH(100%,50px);
+	@include BColor(#1f1f1f);
+	overflow: hidden;
+	.exam-cards-ul{
+		overflow: hidden;
+		@include WH();
+		padding: 13px 0;
+		.exam-cards-li{
+			float: left;
+			height: 26px;
+			.exam-cards-a{
+				display: inline-block;
+				@include WH(24px,24px);
+				line-height: 24px;
+				text-align: center;
+				color: #fff;
+				font-size: $examFontSize;
+				border: 1px solid #898989;
+				border-radius: 4px;
+				vertical-align: top;
+				margin-left: 10px;
+			}
+			.exam-cards-a:hover{
+				border: 1px solid #fff;
+			}
+
+			$triangleWidth : 6px;
+			.triangle{
+				@include WH(26px,26px);
+				float: left;
+				margin-left: 10px;
+			}
+			.exam-cards-prev.triangle::before{
+				@include absolute();
+				@include Triangle($border-width:$triangleWidth,$border-color-right: #fff);
+				margin-top: 5px;
+				margin-left: 10px;
+			}
+			.exam-cards-prev.triangle::after{
+				@include absolute($left: 2px);
+				@include Triangle($border-width:$triangleWidth,$border-color-right: #1f1f1f);
+				margin-top: 5px;
+				margin-left: 10px;
+			}
+
+			.exam-cards-next.triangle::before{
+				@include absolute();
+				@include Triangle($border-width:$triangleWidth,$border-color-left: #fff);
+				margin-top: 5px;
+			}
+			.exam-cards-next.triangle::after{
+				@include absolute($left: -2px);
+				@include Triangle($border-width:$triangleWidth,$border-color-left: #1f1f1f);
+				margin-top: 5px;
+			}
+		}
+		.exam-cards-active{
+			.exam-cards-a{
+				color: #454545;
+				border: 1px solid #fff;
+				@include BColor(#fff);
+			}
+		}
+		.exam-cards-success{
+			.exam-cards-a{
+				color: #fff;
+				border: 1px solid #00a085;
+				@include BColor(#00a085);
+			}
+		}
+		.exam-cards-error{
+			.exam-cards-a{
+				color: #fff;
+				border: 1px solid #eb6100;
+				@include BColor(#eb6100);
+			}
+		}
+	}
+	.exam-button-ul{
+		@include absolute($left: initial);
+		overflow: hidden;
+		.exam-button-li{
+			float: left;
+			.exam-button-a{
+				display: inline-block;
+				@include WH(initial,50px);
+				line-height: 50px;
+				font-size: $examFontSize;
+				vertical-align: top;
+				color: #7c7c7c;
+				padding: 0 20px;
+			}
+
+		}
+	}
+}
+
+.triangle{
+	@include relative();
+	display: inline-block;
+}
+.triangle::before{
+	content: "";
+}
+.triangle::after{
+	content: "";
+}

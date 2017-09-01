@@ -67,7 +67,7 @@ export default {
           path: 'login'
         });
 
-        return;
+        return false;
       }
 
 
@@ -77,6 +77,7 @@ export default {
     })
     .then(data =>{
 
+      if(!data) return false;
       this.name = data.nickName;
       this.headImg = `${this.webApi.cdnImgUrl}${data.avatar}`;
       this.phone = data.mobile ? data.mobile : data.email;

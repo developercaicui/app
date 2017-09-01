@@ -145,12 +145,19 @@ export default {
     * 递归父节点
     * @type {String}  message 提示消息
     * @type {Number}  time   隐藏时间
+    * @type {Number}  zIndex 层级
     */
-   alert(message = '网络异常，请稍后再试', time = 2000) {
+   alert(message = '网络异常，请稍后再试', time = 2000, zIndex = 199) {
 
      let oDiv = document.createElement('div');
 
+     try {
+       let oldDiv = document.querySelectorAll('.g-small-alert');
+       if (oldDiv[0])  document.body.removeChild(oDiv);
+     }catch(e) {}
+
      oDiv.className = 'g-small-alert';
+     oDiv.style.cssText = `z-index:${zIndex};`;
      oDiv.innerText = message;
 
      document.body.appendChild(oDiv);
