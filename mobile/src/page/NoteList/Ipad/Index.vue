@@ -41,8 +41,8 @@
 
 			</template>
 
+			<!-- <div class="no-data" v-show="totalCount == 0"><img src="../../../assets/img/404.svg"></div> -->
 			<img class="no-data" v-show="totalCount == 0" src="../../../assets/img/404.svg">
-
 		</main>
 	</div>
 

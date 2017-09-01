@@ -62,7 +62,30 @@ export default {
 				id: id,
 				pageNo: 1,
 				pageSize: 20,
+		}).then(res =>{
+
+				this.webApi.closeLoadingData();
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert('打开详情失败，请稍后再试');
+					return false;
+				}
+
+				this.$router.push({
+					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
+				});
 			})
+
+
+		},
+
+		// 获取我的交流列表
+		getList(data) {
+
+
+			this.webApi.loadingData();
+
+			getExchangeList(data)
 
 			.then(res =>{
 

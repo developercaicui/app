@@ -37,6 +37,7 @@ export default {
 		// 传递过来的值
 		this.data = JSON.parse(this.$route.params.data);
 
+
 		this.webApi.loadingData();
 
 
