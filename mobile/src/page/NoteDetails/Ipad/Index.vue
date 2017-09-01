@@ -17,12 +17,9 @@
 			<section class="list">
 				<h1><span>课程介绍</span><time>{{ detailsData.updateTime }}</time></h1>
 				<p>{{ detailsData.content }}</p>
-<<<<<<< HEAD
-=======
 				<div class="pic-all">
 					<i v-for="item in detailsData.imgPath" :style="item"></i>
 				</div>
->>>>>>> dev
 			</section>
 
 
@@ -45,11 +42,8 @@ export default {
   },
 
 
-<<<<<<< HEAD
-=======
   updated() {
 	},
->>>>>>> dev
 
   methods: {
 

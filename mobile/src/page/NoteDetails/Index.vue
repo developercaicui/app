@@ -36,11 +36,7 @@ export default {
 
 		// 传递过来的值
 		this.data = JSON.parse(this.$route.params.data);
-<<<<<<< HEAD
 
-		console.log();
-=======
->>>>>>> dev
 
 		this.webApi.loadingData();
 
@@ -65,12 +61,9 @@ export default {
 
 			res.data.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}  ${res.data.nikeName}`;
 
-<<<<<<< HEAD
-=======
 			res.data.imgPath =  res.data.imgPath ? res.data.imgPath.split(',') : [];
 			res.data.imgPath = res.data.imgPath.map(item => `background: url(${this.webApi.cdnImgUrl}${item}) center center no-repeat;`)
 			res.data.imgPath = res.data.imgPath.filter(item => item.includes('upload'));
->>>>>>> dev
 			this.data.detailsData = this.detailsData = res.data;
 
 		})

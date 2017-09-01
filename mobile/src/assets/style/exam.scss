@@ -52,19 +52,11 @@ $triangleWidth : 10px;
 		display: inline-block;
 		@include WH(30px,30px);
 		border-right: 1px solid #313131;
-<<<<<<< HEAD
 		
 	}
 	$triangleWidth : 12px;
 	.triangle{
 		
-=======
-
-	}
-	$triangleWidth : 12px;
-	.triangle{
-
->>>>>>> dev
 	}
 	.triangle::before{
 		@include absolute();
@@ -104,11 +96,7 @@ $triangleWidth : 10px;
 	.triangle{
 		@include WH(80px,80px);
 		margin-top: -40px;
-<<<<<<< HEAD
 		
-=======
-
->>>>>>> dev
 	}
 	.exercises-prev{
 		@include absolute($top: 50%);
@@ -214,11 +202,7 @@ $triangleWidth : 10px;
 			font-size: $examFontSize;
 			border: 1px solid #e6e6e6;
 			background-color: #f4fff8;
-<<<<<<< HEAD
 			
-=======
-
->>>>>>> dev
 			.analysis-answer{
 				line-height: 30px;
 			}
@@ -261,11 +245,7 @@ $triangleWidth : 10px;
 			.exam-cards-a:hover{
 				border: 1px solid #fff;
 			}
-<<<<<<< HEAD
 			
-=======
-
->>>>>>> dev
 			$triangleWidth : 6px;
 			.triangle{
 				@include WH(26px,26px);

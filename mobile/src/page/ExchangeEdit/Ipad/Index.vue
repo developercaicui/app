@@ -48,11 +48,7 @@ export default {
 			headerTitle: '发布新帖', // header 字
 			title: '', //  标题
 			textDetails: '', // 内容
-<<<<<<< HEAD
-			isFileOpen: true, // 是否打开上传
-=======
 			isFileOpen: false, // 是否打开上传
->>>>>>> dev
 			isPublicText: '公开', //是否公开
 			allUploadPic: [], // 所有上传的图片
 			isUploadSuccess: 0, // 图片上传成功数量

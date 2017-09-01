@@ -62,11 +62,7 @@ export default {
 				id: id,
 				pageNo: 1,
 				pageSize: 20,
-<<<<<<< HEAD
-=======
-			})
-
-			.then(res =>{
+		}).then(res =>{
 
 				this.webApi.closeLoadingData();
 
@@ -78,8 +74,6 @@ export default {
 				this.$router.push({
 					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
 				});
-
->>>>>>> dev
 			})
 
 

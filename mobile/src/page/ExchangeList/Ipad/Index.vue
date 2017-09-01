@@ -20,11 +20,7 @@
 				<time>{{ item.updateTime }}</time>
 			</section>
 
-<<<<<<< HEAD
-			<img src="../../../assets/img/404.svg" class="no-data" v-show="isNoData">
-=======
 			<img src="../../../assets/img/404.svg" class="no-data" v-show="exchangeData.totalCount == 0 ? true: false">
->>>>>>> dev
 
 		</main>
 
@@ -56,22 +52,12 @@ export default {
 					text: '回复数量',
 				},{
 					text: '精华讨论',
-<<<<<<< HEAD
-				}],
-				isNoData: false
-=======
 				}]
->>>>>>> dev
     }
   },
 
 	mounted() {
-<<<<<<< HEAD
 
-		if(this.exchangeData.length == 0) this.isNoData = true;
-
-=======
->>>>>>> dev
 	},
 
 

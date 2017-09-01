@@ -12,17 +12,6 @@ const headers = {
     }
   },
 
-<<<<<<< HEAD
-const headers = {
-
-  urlencoded: {
-    headers:{
-      'Content-Type':'application/x-www-form-urlencoded'
-    }
-  },
-
-};
-=======
 };
 
 let isPendingRequest = false;
@@ -48,7 +37,6 @@ axios.interceptors.response.use(response => {
 }, error =>  {
   if(!isPendingRequest) Promise.reject(error)
 });
->>>>>>> dev
 
 // 获取token
 export const getToken = params => { return axios.post(`${requestUrl}/api/zbids/app/gettoken/v1.0/`, qs.stringify(params)).then(res => res.data).catch(err => err) };
