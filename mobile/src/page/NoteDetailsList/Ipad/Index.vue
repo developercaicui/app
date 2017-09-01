@@ -5,7 +5,7 @@
 
 		<header class="one-top">
 			<a href="javascript:;" @touchend="backList">章节列表</a>
-			<h1>知识点战略</h1>
+			<h1>{{ detailsList[0].chaptername }}</h1>
 			<div class="state-edit">
 				<router-link to="/note/selected">新建&nbsp;<span>+</span></router-link>
 			</div>
