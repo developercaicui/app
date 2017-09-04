@@ -472,14 +472,6 @@ export default {
     //              break;
     //      }
         }
-    },
-    /**
-    * 没有数据
-    */
-    notDate() {
-
-        document.body.classList.contains("null") ? document.body.classList.remove("null") :document.body.classList.add("null")
-
     }
 
 };

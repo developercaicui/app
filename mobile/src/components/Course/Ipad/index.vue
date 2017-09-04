@@ -1,25 +1,38 @@
 <template lang="html">
 
-  <div class="course-content course-pic-list learning" ref="courseContentnoact">
+    <div class="course-content course-pic-list learning">
+
       <div class="learning-navL">
-        <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in noactiveData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
+        <p @click="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
 
-      <div class="stydys" v-for="(value,key) in noactiveData" v-if="activeBtn===key">
+      <div class="stydys" v-for="(value,key) in learningData" v-if="index===key">
         <template v-for="val in value.children">
         <h2>{{ val.subjectName }}</h2>
-        <li class="learnLi" v-for="item in val.courseLists">
-          <div :style="setBackground(item.courseBkImage)" class="cpl-head">
+        <li class="learnLi" data-coursename="" data-chaptername="" @click="openCourse(this,item.courseId,item.chapterId,item.subjectID,item.categoryId,item.subjectName,item.categoryName,item.versionId)" v-for="item in val.courseLists">
+          <div style="background-image:url(http://cdnimg.caicui.com/upload/201604/92da0abdac4a45f5b46f9546ade771ac.jpg)" class="cpl-head">
             <h4 class="exam_time none"></h4>
+            <h4 class="course_due">课程到期：{{ formatDate(item.expirationTime,"Y")+'-'+formatDate(item.expirationTime,'M')+'-'+formatDate(item.expirationTime,'D') }}</h4>
           </div>
           <div class="cpl-main">
             <div class="li">
               <h3>{{ item.courseName }}</h3>
             </div>
+            <div class="li pro-li">
+              <div class="progress-box">进度： 
+                <div class="progress">
+                  <div min="0" max="21" class="progress-bar"></div>
+                </div>
+                <div class="progress-val">{{ item.taskTotal }}%</div>
+              </div>
+            </div>
             <div class="li cpl-fool">
-              <div @click="openActivate(item)" class="btn btn-o">
+              <div onclick="openActivate('CMA Part I 中文 前导','QiQi Wu','吴奇奇','undefined','undefined','/upload/201606/09c9342818e24393a970aa93d25b9a4d.png','1','8a22ecb553eab1280153f36f380a007f','/upload/201604/92da0abdac4a45f5b46f9546ade771ac.jpg',this)" class="btn btn-o" style="display:none;">
                 <span>马上激活</span>
                 <div class="hide data"></div>
+              </div>
+              <div tapmode onclick="renew()" class="btn btn-o" style="display:none;">
+                <span>申请重听</span>
               </div>
             </div>
           </div>
@@ -27,101 +40,79 @@
         </template>
       </div>
 
-      <Setactivate v-if="activeCour" :noactive-course="noactiveCourse" @close-me="closeMe"></Setactivate>
-
-  </div>
-
+    </div>
 </template>
 
 <script>
-
-import { getNoactiveCourse } from '../../../api/port';
-
-import Setactivate from './setactivate';
-
-
 export default {
-
-  components: {
-    Setactivate
-  },
-
-  data() {
-      return {
-	      isIpad: false,
-	      isMobile: false,
-	      noactiveData: {}, // 在学课程列表
-	      noactiveCourse: {},
-	      activeBtn: "",
-	      activeCour: false
-      }
-  },
-
-  created() {
-
-    let courseParams = {
-      pageNo: 1,
-      pageSize: 1000,
-      token: this.webApi.getCookie('token')
-    };
-    // 获取过期课程列表
-    getNoactiveCourse(courseParams)
-
-    .then(res =>{
-
-      if(res && res.state == 'success'){
-            
-        this.noactiveData = this.webApi.outCourseList(res);
-
-        if(this.webApi.isEmpty(this.noactiveData)){
-		      this.$refs.courseContentnoact.classList.add("null")
-		      return false;
-		}
-
-        let str = JSON.stringify(this.noactiveData);
-
-        this.activeBtn = str.substr(2, str.indexOf(':')-3);
-            
-      }
-
-    })
-    
-     
-  },
-
-
-  methods: {
-    
-    learningNav(ind) {
-      this.activeBtn = ind;
-  	},
-    setBackground(url) {
-      return `background-image:url(${this.webApi.cdnImgUrl}${url})`
-    },
-    openActivate(item) {
-    	this.activeCour = true;
-    	this.noactiveCourse = item;
-    },
-    closeMe() {
-    	this.activeCour = false;
+  props: {
+    learningData: {
+      type: Object,
+      default: {}
     }
   },
-  updated() {
-
+  created() {
+    console.log(this.learningData)
   },
-  mounted () {
-    
-  }
-}
+  data() {
+    return {
+      index: 0
+    }
+  },
 
+  methods: {
+      learningNav(ind) {
+        this.index = ind;
+      },
+      formatDate(now, t) {
+        let date = new Date(parseInt(now * 1000));
+        let Y,M,D,h,m,s;
+        if (t == 'Y') {
+            Y = date.getFullYear();
+            return Y;
+        }
+        if (t == 'M') {
+            M = (date.getMonth() + 1 < 10 ? '0' + (date.getMonth() + 1) : date.getMonth() + 1);
+            return M;
+        }
+        if (t == 'D') {
+            D = date.getDate();
+            return this.extra(D);
+        }
+        if (t == 'h') {
+            h = date.getHours();
+            return this.extra(h);
+        }
+        if (t == 'm') {
+            m = date.getMinutes();
+            return this.extra(m);
+        }
+        if (t == 's') {
+            s = date.getSeconds();
+            return this.extra(s);
+        }
+     },
+     //补位函数。
+      extra(x) {
+        //如果传入数字小于10，数字前补一位0。
+        if (parseInt(x) < 10) {
+          return "0" + parseInt(x);
+        } else {
+          return x;
+        }
+      }
+  }
+
+}
 </script>
 
 <style lang="scss" scoped>
-.course-content{
+
+ @import "../../../assets/style/mixin";
+  .course-content{
     padding-top:1.6rem;
-    min-height: 15rem;
-}
-.learning-navL {
+  }
+  .learning-navL {
     line-height: 1rem;
     padding-left: 1.1rem;
     p{
@@ -133,10 +124,6 @@ export default {
       font-size: 0.3rem;
       color: #3d4e64;
       margin-right: 0.6rem;
-    }
-    .active{
-      background: #3d4e64;
-      color: #fff;
     }
 }
 
@@ -153,7 +140,7 @@ export default {
   li{
     margin: 0.2rem 0;
       height: 2rem;
-      width: 6.9rem;
+      width: 6.8rem;
       background: #fff;
       border-bottom: 1px solid #ddd;
       position: relative;
@@ -178,7 +165,7 @@ export default {
         width: 3.9rem;
         .li{
           padding: 0.3rem 0.3rem;
-          height: 0.9rem;
+          height: 0.95rem;
           overflow: hidden;
         }
         h3{
@@ -196,7 +183,16 @@ export default {
         height: 0.95rem;
         overflow: hidden;
       }
-     
+      .learnLi:before{
+        content: "";
+        position: absolute;
+        z-index: 3;
+        background: #eee;
+        width: 44%;
+        height: 0.03rem;
+        bottom: 0.75rem;
+        right: 0.7rem;
+      }
   }
 }
 
@@ -251,9 +247,6 @@ export default {
   background: #00a185;
   color: #fff;
   margin: auto 0.2rem;
-  height: 0.6rem;
-  line-height: 0.6rem;
-  border-radius: 0.08rem;
 }
 .btn.btn-block {
   display: block;
@@ -271,5 +264,4 @@ export default {
   margin:0 0.5rem;
   position:absolute;
 }
-
 </style>
