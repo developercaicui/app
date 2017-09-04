@@ -17,26 +17,26 @@ const headers = {
 let isPendingRequest = false;
 
 // 响应拦截
-axios.interceptors.response.use(response => {
-
-  let { msg: msg, state: state } = response.data;
-
-  if (msg == 'nologin' && state == 'error') {
-
-    isPendingRequest = true;
-
-    webApi.alert('登录失效，即将跳到登录页');
-
-    LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
-
-  }else{
-    return response;
-
-  }
-
-}, error =>  {
-  if(!isPendingRequest) Promise.reject(error)
-});
+// axios.interceptors.response.use(response => {
+//
+//   let { msg: msg, state: state } = response.data;
+//
+//   if (msg == 'nologin' && state == 'error') {
+//
+//     isPendingRequest = true;
+//
+//     webApi.alert('登录失效，即将跳到登录页');
+//
+//     LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
+//
+//   }else{
+//     return response;
+//
+//   }
+//
+// }, error =>  {
+//   if(!isPendingRequest) Promise.reject(error)
+// });
 
 // 获取token
 export const getToken = params => { return axios.post(`${requestUrl}/api/zbids/app/gettoken/v1.0/`, qs.stringify(params)).then(res => res.data).catch(err => err) };

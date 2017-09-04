@@ -133,6 +133,59 @@ export default {
    isSmallTen: (num) => num < 10 ? `0${num}` : num,
 
    /**
+    * 添加css，且添加前缀
+    * @type {Element}  dom对象
+    * @return {Object} CSS，JSON
+    */
+    addCss(obj, css) {
+
+      if(!obj || !css) return;
+
+      const prefix = ['', 'webkit', 'moz'];
+      const needPrefix = ['transition', 'transform'];
+
+      for(let attr in css) {
+
+        if(needPrefix.includes(attr)) {
+
+          let key = attr;
+
+          prefix.map((item, index) =>{
+
+            if(item !== '') {
+
+              let strArr = Array.from(attr);
+
+              strArr[0] = strArr[0].toUpperCase();
+              key =`${prefix[index]}${strArr.join(',').replace(/,/g, '')}`;
+
+            }
+
+            obj.style[key] = css[attr];
+
+          })
+
+
+        }
+
+      }
+
+      // let key = '';
+      //
+      //
+      // for (let index in prefix) {
+      //
+      //   prefix[index] !== '' ? key = css.key : key = `${strArr.join(',').replace(/,/g, '')}` ;
+      //
+      //   obj.style[key] = css.val;
+      //
+      //   console.log(key);
+      //
+      // }
+
+    },
+
+   /**
     * 递归父节点
     * @type {String}  node 现在的节点
     * @type {String}  target 目标父节点
