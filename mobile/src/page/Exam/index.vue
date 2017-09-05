@@ -8,7 +8,7 @@
 		<div class="exam-body">
 			<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev"></a>
 			<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext"></a>
-				<questions v-on:getexercisestatus="exerciseStatus"></questions>
+				<questions v-on:getexercisestatus="getExerciseStatus"></questions>
 			
 		</div>
 		<div class="exam-footer">
@@ -37,8 +37,8 @@
 		},
 		data () {
 			return {
-				examType : this.$route.params.type ? this.$route.params.type : 'knowledge',
-				examId : this.$route.params.id ? this.$route.params.id : '40288af05823fe5c01582415c769000b',
+				examType : this.$route.params.type,
+				examId : this.$route.params.id,
 				exerciseContextSave : []
 			}
 		},
@@ -59,9 +59,9 @@
 				"examType" : this.examType,
 				"examId" : this.examId
 			})
-			if(this.examType == "chapter"){
+			if(this.examType == "chapter" || this.examType == "realImitate"){
 				this.exerciseExam();
-			}else if(this.examType == "knowledge"){
+			}else if(this.examType == "knowledge" || this.examType == "testSite"){
 				this.exerciseKnowledge();
 			}
 			
@@ -138,6 +138,7 @@
 				}))
 			},
 			exerciseKnowledgeIds (src){
+				// return "ff8080814bee5fde014bfa12b1230114,ff8080814b7c866a014b7cfbfcec0329,ff8080814bee5fde014bf772fa340062,ff8080814a7f5035014a951f4a632d5b,ff8080814a7f5035014a963deab62ffb".split(',');
 				return "8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(",");
 
 				var iframe=document.createElement("iframe");
@@ -162,15 +163,15 @@
 				let activeIndex = -1;
 				let exerciseId = this.exam.examBaseInfo[index].id;
 				let exerciseOptionIndex = this.exam.exerciseOptionsActiveIndex;
-				console.log(exerciseOptionIndex)
 				if(exerciseOptionIndex !== -1){
 
-					this.exerciseStatus(this.exam.exerciseActiveIndex);
+					this.getExerciseStatus();
 
 					// this.exerciseSaveContext();
 
 					this.exerciseSaveCache(exerciseId);
-					this.exerciseSave()
+					this.exerciseSave();
+
 				}
 
 				this.update({
@@ -186,7 +187,6 @@
 
 				let context = '';
 				let exerciseIsCache = this.exerciseIsCache();
-				console.log(exerciseIsCache)
 				if(exerciseIsCache.isCacheContext){
 					context = this.exam.exerciseListCache[exerciseIsCache.indexCacheContext].context;
 				}
@@ -197,8 +197,6 @@
 					}
 				})
 				if(exerciseListRequest){
-					console.log(exerciseListRequest.detail)
-					console.log(context)
 					this.update({
 						"exerciseDetail" : exerciseListRequest.detail,
 						"exerciseType" : exerciseListRequest.detail.questionTypes,
@@ -212,7 +210,6 @@
 							"count" : exerciseIndex,
 							"detail" : res.data[0]
 						})
-						console.log(res.data[0].questionTypes)
 						this.update({
 							"exerciseDetail" : res.data[0],
 							"exerciseType" : res.data[0].questionTypes,
@@ -269,17 +266,17 @@
 
 				})
 			},
-			exerciseSaveContext (){
-				this.exerciseContextSave = [];
-				this.exam.exerciseContext.forEach((item, index) => {
-					let checked = false;
-					this.exerciseContextSave.push({
-						"title" : item.title,
-						"isChecked" : item.isChecked,
-						"myChecked" : checked
-					})
-				});
-			},
+			// exerciseSaveContext (){
+			// 	this.exerciseContextSave = [];
+			// 	this.exam.exerciseContext.forEach((item, index) => {
+			// 		let checked = false;
+			// 		this.exerciseContextSave.push({
+			// 			"title" : item.title,
+			// 			"isChecked" : item.isChecked,
+			// 			"myChecked" : checked
+			// 		})
+			// 	});
+			// },
 			exerciseIsCache(){
 				let context = '';
 				let isCacheContext = false;
@@ -308,7 +305,7 @@
 					});
 				}
 			},
-			exerciseStatus () {
+			getExerciseStatus () {
 				let question = '';
 				let statusNum = 0;
 				let type = this.exam.exerciseDetail.questionTypes;
@@ -328,13 +325,15 @@
 						break;
 				}
 				statusNum = question.status ? 1 : 0;
+				console.log(statusNum)
+				console.log(this.exam.exerciseActiveIndex);
+
 				this.update({
 					"exerciseStatus" : statusNum,
 					"exerciseStatusText": question.text
 				})
 			},
 			exerciseStatusRadio () {
-
 				let status = true;
 				let text = '';
 				this.exam.exerciseContext.forEach((element, index) => {
@@ -401,7 +400,6 @@
 					status = false;
 					text = "正确答案是"+context.blank+"，回答错误";
 				}
-				console.log(context)
 				return {
 					"status" : status,
 					"text" : text

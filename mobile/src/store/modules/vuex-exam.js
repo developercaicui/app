@@ -61,10 +61,15 @@ export default {
 				try{
 					newContent = JSON.parse(JSON.parse(JSON.stringify(state.exerciseContext)));
 				}catch(e){
-					let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', '#39': "'" };
-					newContent = state.exerciseContext.replace(/&(lt|gt|nbsp|amp|quot|#39);/ig, function(all, t) { return arrEntities[t]; });
-					newContent = newContent.substring(1,newContent.length-1);
-					newContent = JSON.parse(JSON.parse(JSON.stringify(newContent)));
+					if(state.exerciseContext.substring(0,3) == "'[{"){
+						newContent = state.exerciseContext.substring(1,state.exerciseContext.length-1);
+						newContent = JSON.parse(newContent);
+					}else{
+						let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', '#39': "'" };
+						newContent = state.exerciseContext.replace(/&(lt|gt|nbsp|amp|quot|#39);/ig, function(all, t) { return arrEntities[t]; });
+						newContent = newContent.substring(1,newContent.length-1);
+						newContent = JSON.parse(JSON.parse(JSON.stringify(newContent)));
+					}
 				}
 				state.exerciseContext = newContent;
 			}
