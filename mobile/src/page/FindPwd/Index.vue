@@ -2,7 +2,7 @@
 
 	<div class="find-pwd-ipad">
 
-		<header class="reg-head">
+		<header class="reg-head hide">
 			<router-link to="login" class="back">&#xe669;</router-link>
 			<h1>找回密码</h1>
 		</header>

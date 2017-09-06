@@ -25,7 +25,7 @@
 
 						<template v-for="threeItem in twoItem.children">
 
-						<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @touchend.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+						<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @click.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
 							<div>
 								<h1>{{threeItem.chapterTitle}}</h1>
 								<i>{{threeItem.nodeNum}}</i>
@@ -77,8 +77,6 @@ export default {
 				courseData:  Object.assign(course, chapter, chapterTwo)
 			}
 
-			console.log(data, 'note > detailslist');
-			//
 			this.$router.push({
 				path: `detailslist/${encodeURIComponent(JSON.stringify(data))}`,
 			});
@@ -201,12 +199,14 @@ export default {
  			a{
  				color: $green;
  				&:nth-of-type(1){
+ 					position: relative;
  					font-size: .3rem;
  					margin-right: .2rem;
-					transform: translate3d(0,.2rem,0);
+					transform: translate3d(0, .2rem, 0);
+					font-size: .32rem;
  				}
  				&:nth-of-type(2){
- 					font-size: .24rem;
+ 					font-size: .26rem;
  				}
  			}
  		}

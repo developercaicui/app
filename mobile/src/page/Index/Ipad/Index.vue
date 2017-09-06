@@ -40,7 +40,7 @@
 				</div>
 
 				<div class="activity-list" v-for="item in activityList">
-					<figure :data-href="item.href" :data-id="item.id">
+					<figure :data-href="item.href" :data-id="item.id" @click="handleOpenActivity">
 					  <img :src="item.src" />
 						<figcaption>{{ item.title }}</figcaption>
 					</figure>
@@ -139,7 +139,17 @@ export default {
 
 			let oA = this.webApi.recursiveParentNode(ev.target, 'a');
 
-			caicui.getCourseData(oA.dataset.data);
+			g.targetLearningCourses(oA.dataset.data);
+
+		},
+
+
+		// 打开活动页
+		handleOpenActivity(ev) {
+
+			let oFigure = this.webApi.recursiveParentNode(ev.target, 'figure');
+
+			window.location.href = oFigure.dataset.href;
 
 		},
 

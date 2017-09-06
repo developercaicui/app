@@ -60,8 +60,6 @@ export default {
 				sectionData: JSON.parse(oSection.dataset.section)
 			};
 
-			console.log('detaislList > detaisl');
-
 			this.$router.push({
 				path: `/note/details/${encodeURIComponent(JSON.stringify(data))}`,
 			});
@@ -99,7 +97,7 @@ export default {
 				@extend .ab;
 				left: .3rem; padding-left: .45rem;
 				top: 50%; transform: translateY(-50%);
-				@include fc(.24rem, $green);
+				@include fc(.26rem, $green);
 				&:before{
 					content: '\e669';
 					@include fc(.3rem, #a5a5a5);
@@ -151,7 +149,7 @@ export default {
 			 font-family: 'iconfont';
 			 a{
 				 color: $green;
-				 font-size: .24rem;
+				 font-size: .26rem;
 			 }
 	  }
 
