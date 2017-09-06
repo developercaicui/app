@@ -23,7 +23,6 @@
           </div>
         </div>
       </div>
-      
     </div>
 	</div>
 
@@ -53,13 +52,13 @@ export default {
 		.then(res =>{
 
 	      if(res && res.state == 'success'){
-	            
+
 	          if(res.data.mobile){
                   $(".pop-input-tel").val(res.data.mobile)
               }else{
                   $(".pop-input-tel").val(res.data.email)
-              } 
-	            
+              }
+
 	      }
 
 	    })
@@ -72,7 +71,7 @@ export default {
 	},
 
 	components: {
-    
+
   	},
 
 	methods: {
@@ -506,7 +505,7 @@ body[show='about'] #mask2 {
     background-color: #fff
 }
 .feeback-but {
-     margin-top: 0; 
+     margin-top: 0;
 }
 .feeback-textareaBox{
     padding:0.2rem 0.4rem;

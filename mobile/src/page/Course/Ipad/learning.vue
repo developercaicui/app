@@ -8,7 +8,7 @@
       <div class="stydys" v-for="(value,key) in learningData" v-if="activeBtn===key">
         <template v-for="val in value.children">
         <h2>{{ val.subjectName }}</h2>
-        <li class="learnLi" data-coursename="" data-chaptername="" @click="openCourse(this,item.courseId,item.chapterId,item.subjectID,item.categoryId,item.subjectName,item.categoryName,item.versionId)" v-for="item in val.courseLists">
+        <li class="learnLi" data-coursename="" data-chaptername="" @click="openCourse(item)" v-for="item in val.courseLists">
           <div :style="setBackground(item.courseBkImage)" class="cpl-head">
             <h4 class="exam_time none"></h4>
             <h4 class="course_due">课程到期：{{ formatDate(item.expirationTime,"Y")+'-'+formatDate(item.expirationTime,'M')+'-'+formatDate(item.expirationTime,'D') }}</h4>
@@ -70,7 +70,7 @@ export default {
 			pageSize: 1000,
 			token: this.webApi.getCookie('token')
 		};
-
+this.webApi.alert(this.webApi.getCookie('token'))
 		this.webApi.loadingData();
 
 		// 获取在学课程列表
@@ -223,6 +223,9 @@ export default {
 	},
 	setBackground(url) {
 		return `background-image:url(${this.webApi.cdnImgUrl}${url})`
+	},
+	openCourse(data) {
+		onlineCouse.getOnlineCourseData(JSON.stringify(data))
 	}
   },
   updated() {

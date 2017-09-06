@@ -27,7 +27,7 @@ axios.interceptors.response.use(response => {
 
     webApi.alert('登录失效，即将跳到登录页');
 
-    LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
+    // LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
 
   }else{
     return response;
