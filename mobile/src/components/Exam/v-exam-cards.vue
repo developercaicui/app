@@ -2,10 +2,10 @@
 	<ul class="exam-cards-ul">
 		<li class="exam-cards-li" @click="cardsBtnPrev"><a href="javascript:;" class="exam-cards-prev triangle"></a></li>
 		<div class="exam-cards-scroll">
-			<div class="exam-cards-box" :style="{ width: cardsBoxWidth + 'px' }">
-				<template v-for="(list, index) of cardsArra">
+			<div class="exam-cards-box" :style="{ width: cardsBoxWidth + 'px' }"  :key="exam.exerciseStatus">
+				<template v-for="(list, index) of exam.examBaseInfo" >
 					<!-- <li class="exam-cards-li" :class="exam.exerciseActiveIndex == index ? 'exam-cards-active' : ''" :class="exerciseStatus(index)" @click="cardsBtn(index, $event)"><a href="javascript:;" class="exam-cards-a">{{index+1}}</a></li> -->
-					<li class="exam-cards-li"  :class="list.status=='1' ? 'exam-cards-success' : 'exam-cards-error'" @click="cardsBtn(index, $event)"><a href="javascript:;" class="exam-cards-a">{{index+1}}</a></li>
+					<li class="exam-cards-li"  :class="[list.status=='1' ? 'exam-cards-success' : 'exam-cards-error',exam.exerciseActiveIndex == index ? 'exam-cards-active' : '']"  @click="cardsBtn(index, $event)"><a href="javascript:;" class="exam-cards-a">{{index+1}}</a></li>
 				</template>
 			</div>
 		</div>
@@ -25,18 +25,6 @@
 			...mapState(['exam']),
 			cardsBoxWidth () {
 				return this.exam.examBaseInfo.length*36;
-			},
-			cardsArra (){
-				if(this.exam.exerciseListCache && this.exam.exerciseListCache.length){
-					this.exam.examBaseInfo.forEach((item1, index1)=>{
-						this.exam.exerciseListCache.forEach((item2, index2)=>{
-							if(this.exam.examBaseInfo[index1].id == item2.exercise_id){
-								this.exam.examBaseInfo[index1].status = item2.status;
-							}
-						})
-					});
-					return this.exam.examBaseInfo;
-				}
 			}
 		},
 		methods : {

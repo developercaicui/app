@@ -1,6 +1,8 @@
 
 $examFontSize : 18px;
+$examTask : 22px;
 $triangleWidth : 10px;
+$marginTB-10 : 10px 0;
 @mixin WH($width: 100%, $height: 100%){
 	width: $width;
 	height: $height;
@@ -135,10 +137,15 @@ $triangleWidth : 10px;
 		@include absolute($top:0,$left: 0);
 		@include WH();
 		overflow-y: auto;
+
 		.exercises-title{
 			color: #1f1f1f;
 			font-size: $examFontSize;
 			line-height: 1.5em;
+		}
+		.exercises-task{
+			font-size: $examTask;
+			margin: $marginTB-10;
 		}
 		.exercises-ul{
 			.exercises-li{
@@ -211,6 +218,9 @@ $triangleWidth : 10px;
 			
 			.analysis-answer{
 				line-height: 30px;
+				p{
+					display: inline-block;
+				}
 			}
 			.analysis-answer-success{
 				color: #00a085;
@@ -331,13 +341,7 @@ $triangleWidth : 10px;
 				margin-top: 5px;
 			}
 		}
-		.exam-cards-active{
-			.exam-cards-a{
-				color: #454545;
-				border: 1px solid #fff;
-				@include BColor(#fff);
-			}
-		}
+		
 		.exam-cards-success{
 			.exam-cards-a{
 				color: #fff;
@@ -350,6 +354,13 @@ $triangleWidth : 10px;
 				color: #fff;
 				border: 1px solid #eb6100;
 				@include BColor(#eb6100);
+			}
+		}
+		.exam-cards-active{
+			.exam-cards-a{
+				color: #454545;
+				border: 1px solid #fff;
+				@include BColor(#fff);
 			}
 		}
 	}
@@ -382,10 +393,3 @@ $triangleWidth : 10px;
 .triangle::after{
 	content: "";
 }
-
-// .exercises-enter-active, .exercises-leave-active{
-// 	transition: all .3s ease;
-// }
-// .exercises-enter, .exercises-leave-to {
-// 	opacity: 0;
-// }

@@ -2,6 +2,7 @@
 	<div class="exercises-content">
 		<div class="exercises-title" v-html="exercisesTitle"></div>
 		<div v-for="(list, index) in optionsContextJson">
+			<p class="exercises-task">Task {{index+1}}</p>
 			<component :is="list.type" :multi-task-index="index" :exercises-title="list.title" :options-context-json="list.data"></component>
 		</div>
 	</div>

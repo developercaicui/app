@@ -8,10 +8,10 @@
 		<div class="exam-body">
 			<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev"></a>
 			<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext"></a>
-				<questions v-on:getexercisestatus="getExerciseStatus"></questions>
+				<questions @analysisstatus="analysisEvent"></questions>
 			
 		</div>
-		<div class="exam-footer">
+		<div class="exam-footer" v-if="exam.exerciseListCache.length">
 			<exam-cards @cardsPrev="exercisePrev" @cardsNext="exerciseNext" @clickExamCards="exerciseChange"></exam-cards>
 			<ul class="exam-button-ul">
 				<li class="exam-button-li"><a href="javascript:;" class="exam-button-a">交卷</a></li>
@@ -124,7 +124,6 @@
 					if(status.data && status.data.length){
 						exerciseNid = +status.data[0].last_exercise_nid
 					}
-					
 					this.update({
 						"examCache" : cache.data,
 						"examState" : status.data[0],
@@ -138,8 +137,9 @@
 				}))
 			},
 			exerciseKnowledgeIds (src){
+				return "ff8080814bee5fde014bfa12b1230114".split(',');
 				// return "ff8080814bee5fde014bfa12b1230114,ff8080814b7c866a014b7cfbfcec0329,ff8080814bee5fde014bf772fa340062,ff8080814a7f5035014a951f4a632d5b,ff8080814a7f5035014a963deab62ffb".split(',');
-				return "8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(",");
+				// return "8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(",");
 
 				var iframe=document.createElement("iframe");
 				iframe.setAttribute("id", "knowledgeIds");
@@ -150,12 +150,14 @@
 				}else{
 				  document.documentElement.appendChild(iframe);
 				}
+				let iframeData =[];
 				document.getElementById('knowledgeIds').onload=function(){
 					if(document.getElementById('knowledgeIds').contentWindow.document.body.innerHTML){
-						console.log(document.getElementById('knowledgeIds').contentWindow.document.body.innerHTML)
+						let iframeObj = document.getElementById('knowledgeIds').contentWindow.document.body.innerHTML;
+							iframeData = iframeObj.trim().split(",");
 					}
 				};
-				
+				return iframeData;
 			},
 
 			exerciseChange (index){
@@ -178,8 +180,10 @@
 					exerciseId : exerciseId,
 					exerciseActiveIndex : index,
 					exerciseShowAnalysis : false,
+					exerciseAnalysisText : '展开解析',
 					exerciseOptionsActiveIndex : activeIndex,
-					exerciseStatus : -1
+					exerciseStatus : '-1',
+					exerciseContext : []
 				})
 				this.exerciseGetDetail(exerciseId, index);
 			},
@@ -197,10 +201,12 @@
 					}
 				})
 				if(exerciseListRequest){
+
 					this.update({
 						"exerciseDetail" : exerciseListRequest.detail,
 						"exerciseType" : exerciseListRequest.detail.questionTypes,
-						"exerciseContext" : context ? context : exerciseListRequest.detail.context
+						"exerciseContext" : context ? context : exerciseListRequest.detail.context,
+						"exerciseTitle" : exerciseListRequest.detail.title,
 					})
 				}else{
 					Request.exerciseDetail({
@@ -213,7 +219,8 @@
 						this.update({
 							"exerciseDetail" : res.data[0],
 							"exerciseType" : res.data[0].questionTypes,
-							"exerciseContext" : context ? context : res.data[0].context
+							"exerciseContext" : context ? context : res.data[0].context,
+							"exerciseTitle" : res.data[0].title
 						})
 					})
 				}
@@ -223,6 +230,15 @@
 				index--;
 				if(this.exam.exerciseActiveIndex){
 					this.exerciseChange(index);
+				}else{
+					if(this.exam.exerciseOptionsActiveIndex !== -1){
+						this.update({
+							exerciseOptionsActiveIndex : -1
+						})
+						this.getExerciseStatus();
+						this.exerciseSaveCache();
+						this.exerciseSave();
+					}
 				}
 			},
 			exerciseNext () {
@@ -230,6 +246,15 @@
 				index++;
 				if(index < this.exam.examBaseInfo.length){
 					this.exerciseChange(index);
+				}else{
+					if(this.exam.exerciseOptionsActiveIndex !== -1){
+						this.update({
+							exerciseOptionsActiveIndex : -1
+						})
+						this.getExerciseStatus();
+						this.exerciseSaveCache();
+						this.exerciseSave();
+					}
 				}
 			},
 			exerciseSave (args){
@@ -305,38 +330,60 @@
 					});
 				}
 			},
+			analysisEvent () {
+				let exerciseOptionIndex = this.exam.exerciseOptionsActiveIndex;
+				this.getExerciseStatus();
+				if(exerciseOptionIndex !== -1){
+
+					this.exerciseSaveCache();
+					this.exerciseSave();
+
+				}
+			},
 			getExerciseStatus () {
 				let question = '';
 				let statusNum = 0;
 				let type = this.exam.exerciseDetail.questionTypes;
 				this.arrEntities();
+				let context = this.exam.exerciseContext;
 				switch (type){
 					case "radio":
-						question = this.exerciseStatusRadio();
+						question = this.exerciseStatusRadio(context);
 						break;
 					case "checkbox":
-						question = this.exerciseStatusCheckbox();
+						question = this.exerciseStatusCheckbox(context);
 						break;
 					case "blank":
-						question = this.exerciseStatusBlank();
+						question = this.exerciseStatusBlank(context);
 						break;
 					case "question":
-						question = this.exerciseStatusQuestions();
+						question = this.exerciseStatusQuestions(context);
+						break;
+					case "matrixRadio":
+						question = this.exerciseStatusMatrixRadio(context);
+						break;
+					case "matrixCheckbox":
+						question = this.exerciseStatusMatrixCheckbox(context);
+						break;
+					case "matrixBlank":
+						question = this.exerciseStatusMatrixBlank(context);
+						break;
+					case "multiTask":
+						question = this.exerciseStatusMatrixTask(context);
 						break;
 				}
-				statusNum = question.status ? 1 : 0;
-				console.log(statusNum)
-				console.log(this.exam.exerciseActiveIndex);
-
+				statusNum = question.status ? '1' : '0';
+				this.$set(this.exam.examBaseInfo[this.exam.exerciseActiveIndex],'status',statusNum);
 				this.update({
 					"exerciseStatus" : statusNum,
 					"exerciseStatusText": question.text
 				})
+
 			},
-			exerciseStatusRadio () {
+			exerciseStatusRadio (data) {
 				let status = true;
 				let text = '';
-				this.exam.exerciseContext.forEach((element, index) => {
+				data.forEach((element, index) => {
 					if(element.isChecked){
 						if(element.myChecked){
 							status = true;
@@ -352,7 +399,7 @@
 					"text" : text
 				};
 			},
-			exerciseStatusCheckbox () {
+			exerciseStatusMatrixRadio (data) {
 				let status = true;
 				let text = '';
 				let isCheckedNum = 0;
@@ -360,7 +407,45 @@
 				let isCheckedTotal = 0;
 				let myCheckedTotal = 0;
 				let rights = '';
-				this.exam.exerciseContext.forEach((element, index) => {
+				let context = data[0];
+				context.items.forEach((element, index) => {
+					if(element.isChecked && element.myChecked){
+						myCheckedNum++;
+					}
+					if(element.isChecked){
+						isCheckedTotal++;
+						rights+= context.items[parseInt(index/context.cols)*context.cols].title + ':' + context.items[index%context.cols].title + ';';
+					}
+					if(element.myChecked){
+						myCheckedTotal++;
+					}
+				})
+				if(myCheckedTotal == isCheckedTotal){
+					if(isCheckedTotal && myCheckedNum && isCheckedTotal == myCheckedNum){
+						status = true;
+						text = "正确答案是"+rights+"，回答正确";
+					}else{
+						status = false;
+						text = "正确答案是"+rights+"，回答错误";
+					}
+				}else{
+					status = false;
+					text = "正确答案是"+rights+"，回答错误";
+				}
+				return {
+					"status" : status,
+					"text" : text
+				};
+			},
+			exerciseStatusCheckbox (data) {
+				let status = true;
+				let text = '';
+				let isCheckedNum = 0;
+				let myCheckedNum = 0;
+				let isCheckedTotal = 0;
+				let myCheckedTotal = 0;
+				let rights = '';
+				data.forEach((element, index) => {
 					if(element.isChecked && element.myChecked){
 						myCheckedNum++;
 					}
@@ -389,11 +474,49 @@
 					"text" : text
 				};
 			},
-			exerciseStatusBlank () {
+			exerciseStatusMatrixCheckbox (data) {
+				let status = true;
+				let text = '';
+				let isCheckedNum = 0;
+				let myCheckedNum = 0;
+				let isCheckedTotal = 0;
+				let myCheckedTotal = 0;
+				let rights = '';
+				let context = data[0];
+				context.items.forEach((element, index) => {
+					if(element.isChecked && element.myChecked){
+						myCheckedNum++;
+					}
+					if(element.isChecked){
+						isCheckedTotal++;
+						rights+= context.items[parseInt(index/context.cols)*context.cols].title + ':' + context.items[index%context.cols].title + ';';
+					}
+					if(element.myChecked){
+						myCheckedTotal++;
+					}
+				})
+				if(myCheckedTotal == isCheckedTotal){
+					if(isCheckedTotal && myCheckedNum && isCheckedTotal == myCheckedNum){
+						status = true;
+						text = "正确答案是"+rights+"，回答正确";
+					}else{
+						status = false;
+						text = "正确答案是"+rights+"，回答错误";
+					}
+				}else{
+					status = false;
+					text = "正确答案是"+rights+"，回答错误";
+				}
+				return {
+					"status" : status,
+					"text" : text
+				};
+			},
+			exerciseStatusBlank (data) {
 				let status = false;
 				let text = '';
-				let context = this.exam.exerciseContext[0];
-				if(context.blank == context.myBlank){
+				let context = data[0];
+				if(element.blank && element.myBlank && context.blank.trim() == context.myBlank.trim()){
 					status = true;
 					text = "正确答案是"+context.blank+"，回答正确";
 				}else{
@@ -405,11 +528,49 @@
 					"text" : text
 				};
 			},
-			exerciseStatusQuestions () {
+			exerciseStatusMatrixBlank (data) {
+				let status = true;
+				let text = '';
+				let isCheckedNum = 0;
+				let myCheckedNum = 0;
+				let isCheckedTotal = 0;
+				let myCheckedTotal = 0;
+				let rights = '';
+				let context = data[0];
+				context.items.forEach((element, index) => {
+					if(element.blank && element.myBlank && element.blank.trim() == element.myBlank.trim()){
+						myCheckedNum++;
+					}
+					if(element.blank){
+						isCheckedTotal++;
+						rights+= context.items[parseInt(index/context.cols)*context.cols].title + ':' + context.items[index].blank + ';';
+					}
+					if(element.myBlank){
+						myCheckedTotal++;
+					}
+				})
+				if(myCheckedTotal == isCheckedTotal){
+					if(isCheckedTotal && myCheckedNum && isCheckedTotal == myCheckedNum){
+						status = true;
+						text = "正确答案是"+rights+"，回答正确";
+					}else{
+						status = false;
+						text = "正确答案是"+rights+"，回答错误";
+					}
+				}else{
+					status = false;
+					text = "正确答案是"+rights+"，回答错误";
+				}
+				return {
+					"status" : status,
+					"text" : text
+				};
+			},
+			exerciseStatusQuestions (data) {
 				let status = false;
 				let text = '';
-				let context = this.exam.exerciseContext[0];
-				if(context.blank == context.myBlank){
+				let context = data[0];
+				if(element.blank && element.myBlank && context.blank.trim() == context.myBlank.trim()){
 					status = true;
 					text = "正确答案是"+context.blank+"，回答正确";
 				}else{
@@ -420,8 +581,53 @@
 					"status" : status,
 					"text" : text
 				};
-			}
+			},
+			exerciseStatusMatrixTask (data) {
+				let status = false;
+				let statusRightTotal = 0;
+				let text = '';
+				data.forEach((element, index) => {
+					let context = element.data;
+					let type = element.type;
+					let question = '';
+					switch (type){
+						case "radio":
+							question = this.exerciseStatusRadio(context);
+							break;
+						case "checkbox":
+							question = this.exerciseStatusCheckbox(context);
+							break;
+						case "blank":
+							question = this.exerciseStatusBlank(context);
+							break;
+						case "question":
+							question = this.exerciseStatusQuestions(context);
+							break;
+						case "matrixRadio":
+							question = this.exerciseStatusMatrixRadio(context);
+							break;
+						case "matrixCheckbox":
+							question = this.exerciseStatusMatrixCheckbox(context);
+							break;
+						case "matrixBlank":
+							question = this.exerciseStatusMatrixBlank(context);
+							break;
+					}
+					if(question.status){
+						statusRightTotal++;
+					}
+					text+= 'Task ' + (index+1) + '<br/>'+question.text+';<br/>'
+				})
+				if(statusRightTotal == data.length){
+					status = true;
+				}
 
+
+				return {
+					"status" : status,
+					"text" : text
+				};
+			}
 		}
 	}
 </script>

@@ -1,11 +1,24 @@
 <template>
 	<transition-group class="exercises-box" name="exercises" mode="out-in" tag="div">
 	<div class="exercises" :key="exam.exerciseId">
+		<template v-if="exam.exerciseContext.length">
+			<component :is="exam.exerciseType" :exercises-title="exam.exerciseDetail.title" :options-context-json="exerciseContextJson"></component>
+			
+			<a class="analysis-button" href="javascript:;" @click="analysisBtn($event)">{{ exam.exerciseAnalysisText }}<span class="triangle"></span></a>
+			<analysls></analysls>
+		</template>
 		
-		<component :is="exam.exerciseType" :exercises-title="exam.exerciseDetail.title" :options-context-json="exerciseContextJson"></component>
+		<div class="g-data-loading" v-else>
+		  <div class="showbox">
+		    <div class="loader">
+		      <svg class="circular" viewBox="25 25 50 50">
+		        <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10"/>
+		      </svg>
+		    </div>
+		  </div>
+		  <h1>加载中...</h1>
+		</div>
 		
-		<a class="analysis-button" href="javascript:;" @click="analysisBtn($event)">{{ this.analysisText }}<span class="triangle"></span></a>
-		<analysls></analysls>
 	</div>
 	</transition-group>
 </template>
@@ -59,19 +72,22 @@
 				'arrEntities'
 			]),
 			analysisBtn (event){
-				this.$emit("getexercisestatus");
+				
 				
 				if(this.exam.exerciseShowAnalysis){
-					this.analysisText = "展开解析";
+					// this.analysisText = "展开解析";
 					this.update({
 						"exerciseShowAnalysis" : false,
-						"exerciseOptionsActiveIndex" : 1
+						"exerciseAnalysisText" : '展开解析'
 					})
+
 				}else{
-					this.analysisText = "收起解析";
+					this.$emit("analysisstatus");
+					// this.analysisText = "收起解析";
 					this.update({
 						"exerciseShowAnalysis" : true,
-						"exerciseOptionsActiveIndex" : 1
+						"exerciseAnalysisText" : '收起解析',
+						"exerciseOptionsActiveIndex" : -1
 					})
 				}
 			}

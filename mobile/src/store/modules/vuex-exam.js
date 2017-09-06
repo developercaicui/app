@@ -26,6 +26,7 @@ export default {
 		exerciseStatusText : '',
 		exerciseActiveIndex : 0,
 		exerciseShowAnalysis : false,
+		exerciseAnalysisText : '展开解析',
 		exerciseOptionsActiveIndex : -1,
 		exerciseTotalTime : 0,
 		exerciseDoneCount : 0,
@@ -84,7 +85,15 @@ export default {
 			}),Request.exerciseDetail({
 				'exerciseId' : state.exerciseId
 			})]).then(axios.spread((exerciseList, exerciseDetail) => {
-				
+				// if(state.exerciseListCache && state.exerciseListCache.length){
+					state.examBaseInfo.forEach((item1, index1)=>{
+						exerciseList.data.forEach((item2, index2)=>{
+							if(state.examBaseInfo[index1].id == item2.exercise_id){
+								state.examBaseInfo[index1].status = item2.status;
+							}
+						})
+					});
+				// }
 				commit('update',{
 					"exerciseListRequest" : [{
 						"count" : state.exerciseLastNid,
@@ -92,7 +101,8 @@ export default {
 					}],
 					"exerciseListCache" : exerciseList.data,
 					"exerciseDetail" : exerciseDetail.data[0],
-					"exerciseType" : exerciseDetail.data[0].questionTypes
+					"exerciseType" : exerciseDetail.data[0].questionTypes,
+					"exerciseTitle" : exerciseDetail.data[0].title
 				});
 				let cacheIndexContext = '';
 				exerciseList.data.forEach((item, index) => {
