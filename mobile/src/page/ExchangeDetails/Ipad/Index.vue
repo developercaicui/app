@@ -3,7 +3,7 @@
 	<div class="exchange-wrap-ipad-details">
 
 		<header class="one-top">
-			<a  @click="closeMe()">&#xe67f;</a>
+			<a @touchend.stop="closeMe">&#xe67f;</a>
 			<h1 ref="reply">讨论详情（未回复）</h1>
 			<div class="state-edit">
 				<a href="javascript:;"></a>
@@ -13,56 +13,56 @@
 
 		<div id="content1">
 			<dl class="cont-list">
-	            <dt><img :src="data.headImg" class="avatar"></dt>
-	            <dd>
-	              <div class="name"><span>{{ data.nikeName }}</span>
-	                <div onclick="addAnswer(this)" isadd="yes" class="add-answer" v-if='data.memberId == JSON.parse(this.webApi.getCookie("userInfo")).memberId'><i>...</i><span>问题补充</span></div>
-	              </div>
-	              <div class="title">{{ data.title }}</div>
-	              <div class="describe">{{ data.content ? data.content : '' }}</div>
-	              <!-- <div tapmode url="" onclick="playAudio(this)" bg time="" class="voice-player"></div> -->
-	              <ul class="pic-group" v-if="data.imgPath">
-	                <li v-for="(imgPath,index) in setImgPath(data.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
-	                <b v-if="setImgPath(data.imgPath).length>=3">共{{ setImgPath(data.imgPath).length }}张</b>
-	              </ul>
-	              <div class="add_question" v-if="data.supply" v-for="item in data.supply">
-	              		<span>问题补充:</span><span>{{ item.content }}<span>{{this.webApi.formatDate(item.updateTime,'M')+'-'+this.webApi.formatDate(item.updateTime,'D')}}</span></span>
-	              <!-- <div url="static_url+it.supply[p].soundPath" onclick="playAudio(this)" bg time="it.supply[p].soundlen" class="voice-player"></div> -->
-		              <ul class="pic-group"  v-if="item.imgPath">
-		               	<li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
-	                	<b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
-		              </ul>
-	              </div>
-	              <div class="footer">
-	                <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ data.replyCount ? data.replyCount : 0 }}</span></div>
-	                <div class="time"><span>{{ data.updateTime }}</span></div>
-	                <div class="course-name">
-	                  <div class="tag-video-time" v-if="data.taskprogress"><i class="icon-play-o"></i><span>{{ data.taskprogress }}</span></div>
-	                  <span class="course-tit" v-if="data.coursename">{{ data.coursename }}</span>
-	                </div>
-	              </div>
-	            </dd>
-	          </dl>
+          <dt><img :src="data.headImg" class="avatar"></dt>
+          <dd>
+            <div class="name"><span>{{ data.nikeName }}</span>
+              <div onclick="addAnswer(this)" isadd="yes" class="add-answer" v-if='data.memberId == JSON.parse(this.webApi.getCookie("userInfo")).memberId'><i>...</i><span>问题补充</span></div>
+            </div>
+            <div class="title">{{ data.title }}</div>
+            <div class="describe">{{ data.content ? data.content : '' }}</div>
+            <ul class="pic-group" v-if="data.imgPath">
+              <li v-for="(imgPath, index) in setImgPath(data.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" @touchend="handleOpenBigPic"></li>
+              <b v-if="setImgPath(data.imgPath).length >= 3">共{{ setImgPath(data.imgPath).length }}张</b>
+            </ul>
+            <div class="add_question" v-if="data.supply" v-for="item in data.supply">
+            		<span>问题补充:</span><span>{{ item.content }}<span>{{this.webApi.formatDate(item.updateTime,'M')+'-'+this.webApi.formatDate(item.updateTime,'D')}}</span></span>
+              <ul class="pic-group"  v-if="item.imgPath">
+               	<li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" @touchend="handleOpenBigPic"></li>
+              	<b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
+              </ul>
+            </div>
+            <div class="footer">
+              <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ data.replyCount ? data.replyCount : 0 }}</span></div>
+              <div class="time"><span>{{ data.updateTime }}</span></div>
+              <div class="course-name">
+                <div class="tag-video-time" v-if="data.taskprogress"><i class="icon-play-o"></i><span>{{ data.taskprogress }}</span></div>
+                <span class="course-tit" v-if="data.coursename">{{ data.coursename }}</span>
+              </div>
+            </div>
+          </dd>
+        </dl>
 		</div>
 		<div id="content2" class="reply-list">
 			<dl class="cont-list" v-for="item in replys">
-	            <dt><img :src="item.headImg" class="avatar"></dt>
-	            <dd>
-	              <div class="name"><span>{{ item.nikeName }}</span>
-	                <div class="time"><span>{{ item.updateTime }}</span><span></span></div>
-	              </div>
-	              <div class="describe">{{ item.content ? item.content : '' }}</div>
-	              <!-- <div url="" onclick="playAudio(this)" bg time="" class="voice-player"></div> -->
-	              <ul class="pic-group" v-if="item.imgPath">
-                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
+	       <dt><img :src="item.headImg" class="avatar"></dt>
+          <dd>
+            <div class="name"><span>{{ item.nikeName }}</span>
+              <div class="time"><span>{{ item.updateTime }}</span><span></span></div>
+            </div>
+	          <div class="describe">{{ item.content ? item.content : '' }}</div>
+
+	            <ul class="pic-group" v-if="item.imgPath">
+                <li v-for="(imgPath, index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" @touchend="handleOpenBigPic"></li>
                 <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
               </ul>
-	              <ul class="pic-group" v-else-if="item.contentHtml && getreolyImg(item.contentHtml).length>0">
-                <li v-for="(imgPath,index) in getreolyImg(item.contentHtml)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
+
+							<ul class="pic-group" v-else-if="item.contentHtml && getreolyImg(item.contentHtml).length>0">
+                <li v-for="(imgPath,index) in getreolyImg(item.contentHtml)" v-if="index <= 2" :style="setBackground(imgPath)" @touchend="handleOpenBigPic"></li>
                 <b v-if="getreolyImg(item.contentHtml).length>=3">共{{ getreolyImg(item.contentHtml).length }}张</b>
               </ul>
-	            </dd>
-	          </dl>
+
+					</dd>
+	     </dl>
 		</div>
 
 
@@ -86,12 +86,15 @@
 
 		<input type="file" @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
 
+		<photoAlbum :pic-list="picList" v-show="isShowList" @closeBigPic="closeBigPic"></photoAlbum>
+
 	</div>
 
 </template>
 
 <script>
 
+import photoAlbum from '../../../components/Comm/photoAlbum';
 import { removeExchangeDetails } from '../../../api/port';
 
 export default {
@@ -100,10 +103,14 @@ export default {
 		'user-info': [Object]
 	},
 
+	components: {
+		photoAlbum,
+	},
+
   data() {
     return {
 			data: [],
-         	replys: [],
+      replys: [],
 			isFileOpen: false, // 是否打开上传图片
 			allUploadPic: [], // 所有上传的图片
 			allPicPath: '', // 上传图片的内容
@@ -111,6 +118,8 @@ export default {
 			textDetails: '', // 内容
 			appendReplyHtml: '',
 			isRemoveMsg: false, // 是否可以删除当前留言。默认可以
+			isShowList: false, // 是否显示大图列表
+			picList: [], // 图片列表
     }
   },
 
@@ -118,17 +127,15 @@ export default {
 
 		this.data = JSON.parse(this.$route.params.data);
 
-		console.log(JSON.stringify(this.$route.params.data))
+		this.picList = this.data.imgPath.split(',').map(item => `${this.webApi.cdnImgUrl}${item}`);
+
 		this.isRemoveMsg = this.userInfo.memberId === this.data.memberId ? true : false;
 
 		this.replys = this.data.replys;
 
-	    if(!this.webApi.isEmpty(this.replys) && this.replys.length>0){
+	  if(!this.webApi.isEmpty(this.replys) && this.replys.length>0) this.$refs.reply.innerHTML = '交流详情 (已回复)';
 
-	    	this.$refs.reply.innerHTML = '交流详情 (已回复)'
-	    }
-
-	    this.setListData(this.data)
+    this.setListData(this.data)
 
 		this.setReplysData(this.replys)
 
@@ -145,6 +152,17 @@ export default {
 			})
 
 		},
+
+		// 打开大图
+		handleOpenBigPic() {
+			this.isShowList = true;
+		},
+
+		// 关闭大图
+		closeBigPic(off) {
+			this.isShowList = off;
+		},
+
 
 		// 发布，先提交照图片
 		handleSubPublish() {
@@ -284,8 +302,8 @@ this.data.replys.push(data);
 			 }
 		},
     getreolyImg(html) {
-     //创建一个div  
-       let divHtml = document.createElement("div");  
+     //创建一个div
+       let divHtml = document.createElement("div");
        divHtml.innerHTML = html;
        let divHtmlimg = divHtml.getElementsByTagName("img");
        if(divHtmlimg.length<1){
@@ -647,7 +665,7 @@ this.data.replys.push(data);
   background: #f5f5f5;
   padding-bottom: 1.5rem;
 }
-/**é€šç”¨å›¾ç‰‡ç»„**/
+
 .pic-group-detail {
   padding: 0.2rem 0.3rem;
 }
@@ -679,7 +697,6 @@ this.data.replys.push(data);
 }
 .pic-group b:nth-child(4) {
   position: absolute;
-  z-index: 9999;
   bottom: 0;
   background-color: rgba(0,0,0,0.5);
   color: #fff;

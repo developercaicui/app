@@ -13,5 +13,33 @@
   </head>
   <body>
     <main id="app"></main>
+    <script src="http://192.168.10.141:8080/target/target-script-min.js#anonymous"></script>
+    <script type="text/javascript">
+
+      function getUserInfo(data = {}) {
+
+        console.log(data, 'userInfo');
+
+        data = JSON.parse(data);
+
+        window.localStorage.setItem('userInfo', JSON.stringify(data));
+        window.localStorage.setItem('token', data.token);
+
+        console.log(data.token, 'enter');
+
+      }
+
+      // function call(){
+        // caicui.call(JSON.stringify({'s':'b'}));
+
+      // }
+
+      setTimeout(()=>{
+        // caicui.missToken('nologin');
+        // caicui.getCourseData(JSON.stringify({'s':'b'}));
+      },3000)
+
+
+    </script>
   </body>
 </html>

@@ -27,14 +27,18 @@ export default {
       isMobile: false,
 			activityList: [], // 活动列表
 			learningCourseList: [], // 最近在学课程
+			userInfo: {}, // 用户信息
     }
   },
 
 	created() {
 		this.webApi.loadingData();
+		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 	},
 
 	mounted() {
+
+		console.log(this.userInfo);
 
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
@@ -68,6 +72,12 @@ export default {
 
 		})
 
+		console.log({
+			verTT: new Date().getTime(),
+			token: this.webApi.getCookie('token'),
+			pageNo: 1,
+			pageSize: 999
+		}, '在学课程')
 		// 最近所学课程
 		getLearningCourse({
 			verTT: new Date().getTime(),
@@ -79,7 +89,7 @@ export default {
 		.then(res =>{
 
 			this.webApi.closeLoadingData();
-			
+
 			if(!res || res.state != 'success'){
 				this.webApi.alert('网络异常，请稍后再试');
 				return false;
@@ -98,8 +108,11 @@ export default {
 					courseGroupId: item.courseGroupId,
 					subjectID: item.subjectID,
 					taskTotal: item.taskTotal,
+					versionId: item.versionId,
 					courseProgress: 0,
-					examinationDate: '暂无考试'
+					examinationDate: '暂无考试',
+					token: this.userInfo.token,
+					memberId: this.userInfo.memberId
 				}
 
 			});

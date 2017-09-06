@@ -76,17 +76,9 @@ export default {
 
 		this.data = JSON.parse(this.$route.params.data);
 
-		console.log(this.data);
+		console.log(this.data, 'edit');
 
-		this.data.detailsData.picAllPath.map(src =>{
 
-			this.allUploadPic.push({
-				src: `${this.webApi.cdnImgUrl}${src}`,
-				path: src,
-				file: null
-			});
-
-		});
 
 		// 是否编辑
 		if('detailsData' in this.data){
@@ -102,6 +94,17 @@ export default {
 			this.type = 'edit';
 			this.isPublic = this.data.detailsDataisPublic;
 			this.clientType = this.data.detailsData.clientType;
+
+			this.data.detailsData.picAllPath.map(src =>{
+
+				this.allUploadPic.push({
+					src: `${this.webApi.cdnImgUrl}${src}`,
+					path: src,
+					file: null
+				});
+
+			});
+
 		}else{
 			this.title = this.data.sectionData.chapterTitle;
 			this.noteId = '';

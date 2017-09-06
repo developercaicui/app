@@ -2,7 +2,7 @@
 
 	<div class="pic-list-wrap">
 		<header>
-			<a href="javascript:;" class="back" @touchend="handleCloseBigShow">&#xe669;</a>
+			<a href="javascript:;" class="back" @touchend.stop="handleCloseBigShow">&#xe669;</a>
 			<span ref="listInfo"></span>
 			<a href="javascript:;">&#xe60f;</a>
 	  </header>
@@ -180,6 +180,8 @@ export default {
 	position: fixed;
 	left: 0; right: 0; bottom: 0; top: 0;
 	background-color: #000;
+	z-index: 119;
+
 	> header {
 		@include wh(100%, 1rem);
 		@include fc(.36rem, #fff);
@@ -217,7 +219,7 @@ export default {
 		}
 		img{
 			margin-top: -2rem;
-			max-width: 100%; width: auto;
+			max-width: 100%; width: 100%;
 		}
 	}
 }

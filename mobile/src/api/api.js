@@ -43,10 +43,18 @@ export default {
 
     let device = window.navigator.userAgent.toLocaleLowerCase();
 
-    if(device.includes('ipad'))
-      return 'ipad';
-    else if(device.includes('mobile'))
-      return 'mobile';
+    return 'ipad'
+    // if(device.includes('android')) {
+    //
+    // }else if(device.includes('ios')) {
+    //
+    //   if(device.includes('ipad'))
+    //     return 'ipad';
+    //   else if(device.includes('mobile'))
+    //     return 'mobile';
+    //
+    // }
+
 
   },
 
@@ -169,19 +177,6 @@ export default {
         }
 
       }
-
-      // let key = '';
-      //
-      //
-      // for (let index in prefix) {
-      //
-      //   prefix[index] !== '' ? key = css.key : key = `${strArr.join(',').replace(/,/g, '')}` ;
-      //
-      //   obj.style[key] = css.val;
-      //
-      //   console.log(key);
-      //
-      // }
 
     },
 

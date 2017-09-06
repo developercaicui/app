@@ -9,6 +9,7 @@
   url('//at.alicdn.com/t/font_376989_popr5t0if6xenrk9.ttf') format('truetype'),
   url('//at.alicdn.com/t/font_376989_popr5t0if6xenrk9.svg#iconfont') format('svg');
 }
+
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 abbr, address, cite, code,
@@ -144,6 +145,10 @@ a,a:active,a:hover,a:focus {
   text-decoration: none;
   border: none;
   outline: none;
+}
+
+i{
+  font-style: normal;
 }
 
 a,button,input,textarea{
@@ -319,4 +324,3 @@ h1, h2, h3, h4, h5, h6{
     background: #fff url(./assets/img/404.svg) no-repeat center;
     background-size: 2.28rem 2.28rem !important;
 }
-
