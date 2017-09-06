@@ -1,14 +1,19 @@
 <template>
-	<div class="exercises-blank" v-if="optionsContextJson">
-		<template v-for="(list, index) in optionsContextJson">
-			<textarea class="exercises-textarea" type="text"  @keyup="changeVal(index, $event)">{{list.myBlank}}</textarea> 
-		</template>
+	<div class="exercises-content">
+		<div class="exercises-title" v-html="exercisesTitle"></div>
+		<div class="exercises-blank" v-if="optionsContextJson">
+			<template v-for="(list, index) in optionsContextJson">
+				<textarea class="exercises-textarea" type="text"  @keyup="changeVal(index, $event)">{{list.myBlank}}</textarea> 
+			</template>
+		</div>
 	</div>
 </template>
 <script>
 import { mapState,mapMutations,mapActions } from 'vuex';
 export default{
 	props : [
+		"multiTaskIndex",
+		"exercisesTitle",
 		"optionsContextJson"
 	],
 	data () {
@@ -32,16 +37,14 @@ export default{
 		]),
 		changeVal (index, even){
 			var that = event.currentTarget;
-			this.exam.exerciseContext[index].myBlank = that.value;
-			if(that.value){
-				this.update({
-					"exerciseOptionsActiveIndex" : 1
-				})
+			if(this.exam.exerciseType == "multiTask"){
+				this.exam.exerciseContext[this.multiTaskIndex].data[index].myBlank = that.value;
 			}else{
-				this.update({
-					"exerciseOptionsActiveIndex" : -1
-				})
+				this.exam.exerciseContext[index].myBlank = that.value;
 			}
+			this.update({
+				"exerciseOptionsActiveIndex" : 1
+			})
 		}
 	}
 }
