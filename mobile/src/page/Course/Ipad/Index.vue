@@ -3,9 +3,9 @@
 	<main class="course-wrap-ipad">
 
 		<ul class="course-navBar">
-			<li class="active" data-type="learning" @click="changeCourse">在学课程</li>
-			<li data-type="noactive" @click="changeCourse">未激活课程</li>
-			<li data-type="overdue"  @click="changeCourse">已过期课程</li>
+			<li class="active" data-type="learning" @touchend="changeCourse">在学课程</li>
+			<li data-type="noactive" @touchend="changeCourse">未激活课程</li>
+			<li data-type="overdue"  @touchend="changeCourse">已过期课程</li>
 		</ul>
 		<transition-group name="drop">
 			<Courselearning v-show="currmodule=='learning'" key="learning"></Courselearning>
@@ -103,7 +103,7 @@ export default {
 }
 
 .drop-enter-active, .drop-leave-active {
-    transition: all 0.5s ease;
+    transition: all 0.3s ease;
 }
 
 .drop-enter, .drop-leave-active {

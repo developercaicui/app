@@ -4,6 +4,8 @@
 
 		<Headers></Headers>
 
+		<SlideRefresh>
+		</SlideRefresh>
 
 		<main class="index-content">
 
@@ -13,10 +15,10 @@
 					<h1>在学课程</h1>
 				</div>
 
-				<a href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-if="index<3">
+				<a @touchend="handleSendCouseInfo" :data-data="JSON.stringify(item)" href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-if="index<3">
 					<div class="info">
 						<h1>{{ item.courseName }}</h1>
-						<time>有效期至：{{ item.examinationDate }}</time>
+						<time>有效期至：{{ item.examinationDate.includes('1970') ? '暂无考试' :item.examinationDate }}</time>
 						<time>课程到期：{{ item.expirationTime }}</time>
 					</div>
 					<div class="process">
@@ -50,6 +52,7 @@
 
 		</main>
 
+
 	</div>
 
 </template>
@@ -57,6 +60,7 @@
 <script>
 
 import Headers from '../../../components/Header/';
+import SlideRefresh from '../../../components/Comm/SlideRefresh';
 
 export default {
 
@@ -67,6 +71,7 @@ export default {
 
 	components: {
     Headers,
+		SlideRefresh
   },
 
 
@@ -77,7 +82,6 @@ export default {
 
 	created() {
 
-		//
 
 	},
 
@@ -129,6 +133,15 @@ export default {
 	},
 
   methods: {
+
+		// 发送课程信息给原生
+		handleSendCouseInfo(ev) {
+
+			let oA = this.webApi.recursiveParentNode(ev.target, 'a');
+
+			caicui.getCourseData(oA.dataset.data);
+
+		},
 
   }
 

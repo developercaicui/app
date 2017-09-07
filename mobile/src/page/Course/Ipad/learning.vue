@@ -8,7 +8,7 @@
       <div class="stydys" v-for="(value,key) in learningData" v-if="activeBtn===key">
         <template v-for="val in value.children">
         <h2>{{ val.subjectName }}</h2>
-        <li class="learnLi" data-coursename="" data-chaptername="" @click="openCourse(item)" v-for="item in val.courseLists">
+        <li class="learnLi" data-coursename="" data-chaptername="" @touchend="openCourse(item)" v-for="item in val.courseLists">
           <div :style="setBackground(item.courseBkImage)" class="cpl-head">
             <h4 class="exam_time none"></h4>
             <h4 class="course_due">课程到期：{{ formatDate(item.expirationTime,"Y")+'-'+formatDate(item.expirationTime,'M')+'-'+formatDate(item.expirationTime,'D') }}</h4>
@@ -224,7 +224,10 @@ this.webApi.alert(this.webApi.getCookie('token'))
 	setBackground(url) {
 		return `background-image:url(${this.webApi.cdnImgUrl}${url})`
 	},
-	openCourse(data) {
+	openCourse(data) {// 发送课程信息给原生
+		data.expirationTime = this.formatDate(data.expirationTime,"Y")+'/'+this.formatDate(data.expirationTime,'M')+'/'+this.formatDate(data.expirationTime,'D');
+		data.token = this.webApi.getCookie('token');
+		data.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;
 		onlineCouse.getOnlineCourseData(JSON.stringify(data))
 	}
   },

@@ -1,9 +1,9 @@
 <template lang="html">
 
 
-	<div class="exchange-wrap-ipad">
+	<div class="node-ipad-list">
 
-		<main>
+		<main class="list-wrap">
 
 			<div class="s-head">
 		      <div class="center">
@@ -13,63 +13,82 @@
 		      </div>
 		      <ul class="right">
 		        <li @click="showSearchBar"><i class="icon-sousuo icon-search2">&#xe651;</i></li>
-		        <li @click="new_answer"><span>提问</span><i class="icon-plus" style="font-size: 0.6rem;vertical-align: middle;">+</i></li>
+		        <li @click="new_answer"><span>提问</span><i class="icon-plus">+</i></li>
 		      </ul>
 		      <div class="search-bar">
 		        <input type="text" name="input-lx" placeholder="搜索" class="input-txt" ref="searchWord">
 		        <div class="right"><i class="icon-sousuo icon-search2">&#xe651;</i><span @click="goSearch()" class="submit">搜索</span><span @click="hideSearchBar" class="cancel">取消</span></div>
 		      </div>
-      		</div>
+      </div>
+      
 			<div class="all" v-show="defaultAct==0" ref="all">
-				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList">
-	            <dt><img :src="item.headImg" class="avatar"></dt>
-	            <dd>
-	              <div @click="answerDetail(item)" courseId="" taskId="" data-id="" data-key="" class="link-box">
-	                <div class="name">{{ item.nikeName }}</div>
-	                <div class="title">{{ item.title }}</div>
-	                <div class="describe">{{ item.contentSummary }}</div>
-	              </div>
-	              <ul class="pic-group" v-if="item.imgPath">
-	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
-	                <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
-	              </ul>
-	              <div class="footer">
-	                <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ item.replyCount ? item.replyCount : 0 }}</span></div>
-	                <div class="time"><span>{{ item.updateTime }}</span></div>
-	                <div class="course-name">
-	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o"></i><span>{{ item.taskprogress }}</span></div>
-	                  <span class="course-tit" v-if="item.coursename">{{ item.coursename }}</span>
-	                </div>
-	              </div>
-	            </dd>
-	          </dl>
+				<template>
+
+          <h1 :data-id="sectionAllList.id">{{sectionAllList.courseName}}</h1>
+
+          <template v-for="twoItem in sectionAllList.children">
+
+            <section class="list" :data-id="twoItem.id" v-if="twoItem.nodeNum!=0">
+              <div>
+                <span></span>
+                <h1>{{twoItem.chapterTitle}}</h1>
+              </div>
+
+              <template v-for="threeItem in twoItem.children">
+
+              <section class="list" :data-course="JSON.stringify(sectionAllList)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @touchend.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+                <div>
+                  <h1>{{threeItem.chapterTitle}}</h1>
+                  <i>{{threeItem.nodeNum}}</i>
+                </div>
+
+              </section>
+
+              </template>
+
+            </section>
+
+           </template>
+
+        </template>
+
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
-				<dl id="li" class="cont-list" v-for="(item,index) in exchangeListMe">
-	            <dt><img :src="item.headImg" class="avatar"></dt>
-	            <dd>
-	              <div @click="answerDetail(item)" courseId="" taskId="" data-id="" data-key="" class="link-box">
-	                <div class="name">{{ item.nikeName }}</div>
-	                <div class="title">{{ item.title }}</div>
-	                <div class="describe">{{ item.contentSummary }}</div>
-	              </div>
-	              <ul class="pic-group" v-if="item.imgPath">
-	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
-	                <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
-	              </ul>
-	              <div class="footer">
-	                <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ item.replyCount ? item.replyCount : 0 }}</span></div>
-	                <div class="time"><span>{{ item.updateTime }}</span></div>
-	                <div class="course-name">
-	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o"></i><span>{{ item.taskprogress }}</span></div>
-	                  <span class="course-tit" v-if="item.coursename">{{ item.coursename }}</span>
-	                </div>
-	              </div>
-	            </dd>
-	          </dl>
+				<template v-for="item in sectionList">
+
+          <h1 :data-id="item.id">{{item.courseName}}</h1>
+
+          <template v-for="twoItem in item.children">
+
+            <section class="list" :data-id="twoItem.id" v-if="twoItem.nodeNum!=0">
+              <div>
+                <span></span>
+                <h1>{{twoItem.chapterTitle}}</h1>
+              </div>
+
+              <template v-for="threeItem in twoItem.children">
+
+              <section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @touchend.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+                <div>
+                  <h1>{{threeItem.chapterTitle}}</h1>
+                  <i>{{threeItem.nodeNum}}</i>
+                </div>
+
+              </section>
+
+              </template>
+
+            </section>
+
+           </template>
+
+        </template>
+
 			</div>
 		</main>
+
+		<photoAlbum :pic-list="picList" v-show="isShowList" @closeBigPic="closeBigPic"></photoAlbum>
 
 	</div>
 
@@ -77,45 +96,51 @@
 
 <script>
 
-import { getExchangeList, getExchangeDetails, searchhNote } from '../../../api/port';
+import { getCourseNoteList, getNoteList, getNoteDetails, searchhNote } from '../../../api/port';
+import photoAlbum from '../../../components/Comm/photoAlbum';
 
 export default {
+
+	components: {
+		photoAlbum,
+	},
+
 	data() {
 	    return {
 			defaultAct: 0,
-			courseInfo:{},
+      sectionList: [],
+      sectionAllList: [],
 			navList: [
 		        {
-		          name: '全部交流',
+		          name: '全部笔记',
 		        },{
-		          name: '我的交流',
+		          name: '我的笔记',
 		        }
 		      ],
-		    exchangeList: {},
-		    exchangeListMe: {},
 		    searchWord: '',
 		    searchData:'',
 		    page: 1,
 		    params:{},
-		    self: 0
+		    self: 0,
+				isShowList: false, // 是否显示大图
+				picList: [], // 图片列表
 	    }
 	},
+
 	created() {
-		
-		// this.courseInfo = caicui.getDiscussInfo();
-		// console.log(this.courseInfo);
-		this.getDate(1,0);
-		this.getDate(1,1);
+		this.getAllNote();
+		this.getMeNote();
 
 	},
 
 	updated() {
-		if(this.webApi.isEmpty(this.exchangeList) || this.exchangeList.length<1){
+
+		    if(this.webApi.isEmpty(this.sectionList) || this.sectionList.length<1){
           this.$refs.all.classList.add("null")
       	}else{
       		this.$refs.all.classList.remove("null")
       	}
-        if(this.webApi.isEmpty(this.exchangeListMe) || this.exchangeListMe.length<1){
+        if(this.webApi.isEmpty(this.sectionAllList) || this.sectionAllList.length<1){
             this.$refs.me.classList.add("null")
         }else{
         	this.$refs.me.classList.remove("null")
@@ -124,6 +149,22 @@ export default {
 	},
 
   	methods: {
+
+			// 打开大图
+			handleOpenBigPic(ev) {
+
+				let oUl = ev.target.parentNode;
+
+				if(oUl.dataset.pic) this.picList = oUl.dataset.pic.split(',').map(item => `${this.webApi.cdnImgUrl}${item}`);
+
+				this.isShowList = true;
+			},
+
+			// 关闭大图
+			closeBigPic(off) {
+				this.isShowList = off;
+			},
+
   		set_index(index) {
   			this.defaultAct = index;
   			this.self = index;
@@ -136,8 +177,8 @@ export default {
         },//提问
         new_answer() {
         	this.$router.push({
-				path: `/exchange/edit/${encodeURIComponent(JSON.stringify(this.exchangeList[0]))}`,
-			});
+    				path: `/note/edit/${encodeURIComponent(JSON.stringify(this.exchangeList[0]))}`,
+    			});
         },//搜索
         goSearch() {
         	this.params.keyWords = this.webApi.isEmpty(this.$refs.searchWord.value) ? '' : this.$refs.searchWord.value;
@@ -156,21 +197,69 @@ export default {
         	this.webApi.loadingData();
         	searchhNote(this.params)
 
-			.then(res =>{
+    			.then(res =>{
 
-		      if(res && res.state == 'success'){
 
-		          this.webApi.closeLoadingData();
+    		      if(res && res.state == 'success'){
 
-		          this.searchData = {key1:res,page:page,keyword:this.params.keyWords}
+    		          this.webApi.closeLoadingData();
 
-		          this.getDate(page,self)
+    		          this.searchData = {key1:res,page:page,keyword:this.params.keyWords}
 
-		      }
+    		          this.getDate(page,self)
 
-		    })
+    		      }else{
+    						this.webApi.alert('网络异常，请稍后再试');
+    					}
+
+    		    })
         },
-        getDate(page,self) {
+        getAllNote(){//获取全部课程笔记列表
+          //搜索判断,用于第一次搜索结果重新给模板页面赋值
+          if(!this.webApi.isEmpty(this.searchData)){
+            let data = this.searchData;
+                let total = data.key1.totalCount;
+                let keyword = data.keywords;
+
+                if (this.webApi.isEmpty(data.key1.data)||total==0) {
+                  this.webApi.alert("暂无数据")
+                  // $('#content').html('');
+                  // $('body').addClass('null');
+                  return false;
+                }
+                this.exchangeList = data.key1.data;
+                this.setListData(this.exchangeList);
+
+                return false;
+          }
+          let param = {};
+          param.self = 0;
+          param.courseid= "ff8080814f607c24014f68797ae11714";
+          param.categoryId= "ff808081473905e701475cd3c2080001";
+          param.subjectId= "ff808081473905e701476204cb6c006f";
+          param.token = this.webApi.getCookie('token');
+
+          this.webApi.loadingData();
+
+          getCourseNoteList(param)
+
+          .then(res =>{
+
+              if(res && res.state == 'success'){
+
+                  this.webApi.closeLoadingData();
+
+                    this.sectionAllList = res.data;
+                    console.log(JSON.stringify(this.sectionAllList))
+
+
+                  
+
+              }
+
+            })
+        },
+        getMeNote() {//获取我的课程笔记列表
         	//搜索判断,用于第一次搜索结果重新给模板页面赋值
         	if(!this.webApi.isEmpty(this.searchData)){
         		let data = this.searchData;
@@ -178,116 +267,84 @@ export default {
               	let keyword = data.keywords;
 
               	if (this.webApi.isEmpty(data.key1.data)||total==0) {
-              	  alert("暂无数据")
+              	  this.webApi.alert("暂无数据")
                   // $('#content').html('');
                   // $('body').addClass('null');
                   return false;
               	}
-              	$('body').removeClass('null');
               	this.exchangeList = data.key1.data;
-		        this.setListData(this.exchangeList);
+		            this.setListData(this.exchangeList);
 
               	return false;
         	}
         	let param = {};
-	        param.self = self;
-	        param.type = 3;
-	        param.ordertype = 1;
-	        param.pageNo = page;
-	        param.pageSize = 10;
+	        param.self = 1;
 	        param.courseid= "ff8080814f607c24014f68797ae11714";
-	        param.categoryId= "ff808081473905e701475cd3c2080001";
-	        param.subjectId= "ff808081473905e701476204cb6c006f";
+          param.categoryId= "ff808081473905e701475cd3c2080001";
+          param.subjectId= "ff808081473905e701476204cb6c006f";
 	        param.token = this.webApi.getCookie('token');
-	        if (page == 1) {
-	            this.webApi.loadingData();
-	        }
 
-			getExchangeList(param)
+          this.webApi.loadingData();
 
-			.then(res =>{
+    			getNoteList(param)
 
-		      if(res && res.state == 'success'){
+    			.then(res =>{
 
-		          this.webApi.closeLoadingData();
+    		      if(res && res.state == 'success'){
 
-		          if(self == 0){
-		          	this.exchangeList = res.data;
-		          	this.setListData(this.exchangeList);
+    		          this.webApi.closeLoadingData();
 
-		          }else{
-		          	this.exchangeListMe = res.data;
-		          	this.setListData(this.exchangeListMe);
+    		          	this.sectionList = res.data;
 
-		          }
+    		          	// this.setListData(this.sectionList);
 
-		      }
+    		          
 
-		    })
+    		      }
+
+    		    })
         },
-        setListData(list) {
-        	list.map(item =>{
-	          	item.headImg = `${this.webApi.cdnImgUrl}${item.headImg}`;
-	          	item.title = `${item.bbstype=='0'?"【讨论】":"【问答】"}${item.title}`;
-	          	item.imgPath = `${this.webApi.isEmpty(item.imgPath)?'':item.imgPath}`;
-	          	item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
-	          	item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' ' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
-	        });
-        },
-		// 打开详情
-		answerDetail(item) {
+        openNoteDetails(ev) {// 打开详情
 
-			this.webApi.loadingData();
-
-			getExchangeDetails({
-				token: this.webApi.getCookie('token'),
-				id: item.id,
-				pageNo: 1,
-				pageSize: 20,
-			})
-
-			.then(res =>{
-
-				this.webApi.closeLoadingData();
-
-				if(!res || res.state != 'success'){
-					this.webApi.alert('打开详情失败，请稍后再试');
-					return false;
-				}
-
-				this.$router.push({
-					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
-				});
-				// this.$router.push({
-				// 	path: `details/${encodeURIComponent(JSON.stringify(res.data))}`,
-				// });
-
-			})
-		},
-		setBackground(url) {
-			return `background-image:url(${this.getImgPath(url)})`
-		},
-		setImgPath(imgPaths) {
-			let imgPath=imgPaths.split(',');
-			let imgPathArr=[];
-            for(let i in imgPath) {
-              if(!this.webApi.isEmpty(imgPath[i])) {
-                imgPathArr.push(imgPath[i]);
-              }
+            let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+            let course = JSON.parse(oSection.dataset.course);
+            let chapter = JSON.parse(oSection.dataset.chapter);
+            let chapterTwo = JSON.parse(oSection.dataset.chaptertwo);
+            let data = {
+              courseData:  Object.assign(course, chapter, chapterTwo),
+              self: this.self
             }
-            return imgPathArr;
-		},
-		getImgPath(imgPath) {//处理图片路径
-			if(imgPath.length>0){
-				  if(imgPath.substr(0,4)!="http"){
-				     return this.webApi.cdnImgUrl+imgPath;
-				  }else{
-				  	return imgPath;
-				  }
-			 }else{
-			 	return imgPath;
-			 }
-		}
+
+            this.$router.push({
+              path: `/note/detailslist/${encodeURIComponent(JSON.stringify(data))}`,
+            });
+
+      },
+		
+  		setBackground(url) {
+  			return `background-image:url(${this.getImgPath(url)})`
+  		},
+  		setImgPath(imgPaths) {
+  			let imgPath=imgPaths.split(',');
+  			let imgPathArr=[];
+              for(let i in imgPath) {
+                if(!this.webApi.isEmpty(imgPath[i])) {
+                  imgPathArr.push(imgPath[i]);
+                }
+              }
+              return imgPathArr;
+  		},
+  		getImgPath(imgPath) {//处理图片路径
+  			if(imgPath.length>0){
+  				  if(imgPath.substr(0,4)!="http"){
+  				     return this.webApi.cdnImgUrl+imgPath;
+  				  }else{
+  				  	return imgPath;
+  				  }
+  			 }else{
+  			 	return imgPath;
+  			 }
+  		}
 
 	},
 	mounted() {
@@ -784,4 +841,133 @@ select {
 .avatar {
   border-radius: 50%;
 }
+.icon-plus{
+	font-size: .24rem;
+}
+@import "../../../assets/style/mixin";
+
+  $green: #46C1AA;
+
+  .node-ipad-list{
+
+    font-size: 0; line-height: 1;
+
+    .list{
+
+      padding: 0 .75rem;
+      border-bottom: 1px solid #f5f5f5;
+
+      > section.list{
+        padding-left: 0rem;
+        padding-right: 0;
+        > section.list{
+          padding-left: 0;
+          > div span{
+            @extend .hide;
+          }
+          > div h1{
+            font-size: .24rem;
+          }
+        }
+      }
+
+      > div{
+
+        @include wh(100%, 1.2rem);
+        position: relative; font-size: .26rem;
+
+        span{
+          @extend .ab;
+          left: -.9rem; padding-left: .45rem;
+          &:after{
+            content: '\e669';
+            @extend .show;
+            font-family: 'iconfont';
+            @include fc(.32rem, #969696);
+            transition: .3s;
+            transform: rotate(-90deg);
+          }
+          top: 50%; transform: translateY(-50%);
+         }
+
+         h1{
+          color: #7d7d7d;
+          display: flex;
+          align-items: center;
+          text-indent: .2rem;
+          font-weight: 0;
+          height: inherit;
+        }
+
+        i{
+          @extend .ab;
+          right: 0; top: 50%; transform: translateY(-50%);
+          @include fc(.24rem, #969696);
+          font-style: normal;
+          &:before{
+            content: '\e609';
+            font-family: 'iconfont';
+          }
+        }
+
+      }
+
+    }
+
+    .list-wrap{
+
+      background-color: #fff;
+
+      > h1{
+        @include wh(100%, 1.2rem);
+        @include fc(.32rem, $green);
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        padding: 0 .75rem 0 .3rem;
+        background-color:  #f7f7f7;
+      }
+
+    }
+
+    header.head{
+
+      position: relative;
+      @include wh(100%, 1.05rem);
+      border-bottom: 1px solid #B9B9B9;
+      background-color: #fff;
+
+      h1{
+        @extend .flexCenter;
+        @include fc(.3rem, #1D1D1D);
+        height: inherit;
+      }
+
+     }
+
+     .state-edit{
+      @extend .ab;
+      right: .35rem; top: 50%; transform: translateY(-50%);
+      font-family: 'iconfont';
+      a{
+        color: $green;
+        &:nth-of-type(1){
+          font-size: .3rem;
+          margin-right: .2rem;
+          transform: translate3d(0,.2rem,0);
+        }
+        &:nth-of-type(2){
+          font-size: .24rem;
+        }
+      }
+    }
+
+    .no-data{
+      @extend .ab;
+      @include wh(2.4rem, 2.4rem);
+      left: 50%; top: 4rem;
+      margin-left: -1.2rem;
+    }
+
+ }
 </style>

@@ -21,7 +21,7 @@ axios.interceptors.response.use((res) => {
   }else{
   	return Promise.reject('res');
   }
-  
+
 }, (error) => {
   return Promise.reject(error);
 });
@@ -71,7 +71,7 @@ function getArgs(port,params){
 			args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
 			args.type = thatServer.type ? thatServer.type : 'GET';
 		}
-		
+
 	}else{
 		hostName = COMMON.host.name;
 		if(thatServer.hostName){
@@ -80,7 +80,7 @@ function getArgs(port,params){
 		args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
 		args.type = thatServer.type ? thatServer.type : 'GET';
 	}
-	
+
 	// return args;
 
 	if(args.type === 'POST'){
@@ -369,7 +369,7 @@ const server = {
 		'type' : 'POST'
 	},
 	'ccLogin' : {
-		'hostName' : 'https://view.csslcloud.net',	
+		'hostName' : 'https://view.csslcloud.net',
 		'hostNameDemo' : 'https://view.csslcloud.net',
 		'url' : '/api/view/login',
 		'type' : 'POST'

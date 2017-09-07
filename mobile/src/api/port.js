@@ -27,11 +27,15 @@ axios.interceptors.response.use(response => {
 
     webApi.alert('登录失效，即将跳到登录页');
 
+
+    setTimeout( ()=>{
+      // caicui.tokenInvalid('nologin');
+    },2000)
+
     // LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
 
   }else{
     return response;
-
   }
 
 }, error =>  {
@@ -98,8 +102,10 @@ export const complaintOpinion = params => { return axios.post(`${requestUrl}/api
 
 
 
-// 获取我的笔记
+// 获取我的笔记列表
 export const getNoteList = params => { return axios.post(`${requestUrl}/api/studytools/myallcoursechapternodecount/v2.1`, qs.stringify(params)).then(res => res.data).catch(err => err) };
+// 获取课程笔记列表
+export const getCourseNoteList = params => { return axios.post(`${requestUrl}/api/studytools/coursechapternodecount/v2.1`, qs.stringify(params)).then(res => res.data).catch(err => err) };
 // 进入笔记详情列表
 export const getNoteDetailsList = params => { return axios.get(`${requestUrl}/api/studytools/nodelist/v2.1?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 // 笔记详情

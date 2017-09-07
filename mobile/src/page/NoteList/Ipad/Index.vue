@@ -41,7 +41,6 @@
 
 			</template>
 
-			<!-- <div class="no-data" v-show="totalCount == 0"><img src="../../../assets/img/404.svg"></div> -->
 			<img class="no-data" v-show="totalCount == 0" src="../../../assets/img/404.svg">
 		</main>
 	</div>
@@ -75,7 +74,8 @@ export default {
 			let chapter = JSON.parse(oSection.dataset.chapter);
 			let chapterTwo = JSON.parse(oSection.dataset.chaptertwo);
 			let data = {
-				courseData:  Object.assign(course, chapter, chapterTwo)
+				courseData:  Object.assign(course, chapter, chapterTwo),
+				self: 1
 			}
 
 			console.log(data, 'note > detailslist');
