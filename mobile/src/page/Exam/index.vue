@@ -6,15 +6,16 @@
 			<!-- <a class="exam-menu" href="javascript:;">菜单</a> -->
 		</div>
 		<div class="exam-body">
-			<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev"></a>
-			<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext"></a>
-				<questions @analysisstatus="analysisEvent"></questions>
-			
+			<template v-if="exam.examBaseInfo.length">
+				<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev" v-if="exam.exerciseActiveIndex != 0"></a>
+				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext" v-if="exam.exerciseActiveIndex != (exam.examBaseInfo.length-1)"></a>
+			</template>
+			<questions @analysisstatus="analysisEvent"></questions>
 		</div>
-		<div class="exam-footer" v-if="exam.exerciseListCache.length">
-			<exam-cards @cardsPrev="exercisePrev" @cardsNext="exerciseNext" @clickExamCards="exerciseChange"></exam-cards>
+		<div class="exam-footer" v-if="exam.exerciseListStatus.length">
+			<exam-cards @cardsPrev="exercisePrev" @cardsNext="exerciseNext" @clickExamCards="exerciseChange" @cardsPosLeft="cardsPosition"></exam-cards>
 			<ul class="exam-button-ul">
-				<li class="exam-button-li"><a href="javascript:;" class="exam-button-a">交卷</a></li>
+				<li class="exam-button-li" v-if="isSaveBtn"><a @click="exerciseAssignment" href="javascript:;" class="exam-button-a">交卷</a></li>
 				<li class="exam-button-li"><a href="javascript:;" class="exam-button-a">笔记</a></li>
 				<li class="exam-button-li"><a href="javascript:;" class="exam-button-a">提问</a></li>
 			</ul>
@@ -43,7 +44,14 @@
 			}
 		},
 		computed : {
-			...mapState(['exam'])
+			...mapState(['exam']),
+			isSaveBtn (){
+				if(this.exam.examType){
+					if(this.exam.examType == 'chapter' || this.exam.examType == 'realImitate'){
+						return true;
+					}
+				}
+			}
 		},
 
 		created() {
@@ -51,8 +59,8 @@
 			// 删除做题记录
 			// Request.delMemberExercise({
 			// 	"memberId" : 'ff8080815133db0d0151375bfdf30c0d',
-			// 	"knowledgePointId" : '8a22ecb551f699b60151f83229be030f',
-			// 	"examenNum" : 0
+			// 	"knowledgePointId" : 'ff8080814d4b3152014d551d7a240572',
+			// 	"examenNum" : 1
 			// }).then((res)=>{
 			// })
 			this.update({
@@ -94,6 +102,7 @@
 						"examNum" : status.data ? status.data.length : 0,
 						"examState" : status.data[0],
 						"examBaseInfo" : baseInfo.data,
+						"examNumTotal" : baseInfo.data.length,
 						"exerciseLastNid" : exerciseNid,
 						"exerciseActiveIndex" : exerciseNid,
 						"exerciseId" : baseInfo.data[exerciseNid].id
@@ -112,32 +121,36 @@
 					'member_id' : COMMON.User.memberId,
 					'examenNum' : ''
 				})]).then(axios.spread((cache, status, baseInfo) => {
-
-					let exerciseKnowledgeIds = this.exerciseKnowledgeIds(); //cache.data[0].exercise_filename
-					let baseInfoData = [];
-					exerciseKnowledgeIds.forEach((item)=>{
-						baseInfoData.push({
-							"id" : item
-						})
-					})
-					let exerciseNid = 0;
-					if(status.data && status.data.length){
-						exerciseNid = +status.data[0].last_exercise_nid
+					if(cache.data && cache.data.length){
+						let exerciseKnowledgeIds = this.exerciseKnowledgeIds(cache.data[0].exercise_filename); //cache.data[0].exercise_filename
+						let baseInfoData = [];
+						if(exerciseKnowledgeIds){
+							exerciseKnowledgeIds.forEach((item)=>{
+								baseInfoData.push({
+									"id" : item
+								})
+							})
+						}
+						let exerciseNid = 0;
+						if(status.data && status.data.length){
+							exerciseNid = +status.data[0].last_exercise_nid
+						}
+						this.update({
+							"examCache" : cache.data,
+							"examState" : status.data[0],
+							"examBaseInfo" : baseInfoData,
+							"examNumTotal" : baseInfoData.length,
+							"exerciseLastNid" : exerciseNid,
+							"exerciseActiveIndex" : exerciseNid,
+							"exerciseId" : baseInfoData[exerciseNid].id
+						});
+						this.requestListDetail();
+						console.log(this.exam)
 					}
-					this.update({
-						"examCache" : cache.data,
-						"examState" : status.data[0],
-						"examBaseInfo" : baseInfoData,
-						"exerciseLastNid" : exerciseNid,
-						"exerciseActiveIndex" : exerciseNid,
-						"exerciseId" : baseInfoData[exerciseNid].id
-					});
-					this.requestListDetail();
-					console.log(this.exam)
 				}))
 			},
 			exerciseKnowledgeIds (src){
-				return "ff8080814bee5fde014bfa12b1230114".split(',');
+				// return "ff8080814bee5fde014bfa12b1230114".split(',');
 				// return "ff8080814bee5fde014bfa12b1230114,ff8080814b7c866a014b7cfbfcec0329,ff8080814bee5fde014bf772fa340062,ff8080814a7f5035014a951f4a632d5b,ff8080814a7f5035014a963deab62ffb".split(',');
 				// return "8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(",");
 
@@ -155,27 +168,22 @@
 					if(document.getElementById('knowledgeIds').contentWindow.document.body.innerHTML){
 						let iframeObj = document.getElementById('knowledgeIds').contentWindow.document.body.innerHTML;
 							iframeData = iframeObj.trim().split(",");
+							return iframeData;
 					}
 				};
-				return iframeData;
+				
 			},
 
 			exerciseChange (index){
-
+				this.cardsPosition(index);
 				let activeIndex = -1;
 				let exerciseId = this.exam.examBaseInfo[index].id;
 				let exerciseOptionIndex = this.exam.exerciseOptionsActiveIndex;
 				if(exerciseOptionIndex !== -1){
-
 					this.getExerciseStatus();
-
-					// this.exerciseSaveContext();
-
 					this.exerciseSaveCache(exerciseId);
 					this.exerciseSave();
-
 				}
-
 				this.update({
 					exerciseId : exerciseId,
 					exerciseActiveIndex : index,
@@ -188,7 +196,6 @@
 				this.exerciseGetDetail(exerciseId, index);
 			},
 			exerciseGetDetail (exerciseId, exerciseIndex){
-
 				let context = '';
 				let exerciseIsCache = this.exerciseIsCache();
 				if(exerciseIsCache.isCacheContext){
@@ -201,7 +208,6 @@
 					}
 				})
 				if(exerciseListRequest){
-
 					this.update({
 						"exerciseDetail" : exerciseListRequest.detail,
 						"exerciseType" : exerciseListRequest.detail.questionTypes,
@@ -228,7 +234,7 @@
 			exercisePrev () {
 				var index = this.exam.exerciseActiveIndex;
 				index--;
-				if(this.exam.exerciseActiveIndex){
+				if(index){
 					this.exerciseChange(index);
 				}else{
 					if(this.exam.exerciseOptionsActiveIndex !== -1){
@@ -244,7 +250,7 @@
 			exerciseNext () {
 				var index = this.exam.exerciseActiveIndex;
 				index++;
-				if(index < this.exam.examBaseInfo.length){
+				if(index < this.exam.examNumTotal){
 					this.exerciseChange(index);
 				}else{
 					if(this.exam.exerciseOptionsActiveIndex !== -1){
@@ -257,19 +263,28 @@
 					}
 				}
 			},
+			cardsPosition (index) {
+				if(index>4 || index<this.exam.exerciseNumTotal-4){
+					this.update({
+						"cardsPosLeft" : (index-4)*this.exam.cardsItemWidth
+					})
+				}
+			},
 			exerciseSave (args){
 				Request.setMemberExerciseLog({
-					'status': this.exam.exerciseStatus,
-
+					
+					'memberId': COMMON.User.memberId,
+					
 					'knowledgePointId': this.exam.examId,
 					'examenNum': this.exam.examNum,
 					'examenName': this.exam.title,
 					'examenTotalNum': this.exam.examBaseInfo.length,
 					'examenType': this.exam.examType,
-					'progress': this.exam.exerciseDoneCount,
-
+					
 					'exerciseId': this.exam.exerciseId,
-					'memberId': COMMON.User.memberId,
+					'progress': this.exam.exerciseDoneCount,
+					'status': this.exam.exerciseStatus,
+					
 					'context': "'" + JSON.stringify(this.exam.exerciseContext) + "'",
 					'lastExerciseNid': this.exam.exerciseLastNid,
 					'errorNum': this.exam.exerciseErrorNum,
@@ -291,6 +306,87 @@
 
 				})
 			},
+			exerciseAssignment (){
+				// setMemberExamenFinish
+				// setMemberErrorExercise
+				Request.setMemberExamenFinish({
+					"memberId":COMMON.User.memberId,
+					"examenid":this.exam.examId,
+					"examenNum":this.exam.examNum
+				}).then(res => {
+					
+				});
+				let memberErrorExerciseData = this.getMemberErrorExerciseData();
+				Request.setMemberErrorExercise({
+					'memberId' : COMMON.User.memberId,
+					'examenId': this.exam.examId,
+					'examenName' : this.exam.examName,
+					'errorexerciseids' : memberErrorExerciseData.errorexerciseids,
+					'correctexerciseids' : memberErrorExerciseData.correctexerciseids,
+					'errorexerciseRecords' : JSON.stringify(memberErrorExerciseData.errorexerciseRecords)
+				}).then(res => {
+					
+				});
+
+			},
+			getMemberErrorExerciseData (){
+				let errorexerciseids = '';
+				let correctexerciseids = '';
+				let errorexerciseRecords = [];
+				this.exam.examBaseInfo.forEach((item, index) =>{
+					if(item.status == "1"){
+						correctexerciseids += item.id + ','
+					}else{
+						let title = this.getExerciseTitle(item.title,item.questionTypes);
+						errorexerciseids += item.id + ','
+						errorexerciseRecords.push({
+							"sort" : index.toString(),
+							"exerciseid" : item.id,
+							"exerciseTitle" : title
+						})
+					}
+				})
+				return {
+					"errorexerciseids" : errorexerciseids,
+					"correctexerciseids" : correctexerciseids,
+					"errorexerciseRecords" : errorexerciseRecords
+				}
+			},
+			getExerciseTitle (titles,types) {
+				let title = '';
+				if(titles){
+					title = titles.replace(/<[^>]+>/g,"").replace(/(^\s+)|(\s+$)/g,"").replace(/(\r)|(\n)|(\t)/g,'')
+				}else{
+					switch(types){
+						case 'radio' :
+							title = '单选题';
+							break;
+						case 'checkbox' :
+							title = '复选题';
+							break;
+						case 'blank' :
+							title = '填空题';
+							break;
+						case 'question' :
+							title = '简答题';
+							break;
+						case 'matrixRadio' :
+							title = '矩阵单选题';
+							break;
+						case 'matrixCheckbox' :
+							title = '矩阵复选题';
+							break;
+						case 'matrixBlank' :
+							title = '矩阵填空题';
+							break;
+						case 'multiTask' :
+							title = '多任务题';
+							break;
+					}
+				}
+				return title;
+			},
+
 			// exerciseSaveContext (){
 			// 	this.exerciseContextSave = [];
 			// 	this.exam.exerciseContext.forEach((item, index) => {

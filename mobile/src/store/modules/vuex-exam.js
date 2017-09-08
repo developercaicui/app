@@ -4,12 +4,13 @@ import COMMON from '../../api/common';
 export default {
 	state : {
 		exam : '',
-		examType : '', // chapter,imitate,real,knowledge
+		examType : '', // chapter,realImitate,knowledge,testSite
 		examId : '',
 		examCache : [],
 		examState : [],
 		examBaseInfo : [],
 		examNum : 0,
+		examNumTotal : 0,
 		examIsFinish : 0,
 		examProgress : 0,
 
@@ -20,7 +21,7 @@ export default {
 		exerciseId : '',
 		exerciseDetail : {},
 		exerciseContext : [],
-		exerciseOptionsArray : ["A","B","C","D","E","F"],
+		exerciseOptionsArray : ["A","B","C","D","E","F","G","H","I","J","K"],
 		exerciseTitle : '',
 		exerciseStatus : -1,
 		exerciseStatusText : '',
@@ -35,6 +36,8 @@ export default {
 		exerciseRightCount : 0,
 		exerciseAnalysis : '',
 
+		cardsItemWidth : 48,
+		cardsPosLeft : 0
 	},
 	getters : {
 		getExamId : state => {
@@ -100,6 +103,7 @@ export default {
 						"detail" : exerciseDetail.data[0]
 					}],
 					"exerciseListCache" : exerciseList.data,
+					"exerciseListStatus" : state.examBaseInfo,
 					"exerciseDetail" : exerciseDetail.data[0],
 					"exerciseType" : exerciseDetail.data[0].questionTypes,
 					"exerciseTitle" : exerciseDetail.data[0].title

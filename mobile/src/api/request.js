@@ -4,7 +4,7 @@ import config from './requestConfig';
 import  API from './api';
 import COMMON from './common';
 
-axios.defaults.timeout = 5000;
+axios.defaults.timeout = 50000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 // axios.interceptors.request.use((config) => {
@@ -46,6 +46,12 @@ export default {
   setMemberExerciseLog(params) {
   	return getArgs('setMemberExerciseLog', params)
   },
+  setMemberExamenFinish(params) {
+  	return getArgs('setMemberExamenFinish', params)
+  },
+  setMemberErrorExercise(params) {
+  	return getArgs('setMemberErrorExercise', params)
+  },
   delMemberExercise(params) {
   	return getArgs('delMemberExercise', params)
   }
@@ -55,7 +61,7 @@ function getArgs(port,params){
 	var thatServer = server[port];
 	var hostName = '';
 	var thatServerUrl = thatServer.url;
-	if(process.env.NODE_ENV !== 'development'){
+	if(process.env.NODE_ENV == 'development'){
 		if(thatServer.staticDataDemo){
 			args.url = thatServer.staticDataDemo  + "?verTT=" + new Date().getTime();
 			args.type = 'GET';
