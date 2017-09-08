@@ -30,7 +30,7 @@
 	                <div class="describe">{{ item.contentSummary }}</div>
 	              </div>
 	              <ul class="pic-group" v-if="item.imgPath">
-	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
+	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" ></li>
 	                <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
 	              </ul>
 	              <div class="footer">
@@ -55,7 +55,7 @@
 	                <div class="describe">{{ item.contentSummary }}</div>
 	              </div>
 	              <ul class="pic-group" v-if="item.imgPath">
-	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
+	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" ></li>
 	                <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
 	              </ul>
 	              <div class="footer">
@@ -102,8 +102,8 @@ export default {
 	},
 	created() {
 		
-		// this.courseInfo = caicui.getDiscussInfo();
-		// console.log(this.courseInfo);
+		this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
+
 		this.getDate(1,0);
 		this.getDate(1,1);
 
@@ -195,9 +195,9 @@ export default {
 	        param.ordertype = 1;
 	        param.pageNo = page;
 	        param.pageSize = 10;
-	        param.courseid= "ff8080814f607c24014f68797ae11714";
-	        param.categoryId= "ff808081473905e701475cd3c2080001";
-	        param.subjectId= "ff808081473905e701476204cb6c006f";
+	        // param.courseid= this.courseInfo.courseId;
+	        // param.categoryId= this.courseInfo.categoryId;
+	        param.subjectId= 'ff808081473905e701476204cb6c006f';
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {
 	            this.webApi.loadingData();

@@ -29,10 +29,10 @@ axios.interceptors.response.use(response => {
 
 
     setTimeout( ()=>{
-      // caicui.tokenInvalid('nologin');
+      // g.targetLogin();
+      // LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
     },2000)
 
-    // LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
 
   }else{
     return response;

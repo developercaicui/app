@@ -6,7 +6,7 @@
 		<header class="one-top">
 			<a href="javascript:;" @touchend.stop="handleBackSection">&#xe67f;</a>
 			<h1>{{ headerTitle }}</h1>
-			<div class="state-edit" @touchend="handleSaveNote">
+			<div class="state-edit" @touchend.stop="handleSaveNote">
 				<a href="javascript:;">&#xe654;</a>
 			</div>
 		</header>
@@ -73,7 +73,7 @@ export default {
   },
 
 	mounted() {
-
+console.log(this.$route.params.data)
 		this.data = JSON.parse(this.$route.params.data);
 
 		console.log(this.data, 'edit');
@@ -285,13 +285,13 @@ export default {
 
 		.edit{
 
-			@include fc(.24rem, #ccc);
+			@include fc(.28rem, #ccc);
 
 			textarea{
 				width: 96%;
 				@include wh(96%, 8.27rem);
 				@extend .borderBox;
-				color: #333;
+				@include fc(.26rem, #333);
 				padding: .15rem .2rem;
 				margin-left: 2%;
 				border: 1px solid #eee;
@@ -445,7 +445,7 @@ export default {
 			font-family: 'iconfont';
 			a{
 				color: $green;
-				font-size: .4rem;
+				font-size: .7rem;
 				margin-right: .3rem;
 			}
 		}

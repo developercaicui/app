@@ -30,7 +30,7 @@
 
 <script>
 
-import jquery  from 'jquery';
+import $ from 'jquery';
 import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 
 

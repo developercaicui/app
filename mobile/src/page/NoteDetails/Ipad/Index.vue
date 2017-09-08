@@ -132,7 +132,7 @@ export default {
 
 
 			h1{
-				color: #acacac;
+				color: #acacac; font-size: .26rem;
 				margin-bottom: .25rem;
 			}
 			time{

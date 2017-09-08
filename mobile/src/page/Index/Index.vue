@@ -38,50 +38,15 @@ export default {
 
 	mounted() {
 
-		console.log(this.userInfo);
-
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
 		let oDiv = document.createElement('div');
 
-		// 获取活动列表
-		getActivityList()
-
-		.then(res => {
-
-			if(!res || res.state != 'success'){
-				this.webApi.alert('获取失败，请稍后再试');
-				return false;
-			}
-
-
-			this.activityList = res.data.map(item => {
-
-				oDiv.innerHTML = item.content;
-
-				return {
-					id: item.id,
-					title: item.title,
-					src: `${this.webApi.cdnImgUrl}${oDiv.querySelectorAll('img')[0].getAttribute('src')}`,
-					href: oDiv.querySelectorAll('a')[0].getAttribute('href')
-				};
-
-			});
-
-
-		})
-
-		console.log({
-			verTT: new Date().getTime(),
-			token: this.webApi.getCookie('token'),
-			pageNo: 1,
-			pageSize: 999
-		}, '在学课程')
 		// 最近所学课程
 		getLearningCourse({
 			verTT: new Date().getTime(),
-			token: this.webApi.getCookie('token'),
+			token: this.userInfo.token,
 			pageNo: 1,
 			pageSize: 999
 		})
@@ -121,14 +86,13 @@ export default {
 		})
 		.then(() =>{
 
-			let userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 			let courseIds =  this.learningCourseList.map(item => item.courseId);
 
 
 			// 进度
 			return getCourseProgres({
-				token: userInfo.token,
-				memberId: userInfo.memberId,
+				token: this.userInfo.token,
+				memberId: this.userInfo.memberId,
 				courseId: courseIds.toString()
 			})
 
@@ -151,12 +115,11 @@ export default {
 
 			return getExamDate({
 				verTT: new Date().getTime(),
-				memberId: JSON.parse(this.webApi.getCookie('userInfo')).memberId,
+				memberId: this.userInfo.memberId,
 			})
 
 		})
 		.then(res =>{
-
 
 			if(!res || res.state != 'success'){
 				this.webApi.alert('网络异常，请稍后再试');
@@ -167,6 +130,35 @@ export default {
 			res.data.map(item => this.learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth())}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
 
 		})
+
+
+		// 获取活动列表
+		getActivityList()
+
+		.then(res => {
+
+			if(!res || res.state != 'success'){
+				this.webApi.alert('获取失败，请稍后再试');
+				return false;
+			}
+
+
+			this.activityList = res.data.map(item => {
+
+				oDiv.innerHTML = item.content;
+
+				return {
+					id: item.id,
+					title: item.title,
+					src: `${this.webApi.cdnImgUrl}${oDiv.querySelectorAll('img')[0].getAttribute('src')}`,
+					href: oDiv.querySelectorAll('a')[0].getAttribute('href')
+				};
+
+			});
+
+
+		})
+
 
 	},
 

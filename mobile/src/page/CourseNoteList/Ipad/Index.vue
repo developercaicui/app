@@ -36,7 +36,7 @@
 
               <template v-for="threeItem in twoItem.children">
 
-              <section class="list" :data-course="JSON.stringify(sectionAllList)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @touchend.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+              <section class="list" :data-course="JSON.stringify(sectionAllList)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @click="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
                 <div>
                   <h1>{{threeItem.chapterTitle}}</h1>
                   <i>{{threeItem.nodeNum}}</i>
@@ -69,7 +69,7 @@
 
               <template v-for="threeItem in twoItem.children">
 
-              <section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @touchend.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+              <section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @click="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
                 <div>
                   <h1>{{threeItem.chapterTitle}}</h1>
                   <i>{{threeItem.nodeNum}}</i>
@@ -108,8 +108,9 @@ export default {
 	data() {
 	    return {
 			defaultAct: 0,
-      sectionList: [],
-      sectionAllList: [],
+      courseInfo: {},//课程信息
+      sectionList: [],//我的笔记列表
+      sectionAllList: [],//全部笔记列表
 			navList: [
 		        {
 		          name: '全部笔记',
@@ -128,22 +129,26 @@ export default {
 	},
 
 	created() {
+    //获取课程信息
+    this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
+    //获取全部笔记列表
 		this.getAllNote();
+    //获取我的笔记列表
 		this.getMeNote();
 
 	},
 
 	updated() {
-
-		    if(this.webApi.isEmpty(this.sectionList) || this.sectionList.length<1){
-          this.$refs.all.classList.add("null")
+        //判断是否有数据
+		    if(this.sectionList.length < 1 || this.sectionList.nodeNum == 0){
+          this.$refs.me.classList.add("null")
       	}else{
-      		this.$refs.all.classList.remove("null")
+      		this.$refs.me.classList.remove("null")
       	}
-        if(this.webApi.isEmpty(this.sectionAllList) || this.sectionAllList.length<1){
-            this.$refs.me.classList.add("null")
+        if(this.sectionAllList && this.sectionAllList.nodeNum == 0){
+            this.$refs.all.classList.add("null")
         }else{
-        	this.$refs.me.classList.remove("null")
+        	this.$refs.all.classList.remove("null")
         }
 
 	},
@@ -170,14 +175,16 @@ export default {
   			this.self = index;
   		},
   		showSearchBar() {
-            $('.search-bar').show(300);
+            this.$router.push({
+            path: `/note/search`,
+          });
         },
         hideSearchBar() {
             $('.search-bar').hide();
         },//提问
         new_answer() {
         	this.$router.push({
-    				path: `/note/edit/${encodeURIComponent(JSON.stringify(this.exchangeList[0]))}`,
+    				path: `/note/selected`,
     			});
         },//搜索
         goSearch() {
@@ -234,9 +241,14 @@ export default {
           }
           let param = {};
           param.self = 0;
-          param.courseid= "ff8080814f607c24014f68797ae11714";
-          param.categoryId= "ff808081473905e701475cd3c2080001";
-          param.subjectId= "ff808081473905e701476204cb6c006f";
+          // param.courseid= this.courseInfo.courseId;
+          // param.categoryId= this.courseInfo.categoryId;
+          // param.subjectId= this.courseInfo.subjectId;
+          // 
+          param.courseid= "ff8080814f1c162a014f1f7c34a91317";
+          // param.categoryId= this.courseInfo.categoryId;
+          // param.subjectId= this.courseInfo.subjectId;
+
           param.token = this.webApi.getCookie('token');
 
           this.webApi.loadingData();
@@ -250,10 +262,6 @@ export default {
                   this.webApi.closeLoadingData();
 
                     this.sectionAllList = res.data;
-                    console.log(JSON.stringify(this.sectionAllList))
-
-
-                  
 
               }
 
@@ -279,9 +287,13 @@ export default {
         	}
         	let param = {};
 	        param.self = 1;
-	        param.courseid= "ff8080814f607c24014f68797ae11714";
-          param.categoryId= "ff808081473905e701475cd3c2080001";
-          param.subjectId= "ff808081473905e701476204cb6c006f";
+	        // param.courseid= this.courseInfo.courseId;
+          // param.categoryId= this.courseInfo.categoryId;
+          // param.subjectId= this.courseInfo.subjectId;
+          // 
+          param.courseid= "ff8080814f1c162a014f1f7c34a91317";
+          // param.categoryId= this.courseInfo.categoryId;
+          // param.subjectId= this.courseInfo.subjectId;
 	        param.token = this.webApi.getCookie('token');
 
           this.webApi.loadingData();
@@ -294,11 +306,7 @@ export default {
 
     		          this.webApi.closeLoadingData();
 
-    		          	this.sectionList = res.data;
-
-    		          	// this.setListData(this.sectionList);
-
-    		          
+    		          	this.sectionList = res.data.filter(item => item.courseId == 'ff8080814f1c162a014f1f7c34a91317');
 
     		      }
 

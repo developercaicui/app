@@ -70,7 +70,7 @@ export default {
 			pageSize: 1000,
 			token: this.webApi.getCookie('token')
 		};
-this.webApi.alert(this.webApi.getCookie('token'))
+
 		this.webApi.loadingData();
 
 		// 获取在学课程列表

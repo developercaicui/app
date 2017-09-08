@@ -46,6 +46,7 @@ export default {
       isMsgWrap: false, // 是否显示消息列表
       totalCount: 0, // 消息数
       msgList: [], // 消息列表
+      userInfo: {},
     }
   },
 
@@ -54,10 +55,10 @@ export default {
 
     if(!this.webApi.getCookie('userInfo')) return;
 
-    let userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
+    this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
     // 用户基本信息
-    getUserInfo({token: userInfo.token})
+    getUserInfo({token: this.userInfo.token})
 
     .then(res =>{
 
@@ -86,7 +87,7 @@ export default {
     // 获取登录时间
     getLoginLog({
       verTT: new Date().getTime(),
-      memberid: userInfo.memberId,
+      memberid: this.userInfo.memberId,
       pageSize: 1,
       pageNo: 1
     })
@@ -99,7 +100,7 @@ export default {
     // 最近考试时间以及科目
     getExamDate({
       verTT: new Date().getTime(),
-      memberId: userInfo.memberId
+      memberId: this.userInfo.memberId
     })
 
     .then(res =>{
@@ -145,7 +146,7 @@ export default {
          pageSize: 99,
          type: type,
          isRead: 0,
-         token: this.webApi.getCookie('token'),
+         token: this.userInfo.token,
       })
 
       .then(res =>{

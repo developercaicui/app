@@ -7,7 +7,7 @@
 			<div class="first-step" v-show="!isLast">
 
 				<header class="reg-head">
-					<router-link to="login" class="back">&#xe669;</router-link>
+					<a href="javascript:;" class="back" @touchend="handleBackLogin">&#xe669;</a>
 					<h1>注册信息</h1>
 					<span class="step">1/2</span>
 				</header>
@@ -16,7 +16,7 @@
 					<input type="number" v-model="mobile" placeholder="手机号">
 					<input type="number" v-model="code" placeholder="验证码">
 					<input type="password" v-model="pwd" placeholder="密码（请输入8-16位，不能有空格，纯数字需至少9位）" ref="pwd">
-					<a href="javascript:;" v-show="isShowBtn" @touchend="gainCode" class="gainCode">{{gainCodeText}}</a>
+					<a href="javascript:;" v-show="isShowBtn" @touchend="gainCode" class="gain-code">{{gainCodeText}}</a>
 					<a href="javascript:;" @touchend="lookPwd" class="look-pwd">&#xe62d;</a>
 					<div class="is-agree">
 						<a href="javascript:;" @touchend="isAgreement" class="active">&#xe654;</a>
@@ -93,6 +93,11 @@ export default {
 
   methods: {
 
+		// 返回登录页
+		handleBackLogin() {
+			g.backLogin();
+		},
+
 		// 触发上传图片
 		uploadImg() {
 			this.$refs.fileIpt.click();
@@ -117,7 +122,6 @@ export default {
 
 		// 获取验证码
 		gainCode() {
-
 
 			if(!/^\d{11}$/.test(this.mobile)){
 				this.webApi.alert('手机号格式有误');
@@ -146,19 +150,42 @@ export default {
 					return false;
 				}
 
-				// 获取Token
-				return getToken({
-					appType: 'aPad',
-					appId: 'aPadCourse',
-					appKey: 'f7e4ebaa872f38db7b548b870c13e79e'
-				});
 
+				this.getTok();
+
+
+			})
+
+
+
+		},
+
+		// 是否同意财萃协议
+		isAgreement(ev) {
+
+			if(ev.target.classList.contains('active')){
+				ev.target.classList.remove('active')
+				this.isAgree = 0;
+		  }else{
+				ev.target.classList.add('active')
+				this.isAgree = 1;
+			}
+
+		},
+
+		getTok() {
+
+
+			getToken({
+				appType: 'aPad',
+				appId: 'aPadCourse',
+				appKey: 'f7e4ebaa872f38db7b548b870c13e79e'
 			})
 
 			.then(res =>{
 
 				if(!res || res.state != 'success'){
-					this.webApi.alert();
+					this.webApi.alert('网络异常，请稍后在试');
 					this.isShowBtn = true;
 					return false;
 				}
@@ -180,7 +207,7 @@ export default {
 			.then(res =>{
 
 				if(!res || res.state != 'success'){
-					this.webApi.alert();
+					this.webApi.alert('网络异常，请稍后在试试');
 					this.isShowBtn = true;
 					return false;
 				}
@@ -188,24 +215,6 @@ export default {
 				this.countDown();
 
 			})
-
-			.catch(err =>{
-				this.webApi.alert();
-				return false;
-			});
-
-		},
-
-		// 是否同意财萃协议
-		isAgreement(ev) {
-
-			if(ev.target.classList.contains('active')){
-				ev.target.classList.remove('active')
-				this.isAgree = 0;
-		  }else{
-				ev.target.classList.add('active')
-				this.isAgree = 1;
-			}
 
 		},
 
@@ -420,7 +429,7 @@ export default {
 		@include wh(100%, 1.05rem);
  		position: relative;
  		padding: 0 .4rem;
-		background-color: #21292b;
+		background-color: #ebebee;
 
  		.back{
  			position: absolute;
@@ -429,23 +438,21 @@ export default {
  			display: flex;
  			align-items: center;
  			font-family: 'iconfont';
- 			@include fc(.46rem, #ccc);
+ 			@include fc(.5rem, $commGreen);
  		}
 
  		h1{
  			@extend .ab;
- 			@include fc(.32rem, #fff);
-			display: flex;
-			align-items: center;
+ 			@include fc(.32rem, #000);
+			@extend .flexCenter;
 			padding-left: .4rem;
- 			left: 1.35rem; top: 0; right: 0;
+ 			left: 0; top: 0; right: 0;
  			height: 1.05rem;
-			border-left: 1px solid #4e4b4b;
  		}
 
 		.step{
 			@extend .ab;
-			@include fc(.24rem, #fff);
+			@include fc(.24rem, #000);
 			@extend .flexCenter;
 			right: .5rem;
 			height: 1.05rem;
@@ -515,16 +522,20 @@ export default {
 		 }
 	 }
 
-	 .gainCode{
+	 .gain-code{
 	 		@extend .ab;
+			@include wh(1.3rem, .5rem);
 	 		@include fc(.24rem, $commGreen);
 			right: .5rem; top: .48rem;
+			z-index: 19; text-align: right;
+			display: inline-block;
 	 }
 	 .look-pwd{
 	 	@extend .ab;
 		@include fc(.6rem, #d2d0d0);
 		right: .5rem; top: 2.95rem;
 		font-family: 'iconfont';
+		z-index: 19;
 	 }
 
 	 .reg-info-mobile{
