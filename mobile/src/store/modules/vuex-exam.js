@@ -26,6 +26,7 @@ export default {
 		exerciseStatusText : '',
 		exerciseActiveIndex : 0,
 		exerciseShowAnalysis : false,
+		exerciseAnalysisText : '展开解析',
 		exerciseOptionsActiveIndex : -1,
 		exerciseTotalTime : 0,
 		exerciseDoneCount : 0,
@@ -61,10 +62,15 @@ export default {
 				try{
 					newContent = JSON.parse(JSON.parse(JSON.stringify(state.exerciseContext)));
 				}catch(e){
-					let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', '#39': "'" };
-					newContent = state.exerciseContext.replace(/&(lt|gt|nbsp|amp|quot|#39);/ig, function(all, t) { return arrEntities[t]; });
-					newContent = newContent.substring(1,newContent.length-1);
-					newContent = JSON.parse(JSON.parse(JSON.stringify(newContent)));
+					if(state.exerciseContext.substring(0,3) == "'[{"){
+						newContent = state.exerciseContext.substring(1,state.exerciseContext.length-1);
+						newContent = JSON.parse(newContent);
+					}else{
+						let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', '#39': "'" };
+						newContent = state.exerciseContext.replace(/&(lt|gt|nbsp|amp|quot|#39);/ig, function(all, t) { return arrEntities[t]; });
+						newContent = newContent.substring(1,newContent.length-1);
+						newContent = JSON.parse(JSON.parse(JSON.stringify(newContent)));
+					}
 				}
 				state.exerciseContext = newContent;
 			}
@@ -79,7 +85,15 @@ export default {
 			}),Request.exerciseDetail({
 				'exerciseId' : state.exerciseId
 			})]).then(axios.spread((exerciseList, exerciseDetail) => {
-				
+				// if(state.exerciseListCache && state.exerciseListCache.length){
+					state.examBaseInfo.forEach((item1, index1)=>{
+						exerciseList.data.forEach((item2, index2)=>{
+							if(state.examBaseInfo[index1].id == item2.exercise_id){
+								state.examBaseInfo[index1].status = item2.status;
+							}
+						})
+					});
+				// }
 				commit('update',{
 					"exerciseListRequest" : [{
 						"count" : state.exerciseLastNid,
@@ -87,7 +101,8 @@ export default {
 					}],
 					"exerciseListCache" : exerciseList.data,
 					"exerciseDetail" : exerciseDetail.data[0],
-					"exerciseType" : exerciseDetail.data[0].questionTypes
+					"exerciseType" : exerciseDetail.data[0].questionTypes,
+					"exerciseTitle" : exerciseDetail.data[0].title
 				});
 				let cacheIndexContext = '';
 				exerciseList.data.forEach((item, index) => {

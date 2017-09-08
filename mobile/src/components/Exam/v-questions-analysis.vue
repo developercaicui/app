@@ -1,7 +1,8 @@
 <template>
 	<div class="analysis" v-show="exam.exerciseShowAnalysis">
-		<div class="analysis-answer" :class="exam.exerciseStatus ? 'analysis-answer-success' : 'analysis-answer-error'" v-html="exam.exerciseStatusText"></div>
-			<div class="analysis-content" v-html="answerResolutionData"></div>
+		<div class="analysis-answer" :class="exam.exerciseStatus=='1' ? 'analysis-answer-success' : 'analysis-answer-error'" v-html="exam.exerciseStatusText"></div>
+		<p>解析：</p>
+		<div class="analysis-content" v-html="answerResolutionData"></div>
 	</div>
 </template>
 <script>

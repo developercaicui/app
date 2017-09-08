@@ -4,53 +4,54 @@
 
 		<Headers></Headers>
 
-		<SlideRefresh>
-		</SlideRefresh>
+		<SlideRefresh @top-status-change="topStatusChange" :top-all-loaded="topAllLoadEnd">
 
-		<main class="index-content">
+			<main class="index-content">
 
-			<div class="the-course" ref="canvasArc">
+				<div class="the-course" ref="canvasArc">
 
-				<div class="title">
-					<h1>在学课程</h1>
-				</div>
-
-				<a @touchend="handleSendCouseInfo" :data-data="JSON.stringify(item)" href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-if="index<3">
-					<div class="info">
-						<h1>{{ item.courseName }}</h1>
-						<time>有效期至：{{ item.examinationDate.includes('1970') ? '暂无考试' :item.examinationDate }}</time>
-						<time>课程到期：{{ item.expirationTime }}</time>
+					<div class="title">
+						<h1>在学课程</h1>
 					</div>
-					<div class="process">
-						<div class="round">
-							<canvas :data-progress="item.studyProportion" class="canvas-list"></canvas>
-							<div class="num">{{item.studyProportion || 0}}</div>
+
+					<a @click.stop="handleSendCouseInfo" :data-data="JSON.stringify(item)" href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-if="index<3">
+						<div class="info">
+							<h1>{{ item.courseName }}</h1>
+							<time>有效期至：{{ item.examinationDate.includes('1970') ? '暂无考试' :item.examinationDate }}</time>
+							<time>课程到期：{{ item.expirationTime }}</time>
 						</div>
-						<aside>{{ `${item.courseProgress}/${item.taskTotal}` }}</aside>
+						<div class="process">
+							<div class="round">
+								<canvas :data-progress="item.studyProportion" class="canvas-list"></canvas>
+								<div class="num">{{item.studyProportion || 0}}</div>
+							</div>
+							<aside>{{ `${item.courseProgress}/${item.taskTotal}` }}</aside>
+						</div>
+					</a>
+
+
+				</div>
+
+				<div class="the-course the-activity">
+
+					<div class="title">
+						<h1>财萃活动</h1>
 					</div>
-				</a>
 
+					<div class="activity-list" v-for="item in activityList">
+						<figure :data-href="item.href" :data-id="item.id" @click.stop="handleOpenActivity">
+						  <img :src="item.src" />
+							<figcaption>{{ item.title }}</figcaption>
+						</figure>
+					</div>
 
-			</div>
-
-			<div class="the-course the-activity">
-
-				<div class="title">
-					<h1>财萃活动</h1>
 				</div>
 
-				<div class="activity-list" v-for="item in activityList">
-					<figure :data-href="item.href" :data-id="item.id" @click="handleOpenActivity">
-					  <img :src="item.src" />
-						<figcaption>{{ item.title }}</figcaption>
-					</figure>
-				</div>
-
-			</div>
 
 
+			</main>
 
-		</main>
+		</SlideRefresh>
 
 
 	</div>
@@ -77,13 +78,10 @@ export default {
 
   data() {
     return {
+			topAllLoadEnd: false,
     }
   },
 
-	created() {
-
-
-	},
 
 	updated() {
 
@@ -134,6 +132,19 @@ export default {
 
   methods: {
 
+		// 课程的实时状态
+		topStatusChange(status) {
+
+			if(status == 'pull') this.topAllLoadEnd = false;
+
+			if(status == 'loading') {
+				setTimeout(()=>{
+					this.topAllLoadEnd = true;
+				},2000)
+			}
+
+		},
+
 		// 发送课程信息给原生
 		handleSendCouseInfo(ev) {
 
@@ -166,8 +177,6 @@ export default {
 .index-wrap-ipad{
 
 	font-size: 0;
-	padding-bottom: 2.5rem;
-
 
 	.index-content{
 		padding: 0 1.1rem;
@@ -259,6 +268,7 @@ export default {
 	 	 margin-top: .6rem;
 		 border-top: 1px solid #eee;
 		 padding-left: 0; padding-right: 0;
+		 padding-bottom: 1.1rem;
 	 }
 
 	 .activity-list{

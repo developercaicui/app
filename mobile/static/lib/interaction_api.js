@@ -5,14 +5,16 @@ var g = {
   targetLogin: targetLogin,
   targetLearningCourses: targetLearningCourses,
   backLogin: backLogin,
+  device: window.navigator.userAgent.toLocaleLowerCase().indexOf('android') != -1 ? 'android' : 'ios'
 }
 
 // 登录成功获取用户信息
 function getLoginInfo(data = {}) {
+  
   data = JSON.parse(data);
 
   setCookie('userInfo', JSON.stringify(data));
-  setCookie('token', data.token);
+  setCookie('token', data.token || 'null');
 
 }
 
@@ -48,7 +50,7 @@ function backLogin() {
  * @type {Object} JSON 课程
  */
 function targetLearningCourses(data) {
-  caicui.getCourseData(data)
+  g.device == 'ios' ? caicui.getCourseData(data) : window.course.getCourseData(data);
 }
 
 // 用户课程信息(用于交流)

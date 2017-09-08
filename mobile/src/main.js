@@ -18,7 +18,6 @@ Vue.component(DatetimePicker.name, DatetimePicker);//时间选择器
 Vue.prototype.webApi = webApi;
 
 
-
 new Vue({
   el: '#app',
   router,
