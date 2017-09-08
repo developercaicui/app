@@ -4,7 +4,7 @@
     <div class="set-info-modal">
       <div id="mask0" class="modal">
         <div class="set_tit">视频纠错
-            <div tapmode onclick="api.closeFrame()" class="right">关闭</div>
+            <div @click="closeIndex" class="right">关闭</div>
         </div>
 
         <div id="pop-radios" class="pop-radios"><a href="javascript:;" class="pop-radio-label active"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">无法播放</span></a>          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">音画不同步</span></a>          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">播放卡顿</span></a>          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">内容问题</span></a>          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">其它错误</span></a></div>
@@ -18,8 +18,8 @@
         <div class="pop-tel">联系方式
           <input type="text" class="pop-input-tel">
           <div class="right">
-            <p tapmode onclick="api.closeFrame()">取消</p>
-            <p class="active" tapmode onclick="sub()">提交</p>
+            <p @click="closeIndex">取消</p>
+            <p class="active" @click="sub()">提交</p>
           </div>
         </div>
       </div>
@@ -76,59 +76,79 @@ export default {
   	},
 
 	methods: {
-		
+		    closeIndex() {
+          this.isShow = !this.isShow;
+        },
       	//投诉类型
       	selecType(ev) {
       		ev.target.classList.add("active")
       	},
       	sub() {
-	        let content = $.trim($('textarea[name=content]').val());
-	        if (content == '') {
-	            this.webApi.alert('意见内容不能为空');
-	            return false;
-	        }
-	        //let title=content.substr(0,20);
-	        let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
-	        let param = {};
-	        let systype = "ios";
-	        param.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;//投诉人id
-	        param.memberName = nickName;//投诉人昵称
-	        param.cmptType = $(".pop-radio-label.active").find(".pop-radio-span").text();//投诉类型
-	        param.cmptContent = content;//投诉内容
-	        param.contactWay = $(".pop-input-tel").val();//联系方式
-	        param.deviceDesc = systype;//设备描述
-	        // api.showProgress({
-	        //     title: '发表中',
-	        //     modal: true
-	        // });
-	        this.webApi.loadingData();
+          var content = $.trim($('textarea[name=content]').val());
+          if (content == '') {
+              this.webApi.alert('意见内容不能为空');
+              return false;
+          }
 
-	        if (this.is_ok) {
-	            this.is_ok = false;
-	            complaintOpinion(param)
+      //     let task_info_detail = api.pageParam.task_info_detail;
+      //     let nameJson = {
+      //       "courseName" : task_info_detail.courseName,
+      //       "chapterName" : task_info_detail.chapterName,
+      //       "taskName" : task_info_detail.taskInfo.title,
+      //       "id" : task_info_detail.taskInfo.videoCcid
+      //     }
+      //     let courseId = task_info_detail.courseId;
+      //     let chapterId = task_info_detail.chapterId;
+      //     let taskId = task_info_detail.taskInfo.taskId;
+      //     let type = task_info_detail.taskInfo.taskType;
+      //     let title = task_info_detail.taskInfo.title;
+      //     let ccid = task_info_detail.taskInfo.videoCcid;
+      //     let siteid = task_info_detail.taskInfo.videoSiteId;
+      //     let progress = api.pageParam.progress;//任务进度
+      //     let videoTime = task_info_detail.taskInfo.videoTime;
 
-	            .then(res =>{
 
-	               this.webApi.closeLoadingData();
+      //     //let title=content.substr(0,20);
+      //     let nickName = get_loc_val('mine', 'nickName');
+      //     let param = {};
+      //     let systype = api.systemType;
 
-		           if (res && res.state == 'success') {
+      //     param.memberId = getstor('memberId');//投诉人id
+      //     param.memberName = nickName;//投诉人昵称
+      //     param.cmptType = $(".pop-radio-label.active").find(".pop-radio-span").text();//投诉类型
+      //     param.cmptContent = content+'<a class="content-addDom" data-nameJson="'+JSON.stringify(nameJson)+'" href="javascript:;" data-course-id="'+courseId+'" data-chapter-id="'+chapterId+'" data-task-id="'+taskId+'" data-type="'+type+'" data-title="'+title+'" data-video-ccid="'+ccid+'" data-video-siteid="'+siteid+'" data-progress="'+progress+'" data-video-time="'+videoTime+'">视频：'+formatSec(progress)+'</a>';//投诉内容
+      //     param.contactWay = $(".pop-input-tel").val();//联系方式
+      //     param.deviceDesc = systype;//设备描述
 
-	                    this.webApi.alert('发表成功');
+      //     console.log(JSON.stringify(param))
 
-	                    setTimeout(function () {
-	                        this.isShow = !this.isShow
-	                    }, 600);
+      //     this.webApi.loadingData();
 
-	                } else {
-	                    this.is_ok = true;
-	                    // this.webApi.alert('发表失败，请重试！');
-	                    this.webApi.alert(res.msg);
-	                }
+      //     if (this.is_ok) {
+      //         this.is_ok = false;
+      //         complaintOpinion(param)
 
-		        })
-	          
-	        }
-	      }
+      //         .then(res =>{
+
+      //            this.webApi.closeLoadingData();
+
+      //          if (res && res.state == 'success') {
+
+      //                 this.webApi.alert('发表成功');
+
+      //                 setTimeout(function () {
+      //                     this.isShow = !this.isShow
+      //                 }, 600);
+
+      //             } else {
+      //                 this.is_ok = true;
+      //                 // this.webApi.alert('发表失败，请重试！');
+      //                 this.webApi.alert(res.msg);
+      //             }
+
+      //       })
+      // }
+    }
 	},
 	mounted() {
 
