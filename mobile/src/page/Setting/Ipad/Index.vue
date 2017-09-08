@@ -130,7 +130,7 @@
 
 <script>
 
-import $ from 'jquery';
+import $ from 'jQuery';
 import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 
 

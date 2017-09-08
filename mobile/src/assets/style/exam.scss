@@ -41,7 +41,7 @@ $marginTB-10 : 10px 0;
 	@include absolute();
 	z-index: 100;
 	@include WH();
-	@include BColor(#ccc);
+	@include BColor(#fff);
 	padding: 50px 0;
 }
 .exam-header{

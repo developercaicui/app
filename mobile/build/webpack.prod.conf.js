@@ -28,6 +28,11 @@ const webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
+    new webpack.ProvidePlugin({
+      $:"jquery",
+      jQuery:"jquery",
+      "window.jQuery":"jquery"
+    }),
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
