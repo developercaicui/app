@@ -7,13 +7,20 @@ var g = {
   backLogin: backLogin,
 }
 
+
 // 登录成功获取用户信息
-function getUserInfo(data = {}) {
+function getUserInfo(data || {}) {
+
+  // console.log('---')
+  console.log(arguments[0])
 
   data = JSON.parse(data);
 
+  console.log(data)
+
+
   setCookie('userInfo', JSON.stringify(data));
-  setCookie('token', data.token);
+  setCookie('token', data.token || 'null');
 
 }
 
