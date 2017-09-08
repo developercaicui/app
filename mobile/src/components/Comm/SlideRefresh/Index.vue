@@ -73,7 +73,6 @@ export default {
 
 			}
 
-
 		},
 
 		topStatus(val) {
@@ -117,6 +116,7 @@ export default {
 		onTopLoaded() {
 
 			this.topStatus = 'end';
+			this.topAllLoaded = false;
 
 			this.webApi.addCss(this.$refs.refreshContent, {
 				transition: '300ms',
@@ -212,7 +212,7 @@ export default {
 
 			setTimeout(()=>{
 				if(this.topStatus === 'loading' && this.topAllLoaded === false)  this.onTopLoaded();
-			}, 10000);
+			}, 1000);
 
 		},
 
