@@ -61,7 +61,19 @@ export default {
 	watch: {
 
 		topAllLoaded(val) {
-			this.topStatus = 'end';
+
+			if(val) {
+
+				this.webApi.addCss(this.$refs.refreshContent, {
+					transition: '300ms',
+					transform: `translate3d(0,0,0)`
+				});
+
+				this.topStatus = 'end';
+
+			}
+
+
 		},
 
 		topStatus(val) {
@@ -151,7 +163,7 @@ export default {
 					});
 
 					if(moveY < 50) this.topStatus = 'pull';
-					if(moveY > 50) this.topStatus = 'drop';
+					if(moveY > this.isDirection) this.topStatus = 'drop';
 
 
 					this.isDirection = 'top';

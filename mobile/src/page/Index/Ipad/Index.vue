@@ -4,7 +4,7 @@
 
 		<Headers></Headers>
 
-		<SlideRefresh @top-status-change="topStatusChange" :top-all-loaded="topAllLoaded">
+		<SlideRefresh @top-status-change="topStatusChange" :top-all-loaded="topAllLoadEnd">
 
 			<main class="index-content">
 
@@ -78,6 +78,7 @@ export default {
 
   data() {
     return {
+			topAllLoadEnd: false,
     }
   },
 
@@ -134,17 +135,14 @@ export default {
 		// 课程的实时状态
 		topStatusChange(status) {
 
-			console.log(status)
+			if(status == 'pull') this.topAllLoadEnd = false;
 
 			if(status == 'loading') {
-					this.onTopLoaded();
+				setTimeout(()=>{
+					this.topAllLoadEnd = true;
+				},2000)
 			}
 
-		},
-
-		// 结束loading
-		onTopLoaded() {
-			this.topAllLoaded = true;
 		},
 
 		// 发送课程信息给原生

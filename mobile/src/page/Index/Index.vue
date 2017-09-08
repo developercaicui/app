@@ -33,13 +33,13 @@ export default {
 
 	created() {
 		this.webApi.loadingData();
-		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 	},
 
 	mounted() {
 
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
+		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
 		let oDiv = document.createElement('div');
 
