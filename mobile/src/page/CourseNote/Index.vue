@@ -1,22 +1,12 @@
 <template lang="html">
-
-	<div>
-		<Ipad v-if="isIpad"></Ipad>
-		<Mobile v-if="isMobile"></Mobile>
-	</div>
-
+	<router-view></router-view>
 </template>
 
 <script>
 
-import Ipad from './Ipad';
-import Mobile from './Mobile';
-
 export default {
 
 	components: {
-		Mobile,
-		Ipad,
   },
 
   data() {
@@ -27,7 +17,7 @@ export default {
   },
 
 	created() {
-		
+
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
@@ -39,7 +29,6 @@ export default {
   }
 
 }
-
 
 </script>
 

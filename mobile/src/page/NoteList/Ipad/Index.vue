@@ -74,7 +74,8 @@ export default {
 			let chapter = JSON.parse(oSection.dataset.chapter);
 			let chapterTwo = JSON.parse(oSection.dataset.chaptertwo);
 			let data = {
-				courseData:  Object.assign(course, chapter, chapterTwo)
+				courseData:  Object.assign(course, chapter, chapterTwo),
+				self: 1
 			}
 
 			this.$router.push({

@@ -11,7 +11,7 @@
 				<questions @analysisstatus="analysisEvent"></questions>
 			
 		</div>
-		<div class="exam-footer" v-if="exam.exerciseListCache.length">
+		<div class="exam-footer" v-if="exam.examBaseInfo.length">
 			<exam-cards @cardsPrev="exercisePrev" @cardsNext="exerciseNext" @clickExamCards="exerciseChange"></exam-cards>
 			<ul class="exam-button-ul">
 				<li class="exam-button-li"><a href="javascript:;" class="exam-button-a">交卷</a></li>

@@ -10,7 +10,7 @@ var g = {
 
 // 登录成功获取用户信息
 function getLoginInfo(data = {}) {
-
+  
   data = JSON.parse(data);
 
   setCookie('userInfo', JSON.stringify(data));
@@ -51,4 +51,22 @@ function backLogin() {
  */
 function targetLearningCourses(data) {
   g.device == 'ios' ? caicui.getCourseData(data) : window.course.getCourseData(data);
+}
+
+// 用户课程信息(用于交流)
+function getDiscussInfo(data = {}) {
+
+  data = JSON.parse(data);
+
+  setCookie('getDiscussInfo', JSON.stringify(data));
+
+}
+
+// 用户课程信息(用于笔记)
+function getCourseNoteInfo(data = {}) {
+
+  data = JSON.parse(data);
+
+  setCookie('getCourseNoteInfo', JSON.stringify(data));
+
 }

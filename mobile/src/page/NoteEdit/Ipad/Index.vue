@@ -73,7 +73,7 @@ export default {
   },
 
 	mounted() {
-
+console.log(this.$route.params.data)
 		this.data = JSON.parse(this.$route.params.data);
 
 		console.log(this.data, 'edit');
