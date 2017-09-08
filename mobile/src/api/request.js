@@ -4,7 +4,7 @@ import config from './requestConfig';
 import  API from './api';
 import COMMON from './common';
 
-axios.defaults.timeout = 5000;
+// axios.defaults.timeout = 5000;
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 // axios.interceptors.request.use((config) => {
@@ -21,7 +21,7 @@ axios.interceptors.response.use((res) => {
   }else{
   	return Promise.reject('res');
   }
-  
+
 }, (error) => {
   return Promise.reject(error);
 });
@@ -70,7 +70,7 @@ function getArgs(port,params){
 			args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
 			args.type = thatServer.type ? thatServer.type : 'GET';
 		}
-		
+
 	}else{
 		hostName = COMMON.host.name;
 		if(thatServer.hostName){
@@ -79,7 +79,7 @@ function getArgs(port,params){
 		args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
 		args.type = thatServer.type ? thatServer.type : 'GET';
 	}
-	
+
 	// return args;
 
 	if(args.type === 'POST'){
@@ -120,7 +120,7 @@ const server = {
         },
         'message-list': {
 
-            // 'url' : '/api/v2/message/list'
+						// 'url' : '/api/v2/message/list'
             // 'url' : '/api/study/message/getMessage/v1.0'
             'url': '/api/study/message/list/v1.0'
         },

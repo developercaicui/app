@@ -105,7 +105,7 @@
 
   @include wh(2rem, 2rem);
   position: fixed;
-  left: 50%; top: 20%;
+  left: 50%; top: 30%;
   transform: translate3d(-50%, 20%, 0);
   background-color: rgba(0,0,0,.7);
   border-radius: 5px;
@@ -195,4 +195,3 @@
     stroke: #00A786;
   }
 }
-

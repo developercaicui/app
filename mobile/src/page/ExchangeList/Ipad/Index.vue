@@ -157,7 +157,7 @@ export default {
 		background-color: #f5f5f5;
 		a{
 			@extend .ab;
-			@include fc(.24rem, $green);
+			@include fc(.28rem, $green);
 			left: .38rem; padding-left: .45rem;
 			top: 50%; transform: translateY(-50%);
 			&:after{

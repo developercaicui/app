@@ -13,7 +13,7 @@
 		      </div>
 		      <ul class="right">
 		        <li @click="showSearchBar"><i class="icon-sousuo icon-search2">&#xe651;</i></li>
-		        <li @click="new_answer"><span>提问</span><i class="icon-plus" style="font-size: 0.6rem;vertical-align: middle;">+</i></li>
+		        <li @click="new_answer"><span>提问</span><i class="icon-plus">+</i></li>
 		      </ul>
 		      <div class="search-bar">
 		        <input type="text" name="input-lx" placeholder="搜索" class="input-txt" ref="searchWord">
@@ -29,8 +29,8 @@
 	                <div class="title">{{ item.title }}</div>
 	                <div class="describe">{{ item.contentSummary }}</div>
 	              </div>
-	              <ul class="pic-group" v-if="item.imgPath">
-	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
+	              <ul class="pic-group" v-if="item.imgPath" :data-pic="item.imgPath.toString()">
+	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" @touchend="handleOpenBigPic"></li>
 	                <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
 	              </ul>
 	              <div class="footer">
@@ -54,8 +54,8 @@
 	                <div class="title">{{ item.title }}</div>
 	                <div class="describe">{{ item.contentSummary }}</div>
 	              </div>
-	              <ul class="pic-group" v-if="item.imgPath">
-	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
+	              <ul class="pic-group" v-if="item.imgPath" :data-pic="item.imgPath.toString()">
+	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" @touchend="handleOpenBigPic"></li>
 	                <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
 	              </ul>
 	              <div class="footer">
@@ -71,6 +71,8 @@
 			</div>
 		</main>
 
+		<photoAlbum :pic-list="picList" v-show="isShowList" @closeBigPic="closeBigPic"></photoAlbum>
+
 	</div>
 
 </template>
@@ -78,8 +80,14 @@
 <script>
 
 import { getExchangeList, getExchangeDetails, searchhNote } from '../../../api/port';
+import photoAlbum from '../../../components/Comm/photoAlbum';
 
 export default {
+
+	components: {
+		photoAlbum,
+	},
+
 	data() {
 	    return {
 			defaultAct: 0,
@@ -96,9 +104,12 @@ export default {
 		    searchData:'',
 		    page: 1,
 		    params:{},
-		    self: 0
+		    self: 0,
+				isShowList: false, // 是否显示大图
+				picList: [], // 图片列表
 	    }
 	},
+
 	created() {
 
 		this.getDate(1,0);
@@ -107,6 +118,7 @@ export default {
 	},
 
 	updated() {
+
 		if(this.webApi.isEmpty(this.exchangeList) || this.exchangeList.length<1){
           this.$refs.all.classList.add("null")
       	}else{
@@ -121,6 +133,22 @@ export default {
 	},
 
   	methods: {
+
+			// 打开大图
+			handleOpenBigPic(ev) {
+
+				let oUl = ev.target.parentNode;
+
+				if(oUl.dataset.pic) this.picList = oUl.dataset.pic.split(',').map(item => `${this.webApi.cdnImgUrl}${item}`);
+
+				this.isShowList = true;
+			},
+
+			// 关闭大图
+			closeBigPic(off) {
+				this.isShowList = off;
+			},
+
   		set_index(index) {
   			this.defaultAct = index;
   			this.self = index;
@@ -155,6 +183,7 @@ export default {
 
 			.then(res =>{
 
+
 		      if(res && res.state == 'success'){
 
 		          this.webApi.closeLoadingData();
@@ -163,7 +192,9 @@ export default {
 
 		          this.getDate(page,self)
 
-		      }
+		      }else{
+						this.webApi.alert('网络异常，请稍后再试');
+					}
 
 		    })
         },
@@ -175,7 +206,7 @@ export default {
               	let keyword = data.keywords;
 
               	if (this.webApi.isEmpty(data.key1.data)||total==0) {
-              	  alert("暂无数据")
+              	  this.webApi.alert("暂无数据")
                   // $('#content').html('');
                   // $('body').addClass('null');
                   return false;
@@ -253,11 +284,8 @@ export default {
 				}
 
 				this.$router.push({
-					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
+					path: `/courseexchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
 				});
-				// this.$router.push({
-				// 	path: `details/${encodeURIComponent(JSON.stringify(res.data))}`,
-				// });
 
 			})
 		},
@@ -780,5 +808,8 @@ select {
 }
 .avatar {
   border-radius: 50%;
+}
+.icon-plus{
+	font-size: .24rem;
 }
 </style>

@@ -5,7 +5,7 @@
 
 		<header class="one-top">
 			<a href="javascript:;" @touchend="backList">章节列表</a>
-			<h1>{{ detailsList[0].chaptername }}</h1>
+			<h1>{{ data.courseData.chapterTitle }}</h1>
 			<div class="state-edit">
 				<router-link to="/note/selected">新建&nbsp;<span>+</span></router-link>
 			</div>
@@ -37,11 +37,14 @@ export default {
 
   data() {
     return {
-			data: {}
+			data: {
+				chaptername: '',
+				data: {},
+			}
     }
   },
 
-	mounted() {
+	created() {
 
 		this.data = JSON.parse(this.$route.params.data);
 
@@ -56,8 +59,6 @@ export default {
 				courseData: this.data.courseData,
 				sectionData: JSON.parse(oSection.dataset.section)
 			};
-
-			console.log('detaislList > detaisl');
 
 			this.$router.push({
 				path: `/note/details/${encodeURIComponent(JSON.stringify(data))}`,
@@ -96,7 +97,7 @@ export default {
 				@extend .ab;
 				left: .3rem; padding-left: .45rem;
 				top: 50%; transform: translateY(-50%);
-				@include fc(.24rem, $green);
+				@include fc(.26rem, $green);
 				&:before{
 					content: '\e669';
 					@include fc(.3rem, #a5a5a5);
@@ -148,7 +149,7 @@ export default {
 			 font-family: 'iconfont';
 			 a{
 				 color: $green;
-				 font-size: .24rem;
+				 font-size: .26rem;
 			 }
 	  }
 

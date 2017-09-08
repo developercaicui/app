@@ -62,7 +62,12 @@ export default {
         }
       ],
       defaultIndex: 0,
+      userInfo: {},
     }
+  },
+
+  create() {
+    this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
   },
 
   mounted(){
@@ -122,7 +127,7 @@ export default {
       return;
 
       updateLogStatus({
-        token: this.webApi.getCookie('token'),
+        token: this.userInfo.token,
         messageId: id,
         isall: 0
       })

@@ -90,10 +90,9 @@ export default  new VueRouter({
         {
           path: 'list',
           component: CourseExchangeList
-        }
-        ,{
+        },{
           path: 'details/:data',
-          component: CourseExchangeDetails
+          component: ExchangeDetails
         }
       ]
     },{

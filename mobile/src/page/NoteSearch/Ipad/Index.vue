@@ -15,35 +15,16 @@
 
 		<main class="body-list">
 
-			<mt-loadmore @bottom-status-change="handleBottomChange"  @top-status-change="handleTopChange" :top-method="loadTop" :bottom-method="loadBottom" :bottom-all-loaded="allLoaded" ref="loadmore">
+			<section class="list" v-for="item in noteData.list" :data-id="item.id" :data-data="JSON.stringify(item)" @click="handleOpenDetails">
+				<div>{{ item.nikeName }}</div>
+				<h1>{{ item.title }}</h1>
+				<p>{{ item.contentSummary }}</p>
+				<time>{{ item.updateTime }}</time>
+			</section>
 
-				<div slot="top" class="mint-loadmore-top">
-					<span v-show="topStatus === 'pull'" :class="{ 'rotate': topStatus === 'pull' }">下拉刷新</span>
-					<span v-show="topStatus === 'drop'" :class="{ 'rotate': topStatus === 'drop' }">释放更新</span>
-					<mt-spinner v-show="topStatus === 'loading'" type="snake" color="#ccc"></mt-spinner>
-				</div>
-
-					<section class="list" v-for="item in noteData.list" :data-id="item.id">
-						<div>{{ item.nikeName }}</div>
-						<h1>{{ item.title }}</h1>
-						<p>{{ item.contentSummary }}</p>
-						<time>{{ item.updateTime }}</time>
-					</section>
-
-					<div slot="bottom" class="mint-loadmore-top">
-						<mt-spinner v-show="bottomStatus == 'loading'" type="triple-bounce" color="#12B697"></mt-spinner>
-						<span v-show="bottomStatus === 'pull'" :class="{ 'rotate': bottomStatus === 'pull' }">下拉刷新</span>
-						<span v-show="bottomStatus === 'drop'" :class="{ 'rotate': bottomStatus === 'drop' }">释放更新</span>
-					</div>
-
-			</mt-loadmore>
-
-			<div class="no-data" v-show="totalCount == 0"><img src="../../../assets/img/404.svg"></div>
+			 <img src="../../../assets/img/404.svg" class="no-data" v-show="totalCount == 0">
 
 		</main>
-
-
-
 
 	</div>
 
@@ -60,14 +41,12 @@ export default {
 
   data() {
     return {
-			keywords: '文字',
+			keywords: '',
 			totalCount: 0, // 总条目数
 			bottomStatus: '',
 			topStatus: '',
 			pageNo: 1, // 当前页数
 			sumPage: 1, // 总页数
-			isOneData: false, // 是否是第一次
-			allLoaded: false, // 数据是否全部加载完成
     }
   },
 
@@ -89,33 +68,18 @@ export default {
 
 
 
-		handleTopChange(status) {
 
-			this.topStatus = status;
 
-			if(status == 'loading') setTimeout(() =>{ this.topStatus = '' },1000);
 
-		},
-
-		handleBottomChange(status) {
-
-			this.bottomStatus = status;
-			console.log(status, `asdsa:${this.totalCount}`)
-
-		},
-
-		loadTop() {
-			// 假刷新
-		},
 
 		loadBottom() {
 
-			this.$emit('search-note', {
-				keywords: '文字',
-				pageNo: this.pageNo
-			});
-
-			this.pageNo = this.pageNo + 1;
+			// this.$emit('search-note', {
+			// 	keywords: '文字',
+			// 	pageNo: this.pageNo
+			// });
+			//
+			// this.pageNo = this.pageNo + 1;
 
 			// 调用父组件
 
@@ -134,6 +98,23 @@ export default {
 
 
 		},
+
+		handleOpenDetails(ev) {
+
+			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+			let data = {
+				courseData: {},
+				sectionData: JSON.parse(oSection.dataset.data)
+			};
+
+			this.$router.push({
+				path: `/note/details/${encodeURIComponent(JSON.stringify(data))}`,
+			});
+
+
+
+		},
+
 
   }
 
