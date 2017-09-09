@@ -41,7 +41,7 @@ export default {
 		  pageSize: 20,
 		  charpterid: JSON.parse(this.$route.params.data).courseData.id,
 		  ordertype: 1,
-		  self: 1,
+		  self: JSON.parse(this.$route.params.data).self,
 		  token: this.webApi.getCookie('token')
 		})
 

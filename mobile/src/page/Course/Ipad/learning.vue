@@ -1,6 +1,6 @@
 <template lang="html">
 
-	<div class="course-content course-pic-list learning">
+	<div class="course-content course-pic-list learning" ref="courseContentlearn">
 		<div class="learning-navL">
         <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
@@ -8,7 +8,7 @@
       <div class="stydys" v-for="(value,key) in learningData" v-if="activeBtn===key">
         <template v-for="val in value.children">
         <h2>{{ val.subjectName }}</h2>
-        <li class="learnLi" data-coursename="" data-chaptername="" @click="openCourse(this,item.courseId,item.chapterId,item.subjectID,item.categoryId,item.subjectName,item.categoryName,item.versionId)" v-for="item in val.courseLists">
+        <li class="learnLi" data-coursename="" data-chaptername="" @touchend="openCourse(item)" v-for="item in val.courseLists">
           <div :style="setBackground(item.courseBkImage)" class="cpl-head">
             <h4 class="exam_time none"></h4>
             <h4 class="course_due">课程到期：{{ formatDate(item.expirationTime,"Y")+'-'+formatDate(item.expirationTime,'M')+'-'+formatDate(item.expirationTime,'D') }}</h4>
@@ -20,7 +20,7 @@
             <div class="li pro-li">
               <div class="progress-box">进度： 
                 <div class="progress">
-                  <div :min="[item.showProgress?item.showProgress:0]" :max="[item.taskTotal?item.taskTotal:0]" class="progress-bar"></div>
+                  <div :data-courseProgress="item.courseProgress" :data-progress="item.progress" :min="[item.courseProgress?item.courseProgress:0]" :max="[item.taskTotal?item.taskTotal:0]" class="progress-bar"></div>
                 </div>
                 <div class="progress-val"></div>
               </div>
@@ -103,7 +103,7 @@ export default {
 						for(let i=0;i<learninglist.length;i++){
 							for(let j=0;j<res.data.length;j++){ 
 								if(learninglist[i].courseId == res.data[j].courseId){
-									learninglist[i].showProgress = res.data[j].courseProgress;
+									learninglist[i].courseProgress = res.data[j].courseProgress;
 						            learninglist[i].createDate = res.data[j].createDate;
 						            learninglist[i].chapterId = res.data[j].chapterId;
 						            learninglist[i].chapterName = res.data[j].chapterName;
@@ -123,7 +123,12 @@ export default {
 						}
 
 						this.learningData = this.webApi.outCourseList(ret);
-
+						
+					  	if(this.webApi.isEmpty(this.learningData)){
+						      this.$refs.courseContentlearn.classList.add("null")
+						      return false;
+						}
+					  	
 						let str = JSON.stringify(this.learningData);
 
 						this.activeBtn = str.substr(2, str.indexOf(':')-3);
@@ -146,7 +151,7 @@ export default {
   	learningNav(ind) {
 	    this.activeBtn = ind;
 	},
-	formatDate(now, t) {
+	formatDate(now, t) {//时间转换
 	    let date = new Date(parseInt(now * 1000));
 	    let Y,M,D,h,m,s;
 	    if (t == 'Y') {
@@ -189,19 +194,28 @@ export default {
 		let progr = document.getElementsByClassName("stydys");
 		for(let i=0;i<progressBarlist.length;i++){
 			let _t = progressBarlist[i];
-			let _num = parseInt(_t.getAttribute('min')/parseInt(_t.getAttribute('max')) * 100);
-	        _num = _num ? _num : 0;
-			if(_num > 90){
-	            _num = 100
-	        }
+			let taskprogress = _t.getAttribute('data-courseProgress') ? parseInt(_t.getAttribute('data-courseProgress')) : 0;
+			let taskTotal = _t.getAttribute('max') ? parseInt(_t.getAttribute('max')) : 0;
+			let percentage = 0;
+			let lastProgress = _t.getAttribute('data-progress');
+			if(taskprogress && taskTotal){
+				let a = taskprogress/taskTotal;
+				if(a>0 && a<0.01){
+					a = 0.01
+				}
+				percentage = parseInt(a*100);
+			}else if(lastProgress){
+				percentage = 1;
+			}
+
 	        let $val = _t.parentNode.parentNode.lastChild;
 
 	        if($val){
-	            $val.innerHTML = _num+'%';
+	            $val.innerHTML = percentage+'%';
 	        }	      
 	        if (_t.getAttribute('data')!='1') {
 	            setTimeout(function(){
-	                _t.style.width = _num + '%';
+	                _t.style.width = percentage + '%';
 	            },500);
 	            _t.setAttribute('data','1');
 	        }
@@ -209,12 +223,19 @@ export default {
 	},
 	setBackground(url) {
 		return `background-image:url(${this.webApi.cdnImgUrl}${url})`
+	},
+	openCourse(data) {// 发送课程信息给原生
+		data.expirationTime = this.formatDate(data.expirationTime,"Y")+'/'+this.formatDate(data.expirationTime,'M')+'/'+this.formatDate(data.expirationTime,'D');
+		data.token = this.webApi.getCookie('token');
+		data.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;
+		onlineCouse.getOnlineCourseData(JSON.stringify(data))
 	}
   },
   updated() {
 	this.progressBar();
   },
   mounted () {
+
     
   }
 }
@@ -224,6 +245,7 @@ export default {
 <style lang="scss" scoped>
 .course-content{
     padding-top:1.6rem;
+    min-height: 15rem;
 }
 .learning-navL {
     line-height: 1rem;

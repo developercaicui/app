@@ -1,6 +1,6 @@
 <template lang="html">
 
-  <div class="course-content course-pic-list learning">
+  <div class="course-content course-pic-list learning" ref="courseContentover">
     <div class="learning-navL">
         <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in overdueData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
@@ -64,6 +64,11 @@ export default {
       if(res && res.state == 'success'){
             
           this.overdueData = this.webApi.outCourseList(res);
+
+          if(this.webApi.isEmpty(this.overdueData)){
+              this.$refs.courseContentover.classList.add("null")
+              return false;
+          }
 
           let str = JSON.stringify(this.overdueData);
 
@@ -155,6 +160,7 @@ export default {
 <style lang="scss" scoped>
 .course-content{
     padding-top:1.6rem;
+    min-height: 15rem;
 }
 .learning-navL {
     line-height: 1rem;

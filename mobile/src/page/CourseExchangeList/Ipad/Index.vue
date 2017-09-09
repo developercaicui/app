@@ -20,7 +20,7 @@
 		        <div class="right"><i class="icon-sousuo icon-search2">&#xe651;</i><span @click="goSearch()" class="submit">搜索</span><span @click="hideSearchBar" class="cancel">取消</span></div>
 		      </div>
       		</div>
-			<div class="all" v-show="defaultAct==0">
+			<div class="all" v-show="defaultAct==0" ref="all">
 				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
@@ -30,7 +30,7 @@
 	                <div class="describe">{{ item.contentSummary }}</div>
 	              </div>
 	              <ul class="pic-group" v-if="item.imgPath">
-	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
+	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" ></li>
 	                <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
 	              </ul>
 	              <div class="footer">
@@ -45,7 +45,7 @@
 	          </dl>
 			</div>
 
-			<div class="me" v-show="defaultAct==1">
+			<div class="me" v-show="defaultAct==1" ref="me">
 				<dl id="li" class="cont-list" v-for="(item,index) in exchangeListMe">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
@@ -55,7 +55,7 @@
 	                <div class="describe">{{ item.contentSummary }}</div>
 	              </div>
 	              <ul class="pic-group" v-if="item.imgPath">
-	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" onclick="openImageBrower('','')"></li>
+	                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" ></li>
 	                <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
 	              </ul>
 	              <div class="footer">
@@ -83,6 +83,7 @@ export default {
 	data() {
 	    return {
 			defaultAct: 0,
+			courseInfo:{},
 			navList: [
 		        {
 		          name: '全部交流',
@@ -95,24 +96,37 @@ export default {
 		    searchWord: '',
 		    searchData:'',
 		    page: 1,
-		    params:{}
+		    params:{},
+		    self: 0
 	    }
 	},
 	created() {
+		
+		this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
 
 		this.getDate(1,0);
 		this.getDate(1,1);
 
 	},
 
-	mounted() {
-
+	updated() {
+		if(this.webApi.isEmpty(this.exchangeList) || this.exchangeList.length<1){
+          this.$refs.all.classList.add("null")
+      	}else{
+      		this.$refs.all.classList.remove("null")
+      	}
+        if(this.webApi.isEmpty(this.exchangeListMe) || this.exchangeListMe.length<1){
+            this.$refs.me.classList.add("null")
+        }else{
+        	this.$refs.me.classList.remove("null")
+        }
 
 	},
 
   	methods: {
   		set_index(index) {
-  			this.defaultAct = index
+  			this.defaultAct = index;
+  			this.self = index;
   		},
   		showSearchBar() {
             $('.search-bar').show(300);
@@ -131,12 +145,10 @@ export default {
         	if(this.params.keyWords == ''){
         		this.webApi.alert('请输入搜索关键字');
         	}
-        	this.get_dt(1)
-
-
+        	this.get_dt(1,this.self)
 
         },
-        get_dt(page) {
+        get_dt(page,self) {
         	this.params.token = this.webApi.getCookie('token');
         	this.params.findType = 2;
         	this.params.pageNo = page;
@@ -152,7 +164,7 @@ export default {
 
 		          this.searchData = {key1:res,page:page,keyword:this.params.keyWords}
 
-		          this.getDate(page)
+		          this.getDate(page,self)
 
 		      }
 
@@ -173,7 +185,7 @@ export default {
               	}
               	$('body').removeClass('null');
               	this.exchangeList = data.key1.data;
-		        this.setListData();
+		        this.setListData(this.exchangeList);
 
               	return false;
         	}
@@ -183,9 +195,9 @@ export default {
 	        param.ordertype = 1;
 	        param.pageNo = page;
 	        param.pageSize = 10;
-	        param.courseid= "ff8080814f607c24014f68797ae11714";
-	        param.categoryId= "ff808081473905e701475cd3c2080001";
-	        param.subjectId= "ff808081473905e701476204cb6c006f";
+	        // param.courseid= this.courseInfo.courseId;
+	        // param.categoryId= this.courseInfo.categoryId;
+	        param.subjectId= 'ff808081473905e701476204cb6c006f';
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {
 	            this.webApi.loadingData();
@@ -199,20 +211,28 @@ export default {
 
 		          this.webApi.closeLoadingData();
 
-		          this.exchangeList = res.data;
-		          this.setListData();
+		          if(self == 0){
+		          	this.exchangeList = res.data;
+		          	this.setListData(this.exchangeList);
+
+		          }else{
+		          	this.exchangeListMe = res.data;
+		          	this.setListData(this.exchangeListMe);
+
+		          }
+
 		      }
 
 		    })
         },
-        setListData() {
-        	this.exchangeList.map(item =>{
+        setListData(list) {
+        	list.map(item =>{
 	          	item.headImg = `${this.webApi.cdnImgUrl}${item.headImg}`;
 	          	item.title = `${item.bbstype=='0'?"【讨论】":"【问答】"}${item.title}`;
 	          	item.imgPath = `${this.webApi.isEmpty(item.imgPath)?'':item.imgPath}`;
 	          	item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
 	          	item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' ' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
-	          });
+	        });
         },
 		// 打开详情
 		answerDetail(item) {
@@ -238,6 +258,9 @@ export default {
 				this.$router.push({
 					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
 				});
+				// this.$router.push({
+				// 	path: `details/${encodeURIComponent(JSON.stringify(res.data))}`,
+				// });
 
 			})
 		},
@@ -266,16 +289,19 @@ export default {
 			 }
 		}
 
-
+	},
+	mounted() {
 
 	}
-
 
 }
 
 </script>
 
 <style lang="scss" scoped>
+.all,.me{
+	min-height: 15rem;
+}
 .icon-sousuo{
   font-family:"iconfont";
   font-size:0.26rem;

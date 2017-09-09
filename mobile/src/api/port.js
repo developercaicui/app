@@ -3,7 +3,9 @@ import webApi from './api';
 import axios from 'axios';
 import qs from 'qs';
 
-const requestUrl = process.env.NODE_ENV === 'development' ? '' : 'http://api.caicui.com'; // 请求地址
+// const requestUrl = process.env.NODE_ENV === 'development' ? '' : 'http://api.caicui.com'; // 请求地址
+const requestUrl = process.env.NODE_ENV === 'development' ? '' : 'http://demo.caicui.com'; // 请求地址
+
 const LOC = window.location;
 const headers = {
   urlencoded: {
@@ -27,11 +29,15 @@ axios.interceptors.response.use(response => {
 
     webApi.alert('登录失效，即将跳到登录页');
 
-    LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
+
+    setTimeout( ()=>{
+      // g.targetLogin();
+      // LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
+    },2000)
+
 
   }else{
     return response;
-
   }
 
 }, error =>  {
@@ -98,8 +104,10 @@ export const complaintOpinion = params => { return axios.post(`${requestUrl}/api
 
 
 
-// 获取我的笔记
+// 获取我的笔记列表
 export const getNoteList = params => { return axios.post(`${requestUrl}/api/studytools/myallcoursechapternodecount/v2.1`, qs.stringify(params)).then(res => res.data).catch(err => err) };
+// 获取课程笔记列表
+export const getCourseNoteList = params => { return axios.post(`${requestUrl}/api/studytools/coursechapternodecount/v2.1`, qs.stringify(params)).then(res => res.data).catch(err => err) };
 // 进入笔记详情列表
 export const getNoteDetailsList = params => { return axios.get(`${requestUrl}/api/studytools/nodelist/v2.1?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 // 笔记详情

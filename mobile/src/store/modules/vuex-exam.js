@@ -6,6 +6,7 @@ export default {
 		exam : '',
 		examType : '', // chapter,realImitate,knowledge,testSite
 		examId : '',
+		examTitle : '',
 		examCache : [],
 		examState : [],
 		examBaseInfo : [],

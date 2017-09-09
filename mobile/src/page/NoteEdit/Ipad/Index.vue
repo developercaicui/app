@@ -6,7 +6,7 @@
 		<header class="one-top">
 			<a href="javascript:;" @touchend.stop="handleBackSection">&#xe67f;</a>
 			<h1>{{ headerTitle }}</h1>
-			<div class="state-edit" @touchend="handleSaveNote">
+			<div class="state-edit" @touchend.stop="handleSaveNote">
 				<a href="javascript:;">&#xe654;</a>
 			</div>
 		</header>
@@ -67,13 +67,18 @@ export default {
 			categoryId: 'categoryId',
 			chapterId: 'chapterId',
 			type: '',
-			isPublicText: '公开'
+			isPublicText: '公开',
+			clientType: 'ipad',
     }
   },
 
 	mounted() {
-
+console.log(this.$route.params.data)
 		this.data = JSON.parse(this.$route.params.data);
+
+		console.log(this.data, 'edit');
+
+
 
 		// 是否编辑
 		if('detailsData' in this.data){
@@ -88,8 +93,17 @@ export default {
 			this.chapterId = this.data.detailsData.charpterId;
 			this.type = 'edit';
 			this.isPublic = this.data.detailsDataisPublic;
-			this.isPublicText = this.isPublic == 1 ? '公开' : '私人';
-			this.$refs.isPublicDiv.className = this.isPublic == 1 ? 'select-btn select-btn-active' : 'select-btn';
+			this.clientType = this.data.detailsData.clientType;
+
+			this.data.detailsData.picAllPath.map(src =>{
+
+				this.allUploadPic.push({
+					src: `${this.webApi.cdnImgUrl}${src}`,
+					path: src,
+					file: null
+				});
+
+			});
 
 		}else{
 			this.title = this.data.sectionData.chapterTitle;
@@ -103,6 +117,8 @@ export default {
 			this.type = 'new';
 		}
 
+		this.isPublicText = this.isPublic == 1 ? '私人' : '公开';
+		this.$refs.isPublicDiv.className = this.isPublic == 1 ? 'select-btn select-btn-active' : 'select-btn';
 		this.headerTitle = this.data.type == 'new' ? '新建笔记 ': '编辑笔记';
 
 	},
@@ -116,6 +132,12 @@ export default {
 
 		// 触发上传
 		handleUploadBtn() {
+
+			if(this.allUploadPic.length >= 5) {
+				this.webApi.alert('最多可上传5张图片');
+				return false;
+			}
+
 			this.$refs.iptFile.click();
 		},
 
@@ -186,6 +208,12 @@ export default {
 
 			this.allUploadPic.map((item, index) =>{
 
+				if(!item.file) {
+					this.allPicPath =  `${this.allPicPath}${item.path},`;
+					this.isUploadSuccess++;
+					return false;
+				}
+
 				let formData = new FormData();
 
 				formData.append(`file`, item.file);
@@ -214,7 +242,7 @@ export default {
 				data: {
 					content:	this.textDetails,   // 内容
 					soundPath:	'', // 声音
-					clientType:	this.data.detailsData.clientType || 'aPad', // 设备类型
+					clientType:	this.clientType, // 设备类型
 					title:	'title', //
 					categoryName:	this.categoryName,
 					chapterId: this.chapterId,
@@ -257,13 +285,13 @@ export default {
 
 		.edit{
 
-			@include fc(.24rem, #ccc);
+			@include fc(.28rem, #ccc);
 
 			textarea{
 				width: 96%;
 				@include wh(96%, 8.27rem);
 				@extend .borderBox;
-				color: #333;
+				@include fc(.26rem, #333);
 				padding: .15rem .2rem;
 				margin-left: 2%;
 				border: 1px solid #eee;
@@ -417,7 +445,7 @@ export default {
 			font-family: 'iconfont';
 			a{
 				color: $green;
-				font-size: .4rem;
+				font-size: .7rem;
 				margin-right: .3rem;
 			}
 		}

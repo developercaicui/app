@@ -38,6 +38,7 @@ export default {
 		this.data = JSON.parse(this.$route.params.data);
 
 
+		console.log(this.data);
 		this.webApi.loadingData();
 
 
@@ -62,11 +63,19 @@ export default {
 			res.data.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}  ${res.data.nikeName}`;
 
 			res.data.imgPath =  res.data.imgPath ? res.data.imgPath.split(',') : [];
+			res.data.imgPath = res.data.imgPath.filter(isNormal);
+			res.data.picAllPath = res.data.imgPath;
 			res.data.imgPath = res.data.imgPath.map(item => `background: url(${this.webApi.cdnImgUrl}${item}) center center no-repeat;`)
 			res.data.imgPath = res.data.imgPath.filter(item => item.includes('upload'));
+			res.data.picList = res.data.imgPath.map(item => item.replace(/^.+\((.+)\).+$/g, '$1'));
+
 			this.data.detailsData = this.detailsData = res.data;
 
 		})
+
+		function isNormal(item) {
+			if(item) return item;
+		}
 
 
 	},

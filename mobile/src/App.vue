@@ -1,10 +1,10 @@
 <template lang="html">
 
-  <div>
-    <keep-alive>
+  <main>
+    <!-- <keep-alive> -->
        <router-view></router-view>
-    </keep-alive>
-  </div>
+    <!-- </keep-alive> -->
+  </main>
 
 </template>
 

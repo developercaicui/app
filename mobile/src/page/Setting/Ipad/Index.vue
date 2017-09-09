@@ -2,7 +2,7 @@
 	<div class="set-info-modal" v-if="isShow">
 		<div class="backdrop"></div>
 	      <div id="mask0" class="modal">
-	        <div @click="isShow = !isShow" class="set_tit">设置<i class="icon-close icon-guanbi">&#xe642;</i></div>
+	        <div @click="guanbi" class="set_tit">设置<i class="icon-close icon-guanbi">&#xe642;</i></div>
 	        <ul @click="modify" class="user-info">
 	          <li>
 	            <div class="left"><img class="avatar"><span class="user_nick"></span></div>
@@ -130,7 +130,7 @@
 
 <script>
 
-import jquery  from 'jquery';
+import $ from 'jQuery';
 import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 
 
@@ -144,7 +144,7 @@ export default {
 	},
 
 	created() {
-
+    $('body').css("background","rgba(0,0,0,0)");
 		$('body').attr('show', 'index');
 
 		getUserInfo({'token':this.webApi.getCookie('token')})
@@ -225,10 +225,15 @@ export default {
 
       		.then(res =>{
 
-	            alert("清除用户信息缓存记录并返回登录页")
+	            set.clickLoginLaunch("out")
 
 	        })
       	},
+        guanbi() {
+          console.log("111")
+           // this.isShow = !this.isShow;
+           set.clickSetBack("lll");
+        },
         setTime() {//选择时间提醒
 
           this.$refs.picker.open();

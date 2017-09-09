@@ -4,7 +4,11 @@ import config from './requestConfig';
 import  API from './api';
 import COMMON from './common';
 
+<<<<<<< HEAD
 axios.defaults.timeout = 50000;
+=======
+axios.defaults.timeout = 10000;
+>>>>>>> dev
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 // axios.interceptors.request.use((config) => {
@@ -21,7 +25,7 @@ axios.interceptors.response.use((res) => {
   }else{
   	return Promise.reject('res');
   }
-  
+
 }, (error) => {
   return Promise.reject(error);
 });
@@ -54,6 +58,12 @@ export default {
   },
   delMemberExercise(params) {
   	return getArgs('delMemberExercise', params)
+  },
+  getExamenInfo(params) {
+    return getArgs('getExamenInfo', params)
+  },
+  getKnowledgePointInfo(params) {
+    return getArgs('getKnowledgePointInfo', params)
   }
 }
 function getArgs(port,params){
@@ -76,7 +86,7 @@ function getArgs(port,params){
 			args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
 			args.type = thatServer.type ? thatServer.type : 'GET';
 		}
-		
+
 	}else{
 		hostName = COMMON.host.name;
 		if(thatServer.hostName){
@@ -85,7 +95,7 @@ function getArgs(port,params){
 		args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
 		args.type = thatServer.type ? thatServer.type : 'GET';
 	}
-	
+
 	// return args;
 
 	if(args.type === 'POST'){
@@ -97,7 +107,7 @@ function getArgs(port,params){
 }
 
 
-const server = {
+    const server = {
         'token': {
             // 'url' : '/api/v2.1/getToken',
             'url': '/api/zbids/app/gettoken/v1.0/',
@@ -362,11 +372,11 @@ const server = {
         },
         'appointment': {
             'url': '/api/teachsource/opencourse/appointment',
-            'urlDemo': '/api/teachsource/opencourse/appointment/data'
+            // 'urlDemo': '/api/teachsource/opencourse/appointment/data'
         },
         'getappointmentlist': {
             'url': '/api/teachsource/opencourse/getappointmentlist',
-            'urlDemo': '/api/teachsource/opencourse/getappointmentlist/data'
+            // 'urlDemo': '/api/teachsource/opencourse/getappointmentlist/data'
         },
         'includeopencoursegroup': {
             'url': '/api/business/coursegroup/includeopencoursegroup'
@@ -415,5 +425,11 @@ const server = {
         },
         'getDetailById': {
             'url': '/api/teachsource/resources/getDetailById'
+        },
+        'getExamenInfo' : {
+          'url': '/api/teachsource/examen/getExamenInfo'
+        },
+        'getKnowledgePointInfo' : {
+          'url': '/api/teachsource/knowledge/getKnowledgePointInfo'
         }
     };

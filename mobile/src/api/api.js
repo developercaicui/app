@@ -43,10 +43,18 @@ export default {
 
     let device = window.navigator.userAgent.toLocaleLowerCase();
 
-    if(device.includes('ipad'))
-      return 'ipad';
-    else if(device.includes('mobile'))
-      return 'mobile';
+    return 'ipad'
+    // if(device.includes('android')) {
+    //
+    // }else if(device.includes('ios')) {
+    //
+    //   if(device.includes('ipad'))
+    //     return 'ipad';
+    //   else if(device.includes('mobile'))
+    //     return 'mobile';
+    //
+    // }
+
 
   },
 
@@ -131,6 +139,46 @@ export default {
    * @return {String} 字符串
    */
    isSmallTen: (num) => num < 10 ? `0${num}` : num,
+
+   /**
+    * 添加css，且添加前缀
+    * @type {Element}  dom对象
+    * @return {Object} CSS，JSON
+    */
+    addCss(obj, css) {
+
+      if(!obj || !css) return;
+
+      const prefix = ['', 'webkit', 'moz'];
+      const needPrefix = ['transition', 'transform'];
+
+      for(let attr in css) {
+
+        if(needPrefix.includes(attr)) {
+
+          let key = attr;
+
+          prefix.map((item, index) =>{
+
+            if(item !== '') {
+
+              let strArr = Array.from(attr);
+
+              strArr[0] = strArr[0].toUpperCase();
+              key =`${prefix[index]}${strArr.join(',').replace(/,/g, '')}`;
+
+            }
+
+            obj.style[key] = css[attr];
+
+          })
+
+
+        }
+
+      }
+
+    },
 
    /**
     * 递归父节点
@@ -419,14 +467,6 @@ export default {
     //              break;
     //      }
         }
-    },
-    /**
-    * 没有数据
-    */
-    notDate() {
-
-        document.body.classList.contains("null") ? document.body.classList.remove("null") :document.body.classList.add("null")
-
     }
 
 };
