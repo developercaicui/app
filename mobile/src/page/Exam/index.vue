@@ -2,7 +2,7 @@
 	<div class="exam">
 		<div class="exam-header">
 			<a class="exam-return triangle" href="javascript:;"></a>
-			<h3 class="exam-title">试卷标题: 试卷类型:{{exam.examType}}</h3>
+			<h3 class="exam-title">试卷标题: {{exam.examTitle}}试卷类型:{{exam.examType}}</h3>
 			<!-- <a class="exam-menu" href="javascript:;">菜单</a> -->
 		</div>
 		<div class="exam-body">
@@ -59,10 +59,14 @@
 				"examType" : this.examType,
 				"examId" : this.examId
 			})
-			if(this.examType == "chapter" || this.examType == "realImitate"){
+			if(this.examType == "chapter"){
 				this.exerciseExam();
-			}else if(this.examType == "knowledge" || this.examType == "testSite"){
+			}else if(this.examType == "knowledge"){
 				this.exerciseKnowledge();
+			}else if(this.examType == "realImitate"){
+				this.exerciseRealImitate();
+			}else if(this.examType == "testSite"){
+				this.exerciseTestSite();
 			}
 			
 		},
@@ -125,6 +129,72 @@
 						exerciseNid = +status.data[0].last_exercise_nid
 					}
 					this.update({
+						"examCache" : cache.data,
+						"examState" : status.data[0],
+						"examBaseInfo" : baseInfoData,
+						"exerciseLastNid" : exerciseNid,
+						"exerciseActiveIndex" : exerciseNid,
+						"exerciseId" : baseInfoData[exerciseNid].id
+					});
+					this.requestListDetail();
+					console.log(this.exam)
+				}))
+			},
+			exerciseRealImitate () {
+				
+				axios.all([Request.getExamenInfo({
+					'examenId' : this.examId
+				}),Request.examStatus({
+					'knowledge_points' : this.examId,
+					'type' : '4',
+					'member_id' : COMMON.User.memberId,
+					'examenNum' : ''
+				}),Request.getExerciseBaseInfo({
+					'examenId' : this.examId
+				})]).then(axios.spread((examenInfo, status, baseInfo) => {
+					let exerciseNid = 0;
+					if(status.data && status.data.length){
+						exerciseNid = +status.data[0].last_exercise_nid
+					}
+					this.update({
+						"examTitle" : examenInfo.data[0].title,
+						"examNum" : status.data ? status.data.length : 0,
+						"examState" : status.data[0],
+						"examBaseInfo" : baseInfo.data,
+						"exerciseLastNid" : exerciseNid,
+						"exerciseActiveIndex" : exerciseNid,
+						"exerciseId" : baseInfo.data[exerciseNid].id
+					});
+					this.requestListDetail();
+					console.log(this.exam)
+				}))
+			},
+			exerciseTestSite () {
+				axios.all([Request.getKnowledgePointInfo({
+					'knowledgePointId' : this.examId
+				}),Request.examCache({
+					'knowledge_points' : this.examId,
+					'type' : '4'
+				}),Request.examStatus({
+					'knowledge_points' : this.examId,
+					'type' : '4',
+					'member_id' : COMMON.User.memberId,
+					'examenNum' : ''
+				})]).then(axios.spread((examenInfo, cache, status, baseInfo) => {
+
+					let exerciseKnowledgeIds = this.exerciseKnowledgeIds(); //cache.data[0].exercise_filename
+					let baseInfoData = [];
+					exerciseKnowledgeIds.forEach((item)=>{
+						baseInfoData.push({
+							"id" : item
+						})
+					})
+					let exerciseNid = 0;
+					if(status.data && status.data.length){
+						exerciseNid = +status.data[0].last_exercise_nid
+					}
+					this.update({
+						"examTitle" : examenInfo.data[0].enTitle,
 						"examCache" : cache.data,
 						"examState" : status.data[0],
 						"examBaseInfo" : baseInfoData,
@@ -263,7 +333,7 @@
 
 					'knowledgePointId': this.exam.examId,
 					'examenNum': this.exam.examNum,
-					'examenName': this.exam.title,
+					'examenName': this.exam.examTitle,
 					'examenTotalNum': this.exam.examBaseInfo.length,
 					'examenType': this.exam.examType,
 					'progress': this.exam.exerciseDoneCount,

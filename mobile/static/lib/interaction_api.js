@@ -70,3 +70,12 @@ function getCourseNoteInfo(data = {}) {
   setCookie('getCourseNoteInfo', JSON.stringify(data));
 
 }
+
+// 试卷页面需要用到的id(用于试卷)
+function getExamNeedIds(data = {}) {
+
+  data = JSON.parse(data);
+
+  setCookie('examNeedIds', JSON.stringify(data));
+
+}
