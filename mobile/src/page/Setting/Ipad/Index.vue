@@ -160,27 +160,15 @@ export default {
 
                   this.$refs.popInputTel.value = res.data.mobile
               }else{
-<<<<<<< HEAD
 
                   this.$refs.popInputTel.value = res.data.email
-              } 
-	            
-=======
-                  $(".pop-input-tel").val(res.data.email)
               }
 
->>>>>>> buzhanguo
+
 	      }
 
 	    })
 
-<<<<<<< HEAD
-=======
-
-          // $('#pop-radios .pop-radio-label').on('click', function () {
-          //     $(this).addClass('active').siblings().removeClass('active');
-          // });
->>>>>>> buzhanguo
 	},
 
 	updated() {
@@ -295,7 +283,7 @@ export default {
 	        param.cmptContent = content;//投诉内容
 	        param.contactWay = $(".pop-input-tel").val();//联系方式
 	        param.deviceDesc = systype;//设备描述
-	        
+
 	        this.webApi.loadingData("发表中");
 
 	        if (this.is_ok) {
@@ -333,11 +321,7 @@ export default {
 	  	  let is_notice;
 	  	  let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
       	let avatar = this.webApi.cdnImgUrl + JSON.parse(this.webApi.getCookie("userInfo")).avatar;
-<<<<<<< HEAD
-        //设置昵称
-=======
 
->>>>>>> buzhanguo
       	$('.user_nick').html(nickName);
         //设置头像
       	$('.avatar').attr('src', avatar+'?s='+Math.random());
@@ -395,13 +379,10 @@ export default {
           }
           that.webApi.setCookie('is_notice', is_notice);
       	});
-        
+
         // 设置视频质量
       	let chekquality;
-<<<<<<< HEAD
-=======
 
->>>>>>> buzhanguo
         $('#mask3 li').on('click', function () {
 	          let quality = $(this).find('.left').html();
 	          that.webApi.setCookie('quality', quality);
