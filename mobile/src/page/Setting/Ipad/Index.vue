@@ -162,8 +162,14 @@ export default {
               }else{
 
                   this.$refs.popInputTel.value = res.data.email
+<<<<<<< HEAD
               } 
 	            
+=======
+              }
+
+
+>>>>>>> 80b2ba47c586b8c8f6992b28a0c71a6d211f9ef7
 	      }
 
 	    })
@@ -282,7 +288,7 @@ export default {
 	        param.cmptContent = content;//投诉内容
 	        param.contactWay = $(".pop-input-tel").val();//联系方式
 	        param.deviceDesc = systype;//设备描述
-	        
+
 	        this.webApi.loadingData("发表中");
 
 	        if (this.is_ok) {
@@ -320,7 +326,11 @@ export default {
 	  	  let is_notice;
 	  	  let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
       	let avatar = this.webApi.cdnImgUrl + JSON.parse(this.webApi.getCookie("userInfo")).avatar;
+<<<<<<< HEAD
         //设置昵称
+=======
+
+>>>>>>> 80b2ba47c586b8c8f6992b28a0c71a6d211f9ef7
       	$('.user_nick').html(nickName);
         //设置头像
       	$('.avatar').attr('src', avatar+'?s='+Math.random());
@@ -378,7 +388,7 @@ export default {
           }
           that.webApi.setCookie('is_notice', is_notice);
       	});
-        
+
         // 设置视频质量
       	let chekquality;
 
