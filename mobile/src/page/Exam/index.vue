@@ -2,7 +2,8 @@
 	<div class="exam">
 		<div class="exam-header">
 			<a class="exam-return triangle" href="javascript:;"></a>
-			<h3 class="exam-title">试卷标题: {{exam.examTitle}}试卷类型:{{exam.examType}}</h3>
+			<!-- <h3 class="exam-title">试卷标题: {{exam.examTitle}}试卷类型:{{exam.examType}}</h3> -->
+			<h3 class="exam-title">{{exam.examTitle}}</h3>
 			<!-- <a class="exam-menu" href="javascript:;">菜单</a> -->
 		</div>
 		<div class="exam-body">
@@ -12,17 +13,12 @@
 			</template>
 			<questions @analysisstatus="analysisEvent"></questions>
 		</div>
-<<<<<<< HEAD
-		<div class="exam-footer" v-if="exam.exerciseListStatus.length">
-			<exam-cards @cardsPrev="exercisePrev" @cardsNext="exerciseNext" @clickExamCards="exerciseChange" @cardsPosLeft="cardsPosition"></exam-cards>
-=======
 		<div class="exam-footer" v-if="exam.examBaseInfo.length">
-			<exam-cards @cardsPrev="exercisePrev" @cardsNext="exerciseNext" @clickExamCards="exerciseChange"></exam-cards>
->>>>>>> dev
+			<exam-cards @cardsPrev="exercisePrev" @cardsNext="exerciseNext" @clickExamCards="exerciseChange" @cardsPosLeft="cardsPosition" :key="exam.examBaseInfo.length"></exam-cards>
 			<ul class="exam-button-ul">
 				<li class="exam-button-li" v-if="isSaveBtn"><a @click="exerciseAssignment" href="javascript:;" class="exam-button-a">交卷</a></li>
-				<li class="exam-button-li"><a href="javascript:;" class="exam-button-a">笔记</a></li>
-				<li class="exam-button-li"><a href="javascript:;" class="exam-button-a">提问</a></li>
+				<li class="exam-button-li" v-if="isNoteAcBtn"><a href="javascript:;" class="exam-button-a">笔记</a></li>
+				<li class="exam-button-li" v-if="isNoteAcBtn"><a href="javascript:;" class="exam-button-a">提问</a></li>
 			</ul>
 		</div>
 	</div>
@@ -31,7 +27,6 @@
 	
 	import axios from 'axios';
 	import Request from '../../api/request';
-	import COMMON from '../../api/common';
 	import { mapState,mapMutations,mapActions } from 'vuex';
 
 	import examCards from '../../components/Exam/v-exam-cards';
@@ -43,9 +38,24 @@
 		},
 		data () {
 			return {
+				memberId : '',
 				examType : this.$route.params.type,
 				examId : this.$route.params.id,
-				exerciseContextSave : []
+				examNum : this.$route.params.examNum,
+				exerciseContextSave : [],
+				exerciseLastNid : 0,
+				exerciseDoneCount : 0,
+				exerciseErrorNum : 0,
+				exerciseRightCount : 0,
+				exerciseTotalTime : 0,
+				examIsFinish : 0,
+				cacheKnowledgeLevel1Id : '', // knowledge_path_level_one_id/courseId
+				cacheKnowledgeLevel2Id : '', // knowledge_path_level_two_id/taskId
+
+				categoryId : '',
+				courseId : '',
+				chapterId : '',
+				taskId : '',
 			}
 		},
 		computed : {
@@ -53,6 +63,17 @@
 			isSaveBtn (){
 				if(this.exam.examType){
 					if(this.exam.examType == 'chapter' || this.exam.examType == 'realImitate'){
+						return true;
+					}else{
+						if(this.exam.exerciseActiveIndex == (this.exam.examNumTotal-1)){
+							return true;
+						}
+					}
+				}
+			},
+			isNoteAcBtn () {
+				if(this.exam.examType){
+					if(this.exam.examType == 'chapter' || this.exam.examType == 'knowledge'){
 						return true;
 					}
 				}
@@ -68,24 +89,36 @@
 			// 	"examenNum" : 1
 			// }).then((res)=>{
 			// })
+			// return false;
+			let userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+			this.memberId = userInfo.memberId;
 			this.update({
 				"examType" : this.examType,
-				"examId" : this.examId
+				"examId" : this.examId,
+				"examNum" : this.examNum >= 0 ? this.examNum : ''
 			})
 			if(this.examType == "chapter"){
-				this.exerciseExam();
+				this.exerciseExam((examenInfo, status, baseInfo) => {
+					this.examRequestCallback(examenInfo, status, baseInfo);
+				});
 			}else if(this.examType == "knowledge"){
-				this.exerciseKnowledge();
+				this.exerciseKnowledge((examenInfo, status, baseInfo) => {
+					this.examRequestCallback(examenInfo, status, baseInfo);
+				});
 			}else if(this.examType == "realImitate"){
-				this.exerciseRealImitate();
+				this.exerciseRealImitate((examenInfo, status, baseInfo) => {
+					this.examRequestCallback(examenInfo, status, baseInfo);
+				});
 			}else if(this.examType == "testSite"){
-				this.exerciseTestSite();
+				this.exerciseTestSite((examenInfo, status, baseInfo) => {
+					this.examRequestCallback(examenInfo, status, baseInfo);
+				});
 			}
-			
 		},
 		methods : {
 			...mapMutations([
 				'update',
+				'getExerciseTitle',
 				'setExamId',
 				'arrEntities'
 			]),
@@ -94,44 +127,35 @@
 				'requestExerciseList',
 				'requestExerciseDetail'
 			]),
-			exerciseExam (){
-				axios.all([Request.examStatus({
-					'knowledge_points' : this.examId,
-					'type' : '4',
-					'member_id' : COMMON.User.memberId,
-					'examenNum' : ''
-				}),Request.getExerciseBaseInfo({
-					'examenId' : this.examId
-				})]).then(axios.spread((status, baseInfo) => {
-					let exerciseNid = 0;
+			examRequestCallback (examenInfo, status, baseInfo) {
+				let examNeedIds = this.getLocalStorage('examNeedIds');
+				let examNum = this.examNum;
+				let statusData = '';
+				if(examNum){
 					if(status.data && status.data.length){
-						exerciseNid = +status.data[0].last_exercise_nid
+						statusData = status.data[0];
+						this.exerciseLastNid = +statusData.last_exercise_nid;
+						this.exerciseDoneCount = +statusData.progress;
+						this.exerciseErrorNum = +statusData.error_num;
+						this.exerciseRightCount = this.exerciseDoneCount-this.exerciseErrorNum;
+						this.exerciseTotalTime = +statusData.total_time;
+						this.examIsFinish = +statusData.is_finish;
 					}
-					this.update({
-						"examNum" : status.data ? status.data.length : 0,
-						"examState" : status.data[0],
-						"examBaseInfo" : baseInfo.data,
-						"examNumTotal" : baseInfo.data.length,
-						"exerciseLastNid" : exerciseNid,
-						"exerciseActiveIndex" : exerciseNid,
-						"exerciseId" : baseInfo.data[exerciseNid].id
-					});
-					this.requestListDetail();
-					console.log(this.exam)
-				}))
-			},
-			exerciseKnowledge (){
-				axios.all([Request.examCache({
-					'knowledge_points' : this.examId,
-					'type' : '4'
-				}),Request.examStatus({
-					'knowledge_points' : this.examId,
-					'type' : '4',
-					'member_id' : COMMON.User.memberId,
-					'examenNum' : ''
-				})]).then(axios.spread((cache, status, baseInfo) => {
-					if(cache.data && cache.data.length){
-						let exerciseKnowledgeIds = this.exerciseKnowledgeIds(cache.data[0].exercise_filename); //cache.data[0].exercise_filename
+				}else{
+					examNum = status.data ? status.data.length : 0;
+				}
+
+
+				let exerciseInfo = baseInfo.data;
+				let exemTitle = examenInfo.data[0].title;
+				if(this.examType == "knowledge" || this.examType == "testSite"){
+					examNum = 0;
+					exemTitle = examenInfo.data[0].enTitle;
+					if(exerciseInfo && exerciseInfo.length){
+						this.cacheKnowledgeLevel1Id = exerciseInfo[0].knowledge_path_level_one_id;
+						this.cacheKnowledgeLevel2Id = exerciseInfo[0].knowledge_path_level_two_id;
+						// this.cacheKnowledgePath = this.cacheKnowledgeLevel1Id + this.cacheKnowledgeLevel2Id;
+						let exerciseKnowledgeIds = this.exerciseKnowledgeIds(exerciseInfo[0].exercise_filename); //cache.data[0].exercise_filename
 						let baseInfoData = [];
 						if(exerciseKnowledgeIds){
 							exerciseKnowledgeIds.forEach((item)=>{
@@ -140,88 +164,102 @@
 								})
 							})
 						}
-						let exerciseNid = 0;
-						if(status.data && status.data.length){
-							exerciseNid = +status.data[0].last_exercise_nid
-						}
-						this.update({
-							"examCache" : cache.data,
-							"examState" : status.data[0],
-							"examBaseInfo" : baseInfoData,
-							"examNumTotal" : baseInfoData.length,
-							"exerciseLastNid" : exerciseNid,
-							"exerciseActiveIndex" : exerciseNid,
-							"exerciseId" : baseInfoData[exerciseNid].id
-						});
-						this.requestListDetail();
-						console.log(this.exam)
+						exerciseInfo = baseInfoData;
 					}
-				}))
+				}else{
+					if(examNeedIds){
+						this.cacheKnowledgeLevel1Id = examNeedIds.courseId;
+						this.cacheKnowledgeLevel2Id = examNeedIds.taskId;
+					}
+					// this.cacheKnowledgePath = this.cacheKnowledgeLevel1Id +','+ this.cacheKnowledgeLevel2Id;
+				}
+				if(this.examType == "chapter" || this.examType == "knowledge"){
+					if(examNeedIds){
+						this.categoryId = examNeedIds.categoryId;
+						this.courseId = examNeedIds.courseId;
+						this.chapterId = examNeedIds.chapterId;
+						this.taskId = examNeedIds.taskId;
+					}
+				}
+				this.update({
+					"examTitle" : exemTitle,
+					"examNum" : examNum,
+					"examState" : statusData,
+					"examBaseInfo" : exerciseInfo,
+					"examNumTotal" : exerciseInfo.length,
+					"exerciseLastNid" : this.exerciseLastNid,
+					"exerciseActiveIndex" : this.exerciseLastNid,
+					"exerciseId" : exerciseInfo[this.exerciseLastNid].id,
+					"exerciseDoneCount" : this.exerciseDoneCount,
+					"exerciseErrorNum" : this.exerciseErrorNum,
+					"exerciseRightCount" : this.exerciseRightCount,
+					"exerciseTotalTime" : this.exerciseTotalTime,
+					"examIsFinish" : this.examIsFinish,
+
+					"categoryId" : this.categoryId,
+					"courseId" : this.courseId,
+					"chapterId" : this.chapterId,
+					"taskId" : this.taskId,
+				});
+				this.requestListDetail();
+				console.log(this.exam)
 			},
-			exerciseRealImitate () {
-				
+			exerciseExam (callback){
 				axios.all([Request.getExamenInfo({
 					'examenId' : this.examId
 				}),Request.examStatus({
 					'knowledge_points' : this.examId,
-					'type' : '4',
-					'member_id' : COMMON.User.memberId,
-					'examenNum' : ''
+					'type' : this.exam.examFindType,
+					'member_id' : this.memberId,
+					'examenNum' : this.exam.examNum
 				}),Request.getExerciseBaseInfo({
 					'examenId' : this.examId
 				})]).then(axios.spread((examenInfo, status, baseInfo) => {
-					let exerciseNid = 0;
-					if(status.data && status.data.length){
-						exerciseNid = +status.data[0].last_exercise_nid
-					}
-					this.update({
-						"examTitle" : examenInfo.data[0].title,
-						"examNum" : status.data ? status.data.length : 0,
-						"examState" : status.data[0],
-						"examBaseInfo" : baseInfo.data,
-						"exerciseLastNid" : exerciseNid,
-						"exerciseActiveIndex" : exerciseNid,
-						"exerciseId" : baseInfo.data[exerciseNid].id
-					});
-					this.requestListDetail();
-					console.log(this.exam)
+					if(callback){callback(examenInfo, status, baseInfo)};
 				}))
 			},
-			exerciseTestSite () {
-				axios.all([Request.getKnowledgePointInfo({
-					'knowledgePointId' : this.examId
-				}),Request.examCache({
-					'knowledge_points' : this.examId,
-					'type' : '4'
+			exerciseRealImitate (callback) {
+				axios.all([Request.getExamenInfo({
+					'examenId' : this.examId
 				}),Request.examStatus({
 					'knowledge_points' : this.examId,
-					'type' : '4',
-					'member_id' : COMMON.User.memberId,
-					'examenNum' : ''
-				})]).then(axios.spread((examenInfo, cache, status, baseInfo) => {
-
-					let exerciseKnowledgeIds = this.exerciseKnowledgeIds(); //cache.data[0].exercise_filename
-					let baseInfoData = [];
-					exerciseKnowledgeIds.forEach((item)=>{
-						baseInfoData.push({
-							"id" : item
-						})
-					})
-					let exerciseNid = 0;
-					if(status.data && status.data.length){
-						exerciseNid = +status.data[0].last_exercise_nid
-					}
-					this.update({
-						"examTitle" : examenInfo.data[0].enTitle,
-						"examCache" : cache.data,
-						"examState" : status.data[0],
-						"examBaseInfo" : baseInfoData,
-						"exerciseLastNid" : exerciseNid,
-						"exerciseActiveIndex" : exerciseNid,
-						"exerciseId" : baseInfoData[exerciseNid].id
-					});
-					this.requestListDetail();
-					console.log(this.exam)
+					'type' : this.exam.examFindType,
+					'member_id' : this.memberId,
+					'examenNum' : this.exam.examNum
+				}),Request.getExerciseBaseInfo({
+					'examenId' : this.examId
+				})]).then(axios.spread((examenInfo, status, baseInfo) => {
+					if(callback){callback(examenInfo, status, baseInfo)};
+				}))
+			},
+			exerciseKnowledge (callback){
+				axios.all([Request.getKnowledgePointInfo({
+					'knowledgePointId' : this.examId
+				}),Request.examStatus({
+					'knowledge_points' : this.examId,
+					'type' : this.exam.examFindType,
+					'member_id' : this.memberId,
+					'examenNum' : 0
+				}),Request.examCache({
+					'knowledge_points' : this.examId,
+					'type' : this.exam.examFindType
+				})]).then(axios.spread((examenInfo, status, baseInfo) => {
+					if(callback){callback(examenInfo, status, baseInfo)};
+				}))
+			},
+			exerciseTestSite (callback) {
+				axios.all([Request.getKnowledgePointInfo({
+					'knowledgePointId' : this.examId
+				}),Request.examStatus({
+					'knowledge_points' : this.examId,
+					'type' : this.exam.examFindType,
+					'member_id' : this.memberId,
+					'examenNum' : 0
+				}),Request.examCache({
+					'knowledge_points' : this.examId,
+					'type' : this.exam.examFindType
+				})]).then(axios.spread((examenInfo, status, baseInfo) => {
+					if(callback){callback(examenInfo, status, baseInfo)};
 				}))
 			},
 			exerciseKnowledgeIds (src){
@@ -287,7 +325,11 @@
 						"exerciseDetail" : exerciseListRequest.detail,
 						"exerciseType" : exerciseListRequest.detail.questionTypes,
 						"exerciseContext" : context ? context : exerciseListRequest.detail.context,
+						// "exerciseTitle" : exerciseListRequest.detail.title,
+					})
+					this.getExerciseTitle({
 						"exerciseTitle" : exerciseListRequest.detail.title,
+						"exerciseType" : exerciseListRequest.detail.questionTypes
 					})
 				}else{
 					Request.exerciseDetail({
@@ -303,13 +345,17 @@
 							"exerciseContext" : context ? context : res.data[0].context,
 							"exerciseTitle" : res.data[0].title
 						})
+						this.getExerciseTitle({
+							"exerciseTitle" : res.data[0].title,
+							"exerciseType" : res.data[0].questionTypes
+						})
 					})
 				}
 			},
 			exercisePrev () {
 				var index = this.exam.exerciseActiveIndex;
 				index--;
-				if(index){
+				if(index>=0){
 					this.exerciseChange(index);
 				}else{
 					if(this.exam.exerciseOptionsActiveIndex !== -1){
@@ -345,47 +391,79 @@
 					})
 				}
 			},
+			exerciseSaveCache () {
+				let exerciseIsCache = this.exerciseIsCache();
+				if(exerciseIsCache.isCacheContext){
+					this.exam.exerciseListCache[exerciseIsCache.indexCacheContext].context = "'" + JSON.stringify(this.exam.exerciseContext) + "'";
+				}else{
+					this.exam.exerciseListCache.push({
+						"exercise_id" : this.exam.exerciseId,
+						"context" : "'" + JSON.stringify(this.exam.exerciseContext) + "'"
+					});
+				}
+			},
 			exerciseSave (args){
+				let exerciseActiveIndex = this.exam.exerciseActiveIndex;
+				let exerciseDoneCount = +this.exam.exerciseDoneCount+1;
+				let exerciseErrorNum = 0;
+				let exerciseRightCount = 0;
+				let examIsFinish = 0;
+				if(+this.exam.exerciseStatus){
+					exerciseRightCount = this.exam.exerciseRightCount + 1;
+				}else{
+					exerciseErrorNum = this.exam.exerciseErrorNum + 1;
+				}
+				if(exerciseDoneCount >= this.exam.examNumTotal){
+					examIsFinish = 1;
+					exerciseDoneCount = this.exam.examNumTotal;
+				}
 				Request.setMemberExerciseLog({
 					
-					'memberId': COMMON.User.memberId,
+					'memberId': this.memberId,
 					
 					'knowledgePointId': this.exam.examId,
 					'examenNum': this.exam.examNum,
 					'examenName': this.exam.examTitle,
-					'examenTotalNum': this.exam.examBaseInfo.length,
+					'examenTotalNum': this.exam.examNumTotal,
 					'examenType': this.exam.examType,
 					
 					'exerciseId': this.exam.exerciseId,
-					'progress': this.exam.exerciseDoneCount,
-					'status': this.exam.exerciseStatus,
-					
-					'context': "'" + JSON.stringify(this.exam.exerciseContext) + "'",
-					'lastExerciseNid': this.exam.exerciseLastNid,
-					'errorNum': this.exam.exerciseErrorNum,
-					'correctNum': this.exam.exerciseRightCount,
-					'totalTime': this.exam.exerciseTotalTime,
-					'isFinish': this.exam.examIsFinish,
 					'exerciseTitle': this.exam.exerciseTitle,
-					'currentProgress': +this.exam.exerciseActiveIndex,
+					'context': "'" + JSON.stringify(this.exam.exerciseContext) + "'",
+					'status': this.exam.exerciseStatus,
+					'currentProgress': exerciseActiveIndex,
+
+					'progress': exerciseDoneCount,
+					'lastExerciseNid': exerciseActiveIndex,
+					'errorNum': exerciseErrorNum,
+					'correctNum': exerciseRightCount,
+					'totalTime': this.exam.exerciseTotalTime,
+					'isFinish': examIsFinish,
+					'cacheKnowledgeLevel1Id': this.exam.cacheKnowledgeLevel1Id,
+					'cacheKnowledgeLevel2Id': this.exam.cacheKnowledgeLevel2Id,
+					'cacheKnowledgePath': this.exam.cacheKnowledgeLevel1Id+','+this.exam.cacheKnowledgeLevel2Id,
 
 					'subjectId': this.exam.subjectId,
 					'categoryId': this.exam.categoryId,
 					'courseId': this.exam.courseId,
 					'chapterId': this.exam.chapterId,
 					'taskId': this.exam.taskId,
-					'cacheKnowledgeLevel1Id': this.exam.cacheKnowledgeLevel1Id,
-					'cacheKnowledgeLevel2Id': this.exam.cacheKnowledgeLevel2Id,
-					'cacheKnowledgePath': this.exam.cacheKnowledgePath,
+					
 				}).then( (res) => {
-
+					this.update({
+						exerciseLastNid : exerciseActiveIndex,
+						exerciseDoneCount : exerciseDoneCount,
+						exerciseErrorNum : exerciseErrorNum,
+						exerciseRightCount : exerciseRightCount,
+						examIsFinish : examIsFinish
+					})
 				})
 			},
 			exerciseAssignment (){
 				// setMemberExamenFinish
 				// setMemberErrorExercise
 				Request.setMemberExamenFinish({
-					"memberId":COMMON.User.memberId,
+					"memberId":this.memberId,
 					"examenid":this.exam.examId,
 					"examenNum":this.exam.examNum
 				}).then(res => {
@@ -393,7 +471,7 @@
 				});
 				let memberErrorExerciseData = this.getMemberErrorExerciseData();
 				Request.setMemberErrorExercise({
-					'memberId' : COMMON.User.memberId,
+					'memberId' : this.memberId,
 					'examenId': this.exam.examId,
 					'examenName' : this.exam.examName,
 					'errorexerciseids' : memberErrorExerciseData.errorexerciseids,
@@ -412,7 +490,7 @@
 					if(item.status == "1"){
 						correctexerciseids += item.id + ','
 					}else{
-						let title = this.getExerciseTitle(item.title,item.questionTypes);
+						let title = this.getExerciseTitleStr(item.title,item.questionTypes);
 						errorexerciseids += item.id + ','
 						errorexerciseRecords.push({
 							"sort" : index.toString(),
@@ -427,7 +505,7 @@
 					"errorexerciseRecords" : errorexerciseRecords
 				}
 			},
-			getExerciseTitle (titles,types) {
+			getExerciseTitleStr (titles,types) {
 				let title = '';
 				if(titles){
 					title = titles.replace(/<[^>]+>/g,"").replace(/(^\s+)|(\s+$)/g,"").replace(/(\r)|(\n)|(\t)/g,'')
@@ -490,17 +568,7 @@
 					"indexCacheContext" : indexCacheContext
 				}
 			},
-			exerciseSaveCache () {
-				let exerciseIsCache = this.exerciseIsCache();
-				if(exerciseIsCache.isCacheContext){
-					this.exam.exerciseListCache[exerciseIsCache.indexCacheContext].context = "'" + JSON.stringify(this.exam.exerciseContext) + "'";
-				}else{
-					this.exam.exerciseListCache.push({
-						"exercise_id" : this.exam.exerciseId,
-						"context" : "'" + JSON.stringify(this.exam.exerciseContext) + "'"
-					});
-				}
-			},
+			
 			analysisEvent () {
 				let exerciseOptionIndex = this.exam.exerciseOptionsActiveIndex;
 				this.getExerciseStatus();
@@ -543,7 +611,7 @@
 						question = this.exerciseStatusMatrixTask(context);
 						break;
 				}
-				statusNum = question.status ? '1' : '0';
+				statusNum = question.status ? '1' : '2';
 				this.$set(this.exam.examBaseInfo[this.exam.exerciseActiveIndex],'status',statusNum);
 				this.update({
 					"exerciseStatus" : statusNum,
@@ -798,6 +866,9 @@
 					"status" : status,
 					"text" : text
 				};
+			},
+			getLocalStorage (key) {
+				return JSON.parse(window.localStorage.getItem(key));
 			}
 		}
 	}

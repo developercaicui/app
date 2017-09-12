@@ -4,11 +4,7 @@ import config from './requestConfig';
 import  API from './api';
 import COMMON from './common';
 
-<<<<<<< HEAD
-axios.defaults.timeout = 50000;
-=======
 axios.defaults.timeout = 10000;
->>>>>>> dev
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 // axios.interceptors.request.use((config) => {
