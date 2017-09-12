@@ -18,7 +18,7 @@
 	          </li>
 	          <li id="setTime" @click="setTime">
               <div class="left">提醒时间</div>
-              <div id="timeArea" class="right">19:30</div>
+              <div id="timeArea" class="right" ref="timeArea">19:30</div>
             </li>
 	          <li class="cl chekquality" @click="chekquality">
 	            <div class="left">视频质量</div>
@@ -44,7 +44,7 @@
 	            <div class="left">退出登录</div>
 	          </li>
 	        </ul>
-	        <div class="exit hide">
+	        <div class="exit hide" ref="exit">
 	          <div class="exit_choice">
 	            <div class="exit_cur">你确定要退出吗？</div>
 	            <div class="ok_cancel cl">
@@ -70,10 +70,10 @@
 	        	<a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">投诉学服</span></a>
 	        </div>
 	        <ul>
-	          <textarea id="textarea" name="content" placeholder="亲爱的同学：小财非常欢迎你向小财反馈产品的意见建议和体验感受。我们一定会认真调整，及时反馈。根据你的建议，不断完善和优化我们的产品，为你提供更舒适的学习体验。"></textarea>
+	          <textarea id="textarea" ref="textarea" name="content" placeholder="亲爱的同学：小财非常欢迎你向小财反馈产品的意见建议和体验感受。我们一定会认真调整，及时反馈。根据你的建议，不断完善和优化我们的产品，为你提供更舒适的学习体验。"></textarea>
 	        </ul>
 	        <div class="pop-tel">联系方式
-	          <input type="text" class="pop-input-tel">
+	          <input type="text" class="pop-input-tel" ref="popInputTel">
 	        </div>
 	      </div>
 	      <div id="mask2" class="modal">
@@ -81,7 +81,7 @@
 	        <div class="set_tit">
 	          <div id="mask2-back" @click="closeIndex" class="icon-jiantou2 icon-arrow-left">&#xe669;</div><span>关于财萃课堂</span>
 	        </div>
-	        <div class="erweima">
+	        <div class="erweima" ref="erweima">
 	          <div class="bb"><img src="../../../assets/img/logocircle.png">
 	            <p class="about_title">财萃课堂</p>
 	            <p class="about_words">版本号：<span id="vers">3.1.1</span>copyright@caicui.com</p>
@@ -130,7 +130,7 @@
 
 <script>
 
-import $ from 'jQuery';
+import $ from 'jquery';
 import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 
 
@@ -139,34 +139,35 @@ export default {
 	data() {
 	    return {
 	    	isShow: true,
-	    	is_ok: true
+	    	is_ok: true,
+        body: document.getElementsByTagName("body")[0]
 	    }
 	},
 
 	created() {
-    $('body').css("background","rgba(0,0,0,0)");
-		$('body').attr('show', 'index');
+
+    this.body.setAttribute("style","rgba(0,0,0,0)")
+
+    this.body.setAttribute("show","index")
 
 		getUserInfo({'token':this.webApi.getCookie('token')})
 
-		.then(res =>{
+		.then(res =>{//设置联系方式
 
 	      if(res && res.state == 'success'){
 	            
 	          if(res.data.mobile){
-                  $(".pop-input-tel").val(res.data.mobile)
+
+                  this.$refs.popInputTel.value = res.data.mobile
               }else{
-                  $(".pop-input-tel").val(res.data.email)
+
+                  this.$refs.popInputTel.value = res.data.email
               } 
 	            
 	      }
 
 	    })
 
-	     
-          // $('#pop-radios .pop-radio-label').on('click', function () {
-          //     $(this).addClass('active').siblings().removeClass('active');
-          // });
 	},
 
 	updated() {
@@ -184,40 +185,57 @@ export default {
       	},
       	//投诉类型
       	selecType(ev) {
+
       		ev.target.classList.add("active")
+
       	},
       	//视频质量
       	chekquality() {
-      		$('body').attr('show', 'video');
+
+          this.body.setAttribute("show","video")
+
       	},
       	selquality(ev) {
       		let quality = ev.target.innerText;
-          	$('.chekquality').find('.quality').html(quality);
-          	$('body').attr('show','index');
+
+          document.getElementsByClassName("chekquality")[0].getElementsByClassName("quality")[0].innerHTML = quality
+
+          this.body.setAttribute("show","index")
       	},
       	//意见反馈
       	feedback() {
-      		$('body').attr('show','feedback');
+
+      		this.body.setAttribute("show","feedback")
+
       	},
       	//关于财萃
       	showAbout() {
-      		$('body').attr('show','about');
-          	$('.erweima').removeClass('xswx');
+
+          this.body.setAttribute("show","about")
+
+          this.$refs.erweima.classList.remove('xswx')
+
       	},
       	//微信公众号
       	togWx() {
-          $('.erweima').toggleClass('xswx');
+
+          this.$refs.erweima.classList.toggle('xswx')
+
       	},
       	//退出登录
       	logout() {
-           $('.exit').removeClass('hide');
+
+           this.$refs.exit.classList.remove('hide')
+
       	},
       	//取消退出登录
       	cancel() {
-           $('.exit').addClass('hide');
+           this.$refs.exit.classList.add('hide')
       	},
         closeIndex() {
-          $('body').attr('show','index');
+
+          this.body.setAttribute("show","index")
+
         },
       	out() {//退出登录
 
@@ -229,23 +247,29 @@ export default {
 
 	        })
       	},
-        guanbi() {
-          console.log("111")
-           // this.isShow = !this.isShow;
+        guanbi() {//关闭设置页
+
            set.clickSetBack("lll");
+
         },
         setTime() {//选择时间提醒
 
           this.$refs.picker.open();
 
         },
-        handleConfirm(time) {
-          $('#timeArea').html(time);
+        handleConfirm(time) {//设置提醒时间
+
+          this.$refs.timeArea.innerHTML = time
+
         },
-      	sub() {
-	        let content = $.trim($('textarea[name=content]').val());
+      	sub() {//发表反馈意见
+
+	        let content = this.$refs.textarea.value;
+
 	        if (content == '') {
+
 	            this.webApi.alert('意见内容不能为空');
+
 	            return false;
 	        }
 	        //let title=content.substr(0,20);
@@ -258,14 +282,13 @@ export default {
 	        param.cmptContent = content;//投诉内容
 	        param.contactWay = $(".pop-input-tel").val();//联系方式
 	        param.deviceDesc = systype;//设备描述
-	        // api.showProgress({
-	        //     title: '发表中',
-	        //     modal: true
-	        // });
-	        this.webApi.loadingData();
+	        
+	        this.webApi.loadingData("发表中");
 
 	        if (this.is_ok) {
+
 	            this.is_ok = false;
+
 	            complaintOpinion(param)
 
 	            .then(res =>{
@@ -294,15 +317,16 @@ export default {
 	mounted() {
 
   	  	let that = this;
-	  	let is_notice;
-	  	let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
+	  	  let is_notice;
+	  	  let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
       	let avatar = this.webApi.cdnImgUrl + JSON.parse(this.webApi.getCookie("userInfo")).avatar;
-  
+        //设置昵称
       	$('.user_nick').html(nickName);
+        //设置头像
       	$('.avatar').attr('src', avatar+'?s='+Math.random());
   
       	let notice = this.webApi.isEmpty(this.webApi.getCookie('open_notice')) ? 0 : this.webApi.getCookie('open_notice');
-     	// $(this).addClass('private_box').removeClass('public_box');
+     	  //设置提醒时间
       	if (notice == 1) {
           	$('.on-off').addClass('public_box').removeClass('private_box');
           	let newTimer = this.webApi.getCookie('notice_time');
@@ -323,7 +347,7 @@ export default {
       	}
 
 
-		//投诉类型
+		    //投诉类型
       	$('#pop-radios .pop-radio-label').on('click', function () {
           	$(this).addClass('active').siblings().removeClass('active');
       	});
@@ -354,9 +378,9 @@ export default {
           }
           that.webApi.setCookie('is_notice', is_notice);
       	});
-
+        
+        // 设置视频质量
       	let chekquality;
-      
         $('#mask3 li').on('click', function () {
 	          let quality = $(this).find('.left').html();
 	          that.webApi.setCookie('quality', quality);

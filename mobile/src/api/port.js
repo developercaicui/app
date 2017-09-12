@@ -30,7 +30,7 @@ axios.interceptors.response.use(response => {
 
     setTimeout( ()=>{
       // g.targetLogin();
-      // LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
+      LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
     },2000)
 
 

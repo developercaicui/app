@@ -1,4 +1,9 @@
 
+/*主题颜色风格（粉）*/
+$themeColor: #FF366D;
+
+/*标题文字大小*/
+$headerSize: 0.36rem;
 
 @mixin wh($w, $h) {
   width: $w;

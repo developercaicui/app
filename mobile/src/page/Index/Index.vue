@@ -72,6 +72,7 @@ export default {
 					expirationTime: `${expirationDate.getFullYear()}/${this.webApi.isSmallTen(expirationDate.getMonth())}/${this.webApi.isSmallTen(expirationDate.getDate())}`,
 					courseGroupId: item.courseGroupId,
 					subjectID: item.subjectID,
+					subjectId: item.subjectID,
 					taskTotal: item.taskTotal,
 					versionId: item.versionId,
 					courseProgress: 0,
