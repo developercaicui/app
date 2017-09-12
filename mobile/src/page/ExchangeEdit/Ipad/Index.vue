@@ -62,6 +62,11 @@ export default {
 
 		this.data = JSON.parse(this.$route.params.data);
 
+		alert(JSON.stringify(this.data))
+
+		this.title = this.data.chapteName || '';
+
+
 	},
 
   methods: {
@@ -173,17 +178,25 @@ export default {
 		// 发情save请求
 		subForm() {
 
+
+
+
 			this.$emit('submit-data', {
 				type: this.type,
 				data: {
 					content: `<p>${this.textDetails}</p><br/>${this.allPicPathHtml}`,
 			    imgPath: this.allPicPath,
 			    title: this.title,
-			    clientType: 'aPad',
-			    subjectId:	this.data.subjectId || 'null',
+			    clientType: this.data.clientType,
+			    subjectId:	this.data.subjectId || '',
+					courseId: this.data.courseId || '',
+					chapterId: this.data.chapterId || '',
+					chapteName: this.data.chapteName || '',
 			    token: this.webApi.getCookie('token'),
-			    taskProgress:	-1,  //任务进度
-			    type: 1, // 0是讨论  1是问答
+					taskId: this.data.taskId || '',
+					taskType: this.data.taskType || '',
+			    taskProgress:	this.data.taskProgress || 0,  //任务进度
+			    type: this.taskType == 'video' ? 1 : 0 , // 0是讨论  1是问答
 				}
 			});
 
@@ -204,6 +217,7 @@ export default {
 	.exchange-wrap-ipad-edit{
 
 		font-size: 0;
+		padding-top: .64rem;
 
 		.edit{
 

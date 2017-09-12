@@ -13,22 +13,22 @@
 
 			<template v-for="item in sectionList">
 
-				<h1 :data-id="item.id">{{item.courseName}}</h1>
+				<h1 :data-id="item.id">{{ item.courseName }}</h1>
 
 				<template v-for="twoItem in item.children">
 
 					<section class="list" :data-id="twoItem.id" v-if="twoItem.nodeNum!=0">
 						<div>
 							<span></span>
-							<h1>{{twoItem.chapterTitle}}</h1>
+							<h1>{{ twoItem.chapterTitle }}</h1>
 						</div>
 
 						<template v-for="threeItem in twoItem.children">
 
 						<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @click.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
 							<div>
-								<h1>{{threeItem.chapterTitle}}</h1>
-								<i>{{threeItem.nodeNum}}</i>
+								<h1>{{ threeItem.chapterTitle }}</h1>
+								<i>{{ threeItem.nodeNum }}</i>
 							</div>
 
 						</section>
@@ -41,7 +41,8 @@
 
 			</template>
 
-			<img class="no-data" v-show="totalCount == 0" src="../../../assets/img/404.svg">
+			<img class="no-data" v-show="this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
+
 		</main>
 	</div>
 
@@ -57,13 +58,8 @@ export default {
 
   data() {
     return {
-			totalCount: 0, //总条目数
     }
   },
-
-	updated() {
-		this.totalCount = this.sectionList.length || 0;
-	},
 
   methods: {
 
@@ -168,7 +164,7 @@ export default {
 
 			> h1{
 				@include wh(100%, 1.2rem);
-				@include fc(.32rem, $green);
+				@include fc(.32rem, $commPink);
 				display: flex;
 				align-items: center;
 				justify-content: flex-start;
@@ -195,19 +191,17 @@ export default {
 
 		 .state-edit{
  			@extend .ab;
+			@extend .flexCenter;
  			right: .35rem; top: 50%; transform: translateY(-50%);
  			font-family: 'iconfont';
  			a{
- 				color: $green;
+ 				color: $commPink;
  				&:nth-of-type(1){
- 					position: relative;
- 					font-size: .3rem;
  					margin-right: .2rem;
-					transform: translate3d(0, .2rem, 0);
-					font-size: .32rem;
+					font-size: $headIconFont;
  				}
  				&:nth-of-type(2){
- 					font-size: .26rem;
+ 					font-size: $headFont;
  				}
  			}
  		}

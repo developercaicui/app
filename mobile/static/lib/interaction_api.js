@@ -2,16 +2,25 @@
 
 // 方法都挂载都全局方法上
 var g = {
+  device: window.navigator.userAgent.toLocaleLowerCase().indexOf('android') != -1 ? 'android' : 'ios',
   targetLogin: targetLogin,
   targetLearningCourses: targetLearningCourses,
   backLogin: backLogin,
-  device: window.navigator.userAgent.toLocaleLowerCase().indexOf('android') != -1 ? 'android' : 'ios'
+  closeNewNote: closeNewNote,
+  openActivityPage: openActivityPage,
 }
 
 // 登录成功获取用户信息
 function getLoginInfo(data = {}) {
   
   data = JSON.parse(data);
+
+  try{
+    delCookie('userInfo');
+    delCookie('token');
+  }catch(e){
+
+  }
 
   setCookie('userInfo', JSON.stringify(data));
   setCookie('token', data.token || 'null');
@@ -35,14 +44,42 @@ function setCookie(key, value, days = 30) {
 
 }
 
+
+// 删除Cookie
+function delCookie(key) {
+
+  if(window.localStorage){
+    window.localStorage.clear();
+    return;
+  }
+
+  let exp = new Date();
+  let cval = this.getCookie(key);
+
+  exp.setTime(exp.getTime() - 1);
+  if( cval != null) document.cookie= `${key}=${cval};expires=${exp.toGMTString()}`;
+
+}
+
 // 跳转到登录页
 function targetLogin() {
   caicui.tokenInvalid('nologin');
 }
 
+// 关闭新建页
+function closeNewNote() {
+  NoetView.hiddenAddNoteView('jj');
+}
+
+
 // 退回登录页面
 function backLogin() {
  clickBtn.registerBack('reg');
+}
+
+// 跳出窗口打开活动页
+function openActivityPage(url){
+  caicui.openActivity(url)
 }
 
 /**

@@ -63,10 +63,10 @@
 	          </div>
 	        </div>
 	        <div id="pop-radios" class="pop-radios">
-	        	<a href="javascript:;" class="pop-radio-label active"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">视频课程问题</span></a>          
-	        	<a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">学习中心问题</span></a>          
-	        	<a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">试题报错</span></a>          
-	        	<a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">新版建议</span></a>          
+	        	<a href="javascript:;" class="pop-radio-label active"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">视频课程问题</span></a>
+	        	<a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">学习中心问题</span></a>
+	        	<a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">试题报错</span></a>
+	        	<a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">新版建议</span></a>
 	        	<a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">投诉学服</span></a>
 	        </div>
 	        <ul>
@@ -155,19 +155,32 @@ export default {
 		.then(res =>{//设置联系方式
 
 	      if(res && res.state == 'success'){
-	            
+
 	          if(res.data.mobile){
 
                   this.$refs.popInputTel.value = res.data.mobile
               }else{
+<<<<<<< HEAD
 
                   this.$refs.popInputTel.value = res.data.email
               } 
 	            
+=======
+                  $(".pop-input-tel").val(res.data.email)
+              }
+
+>>>>>>> buzhanguo
 	      }
 
 	    })
 
+<<<<<<< HEAD
+=======
+
+          // $('#pop-radios .pop-radio-label').on('click', function () {
+          //     $(this).addClass('active').siblings().removeClass('active');
+          // });
+>>>>>>> buzhanguo
 	},
 
 	updated() {
@@ -176,7 +189,7 @@ export default {
 	},
 
 	components: {
-    
+
   	},
 
 	methods: {
@@ -310,7 +323,7 @@ export default {
 	                }
 
 		        })
-	          
+
 	        }
 	      }
 	},
@@ -320,11 +333,15 @@ export default {
 	  	  let is_notice;
 	  	  let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
       	let avatar = this.webApi.cdnImgUrl + JSON.parse(this.webApi.getCookie("userInfo")).avatar;
+<<<<<<< HEAD
         //设置昵称
+=======
+
+>>>>>>> buzhanguo
       	$('.user_nick').html(nickName);
         //设置头像
       	$('.avatar').attr('src', avatar+'?s='+Math.random());
-  
+
       	let notice = this.webApi.isEmpty(this.webApi.getCookie('open_notice')) ? 0 : this.webApi.getCookie('open_notice');
      	  //设置提醒时间
       	if (notice == 1) {
@@ -334,7 +351,7 @@ export default {
           	// clearInterval(push_timer);
           	$('#setTime').removeClass('none');
           	$('#timeArea').html(val);
-	
+
           	// init_push();
 
           	is_notice = 1;
@@ -381,6 +398,10 @@ export default {
         
         // 设置视频质量
       	let chekquality;
+<<<<<<< HEAD
+=======
+
+>>>>>>> buzhanguo
         $('#mask3 li').on('click', function () {
 	          let quality = $(this).find('.left').html();
 	          that.webApi.setCookie('quality', quality);

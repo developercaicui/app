@@ -47,10 +47,6 @@
 			</div>
 		</transition>
 
-
-
-		<!-- <regIpad v-show="isIpad"></regIpad> -->
-		<!-- <regMobile v-show="isMobile"></regMobile> -->
 	</div>
 
 </template>
@@ -319,11 +315,6 @@ export default {
 
 
 			})
-
-			.catch(err =>{
-				this.webApi.alert();
-				return false;
-			});
 
 
 		},
