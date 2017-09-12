@@ -2,11 +2,7 @@
 
   <main class="v-wrap">
     <keep-alive>
-<<<<<<< HEAD
-       <router-view></router-view>
-=======
       <router-view></router-view>
->>>>>>> 80b2ba47c586b8c8f6992b28a0c71a6d211f9ef7
     </keep-alive>
   </main>
 

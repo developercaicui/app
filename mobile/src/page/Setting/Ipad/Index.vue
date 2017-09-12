@@ -162,16 +162,10 @@ export default {
               }else{
 
                   this.$refs.popInputTel.value = res.data.email
-<<<<<<< HEAD
-              } 
-	            
-=======
-              }
 
-
->>>>>>> 80b2ba47c586b8c8f6992b28a0c71a6d211f9ef7
 	      }
-
+			}
+			
 	    })
 
 	},
@@ -326,11 +320,8 @@ export default {
 	  	  let is_notice;
 	  	  let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
       	let avatar = this.webApi.cdnImgUrl + JSON.parse(this.webApi.getCookie("userInfo")).avatar;
-<<<<<<< HEAD
-        //设置昵称
-=======
 
->>>>>>> 80b2ba47c586b8c8f6992b28a0c71a6d211f9ef7
+
       	$('.user_nick').html(nickName);
         //设置头像
       	$('.avatar').attr('src', avatar+'?s='+Math.random());
