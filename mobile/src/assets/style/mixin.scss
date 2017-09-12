@@ -1,4 +1,9 @@
 
+$commPink: #FF366D; // 全局通用色
+$headFont: .28rem; // 头部字体
+$headIconFont: .4rem; // 头部字体图标大小
+$headH1Font: .34rem; // 头部标题字体大小
+$commBackFont: .54rem; // 返回按钮字体大小
 
 @mixin wh($w, $h) {
   width: $w;
@@ -16,6 +21,7 @@
 @mixin hide() {
   display: none;
 }
+
 
 .flexCenter{
   display: flex;

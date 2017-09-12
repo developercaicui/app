@@ -28,8 +28,10 @@ axios.interceptors.response.use(response => {
     webApi.alert('登录失效，即将跳到登录页');
 
     setTimeout( ()=>{
-      // g.targetLogin();
-      // LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
+      if(webApi.getCookie('isTargetLogin') === 'false') {
+        g.targetLogin();
+        webApi.setCookie('isTargetLogin', 'true')
+      }
     },2000)
 
 
@@ -58,9 +60,6 @@ export const changePwdByPhone = params => { return axios.post(`${requestUrl}/api
 export const changeUserName = params => { return axios.post(`${requestUrl}/api/zbids/member/editinfo`, qs.stringify(params), headers).then(res => res.data).catch(err => err) };
 // 上传图片
 export const uploadFile = params => { return axios.post(`${requestUrl}/api/zbids/member/edituserheadr`, params).then(res => res.data).catch(err => err) };
-
-
-
 
 
 // 获取学员信息

@@ -55,6 +55,7 @@ export default {
 			topStatus: '', // 状态
 			isDirection: '',
 			moveY: 0,
+			startTime: new Date().getTime(),
     }
   },
 
@@ -123,6 +124,8 @@ export default {
 				transform: 'translate3d(0,0,0)'
 			});
 
+			this.startTime = new Date().getTime();
+
 		},
 
 
@@ -149,7 +152,7 @@ export default {
 	    }
 
 
-			if(document.body.scrollTop <= 50 || document.body.scrollTop >= (this.contentHeight-this.screenHeight)-50) {
+			if(document.body.scrollTop <= 20 || document.body.scrollTop >= (this.contentHeight-this.screenHeight)-20) {
 
 				moveY = (touch.pageY-this.startY) /3;
 
@@ -184,6 +187,8 @@ export default {
 		handleEnd(ev) {
 
 
+			let endTime = new Date().getTime();
+
 			// 下滑，
 			if(this.isDirection == "top") {
 
@@ -191,7 +196,6 @@ export default {
 				if(this.moveY > this.topMaxDistance) {
 
 					if(!this.downOff && this.moveY >= this.topMaxDistance) this.topStatus = 'loading';
-
 
 					this.webApi.addCss(this.$refs.refreshContent, {
 						transition: '300ms',
@@ -207,6 +211,13 @@ export default {
 
 				}
 
+			}
+
+			if(endTime - this.startTime < 300) {
+				this.webApi.addCss(this.$refs.refreshContent, {
+					transition: '0',
+					transform: `translate3d(0,0,0)`
+				});
 			}
 
 

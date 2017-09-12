@@ -1,9 +1,7 @@
 <template lang="html">
 
-  <main>
-    <keep-alive>
-       <router-view></router-view>
-    </keep-alive>
+  <main class="v-wrap">
+    <router-view></router-view>
   </main>
 
 </template>
@@ -82,4 +80,9 @@ export default {
 @import "./assets/style/mixin";
 @import "../node_modules/mint-ui/lib/style.css";
 
+.v-wrap{
+  @include wh(100%, 100%);
+  background-color: #fff;
+
+}
 </style>

@@ -126,7 +126,7 @@ export default {
 					list: res.data,
 					totalCount: res.totalCount
 				};
-				
+
 				this.exchangeData.list.map(item =>{
 
 					let date = new Date(item.updateTime*1000);

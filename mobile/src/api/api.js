@@ -66,13 +66,16 @@ export default {
     const OHTML = document.documentElement;
     const screenWidth = OHTML.clientWidth;
     const deviceType = this.getDeviceType();
+    const dpr = window.devicePixelRatio;
 
     let designWidth = deviceType === 'mobile' ? 750 : 2048;
+
+    if(deviceType === 'ipad' && screenWidth*dpr < 2048/3*2 ) designWidth = 1024;
 
     let initialRem = designWidth / 100;  // 换算基准值   (设计稿尺寸)/100(固定值)
 
     OHTML.dataset.device = deviceType;
-    OHTML.dataset.dpr = window.devicePixelRatio;
+    OHTML.dataset.dpr = dpr;
     OHTML.style.fontSize = `${screenWidth / initialRem}px`;
 
   },

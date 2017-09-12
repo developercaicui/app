@@ -32,7 +32,13 @@ export default {
   },
 
 	created() {
+
 		this.webApi.loadingData();
+		this.webApi.setCookie('isTargetLogin', 'false')
+	},
+
+	computed: {
+
 	},
 
 	mounted() {
@@ -41,7 +47,6 @@ export default {
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
-		// 接口请求
 		this.fetchData();
 
 	},
@@ -120,8 +125,12 @@ export default {
 
 					let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;
 
+					if(num === 0) num =  !item.progress ? 0 : 1;
+
 					this.learningCourseList[index].courseProgress = item.courseProgress;
 					this.learningCourseList[index].studyProportion = num > 100 ? 100 : num;
+					this.learningCourseList[index].createTime = item.createDate;
+
 				});
 
 				return getExamDate({
@@ -136,6 +145,8 @@ export default {
 					this.webApi.alert('网络异常，请稍后再试');
 					return false;
 				}
+
+				this.learningCourseList = this.learningCourseList.sort((a, b) => a.createTime - b.createTime );
 
 				// courseId 做比较
 				res.data.map(item => this.learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth())}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );

@@ -38,7 +38,7 @@
 						<h1>财萃活动</h1>
 					</div>
 
-					<div class="activity-list" v-for="item in activityList">
+					<div class="activity-list" v-for="(item, index) in activityList" v-if="index < 3">
 						<figure :data-href="item.href" :data-id="item.id" @click.stop="handleOpenActivity">
 						  <img :src="item.src" />
 							<figcaption>{{ item.title }}</figcaption>
@@ -84,6 +84,8 @@ export default {
 
 
 	updated() {
+
+		// console.log(this.learningCourseList, 'createTime');
 
 		let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
 		let arr = ['#4a90e2','#3E4F61','#408684'];
@@ -157,7 +159,7 @@ export default {
 
 			let oFigure = this.webApi.recursiveParentNode(ev.target, 'figure');
 
-			window.location.href = oFigure.dataset.href;
+			g.openActivityPage(oFigure.dataset.href);
 
 		},
 
