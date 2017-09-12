@@ -47,49 +47,7 @@ export default {
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
-<<<<<<< HEAD
-		let oDiv = document.createElement('div');
-
-		// 最近所学课程
-		getLearningCourse({
-			verTT: new Date().getTime(),
-			token: this.userInfo.token,
-			pageNo: 1,
-			pageSize: 999
-		})
-
-		.then(res =>{
-
-			this.webApi.closeLoadingData();
-
-			if(!res || res.state != 'success'){
-				this.webApi.alert('网络异常，请稍后再试');
-				return false;
-			}
-
-			this.learningCourseList = res.data.courselist.map( item => {
-
-				let expirationDate = new Date(item.expirationTime*1000);
-
-				return {
-					courseName: item.courseName,
-					courseId: item.courseId,
-					categoryId: item.categoryId,
-					courseGroupId: item.courseGroupId,
-					expirationTime: `${expirationDate.getFullYear()}/${this.webApi.isSmallTen(expirationDate.getMonth())}/${this.webApi.isSmallTen(expirationDate.getDate())}`,
-					courseGroupId: item.courseGroupId,
-					subjectID: item.subjectID,
-					subjectId: item.subjectID,
-					taskTotal: item.taskTotal,
-					versionId: item.versionId,
-					courseProgress: 0,
-					examinationDate: '暂无考试',
-					token: this.userInfo.token,
-					memberId: this.userInfo.memberId
-				}
-=======
 		this.fetchData();
->>>>>>> buzhanguo
 
 	},
 

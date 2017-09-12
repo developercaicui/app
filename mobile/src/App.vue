@@ -1,14 +1,9 @@
 <template lang="html">
 
-<<<<<<< HEAD
-  <main>
-    <!-- <keep-alive> -->
-       <router-view></router-view>
-    <!-- </keep-alive> -->
-=======
   <main class="v-wrap">
-    <router-view></router-view>
->>>>>>> buzhanguo
+    <keep-alive>
+       <router-view></router-view>
+    </keep-alive>
   </main>
 
 </template>

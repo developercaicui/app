@@ -160,27 +160,14 @@ export default {
 
                   this.$refs.popInputTel.value = res.data.mobile
               }else{
-<<<<<<< HEAD
 
                   this.$refs.popInputTel.value = res.data.email
               } 
 	            
-=======
-                  $(".pop-input-tel").val(res.data.email)
-              }
-
->>>>>>> buzhanguo
 	      }
 
 	    })
 
-<<<<<<< HEAD
-=======
-
-          // $('#pop-radios .pop-radio-label').on('click', function () {
-          //     $(this).addClass('active').siblings().removeClass('active');
-          // });
->>>>>>> buzhanguo
 	},
 
 	updated() {
@@ -333,11 +320,7 @@ export default {
 	  	  let is_notice;
 	  	  let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
       	let avatar = this.webApi.cdnImgUrl + JSON.parse(this.webApi.getCookie("userInfo")).avatar;
-<<<<<<< HEAD
         //设置昵称
-=======
-
->>>>>>> buzhanguo
       	$('.user_nick').html(nickName);
         //设置头像
       	$('.avatar').attr('src', avatar+'?s='+Math.random());
@@ -398,10 +381,7 @@ export default {
         
         // 设置视频质量
       	let chekquality;
-<<<<<<< HEAD
-=======
 
->>>>>>> buzhanguo
         $('#mask3 li').on('click', function () {
 	          let quality = $(this).find('.left').html();
 	          that.webApi.setCookie('quality', quality);

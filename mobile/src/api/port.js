@@ -29,15 +29,10 @@ axios.interceptors.response.use(response => {
 
 
     setTimeout( ()=>{
-<<<<<<< HEAD
-      // g.targetLogin();
-      LOC.href = `${LOC.origin}${LOC.pathname}/#/login`;
-=======
       if(webApi.getCookie('isTargetLogin') === 'false') {
         g.targetLogin();
         webApi.setCookie('isTargetLogin', 'true')
       }
->>>>>>> buzhanguo
     },2000)
 
 
