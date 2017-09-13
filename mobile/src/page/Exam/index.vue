@@ -1,13 +1,20 @@
 <template>
 	<div class="exam">
+		
 		<div class="exam-header">
-			<a class="exam-return triangle" href="javascript:;"></a>
+			<a class="exam-return triangle" @click="examBackButton" href="javascript:;"></a>
 			<!-- <h3 class="exam-title">试卷标题: {{exam.examTitle}}试卷类型:{{exam.examType}}</h3> -->
 			<h3 class="exam-title">{{exam.examTitle}}</h3>
 			<!-- <a class="exam-menu" href="javascript:;">菜单</a> -->
 		</div>
+
+				
 		<div class="exam-body">
 			<template v-if="exam.examBaseInfo.length">
+				<!-- <p>传过来的ids</p>
+				<ul v-for="(value, key) in examNeedIds">
+					<li>{{ key }}: {{ value }}</li>
+				</ul> -->
 				<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev" v-if="exam.exerciseActiveIndex != 0"></a>
 				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext" v-if="exam.exerciseActiveIndex != (exam.examBaseInfo.length-1)"></a>
 			</template>
@@ -24,7 +31,6 @@
 	</div>
 </template>
 <script>
-	
 	import axios from 'axios';
 	import Request from '../../api/request';
 	import { mapState,mapMutations,mapActions } from 'vuex';
@@ -56,6 +62,8 @@
 				courseId : '',
 				chapterId : '',
 				taskId : '',
+				userInfo : '',
+				examNeedIds : ''
 			}
 		},
 		computed : {
@@ -91,7 +99,13 @@
 			// })
 			// return false;
 			let userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+			if(!userInfo){
+				this.$router.push('/login');
+				return false;
+			}
 			this.memberId = userInfo.memberId;
+			this.userInfo = userInfo;
+			
 			this.update({
 				"examType" : this.examType,
 				"examId" : this.examId,
@@ -127,8 +141,15 @@
 				'requestExerciseList',
 				'requestExerciseDetail'
 			]),
+			examBackButton (){
+				examBackButton.clickExamBackButton();
+			},
 			examRequestCallback (examenInfo, status, baseInfo) {
-				let examNeedIds = this.getLocalStorage('examNeedIds');
+				// let examNeedIds = this.getLocalStorage('examNeedIds');
+				
+				let examNeedIds = JSON.parse(window.localStorage.getItem('examNeedIds'));
+				this.examNeedIds = examNeedIds;
+				// examBackButton.clickExamBackButton();
 				let examNum = this.examNum;
 				let statusData = '';
 				if(examNum){
@@ -147,10 +168,16 @@
 
 
 				let exerciseInfo = baseInfo.data;
-				let exemTitle = examenInfo.data[0].title;
+				let exemTitle = '';
+				if(examenInfo.data[0] && examenInfo.data[0].title){
+					exemTitle = examenInfo.data[0].title
+				}
 				if(this.examType == "knowledge" || this.examType == "testSite"){
 					examNum = 0;
-					exemTitle = examenInfo.data[0].enTitle;
+					// exemTitle = examenInfo.data[0].enTitle;
+					if(examenInfo.data[0] && examenInfo.data[0].enTitle){
+						exemTitle = examenInfo.data[0].enTitle
+					}
 					if(exerciseInfo && exerciseInfo.length){
 						this.cacheKnowledgeLevel1Id = exerciseInfo[0].knowledge_path_level_one_id;
 						this.cacheKnowledgeLevel2Id = exerciseInfo[0].knowledge_path_level_two_id;
@@ -264,7 +291,7 @@
 			},
 			exerciseKnowledgeIds (src){
 				// return "ff8080814bee5fde014bfa12b1230114".split(',');
-				// return "ff8080814bee5fde014bfa12b1230114,ff8080814b7c866a014b7cfbfcec0329,ff8080814bee5fde014bf772fa340062,ff8080814a7f5035014a951f4a632d5b,ff8080814a7f5035014a963deab62ffb".split(',');
+				return "ff8080814bee5fde014bfa12b1230114,ff8080814b7c866a014b7cfbfcec0329,ff8080814bee5fde014bf772fa340062,ff8080814a7f5035014a951f4a632d5b,ff8080814a7f5035014a963deab62ffb".split(',');
 				// return "8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(",");
 
 				var iframe=document.createElement("iframe");

@@ -73,7 +73,7 @@ function getCourseNoteInfo(data = {}) {
 
 // 试卷页面需要用到的id(用于试卷)
 function getExamNeedIds(data = {}) {
-
+  alert(data)
   data = JSON.parse(data);
 
   setCookie('examNeedIds', JSON.stringify(data));
