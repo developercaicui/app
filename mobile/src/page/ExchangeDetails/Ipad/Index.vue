@@ -210,12 +210,7 @@ export default {
 				replaytype: 0,
 				pageSize: 20,
 				token: this.webApi.getCookie('token'),
-				pageNo: 1
-			}, data =>{
-this.data.replys.push(data);
-				this.textDetails = '';
-				this.isFileOpen = false;
-
+				pageNo: 1,
 			});
 
 		},

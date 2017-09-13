@@ -1,48 +1,37 @@
 <template lang="html">
-
-	<div>
-		<settingIpad v-show="isIpad"></settingIpad>
-		<settingMobile v-show="isMobile"></settingMobile>
-	</div>
-
+	<router-view></router-view>
 </template>
 
 <script>
 
-import settingIpad from './Ipad';
-import settingMobile from './Mobile';
-
 export default {
 
 	components: {
-		settingMobile,
-		settingIpad,
-  	},
+  },
 
-	data() {
-	    return {
+  data() {
+    return {
 			isIpad: false,
-	  		isMobile: false,
-	    }
-	},
+      isMobile: false
+    }
+  },
 
 	created() {
 
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
-		
-
 	},
 
 
-	methods: {
+  methods: {
 
-	}
+  }
 
 }
 
 </script>
 
 <style lang="scss" scoped>
+
 </style>

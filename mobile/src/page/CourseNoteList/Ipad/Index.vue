@@ -241,11 +241,11 @@ export default {
           }
           let param = {};
           param.self = 0;
-          // param.courseid= this.courseInfo.courseId;
-          // param.categoryId= this.courseInfo.categoryId;
-          // param.subjectId= this.courseInfo.subjectId;
+          param.courseid= this.courseInfo.courseId;
+          param.categoryId= this.courseInfo.categoryId;
+          param.subjectId= this.courseInfo.subjectId;
           // 
-          param.courseid= "ff8080814f1c162a014f1f7c34a91317";
+          // param.courseid= "ff8080814f1c162a014f1f7c34a91317";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
 
@@ -287,11 +287,11 @@ export default {
         	}
         	let param = {};
 	        param.self = 1;
-	        // param.courseid= this.courseInfo.courseId;
-          // param.categoryId= this.courseInfo.categoryId;
-          // param.subjectId= this.courseInfo.subjectId;
+	        param.courseid= this.courseInfo.courseId;
+          param.categoryId= this.courseInfo.categoryId;
+          param.subjectId= this.courseInfo.subjectId;
           // 
-          param.courseid= "ff8080814f1c162a014f1f7c34a91317";
+          // param.courseid= "ff8080814f1c162a014f1f7c34a91317";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
 	        param.token = this.webApi.getCookie('token');

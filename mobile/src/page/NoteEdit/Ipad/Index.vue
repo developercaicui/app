@@ -39,7 +39,7 @@
 			</div>
 		</footer>
 
-		<input type="file" @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
+		<input type="file" @change="handleUploadPic" ref="iptFile" class="ipt-file">
 	</div>
 
 </template>
@@ -69,6 +69,11 @@ export default {
 			type: '',
 			isPublicText: '公开',
 			clientType: 'ipad',
+			videoType: '',
+			taskName: '',
+			taskId: '',
+			courseName: '',
+			taskProgress: 0,
     }
   },
 
@@ -76,9 +81,19 @@ export default {
 console.log(this.$route.params.data)
 		this.data = JSON.parse(this.$route.params.data);
 
+		try{
+
+			this.taskName = this.data.taskName || 'taskName';
+			this.taskId = this.data.taskId || '';
+			this.videoType = this.data.videoType || '';
+			this.courseName =  this.data.sectionData.courseName || '';
+			this.taskProgress = this.data.taskProgress || 0;
+
+		}catch(e) {
+
+		}
+
 		console.log(this.data, 'edit');
-
-
 
 		// 是否编辑
 		if('detailsData' in this.data){
@@ -127,7 +142,7 @@ console.log(this.$route.params.data)
 
 		// 返回上一页重新选择文章
 		handleBackSection() {
-				this.$router.go(-1);
+			this.videoType == 'video' ? g.closeNewNote() : this.$router.go(-1);
 		},
 
 		// 触发上传
@@ -139,6 +154,7 @@ console.log(this.$route.params.data)
 			}
 
 			this.$refs.iptFile.click();
+			this.$refs.iptFile.touchstart();
 		},
 
 		// 是否打卡上传图片
@@ -232,7 +248,6 @@ console.log(this.$route.params.data)
 			});
 
 
-
 		},
 
 		subForm() {
@@ -243,10 +258,10 @@ console.log(this.$route.params.data)
 					content:	this.textDetails,   // 内容
 					soundPath:	'', // 声音
 					clientType:	this.clientType, // 设备类型
-					title:	'title', //
+					title:	this.videoType == 'video' ? this.taskName : 'title', //
 					categoryName:	this.categoryName,
 					chapterId: this.chapterId,
-					taskType:	'', // 任务类型
+					taskType:	this.videoType, // 任务类型
 					subjectName: this.subjectName,
 					id: this.noteId,
 					courseName:	this.data.courseData.courseName,
@@ -256,11 +271,12 @@ console.log(this.$route.params.data)
 					chapterName:	this.data.sectionData.chapterName || this.data.sectionData.chaptername || 'chapterName',
 					isPublic:	this.isPublic || '0', // 是否公开
 					soundLen:	'', // 声音长度
-					taskName:	'taskName',
-					taskProgress:	0,
+					taskName:	this.taskName,
+					taskProgress:	this.taskProgress,
 					imgPath:	this.allPicPath, // 图片路径，逗号分隔
 					categoryId:	this.categoryId,
-					taskId: '',
+					taskId: this.taskId,
+					courseName: this.courseName,
 				}
 			});
 
@@ -282,6 +298,7 @@ console.log(this.$route.params.data)
 	.note-wrap-ipad-edit{
 
 		font-size: 0;
+		padding-top: .64rem;
 
 		.edit{
 
@@ -474,6 +491,7 @@ console.log(this.$route.params.data)
 
 	.ipt-file{
 		@extend .ab;
+		left: 1rem; top: 5rem;
 		@include wh(0, 0);
 		overflow: hidden;
 		left: -99rem; top: -99rem;

@@ -6,8 +6,13 @@
         <div class="set_tit">视频纠错
             <div @click="closeIndex" class="right">关闭</div>
         </div>
-
-        <div id="pop-radios" class="pop-radios"><a href="javascript:;" class="pop-radio-label active"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">无法播放</span></a>          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">音画不同步</span></a>          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">播放卡顿</span></a>          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">内容问题</span></a>          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">其它错误</span></a></div>
+        <div id="pop-radios" class="pop-radios">
+          <a href="javascript:;" class="pop-radio-label active"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">无法播放</span></a>
+          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">音画不同步</span></a>          
+          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">播放卡顿</span></a>          
+          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">内容问题</span></a>          
+          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">其它错误</span></a>
+        </div>
         <div class="feeback-textareaBox">
           <textarea id="textarea" name="content" placeholder="请输入反馈，我们将为您不断改进。"></textarea>
           <div class="taskInfo">
@@ -33,20 +38,39 @@
 import $ from 'jquery';
 import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 
-
 export default {
 
 	data() {
 	    return {
 	    	isShow: true,
-	    	is_ok: true
+	    	is_ok: true,
+        task_info_detail:{}
 	    }
 	},
 
 	created() {
 
-    $('body').attr('show', 'index');
+    this.task_info_detail = {
+        "courseId": "ff8080814dad5062014dadd9c70d0053",
+        "courseName": "ACCA F2 Management Accounting",
+        "chapterId": "ff8080814dad5062014dadd9c7200055",
+        "chapterName": "课程介绍",
+        "progress": 120,
+        "taskInfo": {
+            "id": "ff808081473905e701477c4bf98b00d9",
+            "taskId": "ff8080814dad5062014dadd9c7320058",
+            "title": "Introduction of Paper",
+            "taskType": "video",
+            "videoTime": 300,
+            "videoSiteId": "D550E277598F7D23",
+            "videoCcid": "ED4E6BCAC88795149C33DC5901307461"
+        }
+    }
 
+    this.task_info_detail = this.$route.query;
+
+    this.webApi.alert(JSON.stringify(this.task_info_detail))
+    
 		getUserInfo({'token':this.webApi.getCookie('token')})
 
 		.then(res =>{
@@ -72,7 +96,7 @@ export default {
 
 	components: {
 
-  	},
+  },
 
 	methods: {
 		    closeIndex() {
@@ -83,79 +107,126 @@ export default {
       		ev.target.classList.add("active")
       	},
       	sub() {
-          var content = $.trim($('textarea[name=content]').val());
+          let content = $.trim($('textarea[name=content]').val());
           if (content == '') {
               this.webApi.alert('意见内容不能为空');
               return false;
           }
 
-      //     let task_info_detail = api.pageParam.task_info_detail;
-      //     let nameJson = {
-      //       "courseName" : task_info_detail.courseName,
-      //       "chapterName" : task_info_detail.chapterName,
-      //       "taskName" : task_info_detail.taskInfo.title,
-      //       "id" : task_info_detail.taskInfo.videoCcid
-      //     }
-      //     let courseId = task_info_detail.courseId;
-      //     let chapterId = task_info_detail.chapterId;
-      //     let taskId = task_info_detail.taskInfo.taskId;
-      //     let type = task_info_detail.taskInfo.taskType;
-      //     let title = task_info_detail.taskInfo.title;
-      //     let ccid = task_info_detail.taskInfo.videoCcid;
-      //     let siteid = task_info_detail.taskInfo.videoSiteId;
-      //     let progress = api.pageParam.progress;//任务进度
-      //     let videoTime = task_info_detail.taskInfo.videoTime;
+          let task_info_detail = this.task_info_detail;
+          let nameJson = {
+            "courseName" : task_info_detail.courseName,
+            "chapterName" : task_info_detail.chapterName,
+            "taskName" : task_info_detail.title,
+            "id" : task_info_detail.videoCcid
+          }
+          let courseId = task_info_detail.courseId;
+          let chapterId = task_info_detail.chapterId;
+          let taskId = task_info_detail.taskId;
+          let type = task_info_detail.taskType;
+          let title = task_info_detail.title;
+          let ccid = task_info_detail.videoCcid;
+          let siteid = task_info_detail.videoSiteId;
+          let progress = task_info_detail.progress;//任务进度
+          let videoTime = task_info_detail.videoTime;
+
+          //let title=content.substr(0,20);
+          let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
+          let param = {};
+          let systype = "ipad";
+
+          param.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;//投诉人id
+          param.memberName = nickName;//投诉人昵称
+          param.cmptType = $(".pop-radio-label.active").find(".pop-radio-span").text();//投诉类型
+          param.cmptContent = content+'<a class="content-addDom" data-nameJson="'+JSON.stringify(nameJson)+'" href="javascript:;" data-course-id="'+courseId+'" data-chapter-id="'+chapterId+'" data-task-id="'+taskId+'" data-type="'+type+'" data-title="'+title+'" data-video-ccid="'+ccid+'" data-video-siteid="'+siteid+'" data-progress="'+progress+'" data-video-time="'+videoTime+'">视频：'+this.formatSec(progress)+'</a>';//投诉内容
+          param.contactWay = $(".pop-input-tel").val();//联系方式
+          param.deviceDesc = systype;//设备描述
+
+          this.webApi.loadingData();
+
+          if (this.is_ok) {
+
+              this.is_ok = false;
+
+              complaintOpinion(param)
+
+              .then(res =>{
+
+                 this.webApi.closeLoadingData();
+
+               if (res && res.state == 'success') {
+
+                      this.webApi.alert('发表成功');
+
+                      setTimeout(function () {
+
+                          //关闭此页面
 
 
-      //     //let title=content.substr(0,20);
-      //     let nickName = get_loc_val('mine', 'nickName');
-      //     let param = {};
-      //     let systype = api.systemType;
+                      }, 600);
 
-      //     param.memberId = getstor('memberId');//投诉人id
-      //     param.memberName = nickName;//投诉人昵称
-      //     param.cmptType = $(".pop-radio-label.active").find(".pop-radio-span").text();//投诉类型
-      //     param.cmptContent = content+'<a class="content-addDom" data-nameJson="'+JSON.stringify(nameJson)+'" href="javascript:;" data-course-id="'+courseId+'" data-chapter-id="'+chapterId+'" data-task-id="'+taskId+'" data-type="'+type+'" data-title="'+title+'" data-video-ccid="'+ccid+'" data-video-siteid="'+siteid+'" data-progress="'+progress+'" data-video-time="'+videoTime+'">视频：'+formatSec(progress)+'</a>';//投诉内容
-      //     param.contactWay = $(".pop-input-tel").val();//联系方式
-      //     param.deviceDesc = systype;//设备描述
+                  } else {
+                      this.is_ok = true;
+                      // this.webApi.alert('发表失败，请重试！');
+                      this.webApi.alert(res.msg);
+                  }
 
-      //     console.log(JSON.stringify(param))
-
-      //     this.webApi.loadingData();
-
-      //     if (this.is_ok) {
-      //         this.is_ok = false;
-      //         complaintOpinion(param)
-
-      //         .then(res =>{
-
-      //            this.webApi.closeLoadingData();
-
-      //          if (res && res.state == 'success') {
-
-      //                 this.webApi.alert('发表成功');
-
-      //                 setTimeout(function () {
-      //                     this.isShow = !this.isShow
-      //                 }, 600);
-
-      //             } else {
-      //                 this.is_ok = true;
-      //                 // this.webApi.alert('发表失败，请重试！');
-      //                 this.webApi.alert(res.msg);
-      //             }
-
-      //       })
-      // }
-    }
+              })
+          }
+    },
+    formatSec(value) {
+        let theTime = parseInt(value);
+        // 秒
+        let theTime1 = 0;
+        // 分
+        let theTime2 = 0;
+        // 小时
+        if (theTime >= 60) {
+            theTime1 = parseInt(theTime / 60);
+            theTime = parseInt(theTime % 60);
+            if (theTime1 >= 60) {
+                theTime2 = parseInt(theTime1 / 60);
+                theTime1 = parseInt(theTime1 % 60);
+            }
+        }
+        let i, s, h;
+        if (theTime2 >= 10) {
+            h = theTime2;
+        } else {
+            h = '0' + theTime2;
+        }
+        if (theTime1 >= 10) {
+            i = theTime1;
+        } else {
+            i = '0' + theTime1;
+        }
+        if (theTime >= 10) {
+            s = theTime;
+        } else {
+            s = '0' + theTime;
+        }
+        if (h > 0) {
+            return parseInt(parseInt(i) + parseInt(h * 60)) + ':' + s;
+        } else {
+            return i + ':' + s;
+        }
+    },
 	},
 	mounted() {
+    let title = this.task_info_detail.title;
 
+    let progress = this.task_info_detail.progress;//任务进度
+
+    $(".taskInfo-time").find("span").eq(1).html(this.formatSec(progress));
+
+    $(".taskInfo-title").html(title);
 
 		//投诉类型
-      	$('#pop-radios .pop-radio-label').on('click', function () {
-          	$(this).addClass('active').siblings().removeClass('active');
-      	});
+  	$('#pop-radios .pop-radio-label').on('click', function () {
+
+      	$(this).addClass('active').siblings().removeClass('active');
+
+  	});
 
 	}
 
@@ -166,7 +237,6 @@ export default {
 <style lang="scss" scoped>
 
 @import "../../../assets/style/mixin";
-
 
 .none{display:none;}
 .left{float: left;}
@@ -190,40 +260,10 @@ export default {
   background: #fff;
 }
 /*弹出层*/
-body[show='index'] {
+body{
   overflow-x: hidden;
 }
-body[show='index'] #mask0 {
-  opacity: 1;
-  -webkit-transform: translate(-50%, -50%);
-}
-body[show='video'] {
-  overflow-x: hidden;
-}
-body[show='video'] #mask0 {
-  -webkit-transform: translate(-250%, -50%);
-}
-body[show='video'] #mask3 {
-  opacity: 1;
-  -webkit-transform: translate(-50%, -50%);
-}
-body[show='feedback'] {
-  overflow-x: hidden;
-}
-body[show='feedback'] #mask0 {
-  -webkit-transform: translate(-250%, -50%);
-}
-body[show='feedback'] #mask {
-  opacity: 1;
-  -webkit-transform: translate(-50%, -50%);
-}
-body[show='about'] {
-  overflow-x: hidden;
-}
-body[show='about'] #mask0 {
-  -webkit-transform: translate(-250%, -50%);
-}
-body[show='about'] #mask2 {
+body #mask0 {
   opacity: 1;
   -webkit-transform: translate(-50%, -50%);
 }
@@ -247,86 +287,11 @@ body[show='about'] #mask2 {
   background: #f3f3f3;
   overflow: hidden;
 }
-.modal .avatar {
-  width: 0.7rem;
-  height: 0.7rem;
-  vertical-align: middle;
-  margin-right: 0.4rem;
-}
-.modal .user_nick {
-  color: #494949;
-  font-size: 0.34rem;
-  font-weight: bold;
-}
-.modal ul {
-  margin: 0.25rem;
-  background: #fff;
-  border: 1px solid #ddd;
-  border-radius: 0.12rem;
-  line-height: 0.9rem;
-}
-.modal ul.user-info {
-  line-height: 1.1rem;
-}
-.modal ul li {
-  padding: 0 0.3rem;
-}
-.modal ul li:not(:last-child) {
-  border-bottom: 1px solid #ddd;
-}
-.modal ul li:after {
-  content: '';
-  display: table;
-  clear: both;
-}
-.modal ul li .right {
-  font-size: 0.26rem;
-  color: #494949;
-}
-.modal ul li .icon-check {
-  color: #01a185;
-  font-size: 0.4rem;
-  display: none;
-}
-.modal ul li.active .icon-check {
-  display: inline-block;
-}
-.modal .logout {
-  color: #f00;
-}
+
 .modal input {
   margin-right: -0.55rem;
 }
-.modal .on-off {
-  width: 1.3rem;
-  height: 0.6rem;
-  border-radius: 20px;
-  margin: 0.12rem 0 0 0;
-  position: relative;
-  transition: all 0.3s;
-}
-.modal .on-off:before {
-  content: '';
-  position: absolute;
-  top: 0.02rem;
-  width: 0.56rem;
-  height: 0.56rem;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 1px 1px #c0c0bc;
-}
-.modal .public_box {
-  background: #00a185;
-}
-.modal .public_box::before {
-  left: 0.02rem;
-}
-.modal .private_box {
-  background: #e1e0db;
-}
-.modal .private_box::before {
-  right: 0.02rem;
-}
+
 .modal .set_tit {
   height: 0.9rem;
   line-height: 0.9rem;
@@ -368,51 +333,7 @@ body[show='about'] #mask2 {
   top: 0.15rem;
   right: 0.24rem;
 }
-.modal .exit {
-  width: 100%;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  left: 0;
-  background: rgba(0,0,0,0.2);
-}
-.modal .exit_choice {
-  width: 5.41rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  z-index: 5;
-  -webkit-transform: translate(-50%, -50%);
-  border-radius: 10px;
-  background: #fff;
-}
-.modal .exit_choice .exit_cur {
-  height: 1.28rem;
-  line-height: 1.28rem;
-  font-family: '微软雅黑';
-  color: #4e4e4e;
-  font-size: 0.32rem;
-  text-align: center;
-  border-bottom: 1px solid #acadac;
-}
-.modal .exit_choice .ok_cancel {
-  height: 0.9rem;
-  line-height: 0.9rem;
-  font-size: 0.34rem;
-}
-.modal .exit_choice .ok_cancel .cancel {
-  width: 50%;
-  float: left;
-  text-align: center;
-  color: #4e4e4e;
-  border-right: 1px solid #acadac;
-}
-.modal .exit_choice .ok_cancel .ok {
-  width: 50%;
-  float: left;
-  text-align: center;
-  color: #00a085;
-}
+
 .modal textarea {
   min-height: 2.5rem;
   line-height: 0.4rem;

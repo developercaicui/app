@@ -63,7 +63,7 @@ export default {
 		},
 
 		// 回复
-		reply(data, callback) {
+		reply(data) {
 
 			this.webApi.loadingData('回复中');
 
@@ -79,16 +79,6 @@ export default {
 				}
 
 				this.webApi.alert('评论成功');
-
-				let date = new Date();
-				let time = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}`;
-
-				callback({
-					headImg: `${this.webApi.cdnImgUrl}${this.userInfo.avatar}`,
-					nikeName: this.userInfo.nickName,
-					updateTime: time,
-					contentHtml: data.content
-				});
 
 			})
 

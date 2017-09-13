@@ -195,9 +195,9 @@ export default {
 	        param.ordertype = 1;
 	        param.pageNo = page;
 	        param.pageSize = 10;
-	        // param.courseid= this.courseInfo.courseId;
-	        // param.categoryId= this.courseInfo.categoryId;
-	        param.subjectId= 'ff808081473905e701476204cb6c006f';
+	        param.courseid= this.courseInfo.courseId;
+	        param.categoryId= this.courseInfo.categoryId;
+	        param.subjectId= this.courseInfo.subjectId;
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {
 	            this.webApi.loadingData();

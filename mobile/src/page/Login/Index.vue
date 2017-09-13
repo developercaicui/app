@@ -85,6 +85,7 @@ export default {
 
 				this.webApi.alert('登录成功，即将自动跳转');
 				this.webApi.setCookie('userInfo', JSON.stringify(res.data));
+				console.log(JSON.stringify(res.data))
 				this.webApi.setCookie('token', res.data.token);
 
 				setTimeout(() =>{

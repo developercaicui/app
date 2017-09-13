@@ -19,6 +19,9 @@ const NoteSearch = r => require.ensure([], () => r(require('../page/NoteSearch')
 const Course = r => require.ensure([], () => r(require('../page/Course')), 'course')
 const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'setting')
 const Correction = r => require.ensure([], () => r(require('../page/Correction')), 'correction')
+const CorrectionVideo = r => require.ensure([], () => r(require('../page/CorrectionVideo')), 'Correctionvideo')
+const CorrectionExam = r => require.ensure([], () => r(require('../page/CorrectionExam')), 'correctionExam')
+
 const CourseExchange = r => require.ensure([], () => r(require('../page/CourseExchange')), 'courseExchange')
 const CourseExchangeList = r => require.ensure([], () => r(require('../page/CourseExchangeList')), 'courseExchangeList')
 const CourseNote = r => require.ensure([], () => r(require('../page/CourseNote')), 'courseNote')
@@ -26,6 +29,10 @@ const CourseNoteList = r => require.ensure([], () => r(require('../page/CourseNo
 const NoteSelected = r => require.ensure([], () => r(require('../page/NoteSelected')), 'noteSelected')
 const NoteSelectedSection = r => require.ensure([], () => r(require('../page/NoteSelectedSection')), 'noteSelectedSection')
 const Exam = r => require.ensure([], () => r(require('../page/Exam')), 'exam')
+const VideoNoteEdit = r => require.ensure([], () => r(require('../page/VideoNoteEdit')), 'videoNoteEdit')
+const VideoExchangeEdit = r => require.ensure([], () => r(require('../page/VideoExchangeEdit')), 'videoExchangeEdit')
+const EditMeInfo = r => require.ensure([], () => r(require('../components/EditMeInfo')), 'editMeInfo')
+
 export default  new VueRouter({
   mode: 'hash',
   routes: [
@@ -68,6 +75,9 @@ export default  new VueRouter({
        },{
          path: 'selectedsection/:data', // 选择章节
          component: NoteSelectedSection
+       },{
+         path: 'videoEdit',
+         component: VideoNoteEdit, // 中间页跳转
        }
       ]
     },{
@@ -82,7 +92,10 @@ export default  new VueRouter({
         },{
           path: 'details/:data', // 交流详情
           component: ExchangeDetails
-        },
+        },{
+          path: 'videoedit',
+          component: VideoExchangeEdit, // 中间页跳转
+        }
       ]
     },{
       path: '/courseexchange',
@@ -109,8 +122,20 @@ export default  new VueRouter({
       path: '/setting',
       component: Setting
     },{
+      path: '/editMeInfo',
+      component: EditMeInfo
+    },{
       path: '/correction',
-      component: Correction
+      component: Correction,
+      children: [
+        {
+          path: 'video',
+          component: CorrectionVideo
+        },{
+          path: 'exam',
+          component: CorrectionExam
+        }
+      ]
     },{
       path: '/exam/:type/:id',
       component: Exam
