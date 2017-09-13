@@ -84,7 +84,7 @@ export default {
 
 .v-wrap{
   @include wh(100%, 100%);
-  background-color: #fff;
+  background-color: transparent;
 
 }
 </style>

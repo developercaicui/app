@@ -277,6 +277,8 @@ export default {
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;
+      color: #3d4e64;
+      font-weight: bold;
   }
 }
 
@@ -313,7 +315,7 @@ export default {
           overflow: hidden;
         }
         h3{
-          color: #212121;
+          color: #3d4e64;
           font-size: 0.24rem;
         }
         p{
@@ -356,6 +358,7 @@ export default {
   display: inline-block;
   white-space: nowrap;
   margin-right: 0.2rem;
+  color: #999999;
 }
 .progress-box > * {
   display: inline-block;
@@ -371,7 +374,7 @@ export default {
 .progress-box .progress .progress-bar {
   width: 0;
   height: 0.1rem;
-  background: #00a185;
+  background: #ff366d;
   border-radius: 0.05rem;
   transition: all 1.2s 0.8s;
 }
@@ -387,8 +390,8 @@ export default {
   display: inline-block;
   text-align: center;
   padding: 0 0.5rem;
-  border: 1px solid #00a185;
-  background: #00a185;
+  border: 1px solid #ff366d;
+  background: #ff366d;
   color: #fff;
   margin: auto 0.2rem;
 }
@@ -403,7 +406,7 @@ export default {
   text-indent: 0.05rem;
 }
 .btn.btn-o {
-  color: #00a185;
+  color: #ff366d;
   background: none;
   margin:0 0.5rem;
   position:absolute;
