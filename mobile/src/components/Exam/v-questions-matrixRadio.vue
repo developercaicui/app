@@ -4,7 +4,7 @@
 		<table class="exercises-table exercises-matrix " :class="exam.exerciseType ? 'exercises-matrix-'+exam.exerciseType : ''" v-if="optionsContextJson">
 			<tr class="exercises-tr" v-for="(listRows, indexRows) in optionsContextJson[0].rows">
 				<td class="exercises-td" v-for="(listCols, indexCols) in optionsContextJson[0].cols" :class="optionsContextJson[0].items[indexCols+(indexRows*optionsContextJson[0].cols)].myChecked ? 'active': ''">
-					<div class="exercises-title" v-if="optionsContextJson[0].items[indexCols+(indexRows*optionsContextJson[0].cols)].isLable">{{optionsContextJson[0].items[indexCols+(indexRows*optionsContextJson[0].cols)].title}}</div>
+					<div class="exercises-title" v-if="optionsContextJson[0].items[indexCols+(indexRows*optionsContextJson[0].cols)].isLable" v-html="optionsContextJson[0].items[indexCols+(indexRows*optionsContextJson[0].cols)].title"></div>
 					<input class="exercises-radio"  @click="seleteOptions(indexCols+(indexRows*optionsContextJson[0].cols),$event)" type="radio" name="" v-else>
 				</td>
 			</tr>
@@ -45,13 +45,12 @@ export default{
 			let items = '';
 
 			if(this.exam.exerciseType == "multiTask"){
-				content = this.exam.exerciseContext[this.multiTaskIndex];
-				items = content.data[0].items;
+				content = this.exam.exerciseContext[this.multiTaskIndex].data[0];
+				items = content.items;
 			}else{
 				content = this.exam.exerciseContext[0];
 				items = content.items;
 			}
-			
 			for(let i in thatSiblings){
 				if(thatSiblings[i].nodeType && thatSiblings[i].getElementsByTagName('input')){
 					thatSiblings[i].className = "exercises-td";

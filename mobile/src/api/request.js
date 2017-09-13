@@ -46,8 +46,20 @@ export default {
   setMemberExerciseLog(params) {
   	return getArgs('setMemberExerciseLog', params)
   },
+  setMemberExamenFinish(params) {
+  	return getArgs('setMemberExamenFinish', params)
+  },
+  setMemberErrorExercise(params) {
+  	return getArgs('setMemberErrorExercise', params)
+  },
   delMemberExercise(params) {
   	return getArgs('delMemberExercise', params)
+  },
+  getExamenInfo(params) {
+    return getArgs('getExamenInfo', params)
+  },
+  getKnowledgePointInfo(params) {
+    return getArgs('getKnowledgePointInfo', params)
   }
 }
 function getArgs(port,params){
@@ -55,7 +67,7 @@ function getArgs(port,params){
 	var thatServer = server[port];
 	var hostName = '';
 	var thatServerUrl = thatServer.url;
-	if(process.env.NODE_ENV !== 'development'){
+	if(process.env.NODE_ENV == 'production'){ // production development
 		if(thatServer.staticDataDemo){
 			args.url = thatServer.staticDataDemo  + "?verTT=" + new Date().getTime();
 			args.type = 'GET';
@@ -91,7 +103,7 @@ function getArgs(port,params){
 }
 
 
-const server = {
+    const server = {
         'token': {
             // 'url' : '/api/v2.1/getToken',
             'url': '/api/zbids/app/gettoken/v1.0/',
@@ -356,11 +368,11 @@ const server = {
         },
         'appointment': {
             'url': '/api/teachsource/opencourse/appointment',
-            'urlDemo': '/api/teachsource/opencourse/appointment/data'
+            // 'urlDemo': '/api/teachsource/opencourse/appointment/data'
         },
         'getappointmentlist': {
             'url': '/api/teachsource/opencourse/getappointmentlist',
-            'urlDemo': '/api/teachsource/opencourse/getappointmentlist/data'
+            // 'urlDemo': '/api/teachsource/opencourse/getappointmentlist/data'
         },
         'includeopencoursegroup': {
             'url': '/api/business/coursegroup/includeopencoursegroup'
@@ -409,5 +421,11 @@ const server = {
         },
         'getDetailById': {
             'url': '/api/teachsource/resources/getDetailById'
+        },
+        'getExamenInfo' : {
+          'url': '/api/teachsource/examen/getExamenInfo'
+        },
+        'getKnowledgePointInfo' : {
+          'url': '/api/teachsource/knowledge/getKnowledgePointInfo'
         }
     };

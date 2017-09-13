@@ -3,7 +3,7 @@
 		<div class="exercises-title" v-html="exercisesTitle"></div>
 		<div class="exercises-blank" v-if="optionsContextJson">
 			<template v-for="(list, index) in optionsContextJson">
-				<textarea class="exercises-textarea" type="text"  @keyup="changeVal(index, $event)">{{list.myBlank}}</textarea> 
+				<textarea class="exercises-textarea" type="text"  @keyup="changeVal(index, $event)" v-html="list.myBlank"></textarea> 
 			</template>
 		</div>
 	</div>
