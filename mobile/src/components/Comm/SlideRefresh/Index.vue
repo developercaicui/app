@@ -124,7 +124,6 @@ export default {
 				transform: 'translate3d(0,0,0)'
 			});
 
-			this.startTime = new Date().getTime();
 
 		},
 
@@ -136,6 +135,7 @@ export default {
 				transform: 'translate3d(0,0,0)'
 			})
 
+			this.startTime = new Date().getTime();
 
 	    this.downOff = true;
 

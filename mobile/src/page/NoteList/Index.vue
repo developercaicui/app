@@ -58,7 +58,7 @@ export default {
 					self: 1,
 			});
 
-			this.$store.dispatch('fetchList');
+			this.$store.dispatch('fetchNoteList');
 		},
 
   }

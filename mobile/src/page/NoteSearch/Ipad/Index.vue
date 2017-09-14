@@ -66,27 +66,6 @@ export default {
 
   methods: {
 
-
-
-
-
-
-
-		loadBottom() {
-
-			// this.$emit('search-note', {
-			// 	keywords: '文字',
-			// 	pageNo: this.pageNo
-			// });
-			//
-			// this.pageNo = this.pageNo + 1;
-
-			// 调用父组件
-
-		},
-
-
-
 		// 搜索课程笔记
 		searchCourse() {
 
@@ -125,8 +104,6 @@ export default {
 <style lang="scss" scoped>
 
 	@import "../../../assets/style/mixin";
-
-	$green: #12B697;
 
 	.node-search-wrap-ipad{
 
@@ -172,8 +149,9 @@ export default {
 
 		> header{
 			position: fixed;
-			@include wh(100%, 1.05rem);
+			@include wh(100%, 1.45rem);
 			left: 0; top: 0;
+			border-top: $commTop solid #fff;
 			border-bottom: 1px solid #B9B9B9;
 			background-color: #fff;
 			z-index: 9;
@@ -193,6 +171,7 @@ export default {
 			input{
 				@include wh(100%, 100%);
 				padding: 0 .3rem;
+				font-size: .26rem;
 				border-radius: .3rem;
 				border: 1px solid #ccc;
 			}
@@ -201,10 +180,10 @@ export default {
 		.state-edit{
 			 @extend .ab;
 			 right: .35rem; top: 50%; transform: translateY(-50%);
-			 font-size: .27rem;
+			 font-size: $headFont;
 			 a{
 				 &:nth-of-type(1){
-				 	color: $green;
+				 	color: $commPink;
 					margin-right: .3rem;
 				 }
 				 &:nth-of-type(2){
@@ -220,6 +199,7 @@ export default {
 			@include fc(.24rem, #333);
 			padding: .35rem .5rem; line-height: 1;
 			border-bottom: 1px solid #E2E2E2;
+			font-size: .26rem;
 
 			&:last-of-type{
 				border-bottom-width: 0;
@@ -229,10 +209,9 @@ export default {
 				color: #333;
 			}
 			p{
-				@include fc(.24rem, #acacac);
+				color: #acacac;
 			}
 			h1{
-				font-size: .24rem;
 				margin: .25rem 0;
 			}
 			time{

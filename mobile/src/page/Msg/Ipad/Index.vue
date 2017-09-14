@@ -12,8 +12,8 @@
           <figure @click.stop="openMsgDetails" v-for="item in msgList" :data-id="item.id">
             <img src="http://cdnimg.caicui.com/upload/avatar/big_ff808081492d486801492d4a28f50004.jpg" />
             <section>
-              <h1>{{item.sender}}<time>{{item.sentTime}}</time></h1>
-              <p>{{item.content.substr(0,22)}}</p>
+              <h1>{{ item.sender }}<time>{{ item.sentTime }}</time></h1>
+              <p>{{ item.content.substr(0,22) }}</p>
             </section>
           </figure>
           <span class="no-data" v-show="msgList.length==0?true:false"><img src="../../../assets/img/404.svg"></span>
@@ -28,8 +28,8 @@
           <figure>
             <img src="http://cdnimg.caicui.com/upload/avatar/big_ff808081492d486801492d4a28f50004.jpg" />
             <section>
-              <h1>{{details.sender}}</h1>
-              <p>{{details.content}}</p>
+              <h1>{{ details.sender }}</h1>
+              <p>{{ details.content }}</p>
             </section>
           </figure>
         </div>
@@ -46,9 +46,18 @@ import { updateLogStatus } from '../../../api/port';
 export default {
 
   props: {
-    'error-msg': [String],
-    'msg-list': [Array],
-    'is-msg-wrap': [Boolean],
+    'errorMsg': {
+      type: String,
+      default: ''
+    },
+    'msgList': {
+      type: Array,
+      default: []
+    },
+    'isMsgWrap': {
+      type: Boolean,
+      default: false
+    },
   },
 
   data() {
@@ -74,8 +83,6 @@ export default {
 
     this.msgListData = this.msgList;
 
-    // 默认显示个人动态
-    this.$emit('gain-msg-list', 0);
   },
 
   methods: {
@@ -123,9 +130,6 @@ export default {
         list: this.msgList.filter(item => item.id != id)
       });
 
-      console.log('消息保留不让更新，已经return掉');
-      return;
-
       updateLogStatus({
         token: this.userInfo.token,
         messageId: id,
@@ -138,8 +142,6 @@ export default {
 
           return;
         }
-
-        console.log(res);
 
         this.$emit('updata-msg-state', 1);
 

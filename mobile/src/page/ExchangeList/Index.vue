@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" :exchange-data="exchangeData" @open-details="openDetails" @get-list="getList"></Ipad>
+		<Ipad v-if="isIpad" :exchangeData="exchangeData" @open-details="openDetails" @get-list="getList"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
@@ -25,6 +25,7 @@ export default {
 			isIpad: false,
       isMobile: false,
 			exchangeData: {},
+			userInfo: {}
     }
   },
 
@@ -34,9 +35,11 @@ export default {
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
+		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
+
 		this.getList({
 			verTT: new Date().getTime(),
-			token: this.webApi.getCookie('token'),
+			token: this.userInfo.token,
 		  self: '1',
 		  pageNo: 1,
 		  pageSize: 15,
@@ -53,28 +56,9 @@ export default {
 		// 打开详情
 		openDetails(id) {
 
-
-			this.webApi.loadingData();
-
-			getExchangeDetails({
-				verTT: new Date().getTime(),
-				token: this.webApi.getCookie('token'),
-				id: id,
-				pageNo: 1,
-				pageSize: 20,
-		}).then(res =>{
-
-				this.webApi.closeLoadingData();
-
-				if(!res || res.state != 'success'){
-					this.webApi.alert('打开详情失败，请稍后再试');
-					return false;
-				}
-
-				this.$router.push({
-					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
-				});
-			})
+			this.$router.push({
+				path: `/exchange/details/${encodeURIComponent(JSON.stringify({id: id}))}`,
+			});
 
 
 		},

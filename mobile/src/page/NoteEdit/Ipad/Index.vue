@@ -39,7 +39,7 @@
 			</div>
 		</footer>
 
-		<input type="file" @change="handleUploadPic" ref="iptFile" class="ipt-file">
+		<input type="file" accept="image/*" capture="camera" @change="handleUploadPic" ref="iptFile" class="ipt-file">
 	</div>
 
 </template>
@@ -78,7 +78,7 @@ export default {
   },
 
 	mounted() {
-console.log(this.$route.params.data)
+
 		this.data = JSON.parse(this.$route.params.data);
 
 		try{
@@ -86,7 +86,7 @@ console.log(this.$route.params.data)
 			this.taskName = this.data.taskName || 'taskName';
 			this.taskId = this.data.taskId || '';
 			this.videoType = this.data.videoType || '';
-			this.courseName =  this.data.sectionData.courseName || '';
+			this.courseName =  this.data.sectionData.courseName || 'courseName';
 			this.taskProgress = this.data.taskProgress || 0;
 
 		}catch(e) {
@@ -264,7 +264,7 @@ console.log(this.$route.params.data)
 					taskType:	this.videoType, // 任务类型
 					subjectName: this.subjectName,
 					id: this.noteId,
-					courseName:	this.data.courseData.courseName,
+					// courseName:	this.data.courseData.courseName,
 					subjectId:	this.subjectId,
 					token:	this.webApi.getCookie('token'), // 用户token
 					courseId:	this.data.courseData.courseId,
@@ -293,12 +293,11 @@ console.log(this.$route.params.data)
 
 	@import "../../../assets/style/mixin";
 
-	$green: #46C1AA;
-
 	.note-wrap-ipad-edit{
 
 		font-size: 0;
-		padding-top: .64rem;
+		padding-top: $commTop;
+		background-color: $commTopWhite;
 
 		.edit{
 
@@ -308,7 +307,7 @@ console.log(this.$route.params.data)
 				width: 96%;
 				@include wh(96%, 8.27rem);
 				@extend .borderBox;
-				@include fc(.26rem, #333);
+				@include fc(.27rem, #333);
 				padding: .15rem .2rem;
 				margin-left: 2%;
 				border: 1px solid #eee;
@@ -324,7 +323,7 @@ console.log(this.$route.params.data)
 
 				input{
 					@include wh(18rem, .6rem);
-					border: none;
+					border: none; font-size: .28rem;
 					outline: 0; color: #ccc;
 					margin-top: .2rem;
 				}
@@ -375,7 +374,7 @@ console.log(this.$route.params.data)
 					@include fc(.24rem, #fff);
 					@extend .borderBox;
 					text-align: center; line-height: 1.5;
-					background-color: $green;
+					background-color: $commPink;
 					top: -.1rem;
 					transform: translate3d(-.26rem,0,0);
 					border-radius: 100%;
@@ -412,7 +411,7 @@ console.log(this.$route.params.data)
 			}
 			.upload-pic-btn{
 				@extend .ab;
-				@include fc(.5rem, $green);
+				@include fc(.5rem, $commPink);
 				top: .23rem; right: 1.9rem;
 				font-family: 'iconfont';
 			}
@@ -445,7 +444,7 @@ console.log(this.$route.params.data)
 				transform: translate3d(-.05rem,0,0);
 			}
 			&.select-btn-active{
-				background-color: $green;
+				background-color: $commPink;
 				span{
 					justify-content: flex-end;
 				}
@@ -458,12 +457,11 @@ console.log(this.$route.params.data)
 
 		.state-edit{
 			@extend .ab;
-			right: .35rem; top: 50%; transform: translateY(-50%);
+			right: .3rem; top: 50%; transform: translateY(-50%);
 			font-family: 'iconfont';
 			a{
-				color: $green;
-				font-size: .7rem;
-				margin-right: .3rem;
+				@include fc(.7rem, $commPink);
+				@extend .show;
 			}
 		}
 
@@ -475,9 +473,9 @@ console.log(this.$route.params.data)
 		background-color: #fff;
 		> a{
 			@extend .ab;
-			@include fc(.46rem, $green);
+			@include fc($commBackFont, $commPink);
 			font-family: 'iconfont';
-			left: .38rem; padding-left: .45rem;
+			left: .38rem; padding-left: .1rem;
 			top: 50%; transform: translateY(-50%);
 		}
 

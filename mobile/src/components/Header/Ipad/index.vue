@@ -4,22 +4,22 @@
 
     <section class="user-info">
       <div class="img-head">
-        <img :src="headImg"/>
+        <router-link to="editMeInfo"><img :src="`${this.webApi.cdnImgUrl}${userInfo.avatar}`" /></router-link>
       </div>
       <address class="text">
-        <span>{{name}}</span>
-        <span>{{phone}}</span>
+        <span>{{ userInfo.nickName }}</span>
+        <span>{{ userData.mobile ? userData.mobile : userData.email }}</span>
       </address>
     </section>
     <aside class="user-log">
-      上次登录时间：<span>{{time}}</span>&nbsp;&nbsp;&nbsp;
-      最近考试：<span>{{courseName}}&nbsp;&nbsp;{{courseTime}}</span>
+      上次登录时间：<span>{{ loginLogData.time }}</span>&nbsp;&nbsp;&nbsp;
+      最近考试：<span :data-id="examDate.id">{{ courseName }}&nbsp;&nbsp;{{ courseTime }}</span>
     </aside>
     <aside href="javascript:;" class="is-msg" @touchend="openMsgListAlert">
       <span>&#xe67e;</span>
-      <span class="msg-num" v-if="totalCount>0">{{totalCount}}</span>
+      <span class="msg-num" v-if="totalCount>0">{{ totalCount }}</span>
     </aside>
-    <MyMsg :msg-list="msgList" @gain-msg-list="gainMsgList" @updata-msg-state="updataMsgState" @close-msg-alert="closeMsgListAlert" :is-msg-wrap="isMsgWrap"></MyMsg>
+    <MyMsg :msgList="msgList" @gain-msg-list="gainMsgList" @updata-msg-state="updataMsgState" @close-msg-alert="closeMsgListAlert" :isMsgWrap="isMsgWrap"></MyMsg>
   </header>
 
 </template>
@@ -37,142 +37,96 @@ export default {
 
   data() {
     return {
-      name: '',
-      headImg: '',
-      phone: '',
-      time: '', // 最新登录时间
-      courseName: '', // 最近考试名称
+      courseName: '暂无考试', // 最近考试名称
       courseTime: '', // 最近考试时间
       isMsgWrap: false, // 是否显示消息列表
       totalCount: 0, // 消息数
-      msgList: [], // 消息列表
       userInfo: {},
     }
   },
 
-  created() {
+  computed: {
 
+		msgList() {
 
-    if(!this.webApi.getCookie('userInfo')) return;
+      let list = this.$store.getters.getMsgList;
+      let _obj = document.createElement('div');
 
-    this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
+      list.map(item => {
+        item.sentTime = this.webApi.stringData(item.sentTime);
+        _obj.innerHTML = item.content;
+        item.content = _obj.innerText;
+      });
 
-    // 用户基本信息
-    getUserInfo({token: this.userInfo.token})
+      this.totalCount = list.length;
 
-    .then(res =>{
+			return list;
+		},
 
-      if(!res || res.msg == 'noLogin'){
+    userData() {
+      return this.$store.getters.getUserDetails;
+    },
 
-        this.$router.push({
-          path: 'login'
-        });
+    examDate() {
 
-        return false;
-      }
+      let data = this.$store.getters.getUserExamData;
 
+      if(!data.examinationDate) return data;
 
-
-      return res.data;
-
-    })
-    .then(data =>{
-
-      if(!data) return false;
-      this.name = data.nickName;
-      this.headImg = `${this.webApi.cdnImgUrl}${data.avatar}`;
-      this.phone = data.mobile ? data.mobile : data.email;
-    });
-
-    // 获取登录时间
-    getLoginLog({
-      verTT: new Date().getTime(),
-      memberid: this.userInfo.memberId,
-      pageSize: 1,
-      pageNo: 1
-    })
-
-    .then(res =>{
-      this.time = !res || res.state != 'success' ? new Date().getTime() : this.stringData(res.data[0].loginTime);
-    })
-
-
-    // 最近考试时间以及科目
-    getExamDate({
-      verTT: new Date().getTime(),
-      memberId: this.userInfo.memberId
-    })
-
-    .then(res =>{
-
-      if(!res || res.state != 'success'){
-        this.webApi.alert('消息获取失败，请稍后再试~');
-        return false;
-      }
-
-      if(res.data.length == 0){
-        this.courseName = '暂无考试';
-        return;
-      }
-
-      let {data: [{categorySign: courseName,examinationDate: courseDate}]} = res;
+      let { categorySign: courseName,examinationDate: courseDate } = data;
       let courseTime = new Date(courseDate);
 
       this.courseName = courseName;
       this.courseTime = `${this.webApi.isSmallTen(courseTime.getFullYear())}/${this.webApi.isSmallTen(courseTime.getMonth())}/${this.webApi.isSmallTen(courseTime.getDate())}`;
 
+      return data;
 
-    })
+    },
 
-    .catch(err =>{
-      this.webApi.alert();
-      return false;
-    })
-
+    loginLogData() {
+      return this.$store.getters.getLoginLogData;
+    },
 
 
+	},
+
+  created() {
+
+    this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {});
+
+    this.$store.commit('updateMsgListParams', {
+        token: this.userInfo.token,
+        self: 0,
+    });
+    this.$store.dispatch('fetchMsgList');
+
+    this.$store.dispatch('fetchUserInfo', { token: this.userInfo.token });
+
+
+    this.$store.commit('updateExamDateParams', {
+        memberId: this.userInfo.memberId,
+    });
+    this.$store.dispatch('fetchExamDate');
+
+
+    this.$store.commit('updateLoginLogParams', {
+        memberid: this.userInfo.memberId,
+    });
+    this.$store.dispatch('fetchLoginLog');
 
   },
+
 
   methods: {
 
     // 获取消息列表
     gainMsgList(type) {
 
-      // 获取消息
-      getMsgList({
-         verTT: new Date().getTime(),
-         pageNo: 1,
-         pageSize: 99,
-         type: type,
-         isRead: 0,
-         token: this.userInfo.token,
-      })
+      this.$store.commit('updateMsgListParams', {
+          self: type,
+      });
 
-      .then(res =>{
-
-
-        if(!res || res.state != 'success'){
-          this.webApi.alert('消息获取失败，请稍后再试');
-          return false;
-        }
-
-        let {data: data, totalCount: totalCount} = res;
-        let _obj = document.createElement('div');
-
-        this.totalCount = totalCount;
-        this.msgList = data;
-        this.msgList.map(item => {
-
-          item.sentTime = this.stringData(item.sentTime);
-          _obj.innerHTML = item.content;
-          item.content = _obj.innerText;
-        })
-
-
-
-      })
-
+      this.$store.dispatch('fetchMsgList');
 
     },
 
@@ -192,33 +146,6 @@ export default {
       this.isMsgWrap = isOff;
     },
 
-    // PC端时间计算为例
-    stringData($_data) {
-       $_data = parseInt($_data);
-        var $_return_string = '1分钟前';
-        var $_timestamp=parseInt(new Date().getTime()/1000);
-        var $_reste = $_timestamp - $_data;
-        if($_reste<0){
-        	$_reste = 1;
-        }
-        // if($_reste<60){
-        //     $_return_string = $_reste+'秒前';
-        // }else
-       	// if($_reste>=60 && $_reste <3600){
-       	if($_reste <3600){
-            $_return_string = Math.ceil($_reste/60)+'分钟前';
-        }else if($_reste>=3600 && $_reste <(3600*24)){
-            $_return_string = Math.ceil($_reste/3600)+'小时前';
-        }else if($_reste>=(3600*24) && $_reste <(3600*24*30)){
-            $_return_string = Math.ceil($_reste/(3600*24))+'天前';
-        }else if($_reste>=(3600*24*30) && $_reste <(3600*24*30*12)){
-            $_return_string = Math.ceil($_reste/(3600*24*30))+'月前';
-        }else{
-            $_return_string = Math.ceil(parseInt($_reste/(3600*24*30*12)))+'年前';
-        }
-        return $_return_string;
-
-    }
 
   }
 
@@ -230,7 +157,6 @@ export default {
  @import "../../../assets/style/mixin";
 
  .comm-header-ipad{
-
 
    @include wh(100%, 2.4rem);
    position: relative;
@@ -286,7 +212,7 @@ export default {
      position: absolute;
      right: .94rem; bottom: 1.2rem;
      @include wh(.6rem, .6rem);
-     @include fc(.56rem, #3CC6B3);
+     @include fc(.56rem, $commPink);
      transform: scale(.9);
 
      .msg-num{

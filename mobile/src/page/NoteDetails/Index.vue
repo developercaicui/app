@@ -38,7 +38,6 @@ export default {
 		this.data = JSON.parse(this.$route.params.data);
 
 
-		console.log(this.data);
 		this.webApi.loadingData();
 
 
