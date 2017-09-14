@@ -11,6 +11,8 @@ var g = {
   closeSetting: closeSetting,
   hiddenJiuCuoView: hiddenJiuCuoView,
   outLogin: outLogin,
+  passWeiBoUrl: passWeiBoUrl,
+  getClassCourseData: getClassCourseData,
 }
 
 // 登录成功获取用户信息
@@ -95,7 +97,7 @@ function targetLearningCourses(data) {
 
 // 用户课程信息(用于交流)
 function getDiscussInfo(data = {}) {
-
+  console.log(data)
   data = JSON.parse(data);
 
   setCookie('getDiscussInfo', JSON.stringify(data));
@@ -118,11 +120,24 @@ function closeSetting(data = {}) {
 
 }
 
+//在学课程跳转课程详情页
+function getClassCourseData(data = {}) {
+
+  g.device == 'ios' ? onlineCouse.getOnlineCourseData(data) : window.course.getClassCourseData(data);
+
+}
+
 //关闭视频纠错页
 function hiddenJiuCuoView(data = {}) {
 
-  g.device == 'ios' ? jiuCuoView.hiddenJiuCuoView() : window.course.closeSetting(data);
+  g.device == 'ios' ? jiuCuoView.hiddenJiuCuoView() : window.course.hiddenJiuCuoView();
 
+}
+
+//打开微博
+function passWeiBoUrl(url) {
+  console.log(url)
+  g.device == 'ios' ? set.passWeiBoUrl(url) : window.course.toActivity(url);
 }
 
 //退出登录

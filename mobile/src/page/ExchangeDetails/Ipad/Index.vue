@@ -35,7 +35,7 @@
               <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ data.replyCount ? data.replyCount : 0 }}</span></div>
               <div class="time"><span>{{ data.updateTime }}</span></div>
               <div class="course-name">
-                <div class="tag-video-time" v-if="data.taskprogress"><i class="icon-play-o"></i><span>{{ data.taskprogress }}</span></div>
+                <div class="tag-video-time" @click="jump_task(data)" v-if="data.taskprogress"><i class="icon-play-o"></i><span>{{ data.taskprogress }}</span></div>
                 <span class="course-tit" v-if="data.coursename">{{ data.coursename }}</span>
               </div>
             </div>
@@ -120,6 +120,7 @@ export default {
 			isRemoveMsg: false, // 是否可以删除当前留言。默认可以
 			isShowList: false, // 是否显示大图列表
 			picList: [], // 图片列表
+			progress: 0,
     }
   },
 
@@ -257,6 +258,7 @@ export default {
 			this.$router.go(-1);
 		},
         setListData(list) {
+        	this.taskprogress = list.taskprogress;
           	list.headImg = `${this.webApi.cdnImgUrl}${list.headImg}`;
           	list.title = `${list.bbstype=='0'?"【讨论】":"【问答】"}${list.title}`;
           	list.imgPath = `${this.webApi.isEmpty(list.imgPath)?'':list.imgPath}`;
@@ -271,6 +273,17 @@ export default {
               item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
               item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' ' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
           });
+        },
+        jump_task(data) {//点击跳转任务（播放视频）
+
+        	if(data.taskType == "video"){
+
+        		data.taskprogress = this.taskprogress;
+console.log(JSON.stringify(data))
+        		videoBtn.clickToPlayVido(JSON.stringify(data));
+
+        	}
+        	
         },
 		setBackground(url) {
 			return `background-image:url(${this.getImgPath(url)})`

@@ -98,7 +98,7 @@ export default {
 
 	methods: {
 		    closeIndex() {
-          this.isShow = !this.isShow;
+           g.hiddenJiuCuoView();
         },
       	//投诉类型
       	selecType(ev) {
@@ -146,8 +146,8 @@ export default {
 
           this.webApi.loadingData();
 //关闭此页面
-                      g.hiddenJiuCuoView();
-                      return
+                      
+console.log(JSON.stringify(param))
           complaintOpinion(param)
 
           .then(res =>{
@@ -160,8 +160,8 @@ export default {
                   this.webApi.alert('发表成功');
 
                   setTimeout(function () {
-
-
+                    
+                      g.hiddenJiuCuoView();
 
                   }, 600);
 

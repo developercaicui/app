@@ -37,7 +37,7 @@
 		                <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ data.replyCount ? data.replyCount : 0 }}</span></div>
 		                <div class="time"><span>{{ data.updateTime }}</span></div>
 		                <div class="course-name">
-		                  <div class="tag-video-time" v-if="data.taskprogress"><i class="icon-play-o"></i><span>{{ data.taskprogress }}</span></div>
+		                  <div class="tag-video-time" @click="jump_task(data)" v-if="data.taskprogress"><i class="icon-play-o"></i><span>{{ data.taskprogress }}</span></div>
 		                  <span class="course-tit" v-if="data.coursename">{{ data.coursename }}</span>
 		                </div>
 		              </div>
@@ -121,6 +121,9 @@ export default {
               item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
               item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' ' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
           });
+        },
+        jump_task(data) {
+        	console.log(JSON.stringify(data))
         },
 		setBackground(url) {
 			return `background-image:url(${this.getImgPath(url)})`

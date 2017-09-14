@@ -100,9 +100,13 @@ export default {
 		    self: 0
 	    }
 	},
+	beforecreate(){
+        	this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
+		
+	},
 	created() {
 		
-		this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
+		
 
 		this.getDate(1,0);
 		this.getDate(1,1);
@@ -195,10 +199,10 @@ export default {
 	        param.ordertype = 1;
 	        param.pageNo = page;
 	        param.pageSize = 10;
-	        // param.courseid= this.courseInfo.courseId;
-	        // param.categoryId= this.courseInfo.categoryId;
-	        // param.subjectId= this.courseInfo.subjectId;
-	        param.courseid = "ff8080814f607c24014f6866fdb716fd"
+	        param.courseid= this.courseInfo.courseId;
+	        param.categoryId= this.courseInfo.categoryId;
+	        param.subjectId= this.courseInfo.subjectId;
+	        // param.courseid = "ff8080814f607c24014f6866fdb716fd"
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {
 	            this.webApi.loadingData();
@@ -232,7 +236,7 @@ export default {
 	          	item.title = `${item.bbstype=='0'?"【讨论】":"【问答】"}${item.title}`;
 	          	item.imgPath = `${this.webApi.isEmpty(item.imgPath)?'':item.imgPath}`;
 	          	item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
-	          	item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' ' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
+	          	item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' '&& item.taskType == 'video' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
 	        });
         },
 		// 打开详情

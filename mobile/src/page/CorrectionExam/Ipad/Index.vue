@@ -21,7 +21,7 @@
           </div>
         </div>
         <div class="pop-tel">联系方式
-          <input type="text" class="pop-input-tel">
+          <input type="text" class="pop-input-tel" :value="mobile">
           <div class="right">
             <p @click="closeIndex">取消</p>
             <p class="active" @click="sub()">提交</p>
@@ -45,7 +45,8 @@ export default {
 	    	isShow: true,
 	    	is_ok: true,
         data:{},
-        task_info_detail:{}
+        task_info_detail:{},
+        mobile: '',
 	    }
 	},
 
@@ -83,6 +84,7 @@ export default {
           "answerResolution": "Strategic, operational and management are the three levels of decision<br />\r\nmaking in an organization.<br />\r\n&nbsp;<br />"
       }
     }
+
     
     //知识点练习类型数据
     // this.data = {
@@ -108,9 +110,13 @@ export default {
 	      if(res && res.state == 'success'){
 
 	          if(res.data.mobile){
-                  $(".pop-input-tel").val(res.data.mobile)
+
+                  this.mobile = res.data.mobile
+
               }else{
-                  $(".pop-input-tel").val(res.data.email)
+
+                  this.mobile = res.data.email
+
               }
 
 	      }

@@ -96,7 +96,7 @@
 	          <!--li,onclick = 'openurl("http://www.caicui.com/")')-->
 	          <!--    span 官方网站-->
 	          <li @click="togWx"><span>微信公众号</span></li>
-	          <li onclick="openurl(&quot;http://weibo.com/icaicui&quot;)"><span>官方微博</span></li>
+	          <li @click="openurl('http://weibo.com/icaicui')"><span>官方微博</span></li>
 	          <li onclick="update()" class="update none"><span>在线升级</span></li>
 	          <li onclick="praise()" class="none"><span>给财萃课堂好评</span></li>
 	        </ul>
@@ -223,6 +223,11 @@ export default {
           this.$refs.erweima.classList.toggle('xswx')
 
       	},
+        openurl(url) {//打开微博
+
+            g.passWeiBoUrl(url);
+            
+        },
       	//退出登录
       	logout() {
 

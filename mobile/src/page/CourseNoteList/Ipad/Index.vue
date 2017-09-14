@@ -129,8 +129,7 @@ export default {
 	},
 
 	created() {
-    //获取课程信息
-    this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
+    
     //获取全部笔记列表
 		this.getAllNote();
     //获取我的笔记列表
@@ -239,6 +238,9 @@ export default {
 
                 return false;
           }
+          //获取课程信息
+          this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
+
           let param = {};
           param.self = 0;
           // param.courseid= this.courseInfo.courseId;
@@ -285,6 +287,9 @@ export default {
 
               	return false;
         	}
+          //获取课程信息
+          this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
+
         	let param = {};
 	        param.self = 1;
 	        param.courseid= this.courseInfo.courseId;

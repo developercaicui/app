@@ -233,7 +233,8 @@ export default {
 		data.expirationTime = this.formatDate(data.expirationTime,"Y")+'/'+this.formatDate(data.expirationTime,'M')+'/'+this.formatDate(data.expirationTime,'D');
 		data.token = this.webApi.getCookie('token');
 		data.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;
-		onlineCouse.getOnlineCourseData(JSON.stringify(data))
+		
+		g.getClassCourseData(JSON.stringify(data))
 	}
   },
   updated() {
