@@ -139,6 +139,9 @@ export default  new VueRouter({
     },{
       path: '/exam/:type/:id',
       component: Exam
+    },{
+      path: '/exam/:type/:id/:examNum',
+      component: Exam
     }
    ]
 });

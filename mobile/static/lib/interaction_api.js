@@ -8,6 +8,9 @@ var g = {
   backLogin: backLogin,
   closeNewNote: closeNewNote,
   openActivityPage: openActivityPage,
+  closeSetting: closeSetting,
+  hiddenJiuCuoView: hiddenJiuCuoView,
+  outLogin: outLogin,
 }
 
 // 登录成功获取用户信息
@@ -107,3 +110,34 @@ function getCourseNoteInfo(data = {}) {
   setCookie('getCourseNoteInfo', JSON.stringify(data));
 
 }
+
+//关闭设置页
+function closeSetting(data = {}) {
+
+  g.device == 'ios' ? set.clickSetBack(data) : window.course.closeSetting();
+
+}
+
+//关闭视频纠错页
+function hiddenJiuCuoView(data = {}) {
+
+  g.device == 'ios' ? jiuCuoView.hiddenJiuCuoView() : window.course.closeSetting(data);
+
+}
+
+//退出登录
+function outLogin(data = {}) {
+
+  g.device == 'ios' ? set.clickLoginLaunch() : window.course.logOff();
+
+}
+
+// 试卷页面需要用到的id(用于试卷)
+function getExamNeedIds(data = {}) {
+  alert(data)
+  data = JSON.parse(data);
+
+  setCookie('examNeedIds', JSON.stringify(data));
+
+}
+

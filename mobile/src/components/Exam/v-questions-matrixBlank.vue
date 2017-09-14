@@ -43,8 +43,8 @@ export default{
 			let content = '';
 			let items = '';
 			if(this.exam.exerciseType == "multiTask"){
-				content = this.exam.exerciseContext[this.multiTaskIndex];
-				items = content.data[0].items;
+				content = this.exam.exerciseContext[this.multiTaskIndex].data[0];
+				items = content.items;
 			}else{
 				content = this.exam.exerciseContext[0];
 				items = content.items;

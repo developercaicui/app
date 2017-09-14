@@ -249,7 +249,7 @@ export default {
   font-family:"iconfont";
   font-size:0.26rem;
   font-weight: 700;
-  color: #00a185;
+  color: #ff366d;
   speak: none;
   font-style: normal;
   font-variant: normal;
@@ -434,8 +434,8 @@ export default {
   display: inline-block;
   text-align: center;
   padding: 0 0.5rem;
-  border: 1px solid #00a185;
-  background: #00a185;
+  border: 1px solid #ff366d;
+  background: #ff366d;
   color: #fff;
   margin: auto 0.2rem;
   height: 0.6rem;
@@ -453,7 +453,7 @@ export default {
   text-indent: 0.05rem;
 }
 .btn.btn-o {
-  color: #00a185;
+  color: #ff366d;
   background: none;
   margin:0 0.5rem;
   position:absolute;
@@ -473,8 +473,8 @@ li {
   display: inline-block;
   text-align: center;
   padding: 0 0.5rem;
-  border: 1px solid #00a185;
-  background: #00a185;
+  border: 1px solid #ff366d;
+  background: #ff366d;
   color: #fff;
   margin: auto 0.2rem;
 }
@@ -489,7 +489,7 @@ li {
   text-indent: 0.05rem;
 }
 .btn.btn-o {
-  color: #00a185;
+  color: #ff366d;
   background: none;
 }
 .btn-group {
@@ -521,11 +521,11 @@ li {
   border-right: 0;
 }
 .btn-group.btn-success .btn {
-  color: #00a185;
-  border: 1px solid #00a185;
+  color: #ff366d;
+  border: 1px solid #ff366d;
 }
 .btn-group.btn-success .btn.active {
-  background: #00a185;
+  background: #ff366d;
 }
 
 </style>

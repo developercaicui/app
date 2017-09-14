@@ -149,15 +149,16 @@ $marginTB-10 : 10px 0;
 		}
 		.exercises-ul{
 			.exercises-li{
+				margin-top: 15px;
 				.exercises-a{
 					display: block;
 					padding: 10px 15px;
-					margin-top: 10px;
 					font-size: $examFontSize;
 					color: #767676;
 					border: 1px solid #d4d4d4;
 					border-radius: 4px;
 					background-color: #f7f8f8;
+
 				}
 				// .exercises-a:hover{
 				// 	color: #fff;
@@ -282,22 +283,28 @@ $marginTB-10 : 10px 0;
 	.exam-cards-ul{
 		overflow: hidden;
 		@include WH();
-		padding: 13px 0;
+		padding: 12px 0;
 		.exam-cards-scroll{
+			position: relative;
 			float: left;
-			max-width: 360px;
-			overflow-x: auto; 
+			height: 26px;
+			overflow-x: auto;
+			overflow-y: hidden;
 			.exam-cards-box{
-				
+				position: absolute;
+		    top: 0;
+		    left: 0;
+		    height: 26px;
 			}
 		}
 		
 		.exam-cards-li{
 			float: left;
-			height: 26px;
+			@include WH(38px, 26px);
+			margin-left: 10px;
 			.exam-cards-a{
 				display: inline-block;
-				@include WH(24px,24px);
+				@include WH(36px,24px);
 				line-height: 24px;
 				text-align: center;
 				color: #fff;
@@ -305,17 +312,14 @@ $marginTB-10 : 10px 0;
 				border: 1px solid #898989;
 				border-radius: 4px;
 				vertical-align: top;
-				margin-left: 10px;
 			}
 			.exam-cards-a:hover{
 				border: 1px solid #fff;
 			}
-			
 			$triangleWidth : 6px;
 			.triangle{
-				@include WH(26px,26px);
 				float: left;
-				margin-left: 10px;
+				@include WH(26px,26px);
 			}
 			.exam-cards-prev.triangle::before{
 				@include absolute();

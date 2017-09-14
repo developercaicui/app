@@ -3,13 +3,24 @@ import Request from '../../api/request';
 import COMMON from '../../api/common';
 export default {
 	state : {
+		subjectId : '',
+		categoryId : '',
+		courseId : '',
+		chapterId : '',
+		taskId : '',
+		cacheKnowledgeLevel1Id : '',
+		cacheKnowledgeLevel2Id : '',
+
 		exam : '',
-		examType : '', // chapter,imitate,real,knowledge
+		examType : '', // chapter,realImitate,knowledge,testSite
+		examFindType : 4,
 		examId : '',
+		examTitle : '',
 		examCache : [],
 		examState : [],
 		examBaseInfo : [],
-		examNum : 0,
+		examNum : '',
+		examNumTotal : 0,
 		examIsFinish : 0,
 		examProgress : 0,
 
@@ -20,7 +31,7 @@ export default {
 		exerciseId : '',
 		exerciseDetail : {},
 		exerciseContext : [],
-		exerciseOptionsArray : ["A","B","C","D","E","F"],
+		exerciseOptionsArray : ["A","B","C","D","E","F","G","H","I","J","K"],
 		exerciseTitle : '',
 		exerciseStatus : -1,
 		exerciseStatusText : '',
@@ -35,6 +46,8 @@ export default {
 		exerciseRightCount : 0,
 		exerciseAnalysis : '',
 
+		cardsItemWidth : 48,
+		cardsPosLeft : 0
 	},
 	getters : {
 		getExamId : state => {
@@ -45,7 +58,8 @@ export default {
 			// 	console.log(element)
 			// })
 
-		}
+		},
+		
 	},
 	mutations : {
 		update (state, obj){
@@ -74,7 +88,43 @@ export default {
 				}
 				state.exerciseContext = newContent;
 			}
-		}
+		},
+		getExerciseTitle (state, obj) {
+				let title = '';
+				if(obj.exerciseTitle){
+					title = obj.exerciseTitle.replace(/<[^>]+>/g,"").replace(/(^\s+)|(\s+$)/g,"").replace(/(\r)|(\n)|(\t)/g,'')
+				}else{
+					switch(obj.exerciseType){
+						case 'radio' :
+							title = '单选题';
+							break;
+						case 'checkbox' :
+							title = '复选题';
+							break;
+						case 'blank' :
+							title = '填空题';
+							break;
+						case 'question' :
+							title = '简答题';
+							break;
+						case 'matrixRadio' :
+							title = '矩阵单选题';
+							break;
+						case 'matrixCheckbox' :
+							title = '矩阵复选题';
+							break;
+						case 'matrixBlank' :
+							title = '矩阵填空题';
+							break;
+						case 'multiTask' :
+							title = '多任务题';
+							break;
+					}
+				}
+				console.log(title)
+				state.exerciseTitle = title;
+				// return title;
+			}
 	},
 	actions : {
 		requestListDetail ({state, commit}){
@@ -94,15 +144,20 @@ export default {
 						})
 					});
 				// }
+				commit('getExerciseTitle',{
+					"exerciseTitle" : exerciseDetail.data[0].title,
+					"exerciseType" : exerciseDetail.data[0].questionTypes
+				})
 				commit('update',{
 					"exerciseListRequest" : [{
 						"count" : state.exerciseLastNid,
 						"detail" : exerciseDetail.data[0]
 					}],
 					"exerciseListCache" : exerciseList.data,
+					"exerciseListStatus" : state.examBaseInfo,
 					"exerciseDetail" : exerciseDetail.data[0],
 					"exerciseType" : exerciseDetail.data[0].questionTypes,
-					"exerciseTitle" : exerciseDetail.data[0].title
+					// "exerciseTitle" : exerciseDetail.data[0].title
 				});
 				let cacheIndexContext = '';
 				exerciseList.data.forEach((item, index) => {
