@@ -66,8 +66,14 @@ import SlideRefresh from '../../../components/Comm/SlideRefresh';
 export default {
 
 	props: {
-    'activity-list': [Array],
-		'learning-course-list': [Array]
+    activityList: {
+			type: Array,
+			default: []
+		},
+		learningCourseList: {
+			type: Array,
+			default: []
+		}
   },
 
 	components: {

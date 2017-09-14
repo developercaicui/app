@@ -1,8 +1,8 @@
 <template lang="html">
 
 	<div>
-		<Ipad @fetch-data="fetchData" :learning-course-list="learningCourseList" :activity-list='activityList' v-if="isIpad"></Ipad>
-		<Mobile :learning-course-list="learningCourseList" :activity-list='activityList' v-if="isMobile"></Mobile>
+		<Ipad @fetch-data="fetchData" :learningCourseList="learningCourseList" :activityList='activityList' v-if="isIpad"></Ipad>
+		<Mobile :learningCourseList="learningCourseList" :activity-list='activityList' v-if="isMobile"></Mobile>
 	</div>
 
 </template>
@@ -121,17 +121,26 @@ export default {
 					return false;
 				}
 
-				res.data.map((item, index) =>{
+				try {
+					
+					res.data.map((item, index) =>{
 
-					let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;
+						let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;
 
-					if(num === 0) num =  !item.progress ? 0 : 1;
+						if(num === 0) num =  !item.progress ? 0 : 1;
 
-					this.learningCourseList[index].courseProgress = item.courseProgress;
-					this.learningCourseList[index].studyProportion = num > 100 ? 100 : num;
-					this.learningCourseList[index].createTime = item.createDate;
+						this.learningCourseList[index].courseProgress = item.courseProgress;
+						this.learningCourseList[index].studyProportion = num > 100 ? 100 : num;
+						this.learningCourseList[index].createTime = item.createDate;
 
-				});
+					});
+
+				} catch (e) {
+
+				} finally {
+
+				}
+
 
 				return getExamDate({
 					verTT: new Date().getTime(),

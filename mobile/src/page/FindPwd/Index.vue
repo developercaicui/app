@@ -24,7 +24,12 @@
 
 <script>
 
-import { phoneIsExist, sendCode, getToken, changePwdByPhone } from '../../api/port';
+import {
+	phoneIsExist,
+	sendCode,
+	getToken,
+	changePwdByPhone
+} from '../../api/port';
 
 export default {
 
@@ -256,9 +261,6 @@ export default {
 
 	@import "../../assets/style/mixin";
 
-
-	$commGreen: #01a185;
-
 	.find-pwd-ipad{
 
 		font-size: 0; line-height: 1;
@@ -323,7 +325,7 @@ export default {
 	 .sub-ref-info{
 	 	  @extend .flexCenter;
 	 	  @include fc(.24rem, #fff);
-	 	  background-color: $commGreen;
+	 	  background-color: $commPink;
 			letter-spacing: 3px;
 	 }
 
@@ -337,7 +339,7 @@ export default {
 
 	 .gainCode{
 	 		@extend .ab;
-	 		@include fc(.24rem, $commGreen);
+	 		@include fc(.24rem, $commPink);
 			right: .5rem; top: .34rem;
 	 }
 	 .look-pwd{

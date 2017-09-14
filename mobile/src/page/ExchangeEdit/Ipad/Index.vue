@@ -33,7 +33,7 @@
 			</div>
 		</footer>
 
-		<input type="file" @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
+		<input type="file" accept="image/*"  capture="camera" @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
 
 	</div>
 
@@ -61,8 +61,6 @@ export default {
 	mounted() {
 
 		this.data = JSON.parse(this.$route.params.data);
-
-		alert(JSON.stringify(this.data))
 
 		this.title = this.data.chapteName || '';
 
@@ -212,8 +210,6 @@ export default {
 
 	@import "../../../assets/style/mixin";
 
-	$green: #46C1AA;
-
 	.exchange-wrap-ipad-edit{
 
 		font-size: 0;
@@ -267,7 +263,7 @@ export default {
 					@include fc(.24rem, #fff);
 					@extend .borderBox;
 					text-align: center; line-height: 1.5;
-					background-color: $green;
+					background-color: $commPink;
 					top: -.1rem;
 					transform: translate3d(-.26rem,0,0);
 					border-radius: 100%;
@@ -304,7 +300,7 @@ export default {
 			}
 			.upload-pic-btn{
 				@extend .ab;
-				@include fc(.5rem, $green);
+				@include fc(.5rem, $commPink);
 				top: .23rem; right: .3rem;
 				font-family: 'iconfont';
 			}
@@ -317,13 +313,10 @@ export default {
 			right: .35rem; top: 50%; transform: translateY(-50%);
 			font-family: 'iconfont';
 			a{
-				color: $green;
+				color: $commPink;
 				&:nth-of-type(1){
-					font-size: .38rem;
+					font-size: .6rem;
 					margin-right: .3rem;
-				}
-				&:nth-of-type(2){
-					font-size: .42rem;
 				}
 			}
 		}
@@ -336,9 +329,9 @@ export default {
 		background-color: #fff;
 		> a{
 			@extend .ab;
-			@include fc(.46rem, $green);
+			@include fc($commBackFont, $commPink);
 			font-family: 'iconfont';
-			left: .38rem; padding-left: .45rem;
+			left: .38rem; padding-left: .15rem;
 			top: 50%; transform: translateY(-50%);
 		}
 

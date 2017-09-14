@@ -4,7 +4,7 @@
 		<header>
 			<a href="javascript:;" class="back" @touchend.stop="handleCloseBigShow">&#xe669;</a>
 			<span ref="listInfo"></span>
-			<a href="javascript:;">&#xe60f;</a>
+			<!-- <a href="javascript:;">&#xe60f;</a> -->
 	  </header>
 
 		<main>
@@ -22,7 +22,10 @@
 export default {
 
 	props: {
-		'pic-list': [Array]
+		picList: {
+			type: Array,
+			default: []
+		}
 	},
 	components: {
   },
@@ -191,8 +194,9 @@ export default {
 		text-indent: -.3rem;
 		a{
 			@extend .ab;
-			@include fc(.36rem, #fff);
+			@include fc($commBackFont, #fff);
 			font-family: 'iconfont';
+			top: .5rem;
 			&:nth-of-type(1){
 				left: 1rem; font-size: .4rem;
 			}

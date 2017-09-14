@@ -90,11 +90,11 @@ export default {
 
 	@import "../../../assets/style/mixin";
 
-	$green: #46C1AA;
-
 	.node-ipad-list{
 
 		font-size: 0; line-height: 1;
+		padding-top: $commTop;
+		background-color: $commTopBack;
 
 		.list{
 
@@ -176,10 +176,10 @@ export default {
 
 		header.head{
 
-			position: relative;
 			@include wh(100%, 1.05rem);
+			position: relative;
 			border-bottom: 1px solid #B9B9B9;
-			background-color: #fff;
+			background-color: #f5f5f5;
 
 			h1{
 				@extend .flexCenter;

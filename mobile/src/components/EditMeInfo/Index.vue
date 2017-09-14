@@ -33,6 +33,7 @@ export default {
 			isChangeHead: false,
 			userInfo: {},
 			updateState: true,
+			newUserInfo: {},
     }
   },
 
@@ -118,7 +119,7 @@ export default {
 					return false;
 				}
 
-				if(this.isChangeHead && res.state == 'success') this.userInfo.avatar = res.data.path;
+				if(this.isChangeHead && res.state == 'success') this.newUserInfo.avatar = res.data.path;
 
 				// 更新名字
 				return  changeUserName({
@@ -136,13 +137,16 @@ export default {
 					return false;
 				}
 
-				if(this.isChangeNickName && res.state == 'success') this.userInfo.nickName = this.nickName;
+				if(this.isChangeNickName && res.state == 'success') this.newUserInfo.nickName = this.nickName;
 
 				this.webApi.delCookie('userInfo')
-				this.webApi.setCookie('userInfo', JSON.stringify(this.userInfo));
-				// console.log(this.userInfo);
-				// this.webApi.closeLoadingData();
-				// this.$router.go(-1);
+				this.webApi.setCookie('userInfo', JSON.stringify(Object.assign(this.userInfo, this.newUserInfo)));
+
+				this.webApi.closeLoadingData();
+				this.webApi.alert('更新成功', 2000);
+				setTimeout(()=>{
+					this.$router.go(-1);
+				},1500)
 
 			})
 
@@ -176,7 +180,7 @@ export default {
 		@include wh(100%, 1.05rem);
  		position: relative;
  		padding: 0 .4rem;
-		background-color: #000;
+		background-color: $commPink;
 
  		.back{
  			position: absolute;

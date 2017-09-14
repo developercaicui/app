@@ -16,7 +16,7 @@
 					<input type="number" v-model="mobile" placeholder="手机号">
 					<input type="number" v-model="code" placeholder="验证码">
 					<input type="password" v-model="pwd" placeholder="密码（请输入8-16位，不能有空格，纯数字需至少9位）" ref="pwd">
-					<a href="javascript:;" v-show="isShowBtn" @touchend="gainCode" class="gain-code">{{gainCodeText}}</a>
+					<a href="javascript:;" v-show="isShowBtn" @touchend="gainCode" class="gain-code">{{ gainCodeText }}</a>
 					<a href="javascript:;" @touchend="lookPwd" class="look-pwd">&#xe62d;</a>
 					<div class="is-agree">
 						<a href="javascript:;" @touchend="isAgreement" class="active">&#xe654;</a>
@@ -53,7 +53,14 @@
 
 <script>
 
-import { getToken, phoneIsExist, sendCode, mobileReg, uploadFile, changeUserName} from '../../api/port';
+import {
+	getToken,
+	phoneIsExist,
+	sendCode,
+	mobileReg,
+	uploadFile,
+	changeUserName
+} from '../../api/port';
 
 export default {
 
@@ -82,7 +89,6 @@ export default {
 
 	//  this.transformAName = 'slide-left-hide';
 	//  this.transformBName =  'slide-left';
-	 //
 	//  this.isLast = true;
 
  },
@@ -391,9 +397,6 @@ export default {
 
   @import "../../assets/style/mixin";
 
-
- $commGreen: #01a185;
-
  .comm-reg-wrap{
 
 	 font-size: 0; line-height: 0;
@@ -423,13 +426,13 @@ export default {
 		background-color: #ebebee;
 
  		.back{
+			@include fc($commBackFont, $commPink);
  			position: absolute;
  			z-index: 9;
  			height: 100%;
  			display: flex;
  			align-items: center;
  			font-family: 'iconfont';
- 			@include fc(.5rem, $commGreen);
  		}
 
  		h1{
@@ -479,7 +482,7 @@ export default {
 	 .sub-ref-info{
 	 	  @extend .flexCenter;
 	 	  @include fc(.24rem, #fff);
-	 	  background-color: $commGreen;
+	 	  background-color: $commPink;
 			letter-spacing: 3px;
 	 }
 
@@ -504,11 +507,11 @@ export default {
 			 }
 			 &.active{
 			 	font-size: .24rem;
-				background-color: $commGreen;
-				border: 1px solid $commGreen;
+				background-color: $commPink;
+				border: 1px solid $commPink;
 			 }
 			 &:nth-of-type(2){
-			 	color: $commGreen;
+			 	color: $commPink;
 			 }
 		 }
 	 }
@@ -516,7 +519,7 @@ export default {
 	 .gain-code{
 	 		@extend .ab;
 			@include wh(1.3rem, .5rem);
-	 		@include fc(.24rem, $commGreen);
+	 		@include fc(.24rem, $commPink);
 			right: .5rem; top: .48rem;
 			z-index: 19; text-align: right;
 			display: inline-block;

@@ -12,7 +12,7 @@ var g = {
 
 // 登录成功获取用户信息
 function getLoginInfo(data = {}) {
-  
+
   data = JSON.parse(data);
 
   try{
@@ -79,7 +79,7 @@ function backLogin() {
 
 // 跳出窗口打开活动页
 function openActivityPage(url){
-  caicui.openActivity(url)
+  g.device == 'ios' ? caicui.openActivity(url) : window.course.toActivity(url);
 }
 
 /**
