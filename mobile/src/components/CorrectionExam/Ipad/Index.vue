@@ -1,5 +1,5 @@
 <template lang="html">
-	<div class="set-info-modal" v-if="isShow">
+	<div class="set-info-modal">
 		<div class="backdrop"></div>
     <div class="set-info-modal">
       <div id="mask0" class="modal">
@@ -14,10 +14,10 @@
           <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">其它错误</span></a>
         </div>
         <div class="feeback-textareaBox">
-          <textarea id="textarea" name="content" placeholder="请输入反馈，我们将为您不断改进。"></textarea>
+          <textarea id="textarea" name="content" placeholder="请输入反馈，我们将为您不断改进。" ref="textarea"></textarea>
           <div class="taskInfo">
-              <p class="taskInfo-time"><span></span><span>1题</span></p>
-              <p class="taskInfo-title">任务3 战略规划概述</p>
+              <p class="taskInfo-time"><span></span><span v-text="taskInfotime"></span></p>
+              <p class="taskInfo-title" v-text="taskInfotitle"></p>
           </div>
         </div>
         <div class="pop-tel">联系方式
@@ -49,16 +49,13 @@ export default {
 	data() {
 	    return {
 	    	isShow: true,
-	    	is_ok: true,
-        data:{},
-        task_info_detail:{},
         mobile: '',
+        taskInfotime: '',
+        taskInfotitle: '',
 	    }
 	},
 
 	created() {
-    
-    console.log(this.correctionData)
 
 		getUserInfo({'token':this.webApi.getCookie('token')})
 
@@ -93,43 +90,40 @@ export default {
 
 	methods: {
 		    closeIndex() {
-          
+            this.$emit('isShow',false);
         },
       	//投诉类型
       	selecType(ev) {
       		ev.target.classList.add("active")
       	},
       	sub() {
-          let content = $.trim($('textarea[name=content]').val());
+          let content = this.$refs.textarea.value;
+
           if (content == '') {
               this.webApi.alert('意见内容不能为空');
               return false;
           }
-
-          let task_info_detail = this.data.task_info_detail;
-          if(this.data.data_exercise_id){
-              task_info_detail.taskInfo.id = this.data.data_exercise_id;
+          console.log(this.mobile)
+          if ($(".pop-input-tel").val() == '') {
+              this.webApi.alert('联系方式不能为空');
+              return false;
           }
+          let task_info_detail = this.correctionData;
+          
           let nameJson = {
             "courseName" : task_info_detail.courseName,
             "chapterName" : task_info_detail.chapterName,
-            "taskName" : task_info_detail.taskInfo.title,
-            "id" : task_info_detail.taskInfo.id
+            "taskName" : task_info_detail.taskName,
+            "id" : task_info_detail.exerciseId
           }
           let courseId = task_info_detail.courseId;
           let chapterId = task_info_detail.chapterId;
-          let taskId = task_info_detail.taskInfo.taskId;
-          let type = task_info_detail.taskInfo.taskType;
-          let title = task_info_detail.taskInfo.title.replace(/\n|\r|\t|<[^<]*>/g,'');
+          let taskId = task_info_detail.taskId;
+          let type = task_info_detail.taskType;
+          let title = task_info_detail.taskName.replace(/\n|\r|\t|<[^<]*>/g,'');
           let progress = task_info_detail.progress;
-          let exam_id = this.data.exam_id;
-          let exercise_id = "";
-          if(exam_id){
-              exercise_id = exam_id.id;
-              title = exam_id.title.replace(/\n|\r|\t|<[^<]*>/g,'');
-          }else{
-              exercise_id = task_info_detail.taskInfo.id;
-          }
+          let exercise_id = task_info_detail.exerciseId;
+          
 
           let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
           let param = {};
@@ -137,44 +131,41 @@ export default {
 
           param.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;//投诉人id
           param.memberName = nickName;//投诉人昵称
-          param.cmptType = $(".pop-radio-label.active").find(".pop-radio-span").text();//投诉类型
+
+          param.cmptType = document.querySelector(".pop-radio-label.active").innerText;//投诉类型
           param.cmptContent = content+'<a class="content-addDom" data-nameJson="'+JSON.stringify(nameJson)+'" href="javascript:;" data-course-id="'+courseId+'" data-chapter-id="'+chapterId+'" data-task-id="'+taskId+'" data-type="'+type+'" data-title="'+title+'" data-sort="'+progress+'" data-exercise-id="'+exercise_id+'"><试题：'+progress+'题></a>';//投诉内容
-          param.contactWay = $(".pop-input-tel").val();//联系方式
+          param.contactWay = this.mobile;//联系方式
           param.deviceDesc = systype;//设备描述
 
           console.log(JSON.stringify(param))
 
           this.webApi.loadingData();
 
-          if (this.is_ok) {
+          complaintOpinion(param)
 
-              this.is_ok = false;
+          .then(res =>{
 
-              complaintOpinion(param)
+             this.webApi.closeLoadingData();
 
-              .then(res =>{
+           if (res && res.state == 'success') {
 
-                 this.webApi.closeLoadingData();
+                  this.webApi.alert('发表成功');
 
-               if (res && res.state == 'success') {
+                  setTimeout(function () {
 
-                      this.webApi.alert('发表成功');
+                      //关闭此页面
+                      this.closeIndex();
 
-                      setTimeout(function () {
+                  }, 600);
 
-                          //关闭此页面
+              } else {
 
+                  this.webApi.alert(res.msg);
 
-                      }, 600);
+              }
 
-                  } else {
-                      this.is_ok = true;
-                      // this.webApi.alert('发表失败，请重试！');
-                      this.webApi.alert(res.msg);
-                  }
+          })
 
-              })
-          }
     },
     formatSec(value) {
         let theTime = parseInt(value);
@@ -216,19 +207,10 @@ export default {
 	},
 	mounted() {
 
-    let title = this.data.task_info_detail.taskInfo.title;
+    this.taskInfotitle = this.correctionData.taskName.replace(/\n|\r|\t|<[^<]*>/g,'');//任务标题
+    let progress = this.correctionData.progress;//任务进度
 
-    if(this.data.exam_info){
-        title = this.data.exam_info.title;
-    }
-    if(this.data.exam_id){
-        title = this.data.exam_id.title;
-    }
-
-    let progress = this.data.task_info_detail.progress;//任务进度
-
-    $(".taskInfo-time").find("span").eq(1).html(progress+"题");
-    $(".taskInfo-title").html(title.replace(/\n|\r|\t|<[^<]*>/g,''));
+    this.taskInfotime = `${progress}题`
 
 		//投诉类型
   	$('#pop-radios .pop-radio-label').on('click', function () {

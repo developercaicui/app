@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<settingIpad v-show="isIpad"></settingIpad>
+		<settingIpad v-show="isIpad" :correctionData="correctionData" @isShow="isShow"></settingIpad>
 		<settingMobile v-show="isMobile"></settingMobile>
 	</div>
 
@@ -13,7 +13,12 @@ import settingIpad from './Ipad';
 import settingMobile from './Mobile';
 
 export default {
-
+	props: {
+      correctionData: {
+          type: Object,
+          default: {}
+      }
+  	},
 	components: {
 		settingMobile,
 		settingIpad,
@@ -37,7 +42,10 @@ export default {
 
 
 	methods: {
-
+		isShow (bool){
+			console.log(bool)
+			this.$emit('isShow',bool);
+		}
 	}
 
 }
