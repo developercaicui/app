@@ -51,6 +51,7 @@ export default {
 		exerciseRightCount : 0,
 		exerciseAnalysis : '',
 
+		isAnalysis : true,
 		cardsItemWidth : 48,
 		cardsPosLeft : 0
 	},

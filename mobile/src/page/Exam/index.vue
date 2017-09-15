@@ -160,6 +160,19 @@
 			examRequestCallback (examenInfo, status, baseInfo) {
 				let examNeedIds = JSON.parse(this.webApi.getCookie('examNeedIds'));
 				this.examNeedIds = examNeedIds;
+				let express = false;
+				if(examNeedIds){
+					if(examNeedIds.express == '0'){
+						express = false;
+					}else if(examNeedIds.express == '1'){
+						express = true;
+					}
+				}else{
+
+				}
+				this.update({
+					'isAnalysis' : express
+				})
 				// examBackButton.clickExamBackButton();
 				let examNum = this.examNum;
 				let statusData = '';
@@ -535,7 +548,7 @@
 					taskId : this.exam.taskId,
 					examName : this.exam.examTitle,
 					examType : this.exam.examType,
-					progress : (1).toString(),
+					progress : this.exam.exerciseActiveIndex,
 					exerciseId : this.exam.exerciseId,
 					exerciseName : this.exam.exerciseTitle,
 				}
