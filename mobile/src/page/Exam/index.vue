@@ -7,7 +7,6 @@
 			<!-- <a class="exam-menu" href="javascript:;">菜单</a> -->
 		</div>
 
-				
 		<div class="exam-body">
 			<template v-if="exam.examBaseInfo.length">
 				<p>传过来的ids</p>
@@ -30,7 +29,7 @@
 				<li class="exam-button-li" v-if="isNoteAcBtn"><a href="javascript:;" class="exam-button-a">提问</a></li>
 			</ul>
 		</div>
-		<correctionExam v-if="correctionShow" :correction-data="correctionData"></correctionExam>
+		<correctionExam v-if="correctionShow" :correction-data="correctionData" @isShow="isCorrectionShow"></correctionExam>
 	</div>
 </template>
 <script>
@@ -104,7 +103,6 @@
 		},
 
 		created() {
-
 			// 删除做题记录
 			// Request.delMemberExercise({
 			// 	"memberId" : 'ff8080815133db0d0151375bfdf30c0d',
@@ -113,7 +111,7 @@
 			// }).then((res)=>{
 			// })
 			// return false;
-			let userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+			let userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 			if(!userInfo){
 				this.$router.push('/login');
 				return false;
@@ -160,9 +158,7 @@
 				examBackButton.clickExamBackButton();
 			},
 			examRequestCallback (examenInfo, status, baseInfo) {
-				// let examNeedIds = this.getLocalStorage('examNeedIds');
-				
-				let examNeedIds = JSON.parse(window.localStorage.getItem('examNeedIds'));
+				let examNeedIds = JSON.parse(this.webApi.getCookie('examNeedIds'));
 				this.examNeedIds = examNeedIds;
 				// examBackButton.clickExamBackButton();
 				let examNum = this.examNum;
@@ -539,9 +535,13 @@
 					taskId : this.exam.taskId,
 					examName : this.exam.examTitle,
 					examType : this.exam.examType,
-					porgress : this.exam.exerciseActiveIndex,
+					progress : (1).toString(),
 					exerciseId : this.exam.exerciseId,
+					exerciseName : this.exam.exerciseTitle,
 				}
+			},
+			isCorrectionShow (bool) {
+				this.correctionShow = bool;
 			},
 			getMemberErrorExerciseData (){
 				let errorexerciseids = '';
