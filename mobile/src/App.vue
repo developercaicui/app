@@ -1,9 +1,7 @@
 <template lang="html">
 
   <main class="v-wrap">
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+    <router-view></router-view>
   </main>
 
 </template>

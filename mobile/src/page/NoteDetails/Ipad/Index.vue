@@ -103,7 +103,7 @@ export default {
 
 		font-size: 0;
 		padding-top: $commTop;
-		background-color: #000;
+		background-color: #fff;
 
 		.pic-all{
 			margin-top: .5rem;

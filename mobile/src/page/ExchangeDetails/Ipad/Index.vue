@@ -3,7 +3,7 @@
 	<div class="exchange-wrap-ipad-details">
 
 		<header class="one-top">
-			<a @touchend.stop="closeMe">&#xe67f;</a>
+			<a href="javascript:;" @click.stop="closeMe">&#xe67f;</a>
 			<h1 ref="reply">讨论详情（未回复）</h1>
 			<div class="state-edit">
 				<a href="javascript:;"></a>
@@ -126,17 +126,15 @@ export default {
 			isRemoveMsg: false, // 是否可以删除当前留言。默认可以
 			isShowList: false, // 是否显示大图列表
 			picList: [], // 图片列表
-			dataParams: {}
+			dataParams: {},
     }
   },
 
-	created() {
+	mounted() {
 
 		this.dataParams = JSON.parse(this.$route.params.data || {});
-
+		
 		this.getDetails(this.dataParams.id);
-
-
 
 	},
 
