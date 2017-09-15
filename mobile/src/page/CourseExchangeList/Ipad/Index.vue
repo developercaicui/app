@@ -101,16 +101,11 @@ export default {
 	    }
 	},
 	beforecreate(){
-        	this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
-		
+    this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
 	},
-	created() {
-		
-		
-
+	created(){
 		this.getDate(1,0);
 		this.getDate(1,1);
-
 	},
 
 	updated() {
@@ -242,32 +237,33 @@ export default {
 		// 打开详情
 		answerDetail(item) {
 
-			this.webApi.loadingData();
-
-			getExchangeDetails({
-				token: this.webApi.getCookie('token'),
-				id: item.id,
-				pageNo: 1,
-				pageSize: 20,
-			})
-
-			.then(res =>{
-
-				this.webApi.closeLoadingData();
-
-				if(!res || res.state != 'success'){
-					this.webApi.alert('打开详情失败，请稍后再试');
-					return false;
-				}
+			// this.webApi.loadingData();
+			//
+			// getExchangeDetails({
+			// 	token: this.webApi.getCookie('token'),
+			// 	id: item.id,
+			// 	pageNo: 1,
+			// 	pageSize: 20,
+			// })
+			//
+			// .then(res =>{
+			//
+			// 	this.webApi.closeLoadingData();
+			//
+			// 	if(!res || res.state != 'success'){
+			// 		this.webApi.alert('打开详情失败，请稍后再试');
+			// 		return false;
+			// 	}
 
 				this.$router.push({
-					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
+					path: `/exchange/details/${encodeURIComponent(JSON.stringify({ id: item.id}))}`,
 				});
+
 				// this.$router.push({
 				// 	path: `details/${encodeURIComponent(JSON.stringify(res.data))}`,
 				// });
 
-			})
+			// })
 		},
 		setBackground(url) {
 			return `background-image:url(${this.getImgPath(url)})`

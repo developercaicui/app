@@ -3,7 +3,7 @@
 	<div class="exchange-wrap-ipad-details">
 
 		<header class="one-top">
-			<a @touchend.stop="closeMe">&#xe67f;</a>
+			<a href="javascript:;" @click.stop="closeMe">&#xe67f;</a>
 			<h1 ref="reply">讨论详情（未回复）</h1>
 			<div class="state-edit">
 				<a href="javascript:;"></a>
@@ -131,13 +131,11 @@ export default {
     }
   },
 
-	created() {
+	mounted() {
 
 		this.dataParams = JSON.parse(this.$route.params.data || {});
 
 		this.getDetails(this.dataParams.id);
-
-
 
 	},
 
@@ -326,7 +324,7 @@ console.log(JSON.stringify(data))
         		videoBtn.clickToPlayVido(JSON.stringify(data));
 
         	}
-        	
+
         },
 
     setListData(list) {

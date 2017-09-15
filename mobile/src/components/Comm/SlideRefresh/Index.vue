@@ -5,7 +5,7 @@
 		<slot name="top">
 			<div class="slide">
 				<span class="text" v-show="topStatus !== 'loading'">{{ topText }}</span>
-				<mt-spinner type="snake" color="#3CC6B3" v-show="topStatus === 'loading'"></mt-spinner>
+				<mt-spinner type="snake" color="#FF366D" v-show="topStatus === 'loading'"></mt-spinner>
 			</div>
 		</slot>
 
@@ -53,6 +53,8 @@ export default {
 			contentHeight: 0,
 			topText: '', // 文字提示
 			topStatus: '', // 状态
+			bottomText: '', // 文字提示
+			bottomStatus: '', // 状态
 			isDirection: '',
 			moveY: 0,
 			startTime: new Date().getTime(),
@@ -76,11 +78,18 @@ export default {
 
 		},
 
+		bottomStatus(val) {
+
+		},
+
 		topStatus(val) {
 
 			this.$emit('top-status-change', val);
 
+			console.log(val);
+
 			switch (val) {
+
 				case 'pull':
 					this.topText = this.topPullText;
 					break;
@@ -166,7 +175,7 @@ export default {
 					});
 
 					if(moveY < 50) this.topStatus = 'pull';
-					if(moveY > this.isDirection) this.topStatus = 'drop';
+					if(moveY > 60) this.topStatus = 'drop';
 
 
 					this.isDirection = 'top';
@@ -237,13 +246,16 @@ export default {
 
  @import '../../../assets/style/mixin';
 
+	.slide-refresh-wrap{
+		@include wh(100%, 100%);
+	}
+
 	.slide-refresh-content{
 		position: relative;
 		background-color: #fff;
 		height:auto;
 		overflow-y:auto;
 		z-index: 9;
-
 	}
 
  .slide{
