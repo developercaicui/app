@@ -2,7 +2,7 @@
 
 	<div class="pic-list-wrap">
 		<header>
-			<a href="javascript:;" class="back" @touchend.stop="handleCloseBigShow">&#xe669;</a>
+			<a href="javascript:;" class="back" @click.stop="handleCloseBigShow">&#xe669;</a>
 			<span ref="listInfo"></span>
 			<!-- <a href="javascript:;">&#xe60f;</a> -->
 	  </header>
