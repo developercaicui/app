@@ -35,7 +35,10 @@ export default {
 
 
 	props: {
-	 'exchange-data': [Object]
+	 'exchangeData': {
+		 type: Object,
+		 default: {}
+	 }
  },
 
 
@@ -106,8 +109,6 @@ export default {
 
 	@import "../../../assets/style/mixin";
 
-	$green: #12B697;
-
 	.exchange-wrap-ipad{
 
 		font-size: 0;
@@ -147,32 +148,31 @@ export default {
 			}
 		}
 
-
-
-
 	.one-top{
+		@include wh(100%, $commTopHeight + 1.04 + rem);
 		position: relative;
-		@include wh(100%, 1.05rem);
 		border-bottom: 1px solid #B9B9B9;
-		background-color: #f5f5f5;
+		padding-top: .1rem;
+		background-color: $commTopBack;
 		a{
 			@extend .ab;
-			@include fc(.28rem, $green);
+			@include fc($headFont, $commPink);
 			left: .38rem; padding-left: .45rem;
 			top: 50%; transform: translateY(-50%);
+			margin-top: .1rem;
 			&:after{
 				content: '\e669';
 				font-family: 'iconfont';
 				@extend .ab;
-				@include fc(.35rem, $green);
+				@include fc($headIconFont, $commPink);
 				@extend .show;
-				left: 0; top: .05rem;
+				left: -.08rem; top: -.02rem;
 				transform: rotate(-90deg);
 			}
 		}
 		h1{
 			@extend .flexCenter;
-		  @include fc(.3rem, #1D1D1D);
+		  @include fc($headH1Font, #1D1D1D);
 			height: inherit;
 		}
 		.type-list{

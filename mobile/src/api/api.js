@@ -70,7 +70,7 @@ export default {
 
     let designWidth = deviceType === 'mobile' ? 750 : 2048;
 
-    if(deviceType === 'ipad' && screenWidth*dpr < 2048/3*2 ) designWidth = 1024;
+    if(deviceType === 'ipad' && screenWidth*dpr < 2048/3*2 ) designWidth = 1524;
 
     let initialRem = designWidth / 100;  // 换算基准值   (设计稿尺寸)/100(固定值)
 
@@ -256,6 +256,35 @@ export default {
     */
    closeLoadingData() {
      document.body.removeChild(document.querySelector('#dataLoading'));
+   },
+   /**
+    * PC端时间计算为例
+    */
+   stringData($_data) {
+      $_data = parseInt($_data);
+       var $_return_string = '1分钟前';
+       var $_timestamp=parseInt(new Date().getTime()/1000);
+       var $_reste = $_timestamp - $_data;
+       if($_reste<0){
+         $_reste = 1;
+       }
+       // if($_reste<60){
+       //     $_return_string = $_reste+'秒前';
+       // }else
+       // if($_reste>=60 && $_reste <3600){
+       if($_reste <3600){
+           $_return_string = Math.ceil($_reste/60)+'分钟前';
+       }else if($_reste>=3600 && $_reste <(3600*24)){
+           $_return_string = Math.ceil($_reste/3600)+'小时前';
+       }else if($_reste>=(3600*24) && $_reste <(3600*24*30)){
+           $_return_string = Math.ceil($_reste/(3600*24))+'天前';
+       }else if($_reste>=(3600*24*30) && $_reste <(3600*24*30*12)){
+           $_return_string = Math.ceil($_reste/(3600*24*30))+'月前';
+       }else{
+           $_return_string = Math.ceil(parseInt($_reste/(3600*24*30*12)))+'年前';
+       }
+       return $_return_string;
+
    },
   // cdn 地址
   cdnImgUrl: 'http://cdnimg.caicui.com/',

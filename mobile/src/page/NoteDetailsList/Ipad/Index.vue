@@ -32,7 +32,10 @@
 export default {
 
 	props: {
-		'details-list': [Array],
+		'details-list': {
+			type: Array,
+			default: []
+		},
 	},
 
   data() {
@@ -87,6 +90,8 @@ export default {
 	.node-detailslist-wrap-ipad{
 
 		font-size: 0;
+		padding-top: $commTop;
+		background-color: #fff;
 
 		.one-top{
 			position: relative;
@@ -97,19 +102,19 @@ export default {
 				@extend .ab;
 				left: .3rem; padding-left: .45rem;
 				top: 50%; transform: translateY(-50%);
-				@include fc(.26rem, $green);
+				@include fc($headFont, $commPink);
 				&:before{
 					content: '\e669';
-					@include fc(.3rem, #a5a5a5);
+					@include fc($commBackFont, $commPink);
 					@extend .ab;
 					font-family: 'iconfont';
-					transform: translate3d(-.32rem,.02rem,0);
+					transform: translate3d(-.54rem, -.1rem, 0);
 				}
 			}
 
 			h1{
 				@extend .flexCenter;
-				@include fc(.3rem, #1D1D1D);
+				@include fc($headH1Font, #1D1D1D);
 				height: inherit;
 			}
 
@@ -119,7 +124,7 @@ export default {
 
 		.list{
 
-			@include fc(.24rem, #333);
+			@include fc(.26rem, #333);
 			padding: .35rem .5rem; line-height: 1;
 			border-bottom: 1px solid #E2E2E2;
 
@@ -127,10 +132,10 @@ export default {
 				color: #333;
 			}
 			p{
-				@include fc(.24rem, #acacac);
+				@include fc(.26rem, #acacac);
 			}
 			h1{
-				font-size: .24rem;
+				font-size: .26rem;
 				margin: .25rem 0;
 			}
 			time{
@@ -148,8 +153,7 @@ export default {
 			 right: .35rem; top: 50%; transform: translateY(-50%);
 			 font-family: 'iconfont';
 			 a{
-				 color: $green;
-				 font-size: .26rem;
+			 	 @include fc($headFont, $commPink);
 			 }
 	  }
 

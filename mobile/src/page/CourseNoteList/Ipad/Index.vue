@@ -129,8 +129,7 @@ export default {
 	},
 
 	created() {
-    //获取课程信息
-    this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
+    
     //获取全部笔记列表
 		this.getAllNote();
     //获取我的笔记列表
@@ -239,13 +238,16 @@ export default {
 
                 return false;
           }
+          //获取课程信息
+          this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
+
           let param = {};
           param.self = 0;
-          param.courseid= this.courseInfo.courseId;
-          param.categoryId= this.courseInfo.categoryId;
-          param.subjectId= this.courseInfo.subjectId;
+          // param.courseid= this.courseInfo.courseId;
+          // param.categoryId= this.courseInfo.categoryId;
+          // param.subjectId= this.courseInfo.subjectId;
           // 
-          // param.courseid= "ff8080814f1c162a014f1f7c34a91317";
+          param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
 
@@ -285,13 +287,16 @@ export default {
 
               	return false;
         	}
+          //获取课程信息
+          this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
+
         	let param = {};
 	        param.self = 1;
 	        param.courseid= this.courseInfo.courseId;
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
           // 
-          // param.courseid= "ff8080814f1c162a014f1f7c34a91317";
+          param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
 	        param.token = this.webApi.getCookie('token');
@@ -306,7 +311,7 @@ export default {
 
     		          this.webApi.closeLoadingData();
 
-    		          	this.sectionList = res.data.filter(item => item.courseId == 'ff8080814f1c162a014f1f7c34a91317');
+    		          	this.sectionList = res.data.filter(item => item.courseId == 'ff8080814dad5062014db32051b801a2');
 
     		      }
 
@@ -398,8 +403,8 @@ export default {
   display: inline-block;
   text-align: center;
   padding: 0 0.5rem;
-  border: 1px solid #00a185;
-  background: #00a185;
+  border: 1px solid #ff366d;
+  background: #ff366d;
   color: #fff;
   margin: auto 0.2rem;
 }
@@ -414,7 +419,7 @@ export default {
   text-indent: 0.05rem;
 }
 .btn.btn-o {
-  color: #00a185;
+  color: #ff366d;
   background: none;
 }
 .btn-group {
@@ -446,11 +451,11 @@ export default {
   border-right: 0;
 }
 .btn-group.btn-success .btn {
-  color: #00a185;
-  border: 1px solid #00a185;
+  color: #ff366d;
+  border: 1px solid #ff366d;
 }
 .btn-group.btn-success .btn.active {
-  background: #00a185;
+  background: #ff366d;
 }
 .s-head {
   background: #fff;
@@ -474,7 +479,7 @@ export default {
 .header .left,
 .s-head .right,
 .header .right {
-  color: #00a185;
+  color: #ff366d;
   font-size: 0.28rem;
 }
 .s-head .left .red,
@@ -570,8 +575,8 @@ export default {
   white-space: nowrap;
 }
 .header-nav li.active {
-  color: #00a185;
-  border-bottom: 3px solid #00a185;
+  color: #ff366d;
+  border-bottom: 3px solid #ff366d;
 }
 .search-bar {
   display: none;
@@ -614,7 +619,7 @@ select {
   border: 1px solid #eee;
   display: block;
   margin: 0.2rem 0;
-  color: #00a185;
+  color: #ff366d;
   outline: none;
   -webkit-appearance: none !important;
 }
@@ -740,10 +745,10 @@ select {
   margin-left: 0.2rem;
 }
 .cont-list dd .add-answer[isadd="no"] {
-  color: #00a185;
+  color: #ff366d;
 }
 .cont-list dd .add-answer i {
-  background: #00a185;
+  background: #ff366d;
   padding: 0 0.3rem;
   border-radius: 0.3rem;
   color: #fff;

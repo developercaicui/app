@@ -39,6 +39,12 @@ import $ from 'jquery';
 import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 
 export default {
+  props: {
+      correctionData: {
+          type: Object,
+          default: {}
+      }
+  },
 
 	data() {
 	    return {
@@ -51,57 +57,8 @@ export default {
 	},
 
 	created() {
-    // 试卷类型数据
-    this.data = {
-      "task_info_detail": {
-          "courseId": "ff8080814dad5062014dadd9c70d0053",
-          "courseName": "ACCA F2 Management Accounting",
-          "chapterId": "ff8080814dad5062014dadd9c739005a",
-          "chapterName": "Chapter 1 The Nature, Source and Purpose of Management Accounting",
-          "knowledgePointId": null,
-          "progress": 3,
-          "taskInfo": {
-              "id": "8a22ecb55340689101534f0199100058",
-              "taskId": "8a22ecb5559bad0501559fe5d3d8003b",
-              "title": "ACCA F2 Management Accounting-CH1章节测评",
-              "taskType": "exam",
-              "taskLevel": null,
-              "express": null,
-              "totalCount": 10,
-              "difficulty": "简单",
-              "examenType": "chapter",
-              "examUrl": "/exam/examination/examinationTask/8a22ecb55340689101534f0199100058"
-          }
-      },
-      "exam_id": {
-          "title": "Which one of the followings is not a level of decision making in an&nbsp;organization?<br />\r\n<div>\r\n\t<br />\r\n</div>",
-          "id": "ff8080814c4f2e9f014c5f189a42013d",
-          "background": null,
-          "context": "[{\"title\":\"Management\",\"isChecked\":false},{\"title\":\"Operational\",\"isChecked\":false},{\"title\":\"Board\",\"isChecked\":true},{\"title\":\"Strategic\",\"isChecked\":false}]",
-          "sn": 2150,
-          "questionTypes": "radio",
-          "source": "中博练习册",
-          "answerResolution": "Strategic, operational and management are the three levels of decision<br />\r\nmaking in an organization.<br />\r\n&nbsp;<br />"
-      }
-    }
-
     
-    //知识点练习类型数据
-    // this.data = {
-    //   "task_info_detail":{
-    //     "courseId":"8a22ecb5545a87e801545af5048c0006",
-    //     "courseName":"CMA Part I 中文 基础课",
-    //     "chapterId":"8a22ecb55b1ec7e9015b228f54e00031","chapterName":"知识点1 战略规划概述","knowledgePointId":"8a22ecb55aa7aa10015ac65817840a36",
-    //     "progress": 30,
-    //     "taskInfo":{
-    //         "id":"91e6a108c22e0e440e9f3ad3b106042a","taskId":"91e6a108c22e0e440e9f3ad3b106042a","title":"知识点练习","taskType":"knowledgePointExercise","taskLevel":"core","express":null
-    //     }
-    //   },
-    //   "data_exercise_id":"915dbd195dcf27db11ce264653e87d45",
-    //   "exam_info":{
-    //     "id":"915dbd195dcf27db11ce264653e87d45","createDate":1500634013000,"modifyDate":1500634013000,"accuracy":0,"answerResolution":"职能战略增强了组织的竞争战略。","background":null,"context":"[{\"title\":\"它用财务和非财务指标确定组织的价值。\",\"isChecked\":false,\"myChecked\":false},{\"title\":\"它强化组织的竞争战略。\",\"isChecked\":true,\"myChecked\":false},{\"title\":\"它决定如何根据组织业务进行资源分配。\",\"isChecked\":false,\"myChecked\":true},{\"title\":\"它聚焦于分辨和培育关键资源。\",\"isChecked\":false,\"myChecked\":false}]","exerciseState":"publish","questionTypes":"radio","sn":10466,"title":"以下涉及职能战略的哪项内容是正确的？","difficultyId":"ff8080814a7a4010014a7a715a7d00b8","sourceId":"ff8080814f1c162a014f200204971459","versionId":"ff8080814f1c162a014f200e6b482543","fileName":null,"sheetName":null,"nid":18938
-    //   }
-    // }
+    console.log(this.correctionData)
 
 		getUserInfo({'token':this.webApi.getCookie('token')})
 
@@ -136,7 +93,7 @@ export default {
 
 	methods: {
 		    closeIndex() {
-          this.isShow = !this.isShow;
+          
         },
       	//投诉类型
       	selecType(ev) {

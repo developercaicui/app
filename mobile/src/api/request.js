@@ -5,6 +5,7 @@ import  API from './api';
 import COMMON from './common';
 
 axios.defaults.timeout = 0;
+
 axios.defaults.headers.post['Content-Type'] = 'application/x-www-form-urlencoded;charset=UTF-8';
 
 // axios.interceptors.request.use((config) => {

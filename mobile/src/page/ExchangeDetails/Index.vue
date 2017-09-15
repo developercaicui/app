@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" :user-info="userInfo" @upload-pic="uploadPic" @reply="reply" @remove-details="removeDetails"></Ipad>
+		<Ipad v-if="isIpad" :userInfo="userInfo" @upload-pic="uploadPic" @reply="reply" @remove-details="removeDetails"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
@@ -11,7 +11,11 @@
 
 import Ipad from './Ipad';
 import Mobile from './Mobile';
-import { removeExchangeDetails, exchangeReply, fileUpload } from '../../api/port'
+import {
+	removeExchangeDetails,
+	exchangeReply,
+	fileUpload,
+} from '../../api/port'
 
 export default {
 
@@ -25,6 +29,7 @@ export default {
 			isIpad: false,
       isMobile: false,
 			userInfo: {},
+			detailsData: {},
     }
   },
 
@@ -33,7 +38,7 @@ export default {
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
-		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
+		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {});
 
 	},
 

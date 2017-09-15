@@ -1,5 +1,5 @@
 <template lang="html">
-	<div class="set-info-modal" v-if="isShow">
+	<main class="set-info-modal" v-if="isShow">
 		<div class="backdrop"></div>
 	      <div id="mask0" class="modal">
 	        <div @click="guanbi" class="set_tit">设置<i class="icon-close icon-guanbi">&#xe642;</i></div>
@@ -96,7 +96,7 @@
 	          <!--li,onclick = 'openurl("http://www.caicui.com/")')-->
 	          <!--    span 官方网站-->
 	          <li @click="togWx"><span>微信公众号</span></li>
-	          <li onclick="openurl(&quot;http://weibo.com/icaicui&quot;)"><span>官方微博</span></li>
+	          <li @click="openurl('http://weibo.com/icaicui')"><span>官方微博</span></li>
 	          <li onclick="update()" class="update none"><span>在线升级</span></li>
 	          <li onclick="praise()" class="none"><span>给财萃课堂好评</span></li>
 	        </ul>
@@ -124,7 +124,7 @@
             v-model="pickerValue" @confirm="handleConfirm">
           </mt-datetime-picker>
         </template>
-	</div>
+	</main>
 
 </template>
 
@@ -146,8 +146,7 @@ export default {
 
 	created() {
 
-    this.body.setAttribute("style","rgba(0,0,0,0)")
-
+    this.body.setAttribute("style","background:transparent")
     this.body.setAttribute("show","index")
 
 		getUserInfo({'token':this.webApi.getCookie('token')})
@@ -180,8 +179,10 @@ export default {
   	},
 
 	methods: {
-		modify() {
-          alert("打开基本信息页")
+		modify() {//打开基本信息页
+          this.$router.push({
+            path: `/editMeInfo`,
+          });
       	},
       	//投诉类型
       	selecType(ev) {
@@ -222,6 +223,11 @@ export default {
           this.$refs.erweima.classList.toggle('xswx')
 
       	},
+        openurl(url) {//打开微博
+
+            g.passWeiBoUrl(url);
+            
+        },
       	//退出登录
       	logout() {
 
@@ -239,17 +245,19 @@ export default {
         },
       	out() {//退出登录
 
+          g.outLogin();
+
       		loginout({"token":this.webApi.getCookie('token')})
 
       		.then(res =>{
 
-	            set.clickLoginLaunch("out")
+	            
 
 	        })
       	},
         guanbi() {//关闭设置页
 
-           set.clickSetBack("lll");
+           g.closeSetting();
 
         },
         setTime() {//选择时间提醒
@@ -447,6 +455,7 @@ export default {
   background: rgba(0,0,0,0.3);
   z-index: 2;
 }
+
 .backdrop.opacity {
   background: rgba(0,0,0,0);
 }
@@ -498,6 +507,7 @@ body[show='about'] #mask2 {
   width: 100%;
   height: 100%;
   overflow: hidden;
+  background: transparent;
 }
 .modal {
   width: 13rem;
@@ -550,7 +560,7 @@ body[show='about'] #mask2 {
   color: #494949;
 }
 .modal ul li .icon-check {
-  color: #01a185;
+  color: #ff366d;
   font-size: 0.4rem;
   display: none;
 }
@@ -582,7 +592,7 @@ body[show='about'] #mask2 {
   box-shadow: 1px 1px #c0c0bc;
 }
 .modal .public_box {
-  background: #00a185;
+  background: #ff366d;
 }
 .modal .public_box::before {
   left: 0.02rem;
@@ -616,7 +626,7 @@ body[show='about'] #mask2 {
   position: absolute;
   top: 0.27rem;
   left: 0.32rem;
-  color: #00a085;
+  color: #ff366d;
   font-weight: bold;
   font-size: 0.4rem;
 }
@@ -677,7 +687,7 @@ body[show='about'] #mask2 {
   width: 50%;
   float: left;
   text-align: center;
-  color: #00a085;
+  color: #ff366d;
 }
 .modal textarea {
   min-height: 2.5rem;
@@ -712,7 +722,7 @@ body[show='about'] #mask2 {
   text-align: center;
   line-height: 0.55rem;
   font-size: 0.32rem;
-  color: #00a085;
+  color: #ff366d;
 }
 .erweima .about_words {
   text-align: center;
@@ -791,5 +801,13 @@ background-color: #F5A623
   font-size: 12px;
   margin-left: 10px;
   background-color: #fff
+}
+html {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+}
+html.transparent{
+  background: #000;
 }
 </style>

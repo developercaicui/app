@@ -26,7 +26,7 @@
 
 		</main>
 
-		<photoAlbum :pic-list="picList" v-show="isShowList" @closeBigPic="closeBigPic"></photoAlbum>
+		<photoAlbum :picList="picList" v-show="isShowList" @closeBigPic="closeBigPic"></photoAlbum>
 
 	</div>
 
@@ -99,11 +99,11 @@ export default {
 
 	@import "../../../assets/style/mixin";
 
-	$green: #46C1AA;
-
 	.node-wrap-ipad-details{
 
 		font-size: 0;
+		padding-top: $commTop;
+		background-color: #fff;
 
 		.pic-all{
 			margin-top: .5rem;
@@ -126,13 +126,13 @@ export default {
 
 		.list{
 
-			@include fc(.24rem, #333);
+			@include fc(.26rem, #333);
 			padding: .35rem .5rem; line-height: 1;
 			border-bottom: 1px solid #E2E2E2;
 
 
 			h1{
-				color: #acacac; font-size: .26rem;
+				color: #acacac;
 				margin-bottom: .25rem;
 			}
 			time{
@@ -156,13 +156,13 @@ export default {
 			right: .35rem; top: 50%; transform: translateY(-50%);
 			font-family: 'iconfont';
 			a{
-				color: $green;
+				color: $commPink;
 				&:nth-of-type(1){
-					font-size: .38rem;
+					font-size: $headIconFont;
 					margin-right: .3rem;
 				}
 				&:nth-of-type(2){
-					font-size: .42rem;
+					font-size: .45rem;
 				}
 			}
 		}
@@ -175,15 +175,15 @@ export default {
 			background-color: #fff;
 			> a{
 				@extend .ab;
-				@include fc(.46rem, $green);
+				@include fc($commBackFont, $commPink);
 				font-family: 'iconfont';
-				left: .38rem; padding-left: .45rem;
+				left: .38rem; padding-left: .1rem;
 				top: 50%; transform: translateY(-50%);
 			}
 
 			h1{
 				@extend .flexCenter;
-			  @include fc(.3rem, #1D1D1D);
+			  @include fc($headH1Font, #1D1D1D);
 				height: inherit;
 			}
 

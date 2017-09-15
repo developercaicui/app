@@ -3,7 +3,7 @@
 	<div class="exchange-wrap-ipad-details">
 
 		<header class="one-top">
-			<a @touchend.stop="closeMe">&#xe67f;</a>
+			<a href="javascript:;" @click.stop="closeMe">&#xe67f;</a>
 			<h1 ref="reply">讨论详情（未回复）</h1>
 			<div class="state-edit">
 				<a href="javascript:;"></a>
@@ -35,7 +35,7 @@
               <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ data.replyCount ? data.replyCount : 0 }}</span></div>
               <div class="time"><span>{{ data.updateTime }}</span></div>
               <div class="course-name">
-                <div class="tag-video-time" v-if="data.taskprogress"><i class="icon-play-o"></i><span>{{ data.taskprogress }}</span></div>
+                <div class="tag-video-time" @click="jump_task(data)" v-if="data.taskprogress"><i class="icon-play-o"></i><span>{{ data.taskprogress }}</span></div>
                 <span class="course-tit" v-if="data.coursename">{{ data.coursename }}</span>
               </div>
             </div>
@@ -95,12 +95,18 @@
 <script>
 
 import photoAlbum from '../../../components/Comm/photoAlbum';
-import { removeExchangeDetails } from '../../../api/port';
+import {
+  removeExchangeDetails,
+  getExchangeDetails
+} from '../../../api/port';
 
 export default {
 
 	props: {
-		'user-info': [Object]
+		userInfo: {
+			type: Object,
+			default: {}
+		},
 	},
 
 	components: {
@@ -109,7 +115,7 @@ export default {
 
   data() {
     return {
-			data: [],
+			data: {},
       replys: [],
 			isFileOpen: false, // 是否打开上传图片
 			allUploadPic: [], // 所有上传的图片
@@ -120,29 +126,66 @@ export default {
 			isRemoveMsg: false, // 是否可以删除当前留言。默认可以
 			isShowList: false, // 是否显示大图列表
 			picList: [], // 图片列表
+			progress: 0,
+			dataParams: {}
     }
   },
 
 	mounted() {
 
-		this.data = JSON.parse(this.$route.params.data);
+		this.dataParams = JSON.parse(this.$route.params.data || {});
 
-		this.picList = this.data.imgPath.split(',').map(item => `${this.webApi.cdnImgUrl}${item}`);
-
-		this.isRemoveMsg = this.userInfo.memberId === this.data.memberId ? true : false;
-
-		this.replys = this.data.replys;
-
-	  if(!this.webApi.isEmpty(this.replys) && this.replys.length>0) this.$refs.reply.innerHTML = '交流详情 (已回复)';
-
-    this.setListData(this.data)
-
-		this.setReplysData(this.replys)
-
+		this.getDetails(this.dataParams.id);
 
 	},
 
   methods: {
+
+		// 获取笔记详情
+		getDetails(id) {
+
+			this.webApi.loadingData();
+
+			getExchangeDetails({
+				verTT: new Date().getTime(),
+				token: this.userInfo.token,
+				id: id,
+				pageNo: 1,
+				pageSize: 20,
+			})
+
+			.then(res =>{
+
+				this.webApi.closeLoadingData();
+
+				if(!res || res.state != 'success'){
+					this.webApi.alert('详情获取失败，请稍后再试');
+					return false;
+				}
+
+				this.data = res.data;
+
+				this.dataInit();
+			});
+
+		},
+
+		dataInit() {
+
+			this.picList = this.data.imgPath.split(',').map(item => `${this.webApi.cdnImgUrl}${item}`);
+
+			this.isRemoveMsg = this.userInfo.memberId === this.data.memberId ? true : false;
+
+			this.replys = this.data.replys;
+
+		  if(!this.webApi.isEmpty(this.replys) && this.replys.length>0) this.$refs.reply.innerHTML = '交流详情 (已回复)';
+
+	    this.setListData(this.data)
+
+			this.setReplysData(this.replys)
+
+		},
+
 
 		// 删除详情
 		removeDetails() {
@@ -234,7 +277,6 @@ export default {
 
 		},
 
-
 		// 触发上传
 		handleUploadBtn() {
 			this.$refs.iptFile.click();
@@ -257,6 +299,7 @@ export default {
 			this.$router.go(-1);
 		},
         setListData(list) {
+        	this.taskprogress = list.taskprogress;
           	list.headImg = `${this.webApi.cdnImgUrl}${list.headImg}`;
           	list.title = `${list.bbstype=='0'?"【讨论】":"【问答】"}${list.title}`;
           	list.imgPath = `${this.webApi.isEmpty(list.imgPath)?'':list.imgPath}`;
@@ -272,9 +315,21 @@ export default {
               item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' ' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
           });
         },
+        jump_task(data) {//点击跳转任务（播放视频）
+
+        	if(data.taskType == "video"){
+
+        		data.taskprogress = this.taskprogress;
+        		console.log(JSON.stringify(data))
+        		g.clickToPlayVido(JSON.stringify(data))       		
+
+        	}
+
+        },
 		setBackground(url) {
 			return `background-image:url(${this.getImgPath(url)})`
 		},
+
 		setImgPath(imgPaths) {
 			let imgPath=imgPaths.split(',');
 			let imgPathArr=[];
@@ -285,6 +340,7 @@ export default {
             }
             return imgPathArr;
 		},
+
 		getImgPath(imgPath) {//处理图片路径
 			if(imgPath.length>0){
 				  if(imgPath.substr(0,4)!="http"){
@@ -296,6 +352,7 @@ export default {
 			 	return imgPath;
 			 }
 		},
+
     getreolyImg(html) {
      //创建一个div
        let divHtml = document.createElement("div");
@@ -320,11 +377,11 @@ export default {
 
 	@import "../../../assets/style/mixin";
 
-	$green: #46C1AA;
-
 	.exchange-wrap-ipad-details{
 
 		font-size: 0;
+		padding-top: $commTop;
+		background-color: $commTopWhite;
 
 		// 底部留言
 		.leave-msg{
@@ -352,7 +409,7 @@ export default {
 						@include fc(.24rem, #fff);
 						@extend .borderBox;
 						text-align: center; line-height: 1.5;
-						background-color: $green;
+						background-color: $commPink;
 						top: -.1rem;
 						transform: translate3d(-.26rem,0,0);
 						border-radius: 100%;
@@ -386,20 +443,20 @@ export default {
 			}
 
 			.nav{
+
 				height: 1.02rem;
+
 				input{
 					@extend .ab;
 					@include wh(17.6rem, .5rem);
 					@include fc(.24rem, #999);
 					@extend .borderBox;
 					top: .25rem; left: 1.2rem;
-					border: 1px solid #F1F1F1;
+					border: 1px solid #e0e0e0;
 					border-radius: 3px;
 					padding: 0 .2rem;
-					&::placeholder{
-						color: #999;
-					}
 				}
+
 			}
 			.add-msg{
 				@include wh(1.1rem, .5rem);
@@ -408,11 +465,11 @@ export default {
 				@extend .ab;
 				right: .3rem; top: .25rem;
 				border-radius: 3px;
-				background-color: #46C1AA;
+				background-color: $commPink;
 			}
 			.upload-pic-btn{
 				@extend .ab;
-				@include fc(.5rem, $green);
+				@include fc(.5rem, $commPink);
 				top: .23rem; left: .3rem;
 				font-family: 'iconfont';
 			}
@@ -471,13 +528,13 @@ export default {
 			right: .35rem; top: 50%; transform: translateY(-50%);
 			font-family: 'iconfont';
 			a{
-				color: $green;
+				color: $commPink;
 				&:nth-of-type(1){
 					font-size: .38rem;
 					margin-right: .3rem;
 				}
 				&:nth-of-type(2){
-					font-size: .42rem;
+					font-size: $headIconFont;
 				}
 			}
 		}
@@ -490,15 +547,15 @@ export default {
 		background-color: #fff;
 		> a{
 			@extend .ab;
-			@include fc(.46rem, $green);
+			@include fc($commBackFont, $commPink);
 			font-family: 'iconfont';
-			left: .38rem; padding-left: .45rem;
+			left: .3rem; padding-left: .3rem;
 			top: 50%; transform: translateY(-50%);
 		}
 
 		h1{
 			@extend .flexCenter;
-		  @include fc(.3rem, #1D1D1D);
+		  @include fc($headH1Font, #1D1D1D);
 			height: inherit;
 		}
 		.type-list{
@@ -787,7 +844,7 @@ export default {
   color: #00a185;
 }
 .cont-list dd .add-answer i {
-  background: #00a185;
+  background-color: $commPink;
   padding: 0 0.3rem;
   border-radius: 0.3rem;
   color: #fff;

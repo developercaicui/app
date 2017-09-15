@@ -1,7 +1,6 @@
 <template lang="html">
 
-	<div class="comm-reg-wrap" ref="dataHtml">
-	</div>
+	<div class="comm-reg-wrap"></div>
 
 
 </template>
@@ -22,7 +21,15 @@ export default {
 	    }
 	  },
 
-		mounted() {
+		watch: {
+
+	    '$route' (to, from) {
+
+		  }
+
+	  },
+		
+		created() {
 
 			this.data = {
 

@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import App from './App';
 import VueRouter from 'vue-router';
-import {Spinner, DatetimePicker } from 'mint-ui';
+import {Spinner, DatetimePicker, InfiniteScroll } from 'mint-ui';
 
 
 
@@ -11,6 +11,7 @@ import webApi from './api/api';
 
 
 Vue.use(VueRouter);
+Vue.use(InfiniteScroll);
 
 Vue.component(Spinner.name, Spinner); // loading
 Vue.component(DatetimePicker.name, DatetimePicker);//时间选择器

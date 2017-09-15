@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" :selected-data="selectedData"></Ipad>
+		<Ipad v-if="isIpad" :selectedData="selectedData"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 

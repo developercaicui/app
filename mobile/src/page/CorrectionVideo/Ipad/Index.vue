@@ -69,8 +69,6 @@ export default {
 
     this.task_info_detail = this.$route.query;
 
-    this.webApi.alert(JSON.stringify(this.task_info_detail))
-    
 		getUserInfo({'token':this.webApi.getCookie('token')})
 
 		.then(res =>{
@@ -100,7 +98,7 @@ export default {
 
 	methods: {
 		    closeIndex() {
-          this.isShow = !this.isShow;
+           g.hiddenJiuCuoView();
         },
       	//投诉类型
       	selecType(ev) {
@@ -108,11 +106,15 @@ export default {
       	},
       	sub() {
           let content = $.trim($('textarea[name=content]').val());
+          let mobile = $.trim($('.pop-input-tel').val());
           if (content == '') {
               this.webApi.alert('意见内容不能为空');
               return false;
           }
-
+          if (mobile == '') {
+              this.webApi.alert('联系方式不能为空');
+              return false;
+          }
           let task_info_detail = this.task_info_detail;
           let nameJson = {
             "courseName" : task_info_detail.courseName,
@@ -143,36 +145,33 @@ export default {
           param.deviceDesc = systype;//设备描述
 
           this.webApi.loadingData();
+//关闭此页面
+                      
+console.log(JSON.stringify(param))
+          complaintOpinion(param)
 
-          if (this.is_ok) {
-
-              this.is_ok = false;
-
-              complaintOpinion(param)
-
-              .then(res =>{
-
-                 this.webApi.closeLoadingData();
-
-               if (res && res.state == 'success') {
-
-                      this.webApi.alert('发表成功');
-
-                      setTimeout(function () {
-
-                          //关闭此页面
+          .then(res =>{
 
 
-                      }, 600);
+             this.webApi.closeLoadingData();
 
-                  } else {
-                      this.is_ok = true;
-                      // this.webApi.alert('发表失败，请重试！');
-                      this.webApi.alert(res.msg);
-                  }
+              if (res && res.state == 'success') {
 
-              })
-          }
+                  this.webApi.alert('发表成功');
+
+                  setTimeout(function () {
+                    
+                      g.hiddenJiuCuoView();
+
+                  }, 600);
+
+              } else {
+
+                  this.webApi.alert(res.msg);
+              }
+
+          })
+          
     },
     formatSec(value) {
         let theTime = parseInt(value);
@@ -447,7 +446,7 @@ body #mask0 {
 }
 .taskInfo p:nth-child(1){
   height: 0.5rem;
-  border: 1px solid #42b1ab;
+  border: 1px solid #ff366d;
   border-radius: 5px;
   margin-top: 0.2rem;
   margin-left: 0.1rem;
@@ -472,7 +471,7 @@ body #mask0 {
 .taskInfo-time span:nth-child(1){
     width: 0.5rem;
     height: 100%;
-    background: #42b1ab;
+    background: #ff366d;
     border-radius: 3px;
 }
 .taskInfo-time span:nth-child(1):before{
@@ -522,10 +521,10 @@ body #mask0 {
     display: inline-block;
     width: 2.2rem;
     height: 0.5rem;
-    border: 1px solid #42b1ab;
+    border: 1px solid #ff366d;
     text-align: center;
     line-height: 0.5rem;
-    color: #42b1ab;
+    color: #ff366d;
     font-weight: bold;
     font-size: 0.26rem;
 }
@@ -533,7 +532,7 @@ body #mask0 {
     margin-right: 0.4rem;
 }
 .pop-tel div p.active{
-    background: #42b1ab;
+    background: #ff366d;
     color: #fff;
 }
 </style>

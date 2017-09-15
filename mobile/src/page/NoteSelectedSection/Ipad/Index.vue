@@ -57,8 +57,14 @@
 export default {
 
 	props: {
-		'section-list': [Array],
-		'course-data': [Object]
+		'section-list': {
+			type: Array,
+			default: []
+		},
+		'course-data': {
+			type: Object,
+			default: {}
+		}
 	},
 
   data() {
@@ -124,6 +130,8 @@ export default {
 	.node-ipad-list{
 
 		font-size: 0; line-height: 1;
+		padding-top: $commTop;
+		background-color: #fff;
 
 		.list{
 
@@ -214,15 +222,15 @@ export default {
 			background-color: #fff;
 			> a{
 				@extend .ab;
-				@include fc(.46rem, #d0d0d0);
+				@include fc($commBackFont, $commPink);
 				font-family: 'iconfont';
-				left: .38rem; padding-left: .45rem;
+				left: .38rem; padding-left: .1rem;
 				top: 50%; transform: translateY(-50%);
 			}
 
 			h1{
 				@extend .flexCenter;
-			  @include fc(.3rem, #1D1D1D);
+			  @include fc($headH1Font, #1D1D1D);
 				height: inherit;
 			}
 

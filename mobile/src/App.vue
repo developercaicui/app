@@ -1,9 +1,7 @@
 <template lang="html">
 
   <main class="v-wrap">
-    <keep-alive>
-      <router-view></router-view>
-    </keep-alive>
+    <router-view></router-view>
   </main>
 
 </template>
@@ -84,7 +82,7 @@ export default {
 
 .v-wrap{
   @include wh(100%, 100%);
-  background-color: #fff;
+  background-color: transparent;
 
 }
 </style>
