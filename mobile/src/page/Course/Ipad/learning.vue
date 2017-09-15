@@ -1,6 +1,7 @@
 <template lang="html">
-
+	
 	<div class="course-content course-pic-list learning" ref="courseContentlearn">
+	<SlideRefresh @top-status-change="topStatusChange">
 		<div class="learning-navL">
         <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
@@ -38,6 +39,8 @@
         </li>
         </template>
       </div>
+
+      </SlideRefresh>
 	</div>
 
 </template>
@@ -45,11 +48,12 @@
 <script>
 
 import {getLearningCourse,getCourseProgres} from '../../../api/port';
+import SlideRefresh from '../../../components/Comm/SlideRefresh';
 
 export default {
 
 	components: {
-		
+		SlideRefresh
   	},
 
 	data() {
@@ -147,6 +151,15 @@ export default {
 
 
   methods: {
+  	// 课程的实时状态
+	topStatusChange(status) {
+
+		if(status == 'loading') {
+			this.webApi.loadingData();
+			this.$emit('fetch-data');
+		}
+
+	},
   	
   	learningNav(ind) {
 	    this.activeBtn = ind;
@@ -250,7 +263,7 @@ export default {
 
 <style lang="scss" scoped>
 .course-content{
-    padding-top:1.6rem;
+    padding-top:1.4rem;
     min-height: 15rem;
 }
 .learning-navL {
