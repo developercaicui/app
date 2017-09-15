@@ -4,8 +4,8 @@
 		<template v-if="exam.exerciseContext.length">
 			<component :is="exam.exerciseType" :exercises-title="exam.exerciseDetail.title" :options-context-json="exerciseContextJson"></component>
 			
-			<a class="analysis-button" href="javascript:;" @click="analysisBtn($event)">{{ exam.exerciseAnalysisText }}<span class="triangle"></span></a>
-			<analysls></analysls>
+			<a v-if="exam.isAnalysis" class="analysis-button" href="javascript:;" @click="analysisBtn($event)">{{ exam.exerciseAnalysisText }}<span class="triangle"></span></a>
+			<analysis></analysis>
 		</template>
 		
 		<div class="g-data-loading" v-else>
@@ -24,7 +24,7 @@
 </template>
 <script>
 	import { mapState,mapMutations,mapActions } from 'vuex';
-	import analysls from './v-questions-analysis';
+	import analysis from './v-questions-analysis';
 	import radio from './v-questions-radio';
 	import checkbox from './v-questions-checkbox';
 	import blank from './v-questions-blank';
@@ -35,7 +35,7 @@
 	import multiTask from './v-questions-multiTask';
 	export default{
 		components : {
-			analysls,
+			analysis,
 			radio,
 			blank,
 			checkbox,
