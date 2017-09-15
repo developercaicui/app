@@ -4,7 +4,7 @@ import axios from 'axios';
 import qs from 'qs';
 
 // const requestUrl = process.env.NODE_ENV === 'development' ? '' : 'http://api.caicui.com'; // 请求地址
-const requestUrl = process.env.NODE_ENV === 'development' ? 'http://api.caicui.com' : 'http://demo.caicui.com'; // 请求地址
+const requestUrl = process.env.NODE_ENV === 'development' ? 'http://demo.caicui.com' : 'http://demo.caicui.com'; // 请求地址
 
 const LOC = window.location;
 const headers = {

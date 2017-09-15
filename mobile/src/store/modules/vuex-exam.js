@@ -3,11 +3,16 @@ import Request from '../../api/request';
 import COMMON from '../../api/common';
 export default {
 	state : {
-		subjectId : '',
 		categoryId : '',
+		categoryName : '',
+		subjectId : '',
+		subjectName : '',
 		courseId : '',
+		courseName : '',
 		chapterId : '',
+		chapterName : '',
 		taskId : '',
+		taskName : '',
 		cacheKnowledgeLevel1Id : '',
 		cacheKnowledgeLevel2Id : '',
 

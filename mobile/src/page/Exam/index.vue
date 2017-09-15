@@ -30,7 +30,7 @@
 				<li class="exam-button-li" v-if="isNoteAcBtn"><a href="javascript:;" class="exam-button-a">提问</a></li>
 			</ul>
 		</div>
-		<correctionExam :correction-data="correctionData"></correctionExam>
+		<correctionExam v-if="correctionShow" :correction-data="correctionData"></correctionExam>
 	</div>
 </template>
 <script>
@@ -66,12 +66,18 @@
 				cacheKnowledgeLevel2Id : '', // knowledge_path_level_two_id/taskId
 
 				categoryId : '',
+				categoryName : '',
+				subjectId : '',
+				subjectName : '',
 				courseId : '',
+				courseName : '',
 				chapterId : '',
+				chapterName : '',
 				taskId : '',
+				taskName : '',
 				userInfo : '',
 				examNeedIds : '',
-
+				correctionShow : false,
 				correctionData : {}
 			}
 		},
@@ -212,9 +218,13 @@
 				if(this.examType == "chapter" || this.examType == "knowledge"){
 					if(examNeedIds){
 						this.categoryId = examNeedIds.categoryId;
+						this.categoryName = examNeedIds.categoryName;
 						this.courseId = examNeedIds.courseId;
+						this.courseName = examNeedIds.courseName;
 						this.chapterId = examNeedIds.chapterId;
+						this.chapterName = examNeedIds.chapterName;
 						this.taskId = examNeedIds.taskId;
+						this.taskName = examNeedIds.taskName;
 					}
 				}
 				this.update({
@@ -519,17 +529,18 @@
 
 			},
 			exerciseCorrection () {
+				this.correctionShow = true;
 				this.correctionData = {
-					courseName : 'nameJson.courseName',
-					courseId : 'data-course-id',
-					chapterName : 'nameJson.chapterName',
-					chapterId : 'data-chapter-id',
-					taskName : 'nameJson.taskName',     
-					taskId : 'data-task-id',
-					examName : 'data-title',         
-					examType : 'data-type',     
-					porgress : 'data-sort',       
-					exerciseId : 'nameJson.id data-exercise-id',        
+					courseId : this.exam.courseId,
+					courseName : this.exam.courseName,
+					chapterId : this.exam.chapterId,
+					chapterName : this.exam.chapterName,
+					taskName : this.exam.taskName,
+					taskId : this.exam.taskId,
+					examName : this.exam.examTitle,
+					examType : this.exam.examType,
+					porgress : this.exam.exerciseActiveIndex,
+					exerciseId : this.exam.exerciseId,
 				}
 			},
 			getMemberErrorExerciseData (){

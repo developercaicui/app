@@ -18,7 +18,6 @@ var g = {
 
 // 登录成功获取用户信息
 function getLoginInfo(data = {}) {
-
   data = JSON.parse(data);
 
   try{
@@ -158,6 +157,7 @@ function outLogin(data = {}) {
 // 试卷页面需要用到的id(用于试卷)
 function getExamNeedIds(data = {}) {
   alert(data)
+  alert('用户登录数据'+getCookie('userInfo'))
   data = JSON.parse(data);
 
   setCookie('examNeedIds', JSON.stringify(data));
