@@ -1,6 +1,7 @@
 <template lang="html">
 
   <div class="course-content course-pic-list learning" ref="courseContentnoact">
+  <SlideRefresh @top-status-change="topStatusChange">
       <div class="learning-navL">
         <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in noactiveData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
@@ -26,7 +27,7 @@
         </li>
         </template>
       </div>
-
+	</SlideRefresh>
       <Setactivate v-if="activeCour" :noactive-course="noactiveCourse" @close-me="closeMe"></Setactivate>
 
   </div>
@@ -38,12 +39,13 @@
 import { getNoactiveCourse } from '../../../api/port';
 
 import Setactivate from './setactivate';
-
+import SlideRefresh from '../../../components/Comm/SlideRefresh';
 
 export default {
 
   components: {
-    Setactivate
+    Setactivate,
+    SlideRefresh
   },
 
   data() {
@@ -59,39 +61,50 @@ export default {
 
   created() {
 
-    let courseParams = {
-      pageNo: 1,
-      pageSize: 1000,
-      token: this.webApi.getCookie('token')
-    };
-    // 获取过期课程列表
-    getNoactiveCourse(courseParams)
-
-    .then(res =>{
-
-      if(res && res.state == 'success'){
-            
-        this.noactiveData = this.webApi.outCourseList(res);
-
-        if(this.webApi.isEmpty(this.noactiveData)){
-		      this.$refs.courseContentnoact.classList.add("null")
-		      return false;
-		}
-
-        let str = JSON.stringify(this.noactiveData);
-
-        this.activeBtn = str.substr(2, str.indexOf(':')-3);
-            
-      }
-
-    })
-    
+    this.getDate();
      
   },
 
 
   methods: {
-    
+    // 课程的实时状态
+	topStatusChange(status) {
+
+		if(status == 'loading') {
+
+			this.getDate();
+			
+		}
+
+	},
+	getDate() {
+		let courseParams = {
+	      pageNo: 1,
+	      pageSize: 1000,
+	      token: this.webApi.getCookie('token')
+	    };
+	    // 获取过期课程列表
+	    getNoactiveCourse(courseParams)
+
+	    .then(res =>{
+
+	      if(res && res.state == 'success'){
+	            
+	        this.noactiveData = this.webApi.outCourseList(res);
+
+	        if(this.webApi.isEmpty(this.noactiveData)){
+			      this.$refs.courseContentnoact.classList.add("null")
+			      return false;
+			}
+
+	        let str = JSON.stringify(this.noactiveData);
+
+	        this.activeBtn = str.substr(2, str.indexOf(':')-3);
+	            
+	      }
+
+	    })
+	},
     learningNav(ind) {
       this.activeBtn = ind;
   	},
@@ -118,7 +131,7 @@ export default {
 
 <style lang="scss" scoped>
 .course-content{
-    padding-top:1.6rem;
+    padding-top:1.4rem;
     min-height: 15rem;
 }
 .learning-navL {

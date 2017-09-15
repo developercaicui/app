@@ -1,50 +1,51 @@
 <template lang="html">
-	<div class="set-info-modal" v-if="isShow">
+	<div class="note-wrap-ipad-edit">
 		<div class="backdrop"></div>
-    <div class="set-info-modal">
       <div id="mask0" class="modal">
         <div class="set_tit">视频纠错
             <div @click="closeIndex" class="right">关闭</div>
         </div>
         <div id="pop-radios" class="pop-radios">
-          <a href="javascript:;" class="pop-radio-label active"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">无法播放</span></a>
-          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">音画不同步</span></a>          
-          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">播放卡顿</span></a>          
-          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">内容问题</span></a>          
-          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">其它错误</span></a>
+          <a href="javascript:;" class="pop-radio-label"  @click="selecType" :data-index="index" :class="courrNum == index ?'active' : '' " v-for="(item,index) in cmptType">
+            <span class="pop-radio">
+                <span class="pop-radio-round"></span>
+            </span>
+            <span class="pop-radio-span">无法播放</span>
+          </a>
         </div>
         <div class="feeback-textareaBox">
-          <textarea id="textarea" name="content" placeholder="请输入反馈，我们将为您不断改进。"></textarea>
+          <textarea id="textarea" name="content" placeholder="请输入反馈，我们将为您不断改进。" ref="textarea"></textarea>
           <div class="taskInfo">
-              <p class="taskInfo-time"><span></span><span>23:33</span></p>
-              <p class="taskInfo-title">任务3 战略规划概述</p>
+              <p class="taskInfo-time"><span></span><span v-text="taskInfotime"></span></p>
+              <p class="taskInfo-title" v-text="taskInfotitle"></p>
           </div>
         </div>
         <div class="pop-tel">联系方式
-          <input type="text" class="pop-input-tel">
+          <input type="text" class="pop-input-tel" :value="mobile" ref="popinputTel">
           <div class="right">
             <p @click="closeIndex">取消</p>
             <p class="active" @click="sub()">提交</p>
           </div>
         </div>
       </div>
-    </div>
 	</div>
 
 </template>
 
 <script>
 
-import $ from 'jquery';
 import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
 
 export default {
 
 	data() {
 	    return {
-	    	isShow: true,
-	    	is_ok: true,
-        task_info_detail:{}
+        task_info_detail:{},
+        courrNum: 0,
+        cmptType: ['无法播放','音画不同步','播放卡顿','内容问题','其它错误'],
+        mobile: '',
+        taskInfotime: '',
+        taskInfotitle: '',
 	    }
 	},
 
@@ -56,34 +57,51 @@ export default {
         "chapterId": "ff8080814dad5062014dadd9c7200055",
         "chapterName": "课程介绍",
         "progress": 120,
-        "taskInfo": {
-            "id": "ff808081473905e701477c4bf98b00d9",
-            "taskId": "ff8080814dad5062014dadd9c7320058",
-            "title": "Introduction of Paper",
-            "taskType": "video",
-            "videoTime": 300,
-            "videoSiteId": "D550E277598F7D23",
-            "videoCcid": "ED4E6BCAC88795149C33DC5901307461"
-        }
+        "id": "ff808081473905e701477c4bf98b00d9",
+        "taskId": "ff8080814dad5062014dadd9c7320058",
+        "title": "Introduction of Paper",
+        "taskType": "video",
+        "videoTime": 300,
+        "videoSiteId": "D550E277598F7D23",
+        "videoCcid": "ED4E6BCAC88795149C33DC5901307461"
     }
 
     this.task_info_detail = this.$route.query;
 
-		getUserInfo({'token':this.webApi.getCookie('token')})
+		let memberinfo = JSON.parse(this.webApi.getCookie('memberinfo'));
+    
+    if(memberinfo){
+        if(memberinfo.mobile){
 
-		.then(res =>{
+            this.mobile = memberinfo.mobile
 
-	      if(res && res.state == 'success'){
+        }else{
 
-	          if(res.data.mobile){
-                  $(".pop-input-tel").val(res.data.mobile)
-              }else{
-                  $(".pop-input-tel").val(res.data.email)
-              }
+            this.mobile = memberinfo.email
 
-	      }
+        }
+    }else{
 
-	    })
+        getUserInfo({'token':this.webApi.getCookie('token')})
+
+        .then(res =>{
+
+            if(res && res.state == 'success'){
+
+                if(res.data.mobile){
+
+                      this.mobile = res.data.mobile
+
+                  }else{
+
+                      this.mobile = res.data.email
+
+                  }
+
+            }
+
+          })
+    }
 
 	},
 
@@ -101,16 +119,20 @@ export default {
            g.hiddenJiuCuoView();
         },
       	//投诉类型
-      	selecType(ev) {
-      		ev.target.classList.add("active")
-      	},
+        selecType(ev) {
+
+          this.courrNum = this.webApi.recursiveParentNode(ev.target,'a').dataset.index || 0;
+
+        },
       	sub() {
-          let content = $.trim($('textarea[name=content]').val());
-          let mobile = $.trim($('.pop-input-tel').val());
+          let content = this.$refs.textarea.value;
+          let mobile = this.$refs.popinputTel.value;
+
           if (content == '') {
               this.webApi.alert('意见内容不能为空');
               return false;
           }
+
           if (mobile == '') {
               this.webApi.alert('联系方式不能为空');
               return false;
@@ -139,15 +161,15 @@ export default {
 
           param.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;//投诉人id
           param.memberName = nickName;//投诉人昵称
-          param.cmptType = $(".pop-radio-label.active").find(".pop-radio-span").text();//投诉类型
+          param.cmptType = document.querySelector(".pop-radio-label.active").innerText;//投诉类型
           param.cmptContent = content+'<a class="content-addDom" data-nameJson="'+JSON.stringify(nameJson)+'" href="javascript:;" data-course-id="'+courseId+'" data-chapter-id="'+chapterId+'" data-task-id="'+taskId+'" data-type="'+type+'" data-title="'+title+'" data-video-ccid="'+ccid+'" data-video-siteid="'+siteid+'" data-progress="'+progress+'" data-video-time="'+videoTime+'">视频：'+this.formatSec(progress)+'</a>';//投诉内容
-          param.contactWay = $(".pop-input-tel").val();//联系方式
+          param.contactWay = mobile;//联系方式
           param.deviceDesc = systype;//设备描述
 
           this.webApi.loadingData();
-//关闭此页面
-                      
-console.log(JSON.stringify(param))
+
+        console.log(JSON.stringify(param))
+
           complaintOpinion(param)
 
           .then(res =>{
@@ -159,8 +181,8 @@ console.log(JSON.stringify(param))
 
                   this.webApi.alert('发表成功');
 
-                  setTimeout(function () {
-                    
+                  setTimeout(() => {
+                      //关闭此页面
                       g.hiddenJiuCuoView();
 
                   }, 600);
@@ -212,20 +234,12 @@ console.log(JSON.stringify(param))
     },
 	},
 	mounted() {
-    let title = this.task_info_detail.title;
 
     let progress = this.task_info_detail.progress;//任务进度
 
-    $(".taskInfo-time").find("span").eq(1).html(this.formatSec(progress));
+    this.taskInfotime = this.formatSec(progress);
 
-    $(".taskInfo-title").html(title);
-
-		//投诉类型
-  	$('#pop-radios .pop-radio-label').on('click', function () {
-
-      	$(this).addClass('active').siblings().removeClass('active');
-
-  	});
+    this.taskInfotitle = this.task_info_detail.title;
 
 	}
 
@@ -266,7 +280,7 @@ body #mask0 {
   opacity: 1;
   -webkit-transform: translate(-50%, -50%);
 }
-.set-info-modal {
+.note-wrap-ipad-edit {
   position: absolute;
   width: 100%;
   height: 100%;
