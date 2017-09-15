@@ -13,6 +13,7 @@ var g = {
   outLogin: outLogin,
   passWeiBoUrl: passWeiBoUrl,
   getClassCourseData: getClassCourseData,
+  clickToPlayVido: clickToPlayVido,
 }
 
 // 登录成功获取用户信息
@@ -127,6 +128,12 @@ function getClassCourseData(data = {}) {
 
 }
 
+//点击交流跳转视频页
+function clickToPlayVido(data = {}) {
+
+  g.device == 'ios' ? videoBtn.clickToPlayVido(data) : window.course.toMediaActivity(data);
+
+}
 //关闭视频纠错页
 function hiddenJiuCuoView(data = {}) {
 
@@ -136,8 +143,9 @@ function hiddenJiuCuoView(data = {}) {
 
 //打开微博
 function passWeiBoUrl(url) {
-  console.log(url)
+
   g.device == 'ios' ? set.passWeiBoUrl(url) : window.course.toActivity(url);
+
 }
 
 //退出登录
