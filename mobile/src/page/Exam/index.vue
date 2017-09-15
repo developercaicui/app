@@ -1,6 +1,5 @@
 <template>
 	<div class="exam">
-		
 		<div class="exam-header">
 			<a class="exam-return triangle" @click="examBackButton" href="javascript:;"></a>
 			<!-- <h3 class="exam-title">试卷标题: {{exam.examTitle}}试卷类型:{{exam.examType}}</h3> -->
@@ -11,10 +10,10 @@
 				
 		<div class="exam-body">
 			<template v-if="exam.examBaseInfo.length">
-				<!-- <p>传过来的ids</p>
+				<p>传过来的ids</p>
 				<ul v-for="(value, key) in examNeedIds">
 					<li>{{ key }}: {{ value }}</li>
-				</ul> -->
+				</ul>
 				<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev" v-if="exam.exerciseActiveIndex != 0"></a>
 				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext" v-if="exam.exerciseActiveIndex != (exam.examBaseInfo.length-1)"></a>
 			</template>
@@ -24,10 +23,14 @@
 			<exam-cards @cardsPrev="exercisePrev" @cardsNext="exerciseNext" @clickExamCards="exerciseChange" @cardsPosLeft="cardsPosition" :key="exam.examBaseInfo.length"></exam-cards>
 			<ul class="exam-button-ul">
 				<li class="exam-button-li" v-if="isSaveBtn"><a @click="exerciseAssignment" href="javascript:;" class="exam-button-a">交卷</a></li>
+				<li class="exam-button-li">
+					<a @click="exerciseCorrection" href="javascript:;" class="exam-button-a">纠错</a>
+				</li>
 				<li class="exam-button-li" v-if="isNoteAcBtn"><a href="javascript:;" class="exam-button-a">笔记</a></li>
 				<li class="exam-button-li" v-if="isNoteAcBtn"><a href="javascript:;" class="exam-button-a">提问</a></li>
 			</ul>
 		</div>
+		<correctionExam :correction-data="correctionData"></correctionExam>
 	</div>
 </template>
 <script>
@@ -37,10 +40,14 @@
 
 	import examCards from '../../components/Exam/v-exam-cards';
 	import questions from '../../components/Exam/v-exam-questions';
+
+	import correctionExam from '../../components/CorrectionExam';
+
 	export default {
 		components : {
 			examCards,
-			questions
+			questions,
+			correctionExam
 		},
 		data () {
 			return {
@@ -63,7 +70,9 @@
 				chapterId : '',
 				taskId : '',
 				userInfo : '',
-				examNeedIds : ''
+				examNeedIds : '',
+
+				correctionData : {}
 			}
 		},
 		computed : {
@@ -508,6 +517,20 @@
 					
 				});
 
+			},
+			exerciseCorrection () {
+				this.correctionData = {
+					courseName : 'nameJson.courseName',
+					courseId : 'data-course-id',
+					chapterName : 'nameJson.chapterName',
+					chapterId : 'data-chapter-id',
+					taskName : 'nameJson.taskName',     
+					taskId : 'data-task-id',
+					examName : 'data-title',         
+					examType : 'data-type',     
+					porgress : 'data-sort',       
+					exerciseId : 'nameJson.id data-exercise-id',        
+				}
 			},
 			getMemberErrorExerciseData (){
 				let errorexerciseids = '';
