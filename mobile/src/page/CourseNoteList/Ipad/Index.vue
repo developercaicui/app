@@ -247,7 +247,7 @@ export default {
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
           // 
-          param.courseid= "ff8080814f1c162a014f1f7c34a91317";
+          param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
 
@@ -296,7 +296,7 @@ export default {
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
           // 
-          param.courseid= "ff8080814f1c162a014f1f7c34a91317";
+          param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
 	        param.token = this.webApi.getCookie('token');
@@ -311,7 +311,7 @@ export default {
 
     		          this.webApi.closeLoadingData();
 
-    		          	this.sectionList = res.data.filter(item => item.courseId == 'ff8080814f1c162a014f1f7c34a91317');
+    		          	this.sectionList = res.data.filter(item => item.courseId == 'ff8080814dad5062014db32051b801a2');
 
     		      }
 

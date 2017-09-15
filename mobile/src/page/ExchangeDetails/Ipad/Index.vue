@@ -322,31 +322,12 @@ export default {
         	if(data.taskType == "video"){
 
         		data.taskprogress = this.taskprogress;
-console.log(JSON.stringify(data))
-        		videoBtn.clickToPlayVido(JSON.stringify(data));
+        		console.log(JSON.stringify(data))
+        		g.clickToPlayVido(JSON.stringify(data))       		
 
         	}
         	
         },
-
-    setListData(list) {
-      	list.headImg = `${this.webApi.cdnImgUrl}${list.headImg}`;
-      	list.title = `${list.bbstype=='0'?"【讨论】":"【问答】"}${list.title}`;
-      	list.imgPath = `${this.webApi.isEmpty(list.imgPath)?'':list.imgPath}`;
-      	list.updateTime = `${this.webApi.isEmpty(list.updateTime)?'':this.webApi.formatDate(list.updateTime,'Y')}-${this.webApi.formatDate(list.updateTime,'M')}-${this.webApi.formatDate(list.updateTime,'D')}   ${this.webApi.formatDate(list.updateTime,'h')}:${this.webApi.formatDate(list.updateTime,'m')}`;
-      	list.taskprogress = `${list.taskprogress != '-1' && list.taskType != ' ' && list.courseId && list.courseId != ' ' && list.chapterId && list.chapterId != ' ' && list.taskId && list.taskId != ' '?this.webApi.formatType(list.taskType,list.taskprogress):''}`;
-    },
-
-    setReplysData(list) {
-      list.map(item =>{
-          item.headImg = `${this.webApi.cdnImgUrl}${item.headImg}`;
-          item.imgPath = `${this.webApi.isEmpty(item.imgPath)?'':item.imgPath}`;
-          item.contentHtml = `${this.webApi.isEmpty(item.contentHtml)?'':item.contentHtml}`;
-          item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
-          item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' ' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
-      });
-    },
-
 		setBackground(url) {
 			return `background-image:url(${this.getImgPath(url)})`
 		},
