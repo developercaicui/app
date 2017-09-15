@@ -7,7 +7,7 @@
             <div @click="closeIndex" class="right">关闭</div>
         </div>
         <div id="pop-radios" class="pop-radios">
-          <a href="javascript:;" @click="selecType" class="pop-radio-label" :class="courrNue == index ?'active' : '' " v-for="(item,index) in cmptType">
+          <a href="javascript:;" @click="selecType" class="pop-radio-label" :data-index="index" :class="courrNum == index ?'active' : '' " v-for="(item,index) in cmptType">
             <span class="pop-radio">
               <span class="pop-radio-round"></span>
             </span>
@@ -22,7 +22,7 @@
           </div>
         </div>
         <div class="pop-tel">联系方式
-          <input type="text" class="pop-input-tel" :value="mobile">
+          <input type="text" class="pop-input-tel" :value="mobile" ref="popinputTel">
           <div class="right">
             <p @click="closeIndex">取消</p>
             <p class="active" @click="sub()">提交</p>
@@ -36,7 +36,6 @@
 
 <script>
 
-import $ from 'jquery';
 import { getUserInfo,complaintOpinion} from '../../../api/port';
 
 export default {
@@ -50,7 +49,7 @@ export default {
 	data() {
 	    return {
 	    	isShow: true,
-        courrNue: 0,
+        courrNum: 0,
         cmptType: ['答案有异议','解析有误','错别字','排版错误','其它错误'],
         mobile: '',
         taskInfotime: '',
@@ -92,22 +91,28 @@ export default {
   },
 
 	methods: {
-		    closeIndex() {
+		    closeIndex() {//关闭此页面
+
             this.$emit('isShow',false);
+
         },
       	//投诉类型
       	selecType(ev) {
-      		ev.target.classList.add("active")
+
+          this.courrNum = this.webApi.recursiveParentNode(ev.target,'a').dataset.index || 0;
+
       	},
-      	sub() {
+      	sub() {//发布
+
           let content = this.$refs.textarea.value;
+          let mobile = this.$refs.popinputTel.value;
 
           if (content == '') {
               this.webApi.alert('意见内容不能为空');
               return false;
           }
 
-          if ($(".pop-input-tel").val() == '') {
+          if (mobile == '') {
               this.webApi.alert('联系方式不能为空');
               return false;
           }
@@ -122,7 +127,7 @@ export default {
           let courseId = task_info_detail.courseId;
           let chapterId = task_info_detail.chapterId;
           let taskId = task_info_detail.taskId;
-          let type = task_info_detail.taskType;
+          let type = task_info_detail.examType;
           let title = task_info_detail.taskName.replace(/\n|\r|\t|<[^<]*>/g,'');
           let progress = task_info_detail.progress;
           let exercise_id = task_info_detail.exerciseId;
@@ -136,7 +141,7 @@ export default {
 
           param.cmptType = document.querySelector(".pop-radio-label.active").innerText;//投诉类型
           param.cmptContent = `${content}<a class="content-addDom" data-nameJson="${JSON.stringify(nameJson)}" href="javascript:;" data-course-id="${courseId}" data-chapter-id="${chapterId}" data-task-id="${taskId}" data-type="${type}" data-title="${title}" data-sort="${progress}" data-exercise-id="${exercise_id}"><试题：${progress}题></a>`;//投诉内容
-          param.contactWay = this.mobile;//联系方式
+          param.contactWay = mobile;//联系方式
           param.deviceDesc = systype;//设备描述
 
           console.log(JSON.stringify(param))
@@ -153,7 +158,7 @@ export default {
 
                   this.webApi.alert('发表成功');
 
-                  setTimeout(function () {
+                  setTimeout(() => {
 
                       //关闭此页面
                       this.closeIndex();
@@ -209,17 +214,10 @@ export default {
 	},
 	mounted() {
 
-    this.taskInfotitle = this.correctionData.taskName.replace(/\n|\r|\t|<[^<]*>/g,'');//任务标题
+    this.taskInfotitle = this.correctionData.exerciseName.replace(/\n|\r|\t|<[^<]*>/g,'');//任务标题
     let progress = this.correctionData.progress;//任务进度
 
     this.taskInfotime = `${progress}题`
-
-		//投诉类型
-  	$('#pop-radios .pop-radio-label').on('click', function () {
-
-      	$(this).addClass('active').siblings().removeClass('active');
-
-  	});
 
 	}
 
