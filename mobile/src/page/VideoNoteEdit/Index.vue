@@ -21,6 +21,14 @@ export default {
 	    }
 	  },
 
+		watch: {
+
+	    '$route' (to, from) {
+
+		  }
+
+	  },
+		
 		created() {
 
 			this.data = {
