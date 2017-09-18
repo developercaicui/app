@@ -26,7 +26,6 @@
 
 <script>
 
-import { getUserInfo, getLoginLog, getExamDate, getMsgList } from '../../../api/port';
 import MyMsg from '../../../page/Msg/Ipad';
 
 export default {

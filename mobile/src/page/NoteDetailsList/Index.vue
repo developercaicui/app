@@ -11,7 +11,6 @@
 
 import Ipad from './Ipad';
 import Mobile from './Mobile';
-import { getNoteDetailsList } from '../../api/port';
 
 export default {
 
@@ -22,30 +21,16 @@ export default {
 
   data() {
     return {
-			isIpad: false,
-      isMobile: false,
 			userInfo: {},
 			routerData: {}
     }
   },
 
-	created() {
-
-		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
-		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
-
-		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {});
-		this.routerData = JSON.parse(this.$route.params.data || {});
-
-		this.fetchDetailsList();
-
-	},
-
 	computed: {
 
 		detailsList() {
 
-			let list = this.$store.getters.getDetailsList;
+			let list = this.$store.getters.getNoteDetailsList;
 
 			list.map(item =>{
 				let date = new Date(item.updateTime*1000);
@@ -55,7 +40,26 @@ export default {
 			return list;
 		},
 
+		isIpad() {
+			return this.$store.getters.getDeviceInfo.isIpad;
+		},
+
+		isMobile() {
+			return this.$store.getters.getDeviceInfo.isMobile;
+		}
+
 	},
+
+	created() {
+
+		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {});
+		this.routerData = JSON.parse(this.$route.params.data || {});
+
+		this.fetchDetailsList();
+
+	},
+
+
 
   methods: {
 
@@ -64,7 +68,7 @@ export default {
 
 			this.webApi.loadingData();
 
-			this.$store.commit('updateDetailsParams', {
+			this.$store.commit('updateNoteDetailsParams', {
 				  pageNo: 1,
 				  pageSize: 20,
 				  charpterid: this.routerData.courseData.id,

@@ -5,11 +5,30 @@ import {
   getMsgList,
   getUserInfo,
   getExamDate,
-  getLoginLog
+  getLoginLog,
+  getActivityList
 } from '../../../api/port';
 
 
 export default {
+
+  // 活动列表
+  fetchActivityList({commit, state}) {
+
+    getActivityList()
+
+    .then(res =>{
+
+      if(!res || res.state != 'success'){
+        webApi.alert('活动获取失败');
+        return false;
+      }
+
+      commit('updateActivityList', res.data);
+
+    })
+
+  },
 
   // 获取最近登录时间
   fetchLoginLog({commit, state}) {

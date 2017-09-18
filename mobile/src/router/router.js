@@ -76,7 +76,7 @@ export default  new VueRouter({
          path: 'selectedsection/:data', // 选择章节
          component: NoteSelectedSection
        },{
-         path: 'videoEdit',
+         path: 'videoedit',
          component: VideoNoteEdit, // 中间页跳转
        }
       ]

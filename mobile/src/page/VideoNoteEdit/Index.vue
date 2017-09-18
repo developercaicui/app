@@ -1,35 +1,21 @@
 <template lang="html">
 
-	<div class="comm-reg-wrap"></div>
-
+	<div class="comm-reg-wrap">{{ num }}</div>
 
 </template>
 
 <script>
 
-
 export default {
-
-		components: {
-
-	  },
 
 	  data() {
 	    return {
-				data: {
-				}
+				num: Math.random()
 	    }
 	  },
 
-		watch: {
 
-	    '$route' (to, from) {
-
-		  }
-
-	  },
-		
-		created() {
+		mounted() {
 
 			this.data = {
 
@@ -48,18 +34,20 @@ export default {
 					courseName: this.$route.query.courseName || 'courseName',
 				},
 
-				taskName: this.$route.query.taskName,
-				taskId: this.$route.query.taskId,
-				taskProgress: this.$route.query.taskProgress,
+				taskName: this.$route.query.taskName || 'taskName',
+				taskId: this.$route.query.taskId || 'taskId',
+				taskProgress: this.$route.query.taskProgress || 'taskProgress',
 
-				videoType: this.$route.query.videoType,
-				type: 'new'
-
+				videoType: this.$route.query.videoType || 'videoType',
+				type: 'new',
+				vtime: new Date().getTime()
 			};
 
+
 			this.$router.push({
-				path: `/note/edit/${encodeURIComponent(JSON.stringify(this.data))}`
-			});
+				path: `edit/${encodeURIComponent(JSON.stringify(this.data))}`
+			})
+
 
 		},
 
@@ -74,6 +62,6 @@ export default {
 
 <style lang="scss" scoped>
 .comm-reg-wrap{
-	font-size: .4rem;
+	font-size: 0; color: 000;
 }
 </style>

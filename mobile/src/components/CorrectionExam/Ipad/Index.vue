@@ -1,7 +1,7 @@
 <template lang="html">
-	<div class="set-info-modal">
-		<div class="backdrop"></div>
+		
     <div class="set-info-modal">
+    <div class="backdrop"></div>
       <div id="mask0" class="modal">
         <div class="set_tit">试题纠错
             <div @click="closeIndex" class="right">关闭</div>
@@ -30,7 +30,6 @@
         </div>
       </div>
     </div>
-	</div>
 
 </template>
 
@@ -59,25 +58,40 @@ export default {
 
 	created() {
 
-		getUserInfo({'token':this.webApi.getCookie('token')})
+    let memberinfo = JSON.parse(this.webApi.getCookie('memberinfo'));
+    
+    if(memberinfo){
+        if(memberinfo.mobile){
 
-		.then(res =>{
+            this.mobile = memberinfo.mobile
 
-	      if(res && res.state == 'success'){
+        }else{
 
-	          if(res.data.mobile){
+            this.mobile = memberinfo.email
 
-                  this.mobile = res.data.mobile
+        }
+    }else{
 
-              }else{
+        getUserInfo({'token':this.webApi.getCookie('token')})
 
-                  this.mobile = res.data.email
+        .then(res =>{
 
-              }
+            if(res && res.state == 'success'){
 
-	      }
+                if(res.data.mobile){
 
-	    })
+                      this.mobile = res.data.mobile
+
+                  }else{
+
+                      this.mobile = res.data.email
+
+                  }
+
+            }
+
+          })
+    }
 
 	},
 
@@ -214,7 +228,7 @@ export default {
 	},
 	mounted() {
 
-    this.taskInfotitle = this.correctionData.exerciseName.replace(/\n|\r|\t|<[^<]*>/g,'');//任务标题
+    this.taskInfotitle = this.correctionData.exerciseName || this.correctionData.exerciseName.replace(/\n|\r|\t|<[^<]*>/g,'');//任务标题
     let progress = this.correctionData.progress;//任务进度
 
     this.taskInfotime = `${progress}题`

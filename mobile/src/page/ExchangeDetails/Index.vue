@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" :userInfo="userInfo" @upload-pic="uploadPic" @reply="reply" @remove-details="removeDetails"></Ipad>
+		<Ipad ref="ipad" v-if="isIpad" :userInfo="userInfo" @upload-pic="uploadPic" @reply="reply" @remove-details="removeDetails"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
@@ -39,6 +39,11 @@ export default {
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {});
+
+
+	},
+
+  mounted() {
 
 	},
 
@@ -83,6 +88,8 @@ export default {
 					return false;
 				}
 
+				this.$refs.ipad.getDetails(this.$refs.ipad.dataParams.id);
+				
 				this.webApi.alert('评论成功');
 
 			})

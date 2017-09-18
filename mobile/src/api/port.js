@@ -3,8 +3,8 @@ import webApi from './api';
 import axios from 'axios';
 import qs from 'qs';
 
-// const requestUrl = process.env.NODE_ENV === 'development' ? '' : 'http://api.caicui.com'; // 请求地址
-const requestUrl = process.env.NODE_ENV === 'development' ? 'http://demo.caicui.com' : 'http://demo.caicui.com'; // 请求地址
+const requestUrl = process.env.NODE_ENV === 'development' ? '' : 'http://api.caicui.com'; // 请求地址
+// const requestUrl = process.env.NODE_ENV === 'development' ? 'http://demo.caicui.com' : 'http://api.caicui.com'; // 请求地址
 
 const LOC = window.location;
 const headers = {
@@ -33,7 +33,7 @@ axios.interceptors.response.use(response => {
     setTimeout( ()=>{
       if(webApi.getCookie('isTargetLogin') === 'false') {
         // g.targetLogin();
-        // webApi.setCookie('isTargetLogin', 'true')
+        webApi.setCookie('isTargetLogin', 'true')
       }
     },2000)
 

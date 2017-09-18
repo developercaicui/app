@@ -22,5 +22,8 @@ export default {
   updateLoginLog(state, params) {
     Object.assign(state.loginLogData, params);
   },
+	updateActivityList(state, params) {
+		Object.assign(state.activityList, params);
+	}
 
 }
