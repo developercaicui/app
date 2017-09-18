@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" :exchangeData="exchangeData" @open-details="openDetails" @get-list="getList"></Ipad>
+		<Ipad v-if="isIpad" :exchangeData="exchangeData" @open-details="openDetails"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
@@ -11,7 +11,7 @@
 
 import Ipad from './Ipad';
 import Mobile from './Mobile';
-import { getExchangeList, getExchangeDetails } from '../../api/port';
+import { getExchangeLis } from '../../api/port';
 
 export default {
 
@@ -24,7 +24,6 @@ export default {
     return {
 			isIpad: false,
       isMobile: false,
-			exchangeData: {},
 			userInfo: {}
     }
   },
@@ -37,17 +36,25 @@ export default {
 
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
-		this.getList({
-			verTT: new Date().getTime(),
-			token: this.userInfo.token,
-		  self: '1',
-		  pageNo: 1,
-		  pageSize: 15,
-		  type:	3,
-		  ordertype: 1,  // 1:是发帖时间    2:是最新回复    3是回复数量     4:是精华讨论
+		this.webApi.loadingData();
+
+
+		this.$store.commit('updateExchangeListP', {
+			token: this.userInfo.token
 		});
 
+		this.$store.dispatch('fetchExchangeList');
+
 	},
+
+	computed: {
+
+		exchangeData() {
+			return this.$store.getters.getExchangeList;
+		}
+
+	},
+
 
 
   methods: {
@@ -59,69 +66,6 @@ export default {
 			this.$router.push({
 				path: `/exchange/details/${encodeURIComponent(JSON.stringify({id: id}))}`,
 			});
-
-
-		},
-
-		// 获取我的交流列表
-		getList(data) {
-
-
-			this.webApi.loadingData();
-
-			getExchangeList(data)
-
-			.then(res =>{
-
-				this.webApi.closeLoadingData();
-
-				if(!res || res.state != 'success'){
-					this.webApi.alert('打开详情失败，请稍后再试');
-					return false;
-				}
-
-				this.$router.push({
-					path: `/exchange/details/${encodeURIComponent(JSON.stringify(res.data))}`,
-				});
-
-			})
-
-
-		},
-
-		// 获取我的交流列表
-		getList(data) {
-
-
-			this.webApi.loadingData();
-
-			getExchangeList(data)
-
-			.then(res =>{
-
-				this.webApi.closeLoadingData();
-
-				if(!res || res.state != 'success'){
-					this.webApi.alert('获取列表失败，请稍后再试');
-					return false;
-				}
-
-				this.exchangeData = {
-					list: res.data,
-					totalCount: res.totalCount
-				};
-
-				this.exchangeData.list.map(item =>{
-
-					let date = new Date(item.updateTime*1000);
-
-					item.contentHtml = item.contentHtml.replace(/(.+)src="(.+)"(.+)/g,`$1 src="${this.webApi.cdnImgUrl}$2"$3`);
-					item.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}`;
-
-				});
-
-
-			})
 
 		},
 

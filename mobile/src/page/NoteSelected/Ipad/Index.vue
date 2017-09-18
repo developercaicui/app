@@ -22,7 +22,7 @@ export default {
 	props: {
 		'selectedData': {
 			type: Object,
-			default: []
+			default: {}
 		}
 	},
 
@@ -30,10 +30,6 @@ export default {
     return {
     }
   },
-
-	created(){
-
-	},
 
   methods: {
 
@@ -64,6 +60,7 @@ export default {
 
 		font-size: 0; line-height: 1;
 		padding-top: $commTop;
+		padding-bottom: .6rem;
 		background-color: #fff;
 
 		.list-all{

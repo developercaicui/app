@@ -41,7 +41,27 @@ export default {
 		topAllLoaded: {
 			type: Boolean,
 			default: false
-		}
+		},
+		bottomMaxDistance: {
+			type: Number,
+			default: 75
+		},
+		bottomPullText: {
+			type: String,
+			default: '下拉刷新'
+		},
+		bottomDropText: {
+			type: String,
+			default: '释放更新'
+		},
+		bottomLoadingText: {
+			type: String,
+			default: '加载中...'
+		},
+		bottomAllLoaded: {
+			type: Boolean,
+			default: false
+		},
 	},
 
   data() {
@@ -86,8 +106,6 @@ export default {
 
 			this.$emit('top-status-change', val);
 
-			console.log(val);
-
 			switch (val) {
 
 				case 'pull':
@@ -107,16 +125,13 @@ export default {
 
 	},
 
-	mounted() {
+	updated() {
 
 		let oHtml = document.documentElement
 
 		this.screenWidth = oHtml.getBoundingClientRect().width || oHtml.clientWidth;
 		this.screenHeight = oHtml.getBoundingClientRect().height || oHtml.clientHeight;
 		this.contentHeight = this.$refs.refreshContent.offsetHeight;
-
-		this.$refs.refreshWrap.style.cssText = `background-color: #F3F3F3;position: relative;width:${this.screenWidth}px; height:${this.screenHeight}px; overflow:hidden;`;
-		this.$refs.refreshContent.style.cssText = ` width:${this.screenWidth}px;`
 
 	},
 
@@ -247,7 +262,11 @@ export default {
  @import '../../../assets/style/mixin';
 
 	.slide-refresh-wrap{
+		background-color: #F3F3F3;
+		position: relative;
+		overflow:hidden;
 		@include wh(100%, 100%);
+		padding-bottom: 1rem;
 	}
 
 	.slide-refresh-content{

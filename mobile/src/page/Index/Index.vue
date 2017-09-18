@@ -11,7 +11,11 @@
 
 import Ipad from './Ipad';
 import Mobile from './Mobile';
-import { getActivityList, getLearningCourse, getCourseProgres, getExamDate } from '../../api/port';
+import {
+	getLearningCourse,
+	getCourseProgres,
+	getExamDate
+} from '../../api/port';
 
 
 export default {
@@ -25,7 +29,6 @@ export default {
     return {
 			isIpad: false,
       isMobile: false,
-			activityList: [], // 活动列表
 			learningCourseList: [], // 最近在学课程
 			userInfo: {}, // 用户信息
     }
@@ -34,30 +37,30 @@ export default {
 	created() {
 
 		this.webApi.loadingData();
-		this.webApi.setCookie('isTargetLogin', 'false')
+		this.webApi.setCookie('isTargetLogin', 'false');
+		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
+
+		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
+		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
+
+		this.fetchData();
+
+		this.$store.dispatch('fetchActivityList')
+
 	},
 
 	computed: {
 
-	},
-
-	mounted() {
-
-		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
-		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
-		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
-
-		this.fetchData();
+		activityList() {
+			return  this.$store.getters.getActivityList;
+		}
 
 	},
-
 
   methods: {
 
 		// 接口请求
 		fetchData() {
-
-			let oDiv = document.createElement('div');
 
 			// 最近所学课程
 			getLearningCourse({
@@ -122,7 +125,7 @@ export default {
 				}
 
 				try {
-					
+
 					res.data.map((item, index) =>{
 
 						let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;
@@ -159,34 +162,6 @@ export default {
 
 				// courseId 做比较
 				res.data.map(item => this.learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth())}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
-
-			})
-
-
-			// 获取活动列表
-			getActivityList()
-
-			.then(res => {
-
-				if(!res || res.state != 'success'){
-					this.webApi.alert('获取失败，请稍后再试');
-					return false;
-				}
-
-
-				this.activityList = res.data.map(item => {
-
-					oDiv.innerHTML = item.content;
-
-					return {
-						id: item.id,
-						title: item.title,
-						src: `${this.webApi.cdnImgUrl}${oDiv.querySelectorAll('img')[0].getAttribute('src')}`,
-						href: oDiv.querySelectorAll('a')[0].getAttribute('href')
-					};
-
-				});
-
 
 			})
 

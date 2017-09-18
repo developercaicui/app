@@ -64,14 +64,13 @@ export default {
 
 		this.title = this.data.chapteName || '';
 
-
 	},
 
   methods: {
 
 		// 上一步
 		handleBack() {
-			this.$router.go(-1);
+			this.data.videoType == 'video' ? g.closeNewNote() : this.$router.go(-1);
 		},
 
 		// 是否打卡上传图片

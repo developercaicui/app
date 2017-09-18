@@ -9,52 +9,67 @@
 				<router-link to="selected">新建&nbsp;<span>+</span></router-link>
 			</div>
 		</header>
-		<main class="list-wrap">
 
-			<template v-for="item in sectionList">
+		<SlideRefresh @top-status-change="topStatusChange">
 
-				<h1 :data-id="item.id">{{ item.courseName }}</h1>
+			<main class="list-wrap">
 
-				<template v-for="twoItem in item.children">
+				<template v-for="item in sectionList">
 
-					<section class="list" :data-id="twoItem.id" v-if="twoItem.nodeNum!=0">
-						<div>
-							<span></span>
-							<h1>{{ twoItem.chapterTitle }}</h1>
-						</div>
+					<h1 :data-id="item.id">{{ item.courseName }}</h1>
 
-						<template v-for="threeItem in twoItem.children">
+					<template v-for="twoItem in item.children">
 
-						<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @click.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+						<section class="list" :data-id="twoItem.id" v-if="twoItem.nodeNum!=0">
 							<div>
-								<h1>{{ threeItem.chapterTitle }}</h1>
-								<i>{{ threeItem.nodeNum }}</i>
+								<span></span>
+								<h1>{{ twoItem.chapterTitle }}</h1>
 							</div>
+
+							<template v-for="threeItem in twoItem.children">
+
+							<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @click.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+								<div>
+									<h1>{{ threeItem.chapterTitle }}</h1>
+									<i>{{ threeItem.nodeNum }}</i>
+								</div>
+
+							</section>
+
+							</template>
 
 						</section>
 
-						</template>
+				   </template>
 
-					</section>
+				</template>
 
-			   </template>
+				<img class="no-data" v-show="this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
 
-			</template>
+			</main>
 
-			<img class="no-data" v-show="this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
+	 </SlideRefresh>
 
-		</main>
 	</div>
 
 </template>
 
 <script>
 
+import SlideRefresh from '../../../components/Comm/SlideRefresh';
+
 export default {
 
 	props: {
-		'section-list': [Array]
+		sectionList: {
+			type: Array,
+			default: []
+		}
 	},
+
+	components: {
+		SlideRefresh
+  },
 
   data() {
     return {
@@ -62,6 +77,16 @@ export default {
   },
 
   methods: {
+
+		// 实时状态
+		topStatusChange(status) {
+			if(status == 'loading') this.$emit('fetch-list');
+		},
+
+		// 实时状态
+		bottomStatusChange(status) {
+			console.log(status);
+		},
 
 		openNoteDetails(ev) {
 

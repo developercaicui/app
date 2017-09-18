@@ -30,7 +30,8 @@ export default {
 				chapteName: this.$route.query.chapterName || 'chapterName',
 				taskId: this.$route.query.taskId || 'taskId',
 				taskType: this.$route.query.videoType || 'videoType',
-				taskProgress:	this.$route.query.taskProgress || 0
+				taskProgress:	this.$route.query.taskProgress || 0,
+				videoType: this.$route.query.videoType || 'videoType'
 			};
 
 			this.$router.push({

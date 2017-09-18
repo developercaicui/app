@@ -33,7 +33,7 @@ axios.interceptors.response.use(response => {
     setTimeout( ()=>{
       if(webApi.getCookie('isTargetLogin') === 'false') {
         // g.targetLogin();
-        // webApi.setCookie('isTargetLogin', 'true')
+        webApi.setCookie('isTargetLogin', 'true')
       }
     },2000)
 

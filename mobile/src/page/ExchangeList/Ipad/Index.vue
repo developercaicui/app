@@ -13,13 +13,16 @@
 				<h1>我的讨论</h1>
 			</header>
 
-			<section class="list" v-for="item in exchangeData.list" :data-id="item.id" @touchend="targetDetails">
-				<div>{{ item.nikeName }}<span class="msg-num">{{ item.replyCount }}</span></div>
-				<h1>{{ item.title }}</h1>
-				<p v-html="item.contentHtml" class="content-html"></p>
-				<time>{{ item.updateTime }}</time>
-			</section>
+			<SlideRefresh  @top-status-change="topStatusChange">
 
+				<section class="list" v-for="item in exchangeData.data" :data-id="item.id" @touchend="targetDetails">
+					<div>{{ item.nikeName }}<span class="msg-num">{{ item.replyCount }}</span></div>
+					<h1>{{ item.title }}</h1>
+					<p v-html="item.contentHtml" class="content-html"></p>
+					<time>{{ item.updateTime }}</time>
+				</section>
+
+		 </SlideRefresh>
 			<img src="../../../assets/img/404.svg" class="no-data" v-show="exchangeData.totalCount == 0 ? true: false">
 
 		</main>
@@ -31,16 +34,21 @@
 
 <script>
 
+import SlideRefresh from '../../../components/Comm/SlideRefresh';
+
 export default {
 
 
-	props: {
+ props: {
 	 'exchangeData': {
 		 type: Object,
 		 default: {}
 	 }
  },
 
+ components: {
+	 SlideRefresh
+ },
 
 
   data() {
@@ -59,12 +67,17 @@ export default {
     }
   },
 
-	mounted() {
-
-	},
-
-
   methods: {
+
+		// 实时状态
+		topStatusChange(status) {
+
+			if(status == 'loading') {
+				this.webApi.loadingData();
+				this.$store.dispatch('fetchExchangeList');
+			}
+
+		},
 
 		// 打开排序类型
 		handleOpenSelect() {
@@ -77,15 +90,14 @@ export default {
 			this.sortTypeText = ev.target.innerHTML;
 			this.typeShow = false;
 
-			this.$emit('get-list', {
+			this.webApi.loadingData();
+
+			this.$store.commit('updateExchangeListP', {
 				verTT: new Date().getTime(),
-				token: this.webApi.getCookie('token'),
-			  self: '1',
-			  pageNo: 1,
-			  pageSize: 15,
-			  type:	3,
-			  ordertype: ev.target.dataset.index + 1 || 1
+				ordertype: ev.target.dataset.index + 1 || 1
 			});
+
+			this.$store.dispatch('fetchExchangeList');
 
 		},
 

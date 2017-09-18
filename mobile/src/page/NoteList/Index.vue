@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" :section-list="list"></Ipad>
+		<Ipad v-if="isIpad" @fetch-list="fetchList" :sectionList="list"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
@@ -21,23 +21,27 @@ export default {
 
   data() {
     return {
-			isIpad: false,
-      isMobile: false,
 			sectionList: [],
 			userInfo: {},
     }
   },
 
 	computed: {
+
+		isIpad() {
+			return this.$store.getters.getDeviceInfo.isIpad;
+		},
+
+		isMobile() {
+			return this.$store.getters.getDeviceInfo.isMobile;
+		},
+
 		list() {
-			return this.$store.getters.getList;
+			return this.$store.getters.getNoteList;
 		},
 	},
 
 	created() {
-
-		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
-		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {})
 
@@ -53,7 +57,7 @@ export default {
 
 			this.webApi.loadingData();
 
-			this.$store.commit('updateParams', {
+			this.$store.commit('updateNoteListParams', {
 					token: this.userInfo.token,
 					self: 1,
 			});
