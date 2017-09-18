@@ -18,12 +18,13 @@ var g = {
 
 // 登录成功获取用户信息
 function getLoginInfo(data = {}) {
-  alert(data)
+
+  alert(data);
+
   data = JSON.parse(data);
 
   try{
     delCookie('userInfo');
-    delCookie('token');
   }catch(e){
 
   }
@@ -74,7 +75,7 @@ function targetLogin() {
 
 // 关闭新建页
 function closeNewNote() {
-  NoetView.hiddenAddNoteView('jj');
+  NoetAndRequest.hiddenAddNoteViewOrRequestView('jj');
 }
 
 
@@ -98,7 +99,7 @@ function targetLearningCourses(data) {
 
 // 用户课程信息(用于交流)
 function getDiscussInfo(data = {}) {
-  console.log(data)
+
   data = JSON.parse(data);
 
   setCookie('getDiscussInfo', JSON.stringify(data));
@@ -157,10 +158,9 @@ function outLogin(data = {}) {
 
 // 试卷页面需要用到的id(用于试卷)
 function getExamNeedIds(data = {}) {
-  alert(data)
+
   data = JSON.parse(data);
 
   setCookie('examNeedIds', JSON.stringify(data));
 
 }
-

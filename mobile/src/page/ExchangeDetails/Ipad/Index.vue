@@ -20,13 +20,13 @@
             </div>
             <div class="title">{{ data.title }}</div>
             <div class="describe">{{ data.content ? data.content : '' }}</div>
-            <ul class="pic-group" v-if="data.imgPath">
+            <ul class="pic-group" :data-allimg="data.imgPath.toString()" v-if="data.imgPath">
               <li v-for="(imgPath, index) in setImgPath(data.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" @touchend="handleOpenBigPic"></li>
               <b v-if="setImgPath(data.imgPath).length >= 3">共{{ setImgPath(data.imgPath).length }}张</b>
             </ul>
             <div class="add_question" v-if="data.supply" v-for="item in data.supply">
             		<span>问题补充:</span><span>{{ item.content }}<span>{{this.webApi.formatDate(item.updateTime,'M')+'-'+this.webApi.formatDate(item.updateTime,'D')}}</span></span>
-              <ul class="pic-group"  v-if="item.imgPath">
+              <ul class="pic-group" :data-allimg="item.imgPath.toString()" v-if="item.imgPath">
                	<li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" @touchend="handleOpenBigPic"></li>
               	<b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
               </ul>
@@ -51,12 +51,12 @@
             </div>
 	          <div class="describe">{{ item.content ? item.content : '' }}</div>
 
-	            <ul class="pic-group" v-if="item.imgPath">
+	            <ul class="pic-group" :data-allimg="item.imgPath.toString()" v-if="item.imgPath">
                 <li v-for="(imgPath, index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" @touchend="handleOpenBigPic"></li>
                 <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
               </ul>
 
-							<ul class="pic-group" v-else-if="item.contentHtml && getreolyImg(item.contentHtml).length>0">
+							<ul class="pic-group" :data-allimg="getreolyImg(item.contentHtml).toString()" v-else-if="item.contentHtml && getreolyImg(item.contentHtml).length>0">
                 <li v-for="(imgPath,index) in getreolyImg(item.contentHtml)" v-if="index <= 2" :style="setBackground(imgPath)" @touchend="handleOpenBigPic"></li>
                 <b v-if="getreolyImg(item.contentHtml).length>=3">共{{ getreolyImg(item.contentHtml).length }}张</b>
               </ul>
@@ -197,7 +197,16 @@ export default {
 		},
 
 		// 打开大图
-		handleOpenBigPic() {
+		handleOpenBigPic(ev) {
+
+			let oUl = this.webApi.recursiveParentNode(ev.target, 'ul')
+
+			this.picList = oUl.dataset.allimg.split(',') || [];
+
+			this.picList = this.picList.map(item =>{
+				return item.includes('http') ? item : `${this.webApi.cdnImgUrl}${item}`;
+			});
+
 			this.isShowList = true;
 		},
 
@@ -319,9 +328,9 @@ export default {
 
         	if(data.taskType == "video"){
 
-        		data.taskprogress = this.taskprogress;
+        		data.progress = this.taskprogress;
         		console.log(JSON.stringify(data))
-        		g.clickToPlayVido(JSON.stringify(data))       		
+        		g.clickToPlayVido(JSON.stringify(data))
 
         	}
 

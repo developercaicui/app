@@ -14,7 +14,7 @@
 						<h1>在学课程</h1>
 					</div>
 
-					<a @click.stop="handleSendCouseInfo" :data-data="JSON.stringify(item)" href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-if="index<3">
+					<a @click.stop="handleSendCouseInfo" :data-data="JSON.stringify(item)" href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-show="index<3">
 						<div class="info">
 							<h1>{{ item.courseName }}</h1>
 							<time>有效期至：{{ item.examinationDate.includes('1970') ? '暂无考试' :item.examinationDate }}</time>
@@ -23,7 +23,7 @@
 						<div class="process">
 							<div class="round">
 								<canvas :data-progress="item.studyProportion" class="canvas-list"></canvas>
-								<div class="num">{{item.studyProportion || 0}}</div>
+								<div class="num">{{ item.studyProportion || 0 }}</div>
 							</div>
 							<aside>{{ `${item.courseProgress}/${item.taskTotal}` }}</aside>
 						</div>
@@ -38,9 +38,9 @@
 						<h1>财萃活动</h1>
 					</div>
 
-					<div class="activity-list" v-for="(item, index) in activityList" v-if="index < 3">
-						<figure :data-href="item.href" :data-id="item.id" @click.stop="handleOpenActivity">
-						  <img :src="item.src" />
+					<div class="activity-list" v-for="(item, index) in activityList" v-show="index < 3">
+						<figure :data-href="item.url" :data-id="item.id" @click.stop="handleOpenActivity">
+						  <img :src="`${webApi.cdnImgUrl}${item.imagePath}`" />
 							<figcaption>{{ item.title }}</figcaption>
 						</figure>
 					</div>
@@ -90,8 +90,6 @@ export default {
 
 
 	updated() {
-
-		// console.log(this.learningCourseList, 'createTime');
 
 		let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
 		let arr = ['#4a90e2','#3E4F61','#408684'];
