@@ -70,14 +70,13 @@ function delCookie(key) {
 
 // 跳转到登录页
 function targetLogin() {
-  caicui.tokenInvalid('nologin');
+  g.device == 'ios' ? caicui.tokenInvalid('nologin') : window.course.logOff();
 }
 
 // 关闭新建页
 function closeNewNote() {
   NoetAndRequest.hiddenAddNoteViewOrRequestView('jj');
 }
-
 
 // 退回登录页面
 function backLogin() {

@@ -82,12 +82,10 @@ export default {
 				}
 
 				this.webApi.alert('登录成功，即将自动跳转');
-				this.webApi.setCookie('userInfo', JSON.stringify(res.data));
-				this.webApi.setCookie('token', res.data.token);
 
 				setTimeout(() =>{
 					this.$router.push({
-						path: '/'
+						path: `/?avatar=${res.data.avatar}&memberId=${res.data.memberId}&nickName=${res.data.nickName}&token=${res.data.token}`
 					});
 				},1000)
 

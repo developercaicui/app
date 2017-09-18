@@ -7,9 +7,11 @@
 			<h1>请选择课程</h1>
 		</header>
 
-		<template v-for="(item, index) in selectedData.courselist">
-			<h1 :data-index="index" class="list-all" @click="openSectionList">{{ item.courseName }}</h1>
-		</template>
+		<SlideRefresh @top-status-change="topStatusChange">
+		  <template v-for="(item, index) in selectedData.courselist">
+			  <h1 :data-index="index" class="list-all" @click="openSectionList">{{ item.courseName }}</h1>
+		  </template>
+		</SlideRefresh>
 
 	</div>
 
@@ -17,7 +19,13 @@
 
 <script>
 
+import SlideRefresh from '../../../components/Comm/SlideRefresh';
+
 export default {
+
+	components: {
+		SlideRefresh
+  },
 
 	props: {
 		'selectedData': {
@@ -32,6 +40,16 @@ export default {
   },
 
   methods: {
+
+		// 课程的实时状态
+		topStatusChange(status) {
+
+			if(status == 'loading') {
+				this.webApi.loadingData();
+				this.$store.dispatch('fetchNewNoteList');
+			}
+
+		},
 
 		openSectionList(ev) {
 
