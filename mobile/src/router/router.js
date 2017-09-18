@@ -21,6 +21,7 @@ const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'se
 const Correction = r => require.ensure([], () => r(require('../page/Correction')), 'correction')
 const CorrectionVideo = r => require.ensure([], () => r(require('../page/CorrectionVideo')), 'Correctionvideo')
 const CorrectionExam = r => require.ensure([], () => r(require('../page/CorrectionExam')), 'correctionExam')
+const CourseLive = r => require.ensure([], () => r(require('../page/CourseLive')), 'correctionLive')
 
 const CourseExchange = r => require.ensure([], () => r(require('../page/CourseExchange')), 'courseExchange')
 const CourseExchangeList = r => require.ensure([], () => r(require('../page/CourseExchangeList')), 'courseExchangeList')
@@ -136,6 +137,9 @@ export default  new VueRouter({
           component: CorrectionExam
         }
       ]
+    },{
+      path: '/courselive',
+      component: CourseLive
     },{
       path: '/exam/:type/:id',
       component: Exam

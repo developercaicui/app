@@ -54,6 +54,22 @@ export default {
 
   created() {
 
+    this.getDate()
+    
+  },
+
+methods: {
+    // 课程的实时状态
+  topStatusChange(status) {
+
+    if(status == 'loading') {
+
+      this.getDate();
+      
+    }
+
+  },
+  getDate() {
     let courseParams = {
       pageNo: 1,
       pageSize: 1000,
@@ -80,14 +96,8 @@ export default {
       }
 
     })
-    
-     
   },
-
-
-  methods: {
-    
-    learningNav(ind) {
+  learningNav(ind) {
       this.activeBtn = ind;
   },
   formatDate(now, t) {
