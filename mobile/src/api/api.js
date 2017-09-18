@@ -42,18 +42,13 @@ export default {
   getDeviceType() {
 
     let device = window.navigator.userAgent.toLocaleLowerCase();
+    let screenWidth = document.documentElement.getBoundingClientRect().width;
+    let type = this.getCookie('deviceType');
 
-    return 'ipad'
-    // if(device.includes('android')) {
-    //
-    // }else if(device.includes('ios')) {
-    //
-    //   if(device.includes('ipad'))
-    //     return 'ipad';
-    //   else if(device.includes('mobile'))
-    //     return 'mobile';
-    //
-    // }
+    if(type.includes('ipad') || type.includes('mobile')) return this.getCookie('deviceType');
+
+    if(screenWidth > 800) return 'ipad';
+    if(screenWidth < 800) return 'mobile';
 
 
   },

@@ -173,10 +173,12 @@ export default {
 
   methods: {
 
-		onTopLoaded() {
+		onTopLoaded(isOff) {
 
 			this.topStatus = 'end';
 			this.topAllLoaded = false;
+
+			if(!isOff) return;
 
 			this.webApi.addCss(this.$refs.refreshContent, {
 				transition: '300ms',
@@ -184,12 +186,15 @@ export default {
 			});
 
 
+
 		},
 
-		onBottomLoaded() {
+		onBottomLoaded(isOff) {
 
 			this.bottomStatus = 'end';
 			this.bottomAllLoaded = false;
+
+			if(!isOff) return;
 
 			this.webApi.addCss(this.$refs.refreshContent, {
 				transition: '300ms',
@@ -229,27 +234,34 @@ export default {
 				this.moveY = moveY;
 
 				// 下拉
-				if(moveY > 0) {
+				if(moveY > 0 && this.isTopShow) {
 
 					if(moveY < 50) this.topStatus = 'pull';
 					if(moveY > 60) this.topStatus = 'drop';
 
 					this.isDirection = 'top';
 
+					this.webApi.addCss(this.$refs.refreshContent, {
+						transform: `translate3d(0, ${moveY}px, 0)`
+					});
+
 				}
+
 				// 上拉
-				else {
+				if(moveY < 0 && this.isBottomShow){
 
 					if(Math.abs(moveY) < 50) this.bottomStatus = 'pull';
 					if(Math.abs(moveY) > 60) this.bottomStatus = 'drop';
 
 					this.isDirection = 'bottom';
 
+					this.webApi.addCss(this.$refs.refreshContent, {
+						transform: `translate3d(0, ${moveY}px, 0)`
+					});
+
 				}
 
-				this.webApi.addCss(this.$refs.refreshContent, {
-					transform: `translate3d(0, ${moveY}px, 0)`
-				});
+
 
 	    }
 
@@ -316,12 +328,13 @@ export default {
 				});
 			}
 
-			if(!this.isTopShow) this.onTopLoaded();
-			if(!this.isBottomShow) this.onBottomLoaded();
+
+			if(!this.isTopShow) this.onTopLoaded(false);
+			if(!this.isBottomShow) this.onBottomLoaded(false);
 
 			setTimeout(()=>{
-				if(this.bottomStatus === 'loading' && this.bottomAllLoaded === false)  this.onBottomLoaded();
-				if(this.topStatus === 'loading' && this.topAllLoaded === false)  this.onTopLoaded();
+				if(this.bottomStatus === 'loading' && this.bottomAllLoaded === false)  this.onBottomLoaded(true);
+				if(this.topStatus === 'loading' && this.topAllLoaded === false)  this.onTopLoaded(true);
 			}, 1000);
 
 		},

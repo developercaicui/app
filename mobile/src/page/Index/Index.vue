@@ -27,8 +27,6 @@ export default {
 
   data() {
     return {
-			isIpad: false,
-      isMobile: false,
 			learningCourseList: [], // 最近在学课程
 			userInfo: {}, // 用户信息
     }
@@ -40,9 +38,6 @@ export default {
 		this.webApi.setCookie('isTargetLogin', 'false');
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
-		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
-		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
-
 		this.fetchData();
 
 		this.$store.dispatch('fetchActivityList')
@@ -53,6 +48,14 @@ export default {
 
 		activityList() {
 			return  this.$store.getters.getActivityList;
+		},
+
+		isIpad() {
+			return this.$store.getters.getDeviceInfo.isIpad;
+		},
+
+		isMobile() {
+			return this.$store.getters.getDeviceInfo.isMobile;
 		}
 
 	},
