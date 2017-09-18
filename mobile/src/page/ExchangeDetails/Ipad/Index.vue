@@ -328,7 +328,7 @@ export default {
 
         	if(data.taskType == "video"){
 
-        		data.taskprogress = this.taskprogress;
+        		data.progress = this.taskprogress;
         		console.log(JSON.stringify(data))
         		g.clickToPlayVido(JSON.stringify(data))
 

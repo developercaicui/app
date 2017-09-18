@@ -1,285 +1,57 @@
 <template lang="html">
-	<div class="set-info-modal" v-if="isShow">
-		<div class="backdrop"></div>
-    <div class="set-info-modal">
-      <div id="mask0" class="modal">
-        <div class="set_tit">试题纠错
-            <div @click="closeIndex" class="right">关闭</div>
-        </div>
-        <div id="pop-radios" class="pop-radios">
-          <a href="javascript:;" class="pop-radio-label active"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">答案有异议</span></a>          
-          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">解析有误</span></a>          
-          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">错别字</span></a>          
-          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">排版错误</span></a>          
-          <a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">其它错误</span></a>
-        </div>
-        <div class="feeback-textareaBox">
-          <textarea id="textarea" name="content" placeholder="请输入反馈，我们将为您不断改进。"></textarea>
-          <div class="taskInfo">
-              <p class="taskInfo-time"><span></span><span>1题</span></p>
-              <p class="taskInfo-title">任务3 战略规划概述</p>
-          </div>
-        </div>
-        <div class="pop-tel">联系方式
-          <input type="text" class="pop-input-tel" :value="mobile">
-          <div class="right">
-            <p @click="closeIndex">取消</p>
-            <p class="active" @click="sub()">提交</p>
-          </div>
-        </div>
-      </div>
-    </div>
-	</div>
-
+	 <main>
+      <CorrectionExam :correctionData="correctionData" v-if="isShowpre" @isShow="isShow"></CorrectionExam> 
+   </main>
 </template>
 
 <script>
 
 import $ from 'jquery';
-import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
+import CorrectionExam from '../../../components/CorrectionExam';
 
 export default {
 
 	data() {
 	    return {
-	    	isShow: true,
-	    	is_ok: true,
-        data:{},
-        task_info_detail:{},
-        mobile: '',
+	    	correctionData:{},
+        isShowpre:true
 	    }
 	},
 
 	created() {
-    // 试卷类型数据
-    this.data = {
-      "task_info_detail": {
+    this.correctionData = {
           "courseId": "ff8080814dad5062014dadd9c70d0053",
           "courseName": "ACCA F2 Management Accounting",
           "chapterId": "ff8080814dad5062014dadd9c739005a",
           "chapterName": "Chapter 1 The Nature, Source and Purpose of Management Accounting",
-          "knowledgePointId": null,
           "progress": 3,
-          "taskInfo": {
-              "id": "8a22ecb55340689101534f0199100058",
-              "taskId": "8a22ecb5559bad0501559fe5d3d8003b",
-              "title": "ACCA F2 Management Accounting-CH1章节测评",
-              "taskType": "exam",
-              "taskLevel": null,
-              "express": null,
-              "totalCount": 10,
-              "difficulty": "简单",
-              "examenType": "chapter",
-              "examUrl": "/exam/examination/examinationTask/8a22ecb55340689101534f0199100058"
-          }
-      },
-      "exam_id": {
-          "title": "Which one of the followings is not a level of decision making in an&nbsp;organization?<br />\r\n<div>\r\n\t<br />\r\n</div>",
-          "id": "ff8080814c4f2e9f014c5f189a42013d",
-          "background": null,
-          "context": "[{\"title\":\"Management\",\"isChecked\":false},{\"title\":\"Operational\",\"isChecked\":false},{\"title\":\"Board\",\"isChecked\":true},{\"title\":\"Strategic\",\"isChecked\":false}]",
-          "sn": 2150,
-          "questionTypes": "radio",
-          "source": "中博练习册",
-          "answerResolution": "Strategic, operational and management are the three levels of decision<br />\r\nmaking in an organization.<br />\r\n&nbsp;<br />"
+          "exerciseId": "8a22ecb55340689101534f0199100058",//tasks里面的id
+          "taskId": "8a22ecb5559bad0501559fe5d3d8003b",//任务的taskId
+          "taskName": "ACCA F2 Management Accounting-CH1章节测评",//任务的title
+          "examType": "exam",
+          "examName": "",
       }
-    }
-
-    
-    //知识点练习类型数据
-    // this.data = {
-    //   "task_info_detail":{
-    //     "courseId":"8a22ecb5545a87e801545af5048c0006",
-    //     "courseName":"CMA Part I 中文 基础课",
-    //     "chapterId":"8a22ecb55b1ec7e9015b228f54e00031","chapterName":"知识点1 战略规划概述","knowledgePointId":"8a22ecb55aa7aa10015ac65817840a36",
-    //     "progress": 30,
-    //     "taskInfo":{
-    //         "id":"91e6a108c22e0e440e9f3ad3b106042a","taskId":"91e6a108c22e0e440e9f3ad3b106042a","title":"知识点练习","taskType":"knowledgePointExercise","taskLevel":"core","express":null
-    //     }
-    //   },
-    //   "data_exercise_id":"915dbd195dcf27db11ce264653e87d45",
-    //   "exam_info":{
-    //     "id":"915dbd195dcf27db11ce264653e87d45","createDate":1500634013000,"modifyDate":1500634013000,"accuracy":0,"answerResolution":"职能战略增强了组织的竞争战略。","background":null,"context":"[{\"title\":\"它用财务和非财务指标确定组织的价值。\",\"isChecked\":false,\"myChecked\":false},{\"title\":\"它强化组织的竞争战略。\",\"isChecked\":true,\"myChecked\":false},{\"title\":\"它决定如何根据组织业务进行资源分配。\",\"isChecked\":false,\"myChecked\":true},{\"title\":\"它聚焦于分辨和培育关键资源。\",\"isChecked\":false,\"myChecked\":false}]","exerciseState":"publish","questionTypes":"radio","sn":10466,"title":"以下涉及职能战略的哪项内容是正确的？","difficultyId":"ff8080814a7a4010014a7a715a7d00b8","sourceId":"ff8080814f1c162a014f200204971459","versionId":"ff8080814f1c162a014f200e6b482543","fileName":null,"sheetName":null,"nid":18938
-    //   }
-    // }
-
-		getUserInfo({'token':this.webApi.getCookie('token')})
-
-		.then(res =>{
-
-	      if(res && res.state == 'success'){
-
-	          if(res.data.mobile){
-
-                  this.mobile = res.data.mobile
-
-              }else{
-
-                  this.mobile = res.data.email
-
-              }
-
-	      }
-
-	    })
 
 	},
 
 	updated() {
-
+    
 
 	},
 
 	components: {
-
+    CorrectionExam
   },
 
 	methods: {
-		    closeIndex() {
-          this.isShow = !this.isShow;
-        },
-      	//投诉类型
-      	selecType(ev) {
-      		ev.target.classList.add("active")
-      	},
-      	sub() {
-          let content = $.trim($('textarea[name=content]').val());
-          if (content == '') {
-              this.webApi.alert('意见内容不能为空');
-              return false;
-          }
-
-          let task_info_detail = this.data.task_info_detail;
-          if(this.data.data_exercise_id){
-              task_info_detail.taskInfo.id = this.data.data_exercise_id;
-          }
-          let nameJson = {
-            "courseName" : task_info_detail.courseName,
-            "chapterName" : task_info_detail.chapterName,
-            "taskName" : task_info_detail.taskInfo.title,
-            "id" : task_info_detail.taskInfo.id
-          }
-          let courseId = task_info_detail.courseId;
-          let chapterId = task_info_detail.chapterId;
-          let taskId = task_info_detail.taskInfo.taskId;
-          let type = task_info_detail.taskInfo.taskType;
-          let title = task_info_detail.taskInfo.title.replace(/\n|\r|\t|<[^<]*>/g,'');
-          let progress = task_info_detail.progress;
-          let exam_id = this.data.exam_id;
-          let exercise_id = "";
-          if(exam_id){
-              exercise_id = exam_id.id;
-              title = exam_id.title.replace(/\n|\r|\t|<[^<]*>/g,'');
-          }else{
-              exercise_id = task_info_detail.taskInfo.id;
-          }
-
-          let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
-          let param = {};
-          let systype = "ipad";
-
-          param.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;//投诉人id
-          param.memberName = nickName;//投诉人昵称
-          param.cmptType = $(".pop-radio-label.active").find(".pop-radio-span").text();//投诉类型
-          param.cmptContent = content+'<a class="content-addDom" data-nameJson="'+JSON.stringify(nameJson)+'" href="javascript:;" data-course-id="'+courseId+'" data-chapter-id="'+chapterId+'" data-task-id="'+taskId+'" data-type="'+type+'" data-title="'+title+'" data-sort="'+progress+'" data-exercise-id="'+exercise_id+'"><试题：'+progress+'题></a>';//投诉内容
-          param.contactWay = $(".pop-input-tel").val();//联系方式
-          param.deviceDesc = systype;//设备描述
-
-          console.log(JSON.stringify(param))
-
-          this.webApi.loadingData();
-
-          if (this.is_ok) {
-
-              this.is_ok = false;
-
-              complaintOpinion(param)
-
-              .then(res =>{
-
-                 this.webApi.closeLoadingData();
-
-               if (res && res.state == 'success') {
-
-                      this.webApi.alert('发表成功');
-
-                      setTimeout(function () {
-
-                          //关闭此页面
-
-
-                      }, 600);
-
-                  } else {
-                      this.is_ok = true;
-                      // this.webApi.alert('发表失败，请重试！');
-                      this.webApi.alert(res.msg);
-                  }
-
-              })
-          }
-    },
-    formatSec(value) {
-        let theTime = parseInt(value);
-        // 秒
-        let theTime1 = 0;
-        // 分
-        let theTime2 = 0;
-        // 小时
-        if (theTime >= 60) {
-            theTime1 = parseInt(theTime / 60);
-            theTime = parseInt(theTime % 60);
-            if (theTime1 >= 60) {
-                theTime2 = parseInt(theTime1 / 60);
-                theTime1 = parseInt(theTime1 % 60);
-            }
-        }
-        let i, s, h;
-        if (theTime2 >= 10) {
-            h = theTime2;
-        } else {
-            h = '0' + theTime2;
-        }
-        if (theTime1 >= 10) {
-            i = theTime1;
-        } else {
-            i = '0' + theTime1;
-        }
-        if (theTime >= 10) {
-            s = theTime;
-        } else {
-            s = '0' + theTime;
-        }
-        if (h > 0) {
-            return parseInt(parseInt(i) + parseInt(h * 60)) + ':' + s;
-        } else {
-            return i + ':' + s;
-        }
-    },
+		 isShow(boll) {
+      console.log(boll)
+      this.isShowpre = boll
+    }   
 	},
 	mounted() {
-
-    let title = this.data.task_info_detail.taskInfo.title;
-
-    if(this.data.exam_info){
-        title = this.data.exam_info.title;
-    }
-    if(this.data.exam_id){
-        title = this.data.exam_id.title;
-    }
-
-    let progress = this.data.task_info_detail.progress;//任务进度
-
-    $(".taskInfo-time").find("span").eq(1).html(progress+"题");
-    $(".taskInfo-title").html(title.replace(/\n|\r|\t|<[^<]*>/g,''));
-
-		//投诉类型
-  	$('#pop-radios .pop-radio-label').on('click', function () {
-
-      	$(this).addClass('active').siblings().removeClass('active');
-
-  	});
-
+    
+    
 	}
 
 }

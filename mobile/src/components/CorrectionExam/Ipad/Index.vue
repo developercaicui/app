@@ -1,17 +1,18 @@
 <template lang="html">
-	<div class="note-wrap-ipad-edit">
-		<div class="backdrop"></div>
+		
+    <div class="set-info-modal">
+    <div class="backdrop"></div>
       <div id="mask0" class="modal">
-        <div class="set_tit">视频纠错
+        <div class="set_tit">试题纠错
             <div @click="closeIndex" class="right">关闭</div>
         </div>
         <div id="pop-radios" class="pop-radios">
-          <a href="javascript:;" class="pop-radio-label"  @click="selecType" :data-index="index" :class="courrNum == index ?'active' : '' " v-for="(item,index) in cmptType">
+          <a href="javascript:;" @click="selecType" class="pop-radio-label" :data-index="index" :class="courrNum == index ?'active' : '' " v-for="(item,index) in cmptType">
             <span class="pop-radio">
-                <span class="pop-radio-round"></span>
+              <span class="pop-radio-round"></span>
             </span>
-            <span class="pop-radio-span">无法播放</span>
-          </a>
+            <span class="pop-radio-span">{{ item }}</span>
+          </a>          
         </div>
         <div class="feeback-textareaBox">
           <textarea id="textarea" name="content" placeholder="请输入反馈，我们将为您不断改进。" ref="textarea"></textarea>
@@ -28,21 +29,27 @@
           </div>
         </div>
       </div>
-	</div>
+    </div>
 
 </template>
 
 <script>
 
-import { getUserInfo,loginout,complaintOpinion} from '../../../api/port';
+import { getUserInfo,complaintOpinion} from '../../../api/port';
 
 export default {
+  props: {
+      correctionData: {
+          type: Object,
+          default: {}
+      }
+  },
 
 	data() {
 	    return {
-        task_info_detail:{},
+	    	isShow: true,
         courrNum: 0,
-        cmptType: ['无法播放','音画不同步','播放卡顿','内容问题','其它错误'],
+        cmptType: ['答案有异议','解析有误','错别字','排版错误','其它错误'],
         mobile: '',
         taskInfotime: '',
         taskInfotitle: '',
@@ -51,24 +58,7 @@ export default {
 
 	created() {
 
-    this.task_info_detail = {
-        "courseId": "ff8080814dad5062014dadd9c70d0053",
-        "courseName": "ACCA F2 Management Accounting",
-        "chapterId": "ff8080814dad5062014dadd9c7200055",
-        "chapterName": "课程介绍",
-        "progress": 120,
-        "id": "ff808081473905e701477c4bf98b00d9",
-        "taskId": "ff8080814dad5062014dadd9c7320058",
-        "title": "Introduction of Paper",
-        "taskType": "video",
-        "videoTime": 300,
-        "videoSiteId": "D550E277598F7D23",
-        "videoCcid": "ED4E6BCAC88795149C33DC5901307461"
-    }
-
-    this.task_info_detail = this.$route.query;
-
-		let memberinfo = JSON.parse(this.webApi.getCookie('memberinfo'));
+    let memberinfo = JSON.parse(this.webApi.getCookie('memberinfo'));
     
     if(memberinfo){
         if(memberinfo.mobile){
@@ -115,16 +105,19 @@ export default {
   },
 
 	methods: {
-		    closeIndex() {
-           g.hiddenJiuCuoView();
+		    closeIndex() {//关闭此页面
+
+            this.$emit('isShow',false);
+
         },
       	//投诉类型
-        selecType(ev) {
+      	selecType(ev) {
 
           this.courrNum = this.webApi.recursiveParentNode(ev.target,'a').dataset.index || 0;
 
-        },
-      	sub() {
+      	},
+      	sub() {//发布
+
           let content = this.$refs.textarea.value;
           let mobile = this.$refs.popinputTel.value;
 
@@ -137,63 +130,63 @@ export default {
               this.webApi.alert('联系方式不能为空');
               return false;
           }
-          let task_info_detail = this.task_info_detail;
+          let task_info_detail = this.correctionData;
+          
           let nameJson = {
             "courseName" : task_info_detail.courseName,
             "chapterName" : task_info_detail.chapterName,
-            "taskName" : task_info_detail.title,
-            "id" : task_info_detail.videoCcid
+            "taskName" : task_info_detail.taskName,
+            "id" : task_info_detail.exerciseId
           }
           let courseId = task_info_detail.courseId;
           let chapterId = task_info_detail.chapterId;
           let taskId = task_info_detail.taskId;
-          let type = task_info_detail.taskType;
-          let title = task_info_detail.title;
-          let ccid = task_info_detail.videoCcid;
-          let siteid = task_info_detail.videoSiteId;
-          let progress = task_info_detail.progress;//任务进度
-          let videoTime = task_info_detail.videoTime;
-
-          //let title=content.substr(0,20);
+          let type = task_info_detail.examType;
+          let title = task_info_detail.taskName.replace(/\n|\r|\t|<[^<]*>/g,'');
+          let progress = task_info_detail.progress;
+          let exercise_id = task_info_detail.exerciseId;
+          
           let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
           let param = {};
           let systype = "ipad";
 
           param.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;//投诉人id
           param.memberName = nickName;//投诉人昵称
+
           param.cmptType = document.querySelector(".pop-radio-label.active").innerText;//投诉类型
-          param.cmptContent = content+'<a class="content-addDom" data-nameJson="'+JSON.stringify(nameJson)+'" href="javascript:;" data-course-id="'+courseId+'" data-chapter-id="'+chapterId+'" data-task-id="'+taskId+'" data-type="'+type+'" data-title="'+title+'" data-video-ccid="'+ccid+'" data-video-siteid="'+siteid+'" data-progress="'+progress+'" data-video-time="'+videoTime+'">视频：'+this.formatSec(progress)+'</a>';//投诉内容
+          param.cmptContent = `${content}<a class="content-addDom" data-nameJson="${JSON.stringify(nameJson)}" href="javascript:;" data-course-id="${courseId}" data-chapter-id="${chapterId}" data-task-id="${taskId}" data-type="${type}" data-title="${title}" data-sort="${progress}" data-exercise-id="${exercise_id}"><试题：${progress}题></a>`;//投诉内容
           param.contactWay = mobile;//联系方式
           param.deviceDesc = systype;//设备描述
 
-          this.webApi.loadingData();
+          console.log(JSON.stringify(param))
 
-        console.log(JSON.stringify(param))
+          this.webApi.loadingData();
 
           complaintOpinion(param)
 
           .then(res =>{
 
-
              this.webApi.closeLoadingData();
 
-              if (res && res.state == 'success') {
+           if (res && res.state == 'success') {
 
                   this.webApi.alert('发表成功');
 
                   setTimeout(() => {
+
                       //关闭此页面
-                      g.hiddenJiuCuoView();
+                      this.closeIndex();
 
                   }, 600);
 
               } else {
 
                   this.webApi.alert(res.msg);
+
               }
 
           })
-          
+
     },
     formatSec(value) {
         let theTime = parseInt(value);
@@ -235,11 +228,10 @@ export default {
 	},
 	mounted() {
 
-    let progress = this.task_info_detail.progress;//任务进度
+    this.taskInfotitle = this.correctionData.exerciseName || this.correctionData.exerciseName.replace(/\n|\r|\t|<[^<]*>/g,'');//任务标题
+    let progress = this.correctionData.progress;//任务进度
 
-    this.taskInfotime = this.formatSec(progress);
-
-    this.taskInfotitle = this.task_info_detail.title;
+    this.taskInfotime = `${progress}题`
 
 	}
 
@@ -280,11 +272,12 @@ body #mask0 {
   opacity: 1;
   -webkit-transform: translate(-50%, -50%);
 }
-.note-wrap-ipad-edit {
+.set-info-modal {
   position: absolute;
   width: 100%;
   height: 100%;
   overflow: hidden;
+  top:0;
 }
 .modal {
   width: 13rem;
@@ -490,13 +483,12 @@ body #mask0 {
 }
 .taskInfo-time span:nth-child(1):before{
     content: "";
-    width: 0;
-    height: 0;
-    border-top: 0.15rem solid transparent;
-    border-left: 0.2rem solid #fff;
-    border-bottom: 0.15rem solid transparent;
+    width: 0.26rem;
+    height: 0.26rem;
+    background: url(../../../assets/img/exam.png) no-repeat;
+    background-size: 100% 100%;
     position: absolute;
-    left: 0.28rem;
+    left: 0.22rem;
     top: 0.32rem;
 }
 .taskInfo-time span:nth-child(2){

@@ -1,6 +1,5 @@
 <template>
 	<div class="exam">
-		
 		<div class="exam-header">
 			<a class="exam-return triangle" @click="examBackButton" href="javascript:;"></a>
 			<!-- <h3 class="exam-title">试卷标题: {{exam.examTitle}}试卷类型:{{exam.examType}}</h3> -->
@@ -8,13 +7,12 @@
 			<!-- <a class="exam-menu" href="javascript:;">菜单</a> -->
 		</div>
 
-				
 		<div class="exam-body">
 			<template v-if="exam.examBaseInfo.length">
-				<!-- <p>传过来的ids</p>
+				<p>传过来的ids</p>
 				<ul v-for="(value, key) in examNeedIds">
 					<li>{{ key }}: {{ value }}</li>
-				</ul> -->
+				</ul>
 				<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev" v-if="exam.exerciseActiveIndex != 0"></a>
 				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext" v-if="exam.exerciseActiveIndex != (exam.examBaseInfo.length-1)"></a>
 			</template>
@@ -24,10 +22,14 @@
 			<exam-cards @cardsPrev="exercisePrev" @cardsNext="exerciseNext" @clickExamCards="exerciseChange" @cardsPosLeft="cardsPosition" :key="exam.examBaseInfo.length"></exam-cards>
 			<ul class="exam-button-ul">
 				<li class="exam-button-li" v-if="isSaveBtn"><a @click="exerciseAssignment" href="javascript:;" class="exam-button-a">交卷</a></li>
+				<li class="exam-button-li">
+					<a @click="exerciseCorrection" href="javascript:;" class="exam-button-a">纠错</a>
+				</li>
 				<li class="exam-button-li" v-if="isNoteAcBtn"><a href="javascript:;" class="exam-button-a">笔记</a></li>
 				<li class="exam-button-li" v-if="isNoteAcBtn"><a href="javascript:;" class="exam-button-a">提问</a></li>
 			</ul>
 		</div>
+		<correctionExam v-if="correctionShow" :correction-data="correctionData" @isShow="isCorrectionShow"></correctionExam>
 	</div>
 </template>
 <script>
@@ -37,10 +39,14 @@
 
 	import examCards from '../../components/Exam/v-exam-cards';
 	import questions from '../../components/Exam/v-exam-questions';
+
+	import correctionExam from '../../components/CorrectionExam';
+
 	export default {
 		components : {
 			examCards,
-			questions
+			questions,
+			correctionExam
 		},
 		data () {
 			return {
@@ -59,11 +65,19 @@
 				cacheKnowledgeLevel2Id : '', // knowledge_path_level_two_id/taskId
 
 				categoryId : '',
+				categoryName : '',
+				subjectId : '',
+				subjectName : '',
 				courseId : '',
+				courseName : '',
 				chapterId : '',
+				chapterName : '',
 				taskId : '',
+				taskName : '',
 				userInfo : '',
-				examNeedIds : ''
+				examNeedIds : '',
+				correctionShow : false,
+				correctionData : {}
 			}
 		},
 		computed : {
@@ -89,7 +103,6 @@
 		},
 
 		created() {
-
 			// 删除做题记录
 			// Request.delMemberExercise({
 			// 	"memberId" : 'ff8080815133db0d0151375bfdf30c0d',
@@ -98,7 +111,7 @@
 			// }).then((res)=>{
 			// })
 			// return false;
-			let userInfo = JSON.parse(window.localStorage.getItem('userInfo'));
+			let userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 			if(!userInfo){
 				this.$router.push('/login');
 				return false;
@@ -145,10 +158,21 @@
 				examBackButton.clickExamBackButton();
 			},
 			examRequestCallback (examenInfo, status, baseInfo) {
-				// let examNeedIds = this.getLocalStorage('examNeedIds');
-				
-				let examNeedIds = JSON.parse(window.localStorage.getItem('examNeedIds'));
+				let examNeedIds = JSON.parse(this.webApi.getCookie('examNeedIds'));
 				this.examNeedIds = examNeedIds;
+				let express = false;
+				if(examNeedIds){
+					if(examNeedIds.express == '0'){
+						express = false;
+					}else if(examNeedIds.express == '1'){
+						express = true;
+					}
+				}else{
+
+				}
+				this.update({
+					'isAnalysis' : express
+				})
 				// examBackButton.clickExamBackButton();
 				let examNum = this.examNum;
 				let statusData = '';
@@ -203,9 +227,13 @@
 				if(this.examType == "chapter" || this.examType == "knowledge"){
 					if(examNeedIds){
 						this.categoryId = examNeedIds.categoryId;
+						this.categoryName = examNeedIds.categoryName;
 						this.courseId = examNeedIds.courseId;
+						this.courseName = examNeedIds.courseName;
 						this.chapterId = examNeedIds.chapterId;
+						this.chapterName = examNeedIds.chapterName;
 						this.taskId = examNeedIds.taskId;
+						this.taskName = examNeedIds.taskName;
 					}
 				}
 				this.update({
@@ -508,6 +536,25 @@
 					
 				});
 
+			},
+			exerciseCorrection () {
+				this.correctionShow = true;
+				this.correctionData = {
+					courseId : this.exam.courseId,
+					courseName : this.exam.courseName,
+					chapterId : this.exam.chapterId,
+					chapterName : this.exam.chapterName,
+					taskName : this.exam.taskName,
+					taskId : this.exam.taskId,
+					examName : this.exam.examTitle,
+					examType : this.exam.examType,
+					progress : this.exam.exerciseActiveIndex,
+					exerciseId : this.exam.exerciseId,
+					exerciseName : this.exam.exerciseTitle,
+				}
+			},
+			isCorrectionShow (bool) {
+				this.correctionShow = bool;
 			},
 			getMemberErrorExerciseData (){
 				let errorexerciseids = '';

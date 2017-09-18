@@ -251,7 +251,8 @@ export default {
 
       		.then(res =>{
 
-	            
+	            this.webApi.delCookie("userInfo")
+              this.webApi.delCookie("token")
 
 	        })
       	},
