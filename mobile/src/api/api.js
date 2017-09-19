@@ -43,7 +43,7 @@ export default {
 
     let device = window.navigator.userAgent.toLocaleLowerCase();
     let screenWidth = document.documentElement.getBoundingClientRect().width;
-    let type = this.getCookie('deviceType');
+    let type = this.getCookie('deviceType') || 'null';
 
     if(type.includes('ipad') || type.includes('mobile')) return this.getCookie('deviceType');
 

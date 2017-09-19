@@ -49,12 +49,12 @@ export default {
 		this.webApi.loadingData();
 		this.webApi.setCookie('isTargetLogin', 'false');
 
-
 		this.userInfo = this.$route.query;
 
 		this.fetchData();
 
 		this.$store.dispatch('fetchActivityList')
+
 
 	},
 

@@ -16,23 +16,6 @@ var g = {
   clickToPlayVido: clickToPlayVido,
 }
 
-// 登录成功获取用户信息
-function getLoginInfo(data = {}) {
-
-  alert(data);
-
-  data = JSON.parse(data);
-
-  try{
-    delCookie('userInfo');
-  }catch(e){
-
-  }
-
-  setCookie('userInfo', JSON.stringify(data));
-  setCookie('token', data.token || 'null');
-
-}
 
 // 存Cookie
 function setCookie(key, value, days = 30) {
@@ -48,23 +31,6 @@ function setCookie(key, value, days = 30) {
   d.setTime(d.getTime() + (days * 24 * 60 * 60 * 1000));
   expires = "expires=" + d.toUTCString();
   document.cookie = `${key}=${value};${days}`;
-
-}
-
-
-// 删除Cookie
-function delCookie(key) {
-
-  if(window.localStorage){
-    window.localStorage.clear();
-    return;
-  }
-
-  let exp = new Date();
-  let cval = this.getCookie(key);
-
-  exp.setTime(exp.getTime() - 1);
-  if( cval != null) document.cookie= `${key}=${cval};expires=${exp.toGMTString()}`;
 
 }
 
