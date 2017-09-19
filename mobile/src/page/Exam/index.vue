@@ -25,11 +25,17 @@
 				<li class="exam-button-li">
 					<a @click="exerciseCorrection" href="javascript:;" class="exam-button-a">纠错</a>
 				</li>
-				<li class="exam-button-li" v-if="isNoteAcBtn"><a href="javascript:;" class="exam-button-a">笔记</a></li>
-				<li class="exam-button-li" v-if="isNoteAcBtn"><a href="javascript:;" class="exam-button-a">提问</a></li>
+				<li class="exam-button-li" v-if="isNoteAcBtn">
+					<a @click="exerciseNoteEdit" href="javascript:;" class="exam-button-a">笔记</a>
+				</li>
+				<li class="exam-button-li" v-if="isNoteAcBtn">
+					<a @click="exerciseExchangeEdit" href="javascript:;" class="exam-button-a">提问</a>
+				</li>
 			</ul>
 		</div>
-		<correctionExam v-if="correctionShow" :correction-data="correctionData" @isShow="isCorrectionShow"></correctionExam>
+		<examCorrection v-if="correctionShow" :correction-data="correctionData" @isShow="isCorrectionShow"></examCorrection>
+		<examExchangeEdit v-if="exchangeEditShow" :exchange-edit-data="exchangeEditData" @isShow="isExchangeEditShow"></examExchangeEdit>
+		<examNoteEdit v-if="noteEditShow" :note-edit-data="noteEditData" @isShow="isNoteEditShow"></examNoteEdit>
 	</div>
 </template>
 <script>
@@ -40,13 +46,17 @@
 	import examCards from '../../components/Exam/v-exam-cards';
 	import questions from '../../components/Exam/v-exam-questions';
 
-	import correctionExam from '../../components/CorrectionExam';
+	import examCorrection from '../../components/CorrectionExam';
+	import examExchangeEdit from '../../components/ExchangeEdit';
+	import examNoteEdit from '../../components/NoteEdit';
 
 	export default {
 		components : {
 			examCards,
 			questions,
-			correctionExam
+			examCorrection,
+			examExchangeEdit,
+			examNoteEdit
 		},
 		data () {
 			return {
@@ -77,7 +87,11 @@
 				userInfo : '',
 				examNeedIds : '',
 				correctionShow : false,
-				correctionData : {}
+				correctionData : {},
+				exchangeEditShow : false,
+				exchangeEditData : {},
+				noteEditShow : false,
+				noteEditData : {},
 			}
 		},
 		computed : {
@@ -555,6 +569,41 @@
 			},
 			isCorrectionShow (bool) {
 				this.correctionShow = bool;
+			},
+			exerciseExchangeEdit () {
+				this.exchangeEditShow = true;
+				this.exchangeEditData = {
+					subjectId : this.exam.subjectId,
+					courseId : this.exam.courseId,
+					chapterId : this.exam.chapterId,
+					chapterName : this.exam.chapterName,
+					taskId : this.exam.taskId,
+					progress : this.exam.exerciseActiveIndex,
+				}
+			},
+			isExchangeEditShow (bool) {
+				this.exchangeEditShow = bool;
+			},
+			exerciseNoteEdit () {
+				this.noteEditShow = true;
+				this.noteEditData = {
+					categoryId : this.exam.categoryId,
+					categoryName : this.exam.categoryName,
+					subjectId : this.exam.subjectId,
+					subjectName : this.exam.subjectName,
+					courseId : this.exam.courseId,
+					chapterId : this.exam.chapterId,
+					chapterName : this.exam.chapterName,
+					courseName : this.exam.courseName,
+					taskType : this.exam.examType,
+					taskName : this.exam.taskName,
+					taskId : this.exam.taskId,
+					taskProgress : this.exam.exerciseActiveIndex,
+					type : 'new'
+				}
+			},
+			isNoteEditShow (bool) {
+				this.noteEditShow = bool;
 			},
 			getMemberErrorExerciseData (){
 				let errorexerciseids = '';

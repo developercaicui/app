@@ -1,18 +1,29 @@
 <template lang="html">
-	<router-view></router-view>
+
+	<div>
+		<Ipad v-if="isIpad"></Ipad>
+		<Mobile v-if="isMobile"></Mobile>
+	</div>
+
 </template>
 
 <script>
 
+import Ipad from './Ipad';
+import Mobile from './Mobile';
+import { fileUpload, saveNote } from '../../api/port';
+
 export default {
 
 	components: {
+		Mobile,
+		Ipad,
   },
 
   data() {
     return {
 			isIpad: false,
-      isMobile: false
+      isMobile: false,
     }
   },
 
@@ -21,12 +32,15 @@ export default {
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
+
+
 	},
 
 
   methods: {
 
-  }
+
+		},
 
 }
 

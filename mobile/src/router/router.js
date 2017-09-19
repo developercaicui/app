@@ -22,6 +22,8 @@ const Correction = r => require.ensure([], () => r(require('../page/Correction')
 const CorrectionVideo = r => require.ensure([], () => r(require('../page/CorrectionVideo')), 'Correctionvideo')
 const CorrectionExam = r => require.ensure([], () => r(require('../page/CorrectionExam')), 'correctionExam')
 const CourseLive = r => require.ensure([], () => r(require('../page/CourseLive')), 'correctionLive')
+const CourseLiveOpen = r => require.ensure([], () => r(require('../page/CourseLiveOpen')), 'correctionLiveOpen')
+const CourseLiveIframe = r => require.ensure([], () => r(require('../page/CourseLiveIframe')), 'correctionLiveIframe')
 
 const CourseExchange = r => require.ensure([], () => r(require('../page/CourseExchange')), 'courseExchange')
 const CourseExchangeList = r => require.ensure([], () => r(require('../page/CourseExchangeList')), 'courseExchangeList')
@@ -139,7 +141,16 @@ export default  new VueRouter({
       ]
     },{
       path: '/courselive',
-      component: CourseLive
+      component: CourseLive,
+      children: [
+        {
+          path: 'open',
+          component: CourseLiveOpen
+        },{
+          path: 'iframe',
+          component: CourseLiveIframe
+        }
+      ]
     },{
       path: '/exam/:type/:id',
       component: Exam

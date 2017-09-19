@@ -3,7 +3,7 @@
   <div class="course-content course-pic-list learning" ref="courseContentover">
   <SlideRefresh @top-status-change="topStatusChange">
     <div class="learning-navL">
-        <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in overdueData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
+        <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in overdueData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
 
       <div class="stydys" v-for="(value,key) in overdueData" v-if="activeBtn===key">
@@ -142,20 +142,13 @@ methods: {
     },
     renew(isU) {
         if(isU == true){
-           // if (systemType == 'ios') {
-          //    api.openApp({
-          //         iosUrl: 'http://www.caicui.com/mc/examReport/add?token=' + $api.getStorage('token')
-          //     });
-          // } else {
-          //     api.openApp({
-          //         androidPkg: 'android.intent.action.VIEW',
-          //         mimeType: 'text/html',
-          //         uri: 'http://www.caicui.com/mc/examReport/add?token=' + $api.getStorage('token')
-          //     }, function (ret, err) {
-          //     });
-          // } 
+
+            g.passWeiBoUrl('http://www.caicui.com/mc/examReport/add?token='+this.webApi.getCookie('token'))
+           
         }else{
+
             this.webApi.alert("只有U+课程可以免费申请重听！")
+
         }
         
     }
@@ -197,6 +190,7 @@ methods: {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
+  min-height: 12.5rem;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;

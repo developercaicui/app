@@ -43,7 +43,6 @@ export default {
 
 	methods: {
 		isShow (bool){
-			console.log(bool)
 			this.$emit('isShow',bool);
 		}
 	}

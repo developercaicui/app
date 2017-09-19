@@ -149,23 +149,39 @@ export default {
     this.body.setAttribute("style","background:transparent")
     this.body.setAttribute("show","index")
 
-		getUserInfo({'token':this.webApi.getCookie('token')})
+    let memberinfo = JSON.parse(this.webApi.getCookie('memberInfo'));
+    
+    if(memberinfo){
+        if(memberinfo.mobile){
 
-		.then(res =>{//设置联系方式
+            this.$refs.popInputTel.value = res.data.mobile
 
-	      if(res && res.state == 'success'){
+        }else{
 
-	          if(res.data.mobile){
+            this.$refs.popInputTel.value = res.data.email
 
-                  this.$refs.popInputTel.value = res.data.mobile
-              }else{
+        }
+    }else{
 
-                  this.$refs.popInputTel.value = res.data.email
+        getUserInfo({'token':this.webApi.getCookie('token')})
 
-	      }
-			}
-			
-	    })
+        .then(res =>{//设置联系方式
+
+            if(res && res.state == 'success'){
+
+                if(res.data.mobile){
+
+                      this.$refs.popInputTel.value = res.data.mobile
+                  }else{
+
+                      this.$refs.popInputTel.value = res.data.email
+
+                }
+            }
+          
+          })
+    }
+		
 
 	},
 

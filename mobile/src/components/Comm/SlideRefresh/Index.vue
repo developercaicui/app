@@ -3,7 +3,7 @@
 	<div class="slide-refresh-wrap" ref="refreshWrap" @touchstart="handleStart" @touchmove="handleMove" @touchend="handleEnd">
 
 		<slot name="top">
-			<div class="slide">
+			<div class="slide-top" v-if="isTopShow">
 				<span class="text" v-show="topStatus !== 'loading'">{{ topText }}</span>
 				<mt-spinner type="snake" color="#FF366D" v-show="topStatus === 'loading'"></mt-spinner>
 			</div>
@@ -12,6 +12,14 @@
 		<div class="slide-refresh-content" ref="refreshContent">
 			<slot></slot>
 		</div>
+
+		<slot name="bottom">
+			<div class="slide-bottom" v-if="isBottomShow">
+				<span class="text" v-show="bottomStatus !== 'loading'">{{ bottomText }}</span>
+				<mt-spinner type="snake" color="#FF366D" v-show="bottomStatus === 'loading'"></mt-spinner>
+			</div>
+		</slot>
+
 	</div>
 
 </template>
@@ -48,7 +56,7 @@ export default {
 		},
 		bottomPullText: {
 			type: String,
-			default: '下拉刷新'
+			default: '上拉刷新'
 		},
 		bottomDropText: {
 			type: String,
@@ -78,8 +86,17 @@ export default {
 			isDirection: '',
 			moveY: 0,
 			startTime: new Date().getTime(),
+			isBottomShow: true,
+			isTopShow: true,
     }
   },
+
+	created() {
+
+		if(!this.$parent.bottomStatusChange) this.isBottomShow = false;
+		if(!this.$parent.topStatusChange) this.isTopShow = false;
+
+	},
 
 	watch: {
 
@@ -99,6 +116,24 @@ export default {
 		},
 
 		bottomStatus(val) {
+
+
+			this.$emit('bottom-status-change', val);
+
+			switch (val) {
+
+				case 'pull':
+					this.bottomText = this.bottomPullText;
+					break;
+				case 'drop':
+					this.bottomText = this.bottomDropText;
+					break;
+				case 'loading':
+					this.bottomText = this.bottomLoadingText;
+					break;
+				case 'end':
+				this.bottomText = '';
+			}
 
 		},
 
@@ -129,8 +164,8 @@ export default {
 
 		let oHtml = document.documentElement
 
-		this.screenWidth = oHtml.getBoundingClientRect().width || oHtml.clientWidth;
-		this.screenHeight = oHtml.getBoundingClientRect().height || oHtml.clientHeight;
+		this.screenWidth = oHtml.getBoundingClientRect().width;
+		this.screenHeight = oHtml.getBoundingClientRect().height;
 		this.contentHeight = this.$refs.refreshContent.offsetHeight;
 
 	},
@@ -151,6 +186,18 @@ export default {
 
 		},
 
+		onBottomLoaded() {
+
+			this.bottomStatus = 'end';
+			this.bottomAllLoaded = false;
+
+			this.webApi.addCss(this.$refs.refreshContent, {
+				transition: '300ms',
+				transform: 'translate3d(0,0,0)'
+			});
+
+
+		},
 
 		handleStart(ev) {
 
@@ -175,8 +222,7 @@ export default {
 	      this.startY = touch.pageY;
 	    }
 
-
-			if(document.body.scrollTop <= 20 || document.body.scrollTop >= (this.contentHeight-this.screenHeight)-20) {
+			if(document.body.scrollTop <= 20 || document.body.scrollTop >= (this.contentHeight-this.screenHeight)) {
 
 				moveY = (touch.pageY-this.startY) /3;
 
@@ -185,13 +231,8 @@ export default {
 				// 下拉
 				if(moveY > 0) {
 
-					this.webApi.addCss(this.$refs.refreshContent, {
-						transform: `translate3d(0, ${moveY}px, 0)`
-					});
-
 					if(moveY < 50) this.topStatus = 'pull';
 					if(moveY > 60) this.topStatus = 'drop';
-
 
 					this.isDirection = 'top';
 
@@ -199,17 +240,23 @@ export default {
 				// 上拉
 				else {
 
+					if(Math.abs(moveY) < 50) this.bottomStatus = 'pull';
+					if(Math.abs(moveY) > 60) this.bottomStatus = 'drop';
+
 					this.isDirection = 'bottom';
 
 				}
 
+				this.webApi.addCss(this.$refs.refreshContent, {
+					transform: `translate3d(0, ${moveY}px, 0)`
+				});
 
 	    }
+
 
 		},
 
 		handleEnd(ev) {
-
 
 			let endTime = new Date().getTime();
 
@@ -237,6 +284,31 @@ export default {
 
 			}
 
+			// 上滑
+			if(this.isDirection == "bottom") {
+
+				// 且大于最大滑动高
+				if(Math.abs(this.moveY) > this.bottomMaxDistance) {
+
+					if(!this.downOff && Math.abs(this.moveY) >= this.bottomMaxDistance) this.bottomStatus = 'loading';
+
+					this.webApi.addCss(this.$refs.refreshContent, {
+						transition: '300ms',
+						transform: `translate3d(0,-${this.bottomMaxDistance}px,0)`
+					})
+
+				}else{
+
+					this.webApi.addCss(this.$refs.refreshContent, {
+						transition: '300ms',
+						transform: `translate3d(0,0,0)`
+					});
+
+				}
+
+			}
+
+			// 点击实际过短不算滑动
 			if(endTime - this.startTime < 300) {
 				this.webApi.addCss(this.$refs.refreshContent, {
 					transition: '0',
@@ -244,14 +316,17 @@ export default {
 				});
 			}
 
+			if(!this.isTopShow) this.onTopLoaded();
+			if(!this.isBottomShow) this.onBottomLoaded();
 
 			setTimeout(()=>{
+				if(this.bottomStatus === 'loading' && this.bottomAllLoaded === false)  this.onBottomLoaded();
 				if(this.topStatus === 'loading' && this.topAllLoaded === false)  this.onTopLoaded();
 			}, 1000);
 
 		},
 
-  }
+  },
 
 }
 
@@ -265,8 +340,7 @@ export default {
 		background-color: #F3F3F3;
 		position: relative;
 		overflow:hidden;
-		@include wh(100%, 100%);
-		padding-bottom: 1rem;
+		@include wh(100%, auto);
 	}
 
 	.slide-refresh-content{
@@ -278,14 +352,24 @@ export default {
 	}
 
  .slide{
-	 	@extend .ab;
-		@include fc(.24rem, #333);
-		@extend .flexCenter;
-		top: 0; left: 0; right: 0; height: 1.5rem;
-		z-index: 1;
-		span{
-			text-align: center;
-		}
+	  @extend .ab;
+	 	@include fc(.24rem, #333);
+	 	@extend .flexCenter;
+		left: 0; right: 0; height: 1.5rem;
+	 	z-index: 1;
+	 	span{
+	 		text-align: center;
+	 	}
+ }
+
+ .slide-top{
+ 	 @extend .slide;
+	 top: 0;
+ }
+
+ .slide-bottom{
+ 	 @extend .slide;
+	 bottom: 0;
  }
 
 

@@ -11,7 +11,6 @@
 
 import Ipad from './Ipad';
 import Mobile from './Mobile';
-import { getNewNoteList } from '../../api/port';
 
 export default {
 

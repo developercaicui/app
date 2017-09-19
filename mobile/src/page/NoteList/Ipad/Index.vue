@@ -83,11 +83,6 @@ export default {
 			if(status == 'loading') this.$emit('fetch-list');
 		},
 
-		// 实时状态
-		bottomStatusChange(status) {
-			console.log(status);
-		},
-
 		openNoteDetails(ev) {
 
 			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');

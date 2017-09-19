@@ -197,7 +197,7 @@ export default {
 	        param.courseid= this.courseInfo.courseId;
 	        param.categoryId= this.courseInfo.categoryId;
 	        param.subjectId= this.courseInfo.subjectId;
-	        // param.courseid = "ff8080814f607c24014f6866fdb716fd"
+	        param.courseid = "ff8080814f607c24014f6866fdb716fd"
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {
 	            this.webApi.loadingData();
