@@ -107,7 +107,7 @@ function hiddenJiuCuoView(data = {}) {
 
 }
 
-//打开微博
+//打开浏览器
 function passWeiBoUrl(url) {
 
   g.device == 'ios' ? set.passWeiBoUrl(url) : window.course.toActivity(url);

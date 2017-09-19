@@ -3,7 +3,7 @@
 	<div class="course-content course-pic-list learning" ref="courseContentlearn">
 	<SlideRefresh @top-status-change="topStatusChange">
 		<div class="learning-navL">
-        <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
+        <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
 
       <div class="stydys" v-for="(value,key) in learningData" v-if="activeBtn===key">
@@ -291,6 +291,7 @@ export default {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
+  min-height: 12.5rem;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;

@@ -3,7 +3,7 @@
   <div class="course-content course-pic-list learning" ref="courseContentover">
   <SlideRefresh @top-status-change="topStatusChange">
     <div class="learning-navL">
-        <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in overdueData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
+        <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in overdueData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
 
       <div class="stydys" v-for="(value,key) in overdueData" v-if="activeBtn===key">
@@ -54,6 +54,22 @@ export default {
 
   created() {
 
+    this.getDate()
+    
+  },
+
+methods: {
+    // 课程的实时状态
+  topStatusChange(status) {
+
+    if(status == 'loading') {
+
+      this.getDate();
+      
+    }
+
+  },
+  getDate() {
     let courseParams = {
       pageNo: 1,
       pageSize: 1000,
@@ -80,14 +96,8 @@ export default {
       }
 
     })
-    
-     
   },
-
-
-  methods: {
-    
-    learningNav(ind) {
+  learningNav(ind) {
       this.activeBtn = ind;
   },
   formatDate(now, t) {
@@ -132,20 +142,13 @@ export default {
     },
     renew(isU) {
         if(isU == true){
-           // if (systemType == 'ios') {
-          //    api.openApp({
-          //         iosUrl: 'http://www.caicui.com/mc/examReport/add?token=' + $api.getStorage('token')
-          //     });
-          // } else {
-          //     api.openApp({
-          //         androidPkg: 'android.intent.action.VIEW',
-          //         mimeType: 'text/html',
-          //         uri: 'http://www.caicui.com/mc/examReport/add?token=' + $api.getStorage('token')
-          //     }, function (ret, err) {
-          //     });
-          // } 
+
+            g.passWeiBoUrl('http://www.caicui.com/mc/examReport/add?token='+this.webApi.getCookie('token'))
+           
         }else{
+
             this.webApi.alert("只有U+课程可以免费申请重听！")
+
         }
         
     }
@@ -187,6 +190,7 @@ export default {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
+  min-height: 12.5rem;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;
