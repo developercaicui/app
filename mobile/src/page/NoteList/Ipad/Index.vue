@@ -5,7 +5,7 @@
 		<header class="head">
 			<h1>章节列表</h1>
 			<div class="state-edit">
-				<router-link to="/note/search">&#xe651;</router-link>
+				<router-link to="/note/search">&#xe651; </router-link>
 				<router-link to="/note/selected">新建&nbsp;<span>+</span></router-link>
 			</div>
 		</header>
@@ -211,13 +211,14 @@ export default {
 
 		 .state-edit{
  			@extend .ab;
-			@extend .flexCenter;
- 			right: .35rem; top: 50%; transform: translateY(-50%);
+ 			right: .35rem; top: 0; bottom: 0;
  			font-family: 'iconfont';
  			a{
  				color: $commPink;
+				@extend .flexCenter;
+				height: 100%; float: left;
  				&:nth-of-type(1){
- 					margin-right: .2rem;
+ 					margin-right: .4rem;
 					font-size: $headIconFont;
  				}
  				&:nth-of-type(2){
