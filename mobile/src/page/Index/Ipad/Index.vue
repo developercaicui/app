@@ -166,7 +166,7 @@ export default {
 
 			let oFigure = this.webApi.recursiveParentNode(ev.target, 'figure');
 
-			g.openActivityPage(oFigure.dataset.href);
+			!oFigure.dataset.href ? this.webApi.alert('活动已过期', 1500) : g.openActivityPage(oFigure.dataset.href) ;
 
 		},
 
