@@ -16,23 +16,6 @@ var g = {
   clickToPlayVido: clickToPlayVido,
 }
 
-// 登录成功获取用户信息
-function getLoginInfo(data = {}) {
-
-  alert(data);
-
-  data = JSON.parse(data);
-
-  try{
-    delCookie('userInfo');
-  }catch(e){
-
-  }
-
-  setCookie('userInfo', JSON.stringify(data));
-  setCookie('token', data.token || 'null');
-
-}
 
 // 存Cookie
 function setCookie(key, value, days = 30) {
@@ -51,23 +34,6 @@ function setCookie(key, value, days = 30) {
 
 }
 
-
-// 删除Cookie
-function delCookie(key) {
-
-  if(window.localStorage){
-    window.localStorage.clear();
-    return;
-  }
-
-  let exp = new Date();
-  let cval = this.getCookie(key);
-
-  exp.setTime(exp.getTime() - 1);
-  if( cval != null) document.cookie= `${key}=${cval};expires=${exp.toGMTString()}`;
-
-}
-
 // 跳转到登录页
 function targetLogin() {
   g.device == 'ios' ? caicui.tokenInvalid('nologin') : window.course.logOff();
@@ -75,12 +41,12 @@ function targetLogin() {
 
 // 关闭新建页
 function closeNewNote() {
-  NoetAndRequest.hiddenAddNoteViewOrRequestView('jj');
+  g.device == 'ios' ? NoetAndRequest.hiddenAddNoteViewOrRequestView('jj') : window.course.back();
 }
 
 // 退回登录页面
 function backLogin() {
- clickBtn.registerBack('reg');
+  g.device == 'ios' ? clickBtn.registerBack('reg') : window.course.back();
 }
 
 // 跳出窗口打开活动页

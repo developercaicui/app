@@ -5,8 +5,8 @@
 		<header class="head">
 			<h1>章节列表</h1>
 			<div class="state-edit">
-				<router-link to="search">&#xe651;</router-link>
-				<router-link to="selected">新建&nbsp;<span>+</span></router-link>
+				<router-link to="/note/search">&#xe651;</router-link>
+				<router-link to="/note/selected">新建&nbsp;<span>+</span></router-link>
 			</div>
 		</header>
 
@@ -95,7 +95,7 @@ export default {
 			}
 
 			this.$router.push({
-				path: `detailslist/${encodeURIComponent(JSON.stringify(data))}`,
+				path: `/note/detailslist/${encodeURIComponent(JSON.stringify(data))}`,
 			});
 
 		},

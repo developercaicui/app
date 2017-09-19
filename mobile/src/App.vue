@@ -28,7 +28,7 @@ export default {
     }
   },
 
-  created() {
+  mounted() {
 
     let oHtml = document.documentElement;
 

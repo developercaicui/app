@@ -70,14 +70,8 @@ export default {
 
 			.then(res => {
 
-				if(!res){
-					this.webApi.alert('登录失败,请查看控制台。');
-					console.error(res, '登录失败');
-					return false;
-				}
-
-				if(res.state == 'error'){
-					this.webApi.alert(res.msg);
+				if(!res || res.state != 'success'){
+					this.webApi.alert('登录失败，即将自动跳转');
 					return false;
 				}
 
@@ -85,7 +79,7 @@ export default {
 
 				setTimeout(() =>{
 					this.$router.push({
-						path: `/?avatar=${res.data.avatar}&memberId=${res.data.memberId}&nickName=${res.data.nickName}&token=${res.data.token}`
+						path: `/index?avatar=${res.data.avatar}&memberId=${res.data.memberId}&nickName=${res.data.nickName}&token=${res.data.token}`
 					});
 				},1000)
 

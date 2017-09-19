@@ -194,6 +194,7 @@ export default {
 			background-color: rgba(0,0,0,.7);
 			border-radius: 5px;
 			width: 2rem;
+			z-index: 11;
 			&:after{
 				content: '';
 				@extend .show;

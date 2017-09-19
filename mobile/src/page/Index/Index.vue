@@ -27,8 +27,6 @@ export default {
 
   data() {
     return {
-			isIpad: false,
-      isMobile: false,
 			learningCourseList: [], // 最近在学课程
 			userInfo: {}, // 用户信息
     }
@@ -36,16 +34,29 @@ export default {
 
 	created() {
 
+		this.webApi.remCount();
+
+		this.webApi.delCookie('userInfo');
+    this.webApi.delCookie('token');
+    this.webApi.delCookie('deviceType');
+
+    this.webApi.setCookie('userInfo', JSON.stringify(this.$route.query));
+    this.webApi.setCookie('token', this.$route.query.token);
+    this.webApi.setCookie('deviceType', this.$route.query.deviceType);
+
+		if(!this.webApi.getCookie('userInfo')) {
+			this.webApi.alert('用户登录信息失效', 2000);
+		}
+		
 		this.webApi.loadingData();
 		this.webApi.setCookie('isTargetLogin', 'false');
-		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
-		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
-		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
+		this.userInfo = this.$route.query;
 
 		this.fetchData();
 
 		this.$store.dispatch('fetchActivityList')
+
 
 	},
 
@@ -53,6 +64,14 @@ export default {
 
 		activityList() {
 			return  this.$store.getters.getActivityList;
+		},
+
+		isIpad() {
+			return this.$store.getters.getDeviceInfo.isIpad;
+		},
+
+		isMobile() {
+			return this.$store.getters.getDeviceInfo.isMobile;
 		}
 
 	},

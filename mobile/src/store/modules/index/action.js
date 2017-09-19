@@ -77,6 +77,7 @@ export default {
         return false;
       }
       webApi.setCookie('memberInfo', res.data);
+
       commit('updateUserDetails', res.data);
 
     })
