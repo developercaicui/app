@@ -34,9 +34,23 @@ export default {
 
 	created() {
 
+		this.webApi.delCookie('userInfo');
+    this.webApi.delCookie('token');
+    this.webApi.delCookie('deviceType');
+
+    this.webApi.setCookie('userInfo', JSON.stringify(this.$route.query));
+    this.webApi.setCookie('token', this.$route.query.token);
+    this.webApi.setCookie('deviceType', this.$route.query.deviceType);
+
+		if(!this.webApi.getCookie('userInfo')) {
+			this.webApi.alert('用户登录信息失效', 2000);
+		}
+
 		this.webApi.loadingData();
 		this.webApi.setCookie('isTargetLogin', 'false');
-		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
+
+
+		this.userInfo = this.$route.query;
 
 		this.fetchData();
 

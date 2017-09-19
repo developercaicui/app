@@ -307,16 +307,14 @@ export default {
 			.then(res =>{
 
 				if(!res || res.state != 'success'){
-					this.webApi.alert('用户名修改失败，请登录后到设置里重新修改');
+					this.webApi.alert('用户名设置失败，请登录后到设置里重新修改');
 					return false;
 				}
 
-				this.webApi.alert('密码修改成功, 3秒后即将跳转到登录页');
+				this.webApi.alert('注册成功, 3秒后即将跳转到登录页');
 
 				setTimeout(()=> {
-					this.$router.push({
-						path: 'login'
-					});
+					g.backLogin();
 				},3000);
 
 

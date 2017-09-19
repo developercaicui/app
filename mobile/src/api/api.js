@@ -67,7 +67,7 @@ export default {
 
     if(deviceType === 'ipad' && screenWidth*dpr < 2048/3*2 ) designWidth = 1524;
 
-    let initialRem = designWidth / 100;  // 换算基准值   (设计稿尺寸)/100(固定值)
+    let initialRem = designWidth / 100;
 
     OHTML.dataset.device = deviceType;
     OHTML.dataset.dpr = dpr;

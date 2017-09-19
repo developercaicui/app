@@ -80,7 +80,7 @@ function closeNewNote() {
 
 // 退回登录页面
 function backLogin() {
- clickBtn.registerBack('reg');
+  g.device == 'ios' ? clickBtn.registerBack('reg') : window.course.back();
 }
 
 // 跳出窗口打开活动页
