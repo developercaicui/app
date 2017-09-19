@@ -44,7 +44,7 @@
 
 				</template>
 
-				<img class="no-data" v-show="this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
+				<img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
 
 			</main>
 

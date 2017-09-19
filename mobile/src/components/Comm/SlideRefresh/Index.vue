@@ -98,6 +98,12 @@ export default {
 
 	},
 
+	mounted() {
+
+		this.$refs.refreshContent.style.minHeight = `${document.documentElement.getBoundingClientRect().height - this.$refs.refreshContent.getBoundingClientRect().top}px`;
+
+	},
+
 	watch: {
 
 		topAllLoaded(val) {

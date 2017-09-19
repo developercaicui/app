@@ -37,7 +37,7 @@ export default {
 		},
 
 		list() {
-			return this.$store.getters.getNoteList;
+			return this.$store.getters.getNoteList || [];
 		},
 	},
 
