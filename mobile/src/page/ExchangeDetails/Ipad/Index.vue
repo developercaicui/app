@@ -35,7 +35,7 @@
               <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ data.replyCount ? data.replyCount : 0 }}</span></div>
               <div class="time"><span>{{ data.updateTime }}</span></div>
               <div class="course-name">
-                <div class="tag-video-time" @click="jump_task(data)" v-if="data.taskprogress"><i class="icon-play-o"></i><span>{{ data.taskprogress }}</span></div>
+                <div class="tag-video-time" @click="jump_task(data)" v-if="data.taskprogress"><i class="icon-play-o icon-video">&#xe63f;</i><span>{{ data.taskprogress }}</span></div>
                 <span class="course-tit" v-if="data.coursename">{{ data.coursename }}</span>
               </div>
             </div>
@@ -385,7 +385,17 @@ export default {
 <style lang="scss">
 
 	@import "../../../assets/style/mixin";
-
+	.icon-video{
+	  font-family:"iconfont";
+	  font-size:0.3rem;
+	  font-weight: 700;
+	  speak: none;
+	  font-style: normal;
+	  font-variant: normal;
+	  text-transform: none;
+	  line-height: 100%;
+	  vertical-align: middle;
+	}
 	.exchange-wrap-ipad-details{
 
 		font-size: 0;

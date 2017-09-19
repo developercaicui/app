@@ -186,7 +186,7 @@ export default {
 
                   setTimeout(() => {
                       //关闭此页面
-                      g.hiddenJiuCuoView();
+                      this.closeIndex();
 
                   }, 600);
 
@@ -420,7 +420,7 @@ body #mask0 {
   width: 96%;
   position: absolute;
   bottom: 1rem;
-  line-height: 0.26rem;
+  line-height: 0.2rem;
   border-top:1px solid #e5e7e7;
 }
 .taskInfo p{
@@ -444,8 +444,6 @@ body #mask0 {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 66%;
-    padding-top: 0.1rem;
-    margin-top: -0.4rem;
 }
 .taskInfo-time span{
   display: inline-block;

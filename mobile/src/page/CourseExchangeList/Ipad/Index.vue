@@ -37,7 +37,7 @@
 	                <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ item.replyCount ? item.replyCount : 0 }}</span></div>
 	                <div class="time"><span>{{ item.updateTime }}</span></div>
 	                <div class="course-name">
-	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o"></i><span>{{ item.taskprogress }}</span></div>
+	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o icon-video">&#xe63f;</i><span>{{ item.taskprogress }}</span></div>
 	                  <span class="course-tit" v-if="item.coursename">{{ item.coursename }}</span>
 	                </div>
 	              </div>
@@ -62,7 +62,7 @@
 	                <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ item.replyCount ? item.replyCount : 0 }}</span></div>
 	                <div class="time"><span>{{ item.updateTime }}</span></div>
 	                <div class="course-name">
-	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o"></i><span>{{ item.taskprogress }}</span></div>
+	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o icon-video">&#xe63f;</i><span>{{ item.taskprogress }}</span></div>
 	                  <span class="course-tit" v-if="item.coursename">{{ item.coursename }}</span>
 	                </div>
 	              </div>
@@ -197,7 +197,7 @@ export default {
 	        param.courseid= this.courseInfo.courseId;
 	        param.categoryId= this.courseInfo.categoryId;
 	        param.subjectId= this.courseInfo.subjectId;
-	        param.courseid = "ff8080814f607c24014f6866fdb716fd"
+	        // param.courseid = "ff8080814f607c24014f6866fdb716fd"
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {
 	            this.webApi.loadingData();
@@ -302,7 +302,17 @@ export default {
 <style lang="scss" scoped>
 
  @import "../../../assets/style/mixin";
-
+.icon-video{
+  font-family:"iconfont";
+  font-size:0.3rem;
+  font-weight: 700;
+  speak: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 100%;
+  vertical-align: middle;
+}
 .all,.me{
 	min-height: 15rem;
 }
