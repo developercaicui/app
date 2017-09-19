@@ -241,16 +241,16 @@ export default {
           //获取课程信息
           // this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
           
-          alert(JSON.stringify(this.courseInfo))
+          // alert(JSON.stringify(this.courseInfo))
           let param = {};
           param.self = 0;
           param.courseid= this.courseInfo.courseId;
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
           // 
-          param.courseid= "ff8080814dad5062014db32051b801a2";
-          param.categoryId= this.courseInfo.categoryId;
-          param.subjectId= this.courseInfo.subjectId;
+          // param.courseid= "ff8080814dad5062014db32051b801a2";
+          // param.categoryId= this.courseInfo.categoryId;
+          // param.subjectId= this.courseInfo.subjectId;
 
           param.token = this.webApi.getCookie('token');
 
@@ -299,9 +299,9 @@ export default {
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
           // 
-          param.courseid= "ff8080814dad5062014db32051b801a2";
-          param.categoryId= this.courseInfo.categoryId;
-          param.subjectId= this.courseInfo.subjectId;
+          // param.courseid= "ff8080814dad5062014db32051b801a2";
+          // param.categoryId= this.courseInfo.categoryId;
+          // param.subjectId= this.courseInfo.subjectId;
 	        param.token = this.webApi.getCookie('token');
 
           this.webApi.loadingData();
@@ -314,7 +314,7 @@ export default {
 
     		          this.webApi.closeLoadingData();
 
-    		          	this.sectionList = res.data.filter(item => item.courseId == 'ff8080814dad5062014db32051b801a2');
+    		          	this.sectionList = res.data.filter(item => item.courseId == this.courseInfo.courseId);
 
     		      }
 

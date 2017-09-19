@@ -77,7 +77,7 @@ export default {
                                     "openCourseLiveManageId": "CB735BE8334BC857"
                                 }
         
-        // this.data = this.$route.query;
+        this.data = this.$route.query;
 
         this.startTime = this.data.openCourseStartTime;
         this.endTime = this.data.openCourseEndTime;
