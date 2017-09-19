@@ -23,7 +23,7 @@
 				</section>
 
 		 </SlideRefresh>
-			<img src="../../../assets/img/404.svg" class="no-data" v-show="exchangeData.totalCount == 0 ? true: false">
+			<img src="../../../assets/img/404.svg" class="no-data" v-show="exchangeData.totalCount == 0">
 
 		</main>
 
