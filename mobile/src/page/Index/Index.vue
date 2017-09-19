@@ -34,7 +34,6 @@ export default {
 
 	created() {
 
-		this.webApi.remCount();
 
 		this.webApi.delCookie('userInfo');
     this.webApi.delCookie('token');
@@ -44,10 +43,12 @@ export default {
     this.webApi.setCookie('token', this.$route.query.token);
     this.webApi.setCookie('deviceType', this.$route.query.deviceType);
 
+		this.webApi.remCount();
+
 		if(!this.webApi.getCookie('userInfo')) {
 			this.webApi.alert('用户登录信息失效', 2000);
 		}
-		
+
 		this.webApi.loadingData();
 		this.webApi.setCookie('isTargetLogin', 'false');
 
