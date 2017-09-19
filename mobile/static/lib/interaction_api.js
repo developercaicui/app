@@ -75,7 +75,7 @@ function targetLogin() {
 
 // 关闭新建页
 function closeNewNote() {
-  NoetAndRequest.hiddenAddNoteViewOrRequestView('jj');
+  g.device == 'ios' ? NoetAndRequest.hiddenAddNoteViewOrRequestView('jj') : window.course.back();
 }
 
 // 退回登录页面
