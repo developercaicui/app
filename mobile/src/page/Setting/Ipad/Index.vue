@@ -1,8 +1,8 @@
 <template lang="html">
-	<main class="set-info-modal" v-if="isShow">
-		<div class="backdrop"></div>
+	<main class="set-info-modal">
+		<!-- <div class="backdrop"></div> -->
 	      <div id="mask0" class="modal">
-	        <div @click="guanbi" class="set_tit">设置<i class="icon-close icon-guanbi">&#xe642;</i></div>
+	        <div @click="guanbi" class="set_tit">设置</div>
 	        <ul @click="modify" class="user-info">
 	          <li>
 	            <div class="left"><img class="avatar"><span class="user_nick"></span></div>
@@ -34,7 +34,7 @@
 	            <div class="left">意见反馈</div>
 	            <div class="right"><i class="icon-jiantou icon-arrow-right">&#xe619;</i></div>
 	          </li>
-	          <li @click="showAbout">
+	          <li @click="showAbout" class="none">
 	            <div class="left">关于财萃</div>
 	            <div class="right"><i class="icon-jiantou icon-arrow-right">&#xe619;</i></div>
 	          </li>
@@ -138,50 +138,24 @@ export default {
 
 	data() {
 	    return {
-	    	isShow: true,
-	    	is_ok: true,
         body: document.getElementsByTagName("body")[0]
 	    }
 	},
 
 	created() {
 
-    this.body.setAttribute("style","background:transparent")
-    this.body.setAttribute("show","index")
+    let htmlCss;
 
-    let memberinfo = JSON.parse(this.webApi.getCookie('memberInfo'));
-    
-    if(memberinfo){
-        if(memberinfo.mobile){
-
-            this.$refs.popInputTel.value = res.data.mobile
-
-        }else{
-
-            this.$refs.popInputTel.value = res.data.email
-
-        }
+    if(this.webApi.getCookie("htmlCss")){
+        htmlCss = this.webApi.getCookie("htmlCss");
     }else{
-
-        getUserInfo({'token':this.webApi.getCookie('token')})
-
-        .then(res =>{//设置联系方式
-
-            if(res && res.state == 'success'){
-
-                if(res.data.mobile){
-
-                      this.$refs.popInputTel.value = res.data.mobile
-                  }else{
-
-                      this.$refs.popInputTel.value = res.data.email
-
-                }
-            }
-          
-          })
+        htmlCss = document.documentElement.style.cssText.split("font-size:")[1].replace("px;","")/2*3;
+        this.webApi.setCookie("htmlCss",htmlCss);
     }
-		
+
+    document.documentElement.style = "font-size:"+htmlCss+"px";
+
+    this.body.setAttribute("show","index");
 
 	},
 
@@ -272,11 +246,11 @@ export default {
 
 	        })
       	},
-        guanbi() {//关闭设置页
+        // guanbi() {//关闭设置页
 
-           g.closeSetting();
+        //    g.closeSetting();
 
-        },
+        // },
         setTime() {//选择时间提醒
 
           this.$refs.picker.open();
@@ -310,33 +284,23 @@ export default {
 
 	        this.webApi.loadingData("发表中");
 
-	        if (this.is_ok) {
+          complaintOpinion(param)
 
-	            this.is_ok = false;
+          .then(res =>{
 
-	            complaintOpinion(param)
+             this.webApi.closeLoadingData();
 
-	            .then(res =>{
+             if (res && res.state == 'success') {
 
-	               this.webApi.closeLoadingData();
+                    this.webApi.alert('发表成功');
 
-		           if (res && res.state == 'success') {
+                } else {
 
-	                    this.webApi.alert('发表成功');
+                    this.webApi.alert(res.msg);
+              }
 
-	                    setTimeout(function () {
-	                        this.isShow = !this.isShow
-	                    }, 600);
+          })
 
-	                } else {
-	                    this.is_ok = true;
-	                    // this.webApi.alert('发表失败，请重试！');
-	                    this.webApi.alert(res.msg);
-	                }
-
-		        })
-
-	        }
 	      }
 	},
 	mounted() {
@@ -346,6 +310,38 @@ export default {
 	  	  let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
       	let avatar = this.webApi.cdnImgUrl + JSON.parse(this.webApi.getCookie("userInfo")).avatar;
 
+        let memberinfo = JSON.parse(this.webApi.getCookie('memberInfo'));
+    
+        if(memberinfo){
+            if(memberinfo.mobile){
+
+                this.$refs.popInputTel.value = memberinfo.mobile
+
+            }else{
+
+                this.$refs.popInputTel.value = memberinfo.email
+
+            }
+        }else{
+
+            getUserInfo({'token':this.webApi.getCookie('token')})
+
+            .then(res =>{//设置联系方式
+
+                if(res && res.state == 'success'){
+
+                    if(res.data.mobile){
+
+                          this.$refs.popInputTel.value = res.data.mobile
+                      }else{
+
+                          this.$refs.popInputTel.value = res.data.email
+
+                    }
+                }
+              
+              })
+        }
 
       	$('.user_nick').html(nickName);
         //设置头像
@@ -527,8 +523,8 @@ body[show='about'] #mask2 {
   background: transparent;
 }
 .modal {
-  width: 13rem;
-  height: 11rem;
+  width: 100%;
+  height: 100%;
   font-size: 0.3rem;
   position: absolute;
   top: 50%;
@@ -539,6 +535,7 @@ body[show='about'] #mask2 {
   border-radius: 7px;
   background: #f3f3f3;
   overflow: hidden;
+  padding-top: 0.4rem;
 }
 .modal .avatar {
   width: 0.7rem;
@@ -621,8 +618,8 @@ body[show='about'] #mask2 {
   right: 0.02rem;
 }
 .modal .set_tit {
-  height: 0.9rem;
-  line-height: 0.9rem;
+  height: 1.05rem;
+  line-height: 1.05rem;
   font-size: 0.34rem;
   color: #494949;
   text-align: center;
@@ -630,6 +627,7 @@ body[show='about'] #mask2 {
   background: #fff;
   border-bottom: 1px solid #a8a8a8;
   position: relative;
+  background:#f5f5f5;
 }
 .modal .set_tit .icon-close {
   position: absolute;
@@ -656,7 +654,7 @@ body[show='about'] #mask2 {
   text-align: center;
   border-radius: 0.1rem;
   padding: 0 0.24rem;
-  background: #f2f0f0;
+  background: #ccc;
   position: absolute;
   top: 0.15rem;
   right: 0.24rem;

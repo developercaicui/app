@@ -27,6 +27,7 @@
           </li>
         </template>
       </div>
+      <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
       </SlideRefresh>
   </div>
 
@@ -48,7 +49,8 @@ export default {
       isIpad: false,
       isMobile: false,
       overdueData: {}, // 在学课程列表
-      activeBtn: ""
+      activeBtn: "",
+      sectionList:[],
       }
   },
 
@@ -81,13 +83,14 @@ methods: {
     .then(res =>{
 
       if(res && res.state == 'success'){
+
+          if(res.data.courselist.length < 1){
+              return false;
+          }
             
           this.overdueData = this.webApi.outCourseList(res);
 
-          if(this.webApi.isEmpty(this.overdueData)){
-              this.$refs.courseContentover.classList.add("null")
-              return false;
-          }
+          this.sectionList.push(this.overdueData);
 
           let str = JSON.stringify(this.overdueData);
 
@@ -164,6 +167,7 @@ methods: {
 </script>
 
 <style lang="scss" scoped>
+@import "../../../assets/style/mixin";
 .course-content{
     padding-top:1.4rem;
     min-height: 15rem;
@@ -319,5 +323,10 @@ methods: {
   margin:0 0.5rem;
   position:absolute;
 }
-
+.no-data{
+  @extend .ab;
+  @include wh(2.4rem, 2.4rem);
+  left: 50%; top: 4rem;
+  margin-left: -1.2rem;
+}
 </style>
