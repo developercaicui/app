@@ -155,6 +155,12 @@ export default {
 		handleSendCouseInfo(ev) {
 
 			let oA = this.webApi.recursiveParentNode(ev.target, 'a');
+			let data = JSON.parse(oA.dataset.data);
+
+			if(data.lockStatus && data.lockStatus != 0 ){
+				this.webApi.alert('当前的课程已锁定,续费后即可解锁！');
+				return false;
+			}
 
 			g.targetLearningCourses(oA.dataset.data);
 

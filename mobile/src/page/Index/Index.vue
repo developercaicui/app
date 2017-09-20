@@ -113,6 +113,7 @@ export default {
 						subjectID: item.subjectID,
 						taskTotal: item.taskTotal,
 						versionId: item.versionId,
+						lockStatus: item.lock_status,
 						courseProgress: 0,
 						examinationDate: '暂无考试',
 						token: this.userInfo.token,
