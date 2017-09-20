@@ -418,16 +418,16 @@ export default {
 
 	 .reg-head{
 
-		@include wh(100%, 1.05rem);
+		@include wh(100%, 1.46rem);
  		position: relative;
- 		padding: 0 .4rem;
+ 		padding: $commTop .4rem 0;
 		background-color: #ebebee;
 
  		.back{
 			@include fc($commBackFont, $commPink);
  			position: absolute;
- 			z-index: 9;
- 			height: 100%;
+ 			z-index: 9; top: $commTop;
+ 			height: 1.05rem;
  			display: flex;
  			align-items: center;
  			font-family: 'iconfont';
@@ -438,7 +438,7 @@ export default {
  			@include fc(.32rem, #000);
 			@extend .flexCenter;
 			padding-left: .4rem;
- 			left: 0; top: 0; right: 0;
+ 			left: 0; top: $commTop; right: 0;
  			height: 1.05rem;
  		}
 
