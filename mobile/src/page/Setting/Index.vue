@@ -1,23 +1,23 @@
 <template lang="html">
 
 	<div>
-		<settingIpad v-show="isIpad"></settingIpad>
-		<settingMobile v-show="isMobile"></settingMobile>
+		<Ipad v-show="isIpad"></Ipad>
+		<Mobile v-show="isMobile"></Mobile>
 	</div>
 
 </template>
 
 <script>
 
-import settingIpad from './Ipad';
-import settingMobile from './Mobile';
+import Ipad from './Ipad';
+import Mobile from './Mobile';
 
 export default {
 
 	components: {
-		settingMobile,
-		settingIpad,
-  	},
+		Mobile,
+		Ipad,
+  },
 
 	data() {
 	    return {
@@ -30,8 +30,6 @@ export default {
 
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
-
-		
 
 	},
 

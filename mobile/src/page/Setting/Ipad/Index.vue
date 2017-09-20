@@ -1,7 +1,7 @@
 <template lang="html">
 	<main class="set-info-modal">
 		<!-- <div class="backdrop"></div> -->
-	      <div id="mask0" class="modal">
+	      <div id="mask0" class="modal setting-wrap">
 	        <div @click="guanbi" class="set_tit">设置</div>
 	        <ul @click="modify" class="user-info">
 	          <li>
@@ -216,7 +216,7 @@ export default {
         openurl(url) {//打开微博
 
             g.passWeiBoUrl(url);
-            
+
         },
       	//退出登录
       	logout() {
@@ -311,7 +311,7 @@ export default {
       	let avatar = this.webApi.cdnImgUrl + JSON.parse(this.webApi.getCookie("userInfo")).avatar;
 
         let memberinfo = JSON.parse(this.webApi.getCookie('memberInfo'));
-    
+
         if(memberinfo){
             if(memberinfo.mobile){
 
@@ -339,7 +339,7 @@ export default {
 
                     }
                 }
-              
+
               })
         }
 
@@ -482,14 +482,14 @@ body[show='index'] {
   overflow-x: hidden;
 }
 body[show='index'] #mask0 {
-  opacity: 1;
-  -webkit-transform: translate(-50%, -50%);
+  // opacity: 1;
+  // -webkit-transform: translate(-50%, -50%);
 }
 body[show='video'] {
   overflow-x: hidden;
 }
 body[show='video'] #mask0 {
-  -webkit-transform: translate(-250%, -50%);
+  // -webkit-transform: translate(-250%, -50%);
 }
 body[show='video'] #mask3 {
   opacity: 1;
@@ -499,7 +499,7 @@ body[show='feedback'] {
   overflow-x: hidden;
 }
 body[show='feedback'] #mask0 {
-  -webkit-transform: translate(-250%, -50%);
+  // -webkit-transform: translate(-250%, -50%);
 }
 body[show='feedback'] #mask {
   opacity: 1;
@@ -509,7 +509,7 @@ body[show='about'] {
   overflow-x: hidden;
 }
 body[show='about'] #mask0 {
-  -webkit-transform: translate(-250%, -50%);
+  // -webkit-transform: translate(-250%, -50%);
 }
 body[show='about'] #mask2 {
   opacity: 1;
@@ -537,6 +537,14 @@ body[show='about'] #mask2 {
   overflow: hidden;
   padding-top: 0.4rem;
 }
+
+.setting-wrap{
+	left: 0; right: 0; top: 0;
+	transform: translate(0%, 0%);
+	height: 100%;
+	opacity: 1;
+}
+
 .modal .avatar {
   width: 0.7rem;
   height: 0.7rem;
