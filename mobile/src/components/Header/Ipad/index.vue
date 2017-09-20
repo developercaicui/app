@@ -211,7 +211,7 @@ export default {
      position: absolute;
      right: .94rem; bottom: 1.2rem;
      @include wh(.6rem, .6rem);
-     @include fc(.56rem, $commPink);
+     @include fc(.56rem, #666);
      transform: scale(.9);
 
      .msg-num{
