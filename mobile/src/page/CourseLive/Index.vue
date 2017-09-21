@@ -1,30 +1,20 @@
 <template lang="html">
-
-	<div>
-		<Ipad v-show="isIpad"></Ipad>
-		<Mobile v-show="isMobile"></Mobile>
-	</div>
-
+	<router-view></router-view>
 </template>
 
 <script>
 
-import Ipad from './Ipad';
-import Mobile from './Mobile';
-
 export default {
 
 	components: {
-		Mobile,
-		Ipad,
   },
 
-	data() {
-	    return {
+  data() {
+    return {
 			isIpad: false,
-	  		isMobile: false,
-	    }
-	},
+      isMobile: false
+    }
+  },
 
 	created() {
 
@@ -34,13 +24,14 @@ export default {
 	},
 
 
-	methods: {
+  methods: {
 
-	}
+  }
 
 }
 
 </script>
 
 <style lang="scss" scoped>
+
 </style>

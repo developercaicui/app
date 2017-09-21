@@ -88,51 +88,54 @@ export default {
     }
   },
 
+	watch: {
 
-	updated() {
+		learningCourseList() {
 
-		let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
-		let arr = ['#4a90e2','#3E4F61','#408684'];
+			let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
+			let arr = ['#4a90e2','#3E4F61','#408684'];
 
-		canvasList.forEach((obj, index) =>{
+			canvasList.forEach((obj, index) =>{
 
-				let ctx = obj.getContext('2d');
-				let r = obj.parentNode.getBoundingClientRect().width / 2;
+					let ctx = obj.getContext('2d');
+					let r = obj.parentNode.getBoundingClientRect().width / 2;
 
-				obj.width = obj.height = r * 2;
+					obj.width = obj.height = r * 2;
 
-				drawArc(ctx, r, obj.dataset.progress, arr[index]);
-		});
-
-
-		function drawArc(ctx, r, num, backColor){
-
-			// 底图
-			ctx.beginPath();
-			ctx.fillStyle = 'rgba(255,255,255,.5)';
-			ctx.arc(r, r, r, 0, 2*Math.PI);
-			ctx.fill();
+					drawArc(ctx, r, obj.dataset.progress, arr[index]);
+			});
 
 
-			// 动画层
-		  let sAngel = 0 * Math.PI;
-		  let eAngel = 0 * Math.PI;
-		  let aAngle = Math.PI*1.5;
+			function drawArc(ctx, r, num, backColor){
 
-			ctx.beginPath();
-		  ctx.fillStyle = '#fff';
-		  ctx.moveTo(r, r);
-		  ctx.arc(r, r, r, sAngel, Math.PI*2*(num*0.01));
-		  ctx.fill();
-
-			// 覆盖层
-			ctx.beginPath();
-			ctx.fillStyle = backColor;
-			ctx.arc(r, r, r-r/15, 0, 2*Math.PI);
-			ctx.fill();
+				// 底图
+				ctx.beginPath();
+				ctx.fillStyle = 'rgba(255,255,255,.5)';
+				ctx.arc(r, r, r, 0, 2*Math.PI);
+				ctx.fill();
 
 
-		}
+				// 动画层
+			  let sAngel = 0 * Math.PI;
+			  let eAngel = 0 * Math.PI;
+			  let aAngle = Math.PI*1.5;
+
+				ctx.beginPath();
+			  ctx.fillStyle = '#fff';
+			  ctx.moveTo(r, r);
+			  ctx.arc(r, r, r, sAngel, Math.PI*2*(num*0.01));
+			  ctx.fill();
+
+				// 覆盖层
+				ctx.beginPath();
+				ctx.fillStyle = backColor;
+				ctx.arc(r, r, r-r/15, 0, 2*Math.PI);
+				ctx.fill();
+
+
+			}
+
+		},
 
 	},
 
@@ -152,6 +155,12 @@ export default {
 		handleSendCouseInfo(ev) {
 
 			let oA = this.webApi.recursiveParentNode(ev.target, 'a');
+			let data = JSON.parse(oA.dataset.data);
+
+			if(data.lockStatus && data.lockStatus != 0 ){
+				this.webApi.alert('当前的课程已锁定,续费后即可解锁！');
+				return false;
+			}
 
 			g.targetLearningCourses(oA.dataset.data);
 
@@ -163,7 +172,7 @@ export default {
 
 			let oFigure = this.webApi.recursiveParentNode(ev.target, 'figure');
 
-			g.openActivityPage(oFigure.dataset.href);
+			!oFigure.dataset.href ? this.webApi.alert('活动已过期', 1500) : g.openActivityPage(oFigure.dataset.href) ;
 
 		},
 

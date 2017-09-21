@@ -27,8 +27,6 @@ export default {
 
   data() {
     return {
-			isIpad: false,
-      isMobile: false,
 			learningCourseList: [], // 最近在学课程
 			userInfo: {}, // 用户信息
     }
@@ -36,16 +34,30 @@ export default {
 
 	created() {
 
+
+		this.webApi.delCookie('userInfo');
+    this.webApi.delCookie('token');
+    this.webApi.delCookie('deviceType');
+
+    this.webApi.setCookie('userInfo', JSON.stringify(this.$route.query));
+    this.webApi.setCookie('token', this.$route.query.token);
+    this.webApi.setCookie('deviceType', this.$route.query.deviceType);
+
+		this.webApi.remCount();
+
+		if(!this.webApi.getCookie('userInfo')) {
+			this.webApi.alert('用户登录信息失效', 2000);
+		}
+
 		this.webApi.loadingData();
 		this.webApi.setCookie('isTargetLogin', 'false');
-		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
-		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
-		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
+		this.userInfo = this.$route.query;
 
 		this.fetchData();
 
 		this.$store.dispatch('fetchActivityList')
+
 
 	},
 
@@ -53,6 +65,14 @@ export default {
 
 		activityList() {
 			return  this.$store.getters.getActivityList;
+		},
+
+		isIpad() {
+			return this.$store.getters.getDeviceInfo.isIpad;
+		},
+
+		isMobile() {
+			return this.$store.getters.getDeviceInfo.isMobile;
 		}
 
 	},
@@ -88,11 +108,12 @@ export default {
 						courseId: item.courseId,
 						categoryId: item.categoryId,
 						courseGroupId: item.courseGroupId,
-						expirationTime: `${expirationDate.getFullYear()}/${this.webApi.isSmallTen(expirationDate.getMonth())}/${this.webApi.isSmallTen(expirationDate.getDate())}`,
+						expirationTime: `${expirationDate.getFullYear()}/${this.webApi.isSmallTen(expirationDate.getMonth() + 1)}/${this.webApi.isSmallTen(expirationDate.getDate())}`,
 						courseGroupId: item.courseGroupId,
 						subjectID: item.subjectID,
 						taskTotal: item.taskTotal,
 						versionId: item.versionId,
+						lockStatus: item.lock_status,
 						courseProgress: 0,
 						examinationDate: '暂无考试',
 						token: this.userInfo.token,
@@ -161,7 +182,7 @@ export default {
 				this.learningCourseList = this.learningCourseList.sort((a, b) => a.createTime - b.createTime );
 
 				// courseId 做比较
-				res.data.map(item => this.learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth())}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
+				res.data.map(item => this.learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth() + 1)}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
 
 			})
 

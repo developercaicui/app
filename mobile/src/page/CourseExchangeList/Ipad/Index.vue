@@ -12,12 +12,12 @@
 		        </div>
 		      </div>
 		      <ul class="right">
-		        <li @click="showSearchBar"><i class="icon-sousuo icon-search2">&#xe651;</i></li>
-		        <li @click="new_answer"><span>提问</span><i class="icon-plus" style="font-size: 0.6rem;vertical-align: middle;">+</i></li>
+		        <li @click="showSearchBar"><i class="icon-sousuo icon-search2 icon-new-srarch">&#xe651;</i></li>
+		        <li @click="new_answer"><span class="head-r-text">提问+</span></li>
 		      </ul>
 		      <div class="search-bar">
 		        <input type="text" name="input-lx" placeholder="搜索" class="input-txt" ref="searchWord">
-		        <div class="right"><i class="icon-sousuo icon-search2">&#xe651;</i><span @click="goSearch()" class="submit">搜索</span><span @click="hideSearchBar" class="cancel">取消</span></div>
+		        <div class="right"><i class="icon-sousuo icon-search-f">&#xe651;</i><span @click="goSearch()" class="submit">搜索</span><span @click="hideSearchBar" class="cancel">取消</span></div>
 		      </div>
       		</div>
 			<div class="all" v-show="defaultAct==0" ref="all">
@@ -37,7 +37,7 @@
 	                <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ item.replyCount ? item.replyCount : 0 }}</span></div>
 	                <div class="time"><span>{{ item.updateTime }}</span></div>
 	                <div class="course-name">
-	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o"></i><span>{{ item.taskprogress }}</span></div>
+	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o icon-video">&#xe63f;</i><span>{{ item.taskprogress }}</span></div>
 	                  <span class="course-tit" v-if="item.coursename">{{ item.coursename }}</span>
 	                </div>
 	              </div>
@@ -62,7 +62,7 @@
 	                <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ item.replyCount ? item.replyCount : 0 }}</span></div>
 	                <div class="time"><span>{{ item.updateTime }}</span></div>
 	                <div class="course-name">
-	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o"></i><span>{{ item.taskprogress }}</span></div>
+	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o icon-video">&#xe63f;</i><span>{{ item.taskprogress }}</span></div>
 	                  <span class="course-tit" v-if="item.coursename">{{ item.coursename }}</span>
 	                </div>
 	              </div>
@@ -300,6 +300,19 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
+ @import "../../../assets/style/mixin";
+.icon-video{
+  font-family:"iconfont";
+  font-size:0.3rem;
+  font-weight: 700;
+  speak: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 100%;
+  vertical-align: middle;
+}
 .all,.me{
 	min-height: 15rem;
 }
@@ -391,7 +404,7 @@ export default {
 .s-head {
   background: #fff;
   font-size: 0.32rem;
-  height: 1.25rem;
+  height: 1.34rem;
   line-height: 1.25rem;
   position: relative;
   border-bottom: 1px solid #ddd;
@@ -511,7 +524,7 @@ export default {
 }
 .search-bar {
   display: none;
-  height: 1.24rem;
+  height: 1.34rem;
   width: 100%;
   position: absolute !important;
   background: #fff;
@@ -542,7 +555,7 @@ select {
   border-radius: 0.08rem;
 }
 .input-txt {
-  width: 97%;
+  width: 94%;
   padding: 0 0.3rem;
   font-size: 0.28rem;
   background: transparent !important;
@@ -785,4 +798,23 @@ select {
 .avatar {
   border-radius: 50%;
 }
+
+	.s-head{
+		.right li i.icon-new-srarch{
+			font-size: .48rem;
+			position: relative;
+			top: -.03rem; left: .35rem;
+		}
+		i.icon-search-f{
+			margin-right: .4rem;
+			top: -.1rem;
+    	position: relative;
+		}
+	}
+
+	.right{
+		span{
+			font-size: .34rem;
+		}
+	}
 </style>

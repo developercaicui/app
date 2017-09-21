@@ -1,16 +1,19 @@
 <template lang="html">
 	<div class="note-wrap-ipad-edit">
-		<div class="backdrop"></div>
-      <div id="mask0" class="modal">
-        <div class="set_tit">视频纠错
-            <div @click="closeIndex" class="right">关闭</div>
+      <header class="one-top">
+        <a href="javascript:;" @touchend.stop="closeIndex">&#xe67f;</a>
+        <h1>视频纠错</h1>
+        <div class="state-edit"  @touchend.stop="sub">
+          <a href="javascript:;">&#xe654;</a>
         </div>
+      </header>
+
         <div id="pop-radios" class="pop-radios">
           <a href="javascript:;" class="pop-radio-label"  @click="selecType" :data-index="index" :class="courrNum == index ?'active' : '' " v-for="(item,index) in cmptType">
             <span class="pop-radio">
                 <span class="pop-radio-round"></span>
             </span>
-            <span class="pop-radio-span">无法播放</span>
+            <span class="pop-radio-span">{{ item }}</span>
           </a>
         </div>
         <div class="feeback-textareaBox">
@@ -20,14 +23,14 @@
               <p class="taskInfo-title" v-text="taskInfotitle"></p>
           </div>
         </div>
-        <div class="pop-tel">联系方式
+        <div class="pop-tel">请核对您的联系方式
           <input type="text" class="pop-input-tel" :value="mobile" ref="popinputTel">
           <div class="right">
-            <p @click="closeIndex">取消</p>
-            <p class="active" @click="sub()">提交</p>
+            <!-- <p @click="closeIndex">取消</p>
+            <p class="active" @click="sub()">提交</p> -->
           </div>
         </div>
-      </div>
+
 	</div>
 
 </template>
@@ -183,7 +186,7 @@ export default {
 
                   setTimeout(() => {
                       //关闭此页面
-                      g.hiddenJiuCuoView();
+                      this.closeIndex();
 
                   }, 600);
 
@@ -286,87 +289,43 @@ body #mask0 {
   height: 100%;
   overflow: hidden;
 }
-.modal {
-  width: 13rem;
-  height: 11rem;
-  font-size: 0.3rem;
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  opacity: 0;
-  -webkit-transform: translate(50%, -50%);
-  z-index: 3;
-  border-radius: 7px;
-  background: #f3f3f3;
-  overflow: hidden;
-}
+.note-wrap-ipad-edit{
 
-.modal input {
-  margin-right: -0.55rem;
-}
+    padding-top: $commTop;
+    background-color: $commTopWhite;
 
-.modal .set_tit {
-  height: 0.9rem;
-  line-height: 0.9rem;
-  font-size: 0.34rem;
-  color: #494949;
-  text-align: center;
-  border-radius: 7px 7px 0 0;
-  background: #fff;
-  border-bottom: 1px solid #a8a8a8;
-  position: relative;
-}
-.modal .set_tit .icon-close {
-  position: absolute;
-  top: 0.33rem;
-  right: 0.3rem;
-  color: #a4a4a4;
-  font-weight: bold;
-  font-size: 0.34rem;
-}
-.modal .set_tit .icon-arrow-left {
-  position: absolute;
-  top: 0.27rem;
-  left: 0.32rem;
-  color: #00a085;
-  font-weight: bold;
-  font-size: 0.4rem;
-}
-.modal .set_tit .send_btn {
-  font-size: 0.28rem;
-  color: #494949;
-  font-weigth: bold;
-  height: 0.6rem;
-  line-height: 0.6rem;
-  text-align: center;
-  border-radius: 0.1rem;
-  padding: 0 0.24rem;
-  background: #f2f0f0;
-  position: absolute;
-  top: 0.15rem;
-  right: 0.24rem;
-}
+    .state-edit{
+      @extend .ab;
+      right: .3rem; top: 50%; transform: translateY(-50%);
+      font-family: 'iconfont';
+      a{
+        @include fc(.7rem, $commPink);
+        @extend .show;
+      }
+    }
 
-.modal textarea {
-  min-height: 2.5rem;
-  line-height: 0.4rem;
-  font-size: 0.3rem;
-  color: #494949;
-  padding: 0.2rem;
-  border: 0;
-  border-radius: 7px;
-  background: #fff;
-  width: 100%;
-  outline: none;
-}
-.modal{
-    width: 10.8rem;
-    height: 12.6rem;
-}
 
-.modal textarea{
-    min-height: 3rem;
-    padding: 0.2rem 0;
+  .one-top{
+    position: relative;
+    @include wh(100%, 1.05rem);
+    border-bottom: 1px solid #B9B9B9;
+    background-color: #fff;
+    > a{
+      @extend .ab;
+      @include fc($commBackFont, $commPink);
+      font-family: 'iconfont';
+      left: .38rem; padding-left: .1rem;
+      top: 50%; transform: translateY(-50%);
+    }
+
+    h1{
+      @extend .flexCenter;
+      @include fc(.3rem, #1D1D1D);
+      height: inherit;
+    }
+
+  }
+
 }
 .pop-radios {
     overflow: hidden;
@@ -410,6 +369,7 @@ body #mask0 {
     padding-left: 0.1rem;
     font-weight: bold;
     color: #666666;
+    vertical-align: middle;
 }
 .pop-radios .pop-radio-label.active .pop-radio .pop-radio-round {
   background-color: #F5A623
@@ -428,6 +388,8 @@ body #mask0 {
     color: #3E4E63;
     margin-left: 0.4rem;
     margin-top:10px;
+    margin-top: -0.2rem;
+    font-size:0.3rem;
 }
 .pop-tel .pop-input-tel {
     width: 2.4rem;
@@ -442,20 +404,27 @@ body #mask0 {
      margin-top: 0;
 }
 .feeback-textareaBox{
+    width: 100%;
+    height: 8.27rem;
     padding:0.2rem 0.4rem;
     position: relative;
     padding-bottom: 1rem;
+    
+    textarea{
+      width:100%;
+      height:100%;
+      border: 1px solid #eee;
+    }
 }
 .taskInfo{
-  width: 92.6%;
+  width: 96%;
   position: absolute;
-  bottom: 0.2rem;
-  line-height: 0.7rem;
+  bottom: 1rem;
+  line-height: 0.2rem;
   border-top:1px solid #e5e7e7;
-  background: #fff;
 }
 .taskInfo p{
-
+  
   display: inline-block;
 }
 .taskInfo p:nth-child(1){
@@ -475,8 +444,6 @@ body #mask0 {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 66%;
-    padding-top: 0.1rem;
-    margin-top: -0.4rem;
 }
 .taskInfo-time span{
   display: inline-block;
@@ -510,24 +477,7 @@ body #mask0 {
 .taskInfo .taskInfo-title{
     vertical-align: middle;
 }
-.modal .set_tit{
-    font-weight: bold;
-}
-.modal .set_tit .right{
-    width: 1rem;
-    height: 0.6rem;
-    border:1px solid #dedbdb;
-    border-radius: 5px;
-    background: #f2f0f0;
-    font-size: 0.27rem;
-    font-weight:bold;
-    color: #5c5c5c;
-    text-align: center;
-    line-height: 0.6rem;
-    position: absolute;
-    right: 0.4rem;
-    top:0.15rem;
-}
+
 .pop-tel div{
     margin-right: 0.8rem;
 }

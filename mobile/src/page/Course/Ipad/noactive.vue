@@ -3,7 +3,7 @@
   <div class="course-content course-pic-list learning" ref="courseContentnoact">
   <SlideRefresh @top-status-change="topStatusChange">
       <div class="learning-navL">
-        <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in noactiveData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
+        <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in noactiveData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
 
       <div class="stydys" v-for="(value,key) in noactiveData" v-if="activeBtn===key">
@@ -27,6 +27,7 @@
         </li>
         </template>
       </div>
+      <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
 	</SlideRefresh>
       <Setactivate v-if="activeCour" :noactive-course="noactiveCourse" @close-me="closeMe"></Setactivate>
 
@@ -55,7 +56,8 @@ export default {
 	      noactiveData: {}, // 在学课程列表
 	      noactiveCourse: {},
 	      activeBtn: "",
-	      activeCour: false
+	      activeCour: false,
+	      sectionList:[],
       }
   },
 
@@ -89,13 +91,14 @@ export default {
 	    .then(res =>{
 
 	      if(res && res.state == 'success'){
-	            
-	        this.noactiveData = this.webApi.outCourseList(res);
-
-	        if(this.webApi.isEmpty(this.noactiveData)){
-			      this.$refs.courseContentnoact.classList.add("null")
+	        console.log(res.data.courselist)
+	        if(res.data.courselist.length < 1){
 			      return false;
 			}
+
+	        this.noactiveData = this.webApi.outCourseList(res);
+
+	        this.sectionList.push(this.noactiveData);
 
 	        let str = JSON.stringify(this.noactiveData);
 
@@ -130,6 +133,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../../assets/style/mixin";
 .course-content{
     padding-top:1.4rem;
     min-height: 15rem;
@@ -156,6 +160,7 @@ export default {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
+  min-height: 12.5rem;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;
@@ -284,5 +289,10 @@ export default {
   margin:0 0.5rem;
   position:absolute;
 }
-
+.no-data{
+	@extend .ab;
+	@include wh(2.4rem, 2.4rem);
+	left: 50%; top: 4rem;
+	margin-left: -1.2rem;
+}
 </style>

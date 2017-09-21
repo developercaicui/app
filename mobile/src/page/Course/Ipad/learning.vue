@@ -3,13 +3,13 @@
 	<div class="course-content course-pic-list learning" ref="courseContentlearn">
 	<SlideRefresh @top-status-change="topStatusChange">
 		<div class="learning-navL">
-        <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
+        <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
 
       <div class="stydys" v-for="(value,key) in learningData" v-if="activeBtn===key">
         <template v-for="val in value.children">
         <h2>{{ val.subjectName }}</h2>
-        <li class="learnLi" data-coursename="" data-chaptername="" @touchend="openCourse(item,$event)" v-for="item in val.courseLists">
+        <li class="learnLi" data-coursename="" data-chaptername="" @click="openCourse(item,$event)" v-for="item in val.courseLists">
           <div :style="setBackground(item.courseBkImage)" class="cpl-head">
             <h4 class="exam_time none"></h4>
             <h4 class="course_due">课程到期：{{ formatDate(item.expirationTime,"Y")+'-'+formatDate(item.expirationTime,'M')+'-'+formatDate(item.expirationTime,'D') }}</h4>
@@ -39,7 +39,7 @@
         </li>
         </template>
       </div>
-
+		<img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
       </SlideRefresh>
 	</div>
 
@@ -63,7 +63,8 @@ export default {
 			learningData: {}, // 在学课程列表
 			learningcourse: {},
 			activeBtn: "",
-			imgurl: 'http://cdnimg.caicui.com/'
+			imgurl: 'http://cdnimg.caicui.com/',
+			sectionList:[],
 	    }
 	},
 
@@ -102,6 +103,11 @@ export default {
 			this.webApi.closeLoadingData();
 
 			if(res && res.state == 'success'){
+
+				if(res.data.courselist.length < 1){
+				      return false;
+				}
+
 				let learningcourseData = res;
 				let learninglist = res.data.courselist;
 	    		let courseArr = [];
@@ -144,11 +150,8 @@ export default {
 						}
 
 						this.learningData = this.webApi.outCourseList(ret);
-						
-					  	if(this.webApi.isEmpty(this.learningData)){
-						      this.$refs.courseContentlearn.classList.add("null")
-						      return false;
-						}
+
+						this.sectionList.push(this.learningData);
 					  	
 						let str = JSON.stringify(this.learningData);
 
@@ -241,7 +244,14 @@ export default {
 		return `background-image:url(${this.webApi.cdnImgUrl}${url})`
 	},
 	openCourse(data,ev) {// 发送课程信息给原生
-		
+
+		if(data.lock_status != 0 ){
+
+			this.webApi.alert('当前的课程已锁定,续费后即可解锁！');
+
+			return false;
+
+		}
 
 		let obj = this.webApi.recursiveParentNode(ev.target,'li');
 		let progress = obj.querySelector("div.progress-val").innerText.replace(/\%/g,"");
@@ -265,6 +275,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import "../../../assets/style/mixin";
 .course-content{
     padding-top:1.4rem;
     min-height: 15rem;
@@ -291,6 +302,7 @@ export default {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
+  min-height: 12.5rem;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;
@@ -428,5 +440,10 @@ export default {
   margin:0 0.5rem;
   position:absolute;
 }
-
+.no-data{
+	@extend .ab;
+	@include wh(2.4rem, 2.4rem);
+	left: 50%; top: 4rem;
+	margin-left: -1.2rem;
+}
 </style>

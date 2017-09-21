@@ -36,14 +36,7 @@ export default {
 
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
-		this.webApi.loadingData();
-
-
-		this.$store.commit('updateExchangeListP', {
-			token: this.userInfo.token
-		});
-
-		this.$store.dispatch('fetchExchangeList');
+		if(!this.exchangeData.data) this.fetchList();
 
 	},
 
@@ -58,6 +51,18 @@ export default {
 
 
   methods: {
+
+		fetchList() {
+
+			this.webApi.loadingData();
+
+			this.$store.commit('updateExchangeListP', {
+				token: this.userInfo.token
+			});
+
+			this.$store.dispatch('fetchExchangeList');
+
+		},
 
 
 		// 打开详情

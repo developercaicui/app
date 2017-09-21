@@ -37,7 +37,7 @@ export default {
 		},
 
 		list() {
-			return this.$store.getters.getNoteList;
+			return this.$store.getters.getNoteList || [];
 		},
 	},
 
@@ -45,7 +45,8 @@ export default {
 
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {})
 
-		this.fetchList();
+		if(this.list.length == 0) this.fetchList();
+
 
 	},
 
