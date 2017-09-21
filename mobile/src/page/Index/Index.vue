@@ -108,7 +108,7 @@ export default {
 						courseId: item.courseId,
 						categoryId: item.categoryId,
 						courseGroupId: item.courseGroupId,
-						expirationTime: `${expirationDate.getFullYear()}/${this.webApi.isSmallTen(expirationDate.getMonth())}/${this.webApi.isSmallTen(expirationDate.getDate())}`,
+						expirationTime: `${expirationDate.getFullYear()}/${this.webApi.isSmallTen(expirationDate.getMonth() + 1)}/${this.webApi.isSmallTen(expirationDate.getDate())}`,
 						courseGroupId: item.courseGroupId,
 						subjectID: item.subjectID,
 						taskTotal: item.taskTotal,
@@ -182,7 +182,7 @@ export default {
 				this.learningCourseList = this.learningCourseList.sort((a, b) => a.createTime - b.createTime );
 
 				// courseId 做比较
-				res.data.map(item => this.learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth())}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
+				res.data.map(item => this.learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth() + 1)}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
 
 			})
 

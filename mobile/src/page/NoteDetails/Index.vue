@@ -59,7 +59,7 @@ export default {
 
 			let date = new Date(res.data.updateTime*1000);
 
-			res.data.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}  ${res.data.nikeName}`;
+			res.data.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth() + 1)}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}  ${res.data.nikeName}`;
 
 			res.data.imgPath =  res.data.imgPath ? res.data.imgPath.split(',') : [];
 			res.data.imgPath = res.data.imgPath.filter(isNormal);

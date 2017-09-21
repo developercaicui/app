@@ -100,9 +100,10 @@ export default {
 			> a{
 				@extend .ab;
 				@include fc($commBackFont, $commPink);
+				@include wh(1.5rem, 1.05rem);
+				@extend .flexCenter;
 				font-family: 'iconfont';
-				left: .38rem; padding-left: .1rem;
-				top: 50%; transform: translateY(-50%);
+				left: 0; padding-left: .1rem; top: 0;
 			}
 
 			h1{
