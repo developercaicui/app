@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" :selectedData="selectedData"></Ipad>
+		<Ipad v-if="isIpad" @fetch-list="fetchList" :selectedData="selectedData"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
@@ -26,14 +26,10 @@ export default {
 
 	created() {
 
-		this.webApi.loadingData();
+
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {});
 
-		this.$store.commit('updateNoteSelectedListP', {
-			token: this.userInfo.token
-		});
-
-		this.$store.dispatch('fetchNewNoteList');
+		if(!this.selectedData.courselist) this.fetchList()
 
 	},
 
@@ -54,6 +50,18 @@ export default {
 	},
 
   methods: {
+
+		fetchList() {
+
+			this.webApi.loadingData();
+
+			this.$store.commit('updateNoteSelectedListP', {
+				token: this.userInfo.token
+			});
+
+			this.$store.dispatch('fetchNewNoteList');
+
+		}
 
   }
 
