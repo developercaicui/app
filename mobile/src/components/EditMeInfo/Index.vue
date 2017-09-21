@@ -184,11 +184,11 @@ export default {
 
  		.back{
  			position: absolute;
+			left: 0;
  			z-index: 9;
- 			height: 100%;
- 			display: flex;
- 			align-items: center;
  			font-family: 'iconfont';
+			@extend .flexCenter;
+			@include wh(1.5rem, 100%);
  			@include fc($commBackFont, #fff);
  		}
 

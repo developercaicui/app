@@ -5,9 +5,9 @@
 		<header class="one-top">
 			<a href="javascript:;" @click.stop="closeMe">&#xe67f;</a>
 			<h1 ref="reply">讨论详情（未回复）</h1>
-			<div class="state-edit">
+			<div class="state-edit" @touchend="removeDetails">
 				<a href="javascript:;"></a>
-				<a href="javascript:;" @touchend="removeDetails" v-show="isRemoveMsg">&#xe618;</a>
+				<a href="javascript:;" v-show="isRemoveMsg">&#xe618;</a>
 			</div>
 		</header>
 
@@ -567,9 +567,10 @@ export default {
 		> a{
 			@extend .ab;
 			@include fc($commBackFont, $commPink);
+			@include wh(1.5rem, 1.05rem);
+			@extend .flexCenter;
 			font-family: 'iconfont';
-			left: .3rem; padding-left: .3rem;
-			top: 50%; transform: translateY(-50%);
+			left: 0; padding-left: .1rem; top: 0;
 		}
 
 		h1{
