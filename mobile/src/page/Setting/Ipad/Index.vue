@@ -144,19 +144,13 @@ export default {
 
 	created() {
 
-    let htmlCss;
 
-    if(this.webApi.getCookie("htmlCss")){
-        htmlCss = this.webApi.getCookie("htmlCss");
-    }else{
-        htmlCss = document.documentElement.style.cssText.split("font-size:")[1].replace("px;","")/2*3;
-        this.webApi.setCookie("htmlCss",htmlCss);
-    }
-
-    document.documentElement.style = "font-size:"+htmlCss+"px";
-
-    this.body.setAttribute("show","index");
-
+      let htmlCss = document.documentElement.style.cssText.split("font-size:")[1].replace("px;","")/2*2.5;
+      
+      document.documentElement.style.fontSize = `${htmlCss}px`;
+   
+     this.body.setAttribute("show","index");
+ 
 	},
 
 	updated() {
@@ -535,7 +529,6 @@ body[show='about'] #mask2 {
   border-radius: 7px;
   background: #f3f3f3;
   overflow: hidden;
-  padding-top: 0.4rem;
 }
 
 .setting-wrap{

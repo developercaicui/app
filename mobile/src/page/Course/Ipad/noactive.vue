@@ -91,7 +91,7 @@ export default {
 	    .then(res =>{
 
 	      if(res && res.state == 'success'){
-	        console.log(res.data.courselist)
+
 	        if(res.data.courselist.length < 1){
 			      return false;
 			}
