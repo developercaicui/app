@@ -13,7 +13,7 @@
             <img src="http://cdnimg.caicui.com/upload/avatar/big_ff808081492d486801492d4a28f50004.jpg" />
             <section>
               <h1>{{ item.sender }}<time>{{ item.sentTime }}</time></h1>
-              <p>{{ item.content.substr(0,22) }}</p>
+              <p v-html="item.content.substr(0,22)"></p>
             </section>
           </figure>
           <span class="no-data" v-show="msgList.length==0?true:false"><img src="../../../assets/img/404.svg"></span>
@@ -29,7 +29,7 @@
             <img src="http://cdnimg.caicui.com/upload/avatar/big_ff808081492d486801492d4a28f50004.jpg" />
             <section>
               <h1>{{ details.sender }}</h1>
-              <p>{{ details.content }}</p>
+              <p v-html="details.content"></p>
             </section>
           </figure>
         </div>
@@ -206,7 +206,7 @@ export default {
 
       a{
 
-        @include fc(.24rem, #01a185);
+        @include fc(.24rem, $commPink);
         @extend .borderBox;
         display: flex;
         flex: 1; height: .6rem;
@@ -219,7 +219,7 @@ export default {
         }
         &:nth-of-type(2),
         &:nth-of-type(3){
-          border: 2px solid #01a185;
+          border: 2px solid $commPink;
         }
         &:nth-of-type(2){
           border-top-left-radius: 5px;
@@ -231,7 +231,7 @@ export default {
         }
         &.active{
           color: #fff;
-          background-color: #01a185;
+          background-color: $commPink;
         }
       }
 

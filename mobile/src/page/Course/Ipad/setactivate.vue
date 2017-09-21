@@ -205,21 +205,22 @@ export default {
           let Ttime = $.trim($('input[name=examTime]').val());
           param.examTime = this.formatDate(Ttime,'Y')+'-'+this.formatDate(Ttime,'M')+'-'+this.formatDate(Ttime,'D')+' '+this.formatDate(Ttime,'h')+':'+this.formatDate(Ttime,'m')+':'+this.formatDate(Ttime,'s');
 
-          // api.showProgress({
-          //     style: 'default',
-          //     title: '激活中',
-          //     modal: false
-          // });
-          
+          this.webApi.loadingData('激活中');
+
           courseActive(param)
 
           .then(res =>{
 
             if(res && res.state == 'success'){
 
-                this.webApi.alert('您已成功激活该课程，请前往在学课程查看');
+                this.webApi.closeLoadingData();
 
-                location.reload();
+                this.webApi.alert('课程激活成功!');
+
+                setTimeout(() => {
+                    location.reload();
+                },2000)
+                
                   
             }else{
                 this.webApi.alert('激活失败，请重试！')
@@ -264,7 +265,7 @@ export default {
   right: 0;
   bottom: 0;
   background: rgba(0,0,0,0.3);
-  z-index: 2;
+  z-index: 11;
 }
 .backdrop.opacity {
   background: rgba(0,0,0,0);
@@ -350,7 +351,7 @@ export default {
   border-radius: 0.15rem;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
-  z-index:3
+  z-index:12
 }
 .tc_box[type="1"] .form_box,
 .tc_box[type="1"] .btn-back {

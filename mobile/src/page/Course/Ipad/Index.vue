@@ -80,7 +80,7 @@ export default {
     color: #999999;
     padding-top: 0.5rem;
     position: fixed;
-    z-index: 1;
+    z-index: 10;
     left: 0;
     right: 0;
     display: flex;

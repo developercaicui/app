@@ -44,6 +44,10 @@ export default {
 
 		this.nickName = this.userInfo.nickName;
 
+		window.addEventListener("storage", function (e) {
+        window.location.reload();
+    });
+
 	},
 
 	mounted() {
@@ -51,6 +55,8 @@ export default {
 		this.$refs.uploadImgBtn.style.cssText = `
 			 background:url(${this.webApi.cdnImgUrl}${this.userInfo.avatar}) center center no-repeat;
 		`;
+
+
 
 	},
 
@@ -177,18 +183,18 @@ export default {
 
 	 .reg-head{
 
-		@include wh(100%, 1.05rem);
+		@include wh(100%, 1.45rem);
  		position: relative;
- 		padding: 0 .4rem;
+ 		padding: $commTop .4rem 0;
 		background-color: $commPink;
 
  		.back{
  			position: absolute;
+			left: 0;
  			z-index: 9;
- 			height: 100%;
- 			display: flex;
- 			align-items: center;
  			font-family: 'iconfont';
+			@extend .flexCenter;
+			@include wh(1.5rem, 1.05rem);
  			@include fc($commBackFont, #fff);
  		}
 
@@ -197,7 +203,7 @@ export default {
  			@include fc($headH1Font, #fff);
 			@extend .flexCenter;
 			padding-left: .4rem;
- 			left: 0; top: 0; right: 0;
+ 			left: 0; top: $commTop; right: 0;
  			height: 1.05rem;
  		}
 

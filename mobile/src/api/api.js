@@ -42,18 +42,13 @@ export default {
   getDeviceType() {
 
     let device = window.navigator.userAgent.toLocaleLowerCase();
+    let screenWidth = document.documentElement.getBoundingClientRect().width;
+    let type = this.getCookie('deviceType') || 'null';
 
-    return 'ipad'
-    // if(device.includes('android')) {
-    //
-    // }else if(device.includes('ios')) {
-    //
-    //   if(device.includes('ipad'))
-    //     return 'ipad';
-    //   else if(device.includes('mobile'))
-    //     return 'mobile';
-    //
-    // }
+    if(type.includes('ipad') || type.includes('mobile')) return this.getCookie('deviceType');
+
+    if(screenWidth > 800) return 'ipad';
+    if(screenWidth < 800) return 'mobile';
 
 
   },
@@ -70,9 +65,9 @@ export default {
 
     let designWidth = deviceType === 'mobile' ? 750 : 2048;
 
-    if(deviceType === 'ipad' && screenWidth*dpr < 2048/3*2 ) designWidth = 1524;
+    if(deviceType === 'ipad' && screenWidth*dpr < 2048/8*5.5 ) designWidth = designWidth/8*5;
 
-    let initialRem = designWidth / 100;  // 换算基准值   (设计稿尺寸)/100(固定值)
+    let initialRem = designWidth / 100;
 
     OHTML.dataset.device = deviceType;
     OHTML.dataset.dpr = dpr;

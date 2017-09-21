@@ -307,16 +307,14 @@ export default {
 			.then(res =>{
 
 				if(!res || res.state != 'success'){
-					this.webApi.alert('用户名修改失败，请登录后到设置里重新修改');
+					this.webApi.alert('用户名设置失败，请登录后到设置里重新修改');
 					return false;
 				}
 
-				this.webApi.alert('密码修改成功, 3秒后即将跳转到登录页');
+				this.webApi.alert('注册成功, 3秒后即将跳转到登录页');
 
 				setTimeout(()=> {
-					this.$router.push({
-						path: 'login'
-					});
+					g.backLogin();
 				},3000);
 
 
@@ -420,16 +418,16 @@ export default {
 
 	 .reg-head{
 
-		@include wh(100%, 1.05rem);
+		@include wh(100%, 1.46rem);
  		position: relative;
- 		padding: 0 .4rem;
+ 		padding: $commTop .4rem 0;
 		background-color: #ebebee;
 
  		.back{
 			@include fc($commBackFont, $commPink);
  			position: absolute;
- 			z-index: 9;
- 			height: 100%;
+ 			z-index: 9; top: $commTop;
+ 			height: 1.05rem;
  			display: flex;
  			align-items: center;
  			font-family: 'iconfont';
@@ -440,7 +438,7 @@ export default {
  			@include fc(.32rem, #000);
 			@extend .flexCenter;
 			padding-left: .4rem;
- 			left: 0; top: 0; right: 0;
+ 			left: 0; top: $commTop; right: 0;
  			height: 1.05rem;
  		}
 

@@ -14,11 +14,6 @@ export default {
   components: {
   },
 
-  mounted() {
-
-  },
-
-
   data() {
     return {
       isIpad: false,
@@ -28,12 +23,12 @@ export default {
     }
   },
 
-  created() {
+
+  mounted() {
 
     let oHtml = document.documentElement;
 
     oHtml.dataset.device = this.webApi.getDeviceType();
-
 
     // 菜单处理
     switch(oHtml.dataset.device) {

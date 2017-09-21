@@ -20,8 +20,6 @@
 		</div>
 
 
-
-
 		<footer class="leave-msg">
 			<div class="nav">
 				<a href="javascript:;" class="upload-pic-btn" @touchend="handleIsUploadPic">&#xe6ab;</a>
@@ -93,7 +91,6 @@ export default {
 
 		}
 
-		console.log(this.data, 'edit');
 
 		// 是否编辑
 		if('detailsData' in this.data){
@@ -264,7 +261,6 @@ export default {
 					taskType:	this.videoType, // 任务类型
 					subjectName: this.subjectName,
 					id: this.noteId,
-					// courseName:	this.data.courseData.courseName,
 					subjectId:	this.subjectId,
 					token:	this.webApi.getCookie('token'), // 用户token
 					courseId:	this.data.courseData.courseId,
@@ -461,7 +457,9 @@ export default {
 			font-family: 'iconfont';
 			a{
 				@include fc(.7rem, $commPink);
+				@include wh(1.5rem, 1.05rem);
 				@extend .show;
+				text-align: center; line-height: 1.5;
 			}
 		}
 
@@ -474,9 +472,10 @@ export default {
 		> a{
 			@extend .ab;
 			@include fc($commBackFont, $commPink);
+			@include wh(1.5rem, 1.05rem);
+			@extend .flexCenter;
 			font-family: 'iconfont';
-			left: .38rem; padding-left: .1rem;
-			top: 50%; transform: translateY(-50%);
+			left: 0; padding-left: .1rem; top: 0;
 		}
 
 		h1{

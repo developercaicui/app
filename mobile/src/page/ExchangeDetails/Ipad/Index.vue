@@ -5,9 +5,9 @@
 		<header class="one-top">
 			<a href="javascript:;" @click.stop="closeMe">&#xe67f;</a>
 			<h1 ref="reply">讨论详情（未回复）</h1>
-			<div class="state-edit">
+			<div class="state-edit" @touchend="removeDetails">
 				<a href="javascript:;"></a>
-				<a href="javascript:;" @touchend="removeDetails" v-show="isRemoveMsg">&#xe618;</a>
+				<a href="javascript:;" v-show="isRemoveMsg">&#xe618;</a>
 			</div>
 		</header>
 
@@ -35,7 +35,7 @@
               <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ data.replyCount ? data.replyCount : 0 }}</span></div>
               <div class="time"><span>{{ data.updateTime }}</span></div>
               <div class="course-name">
-                <div class="tag-video-time" @click="jump_task(data)" v-if="data.taskprogress"><i class="icon-play-o"></i><span>{{ data.taskprogress }}</span></div>
+                <div class="tag-video-time" @click="jump_task(data)" v-if="data.taskprogress"><i class="icon-play-o icon-video">&#xe63f;</i><span>{{ data.taskprogress }}</span></div>
                 <span class="course-tit" v-if="data.coursename">{{ data.coursename }}</span>
               </div>
             </div>
@@ -84,7 +84,7 @@
 			</div>
 		</footer>
 
-		<input type="file" @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
+		<input type="file" accept="image/*"  capture="camera" @change="handleUploadPic" ref="iptFile" class="ipt-file">
 
 		<photoAlbum :pic-list="picList" v-show="isShowList" @closeBigPic="closeBigPic"></photoAlbum>
 
@@ -385,7 +385,17 @@ export default {
 <style lang="scss">
 
 	@import "../../../assets/style/mixin";
-
+	.icon-video{
+	  font-family:"iconfont";
+	  font-size:0.3rem;
+	  font-weight: 700;
+	  speak: none;
+	  font-style: normal;
+	  font-variant: normal;
+	  text-transform: none;
+	  line-height: 100%;
+	  vertical-align: middle;
+	}
 	.exchange-wrap-ipad-details{
 
 		font-size: 0;
@@ -557,9 +567,10 @@ export default {
 		> a{
 			@extend .ab;
 			@include fc($commBackFont, $commPink);
+			@include wh(1.5rem, 1.05rem);
+			@extend .flexCenter;
 			font-family: 'iconfont';
-			left: .3rem; padding-left: .3rem;
-			top: 50%; transform: translateY(-50%);
+			left: 0; padding-left: .1rem; top: 0;
 		}
 
 		h1{

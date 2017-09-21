@@ -76,6 +76,7 @@ export default {
         webApi.alert('网络异常，请稍后再试');
         return false;
       }
+      webApi.setCookie('memberInfo', JSON.stringify(res.data));
 
       commit('updateUserDetails', res.data);
 

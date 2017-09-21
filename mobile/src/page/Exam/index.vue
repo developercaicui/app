@@ -180,6 +180,9 @@
 						express = false;
 					}else if(examNeedIds.express == '1'){
 						express = true;
+					}else{
+						// JSON.parse(it.express).analysis
+						express = JSON.parse(decodeURI(examNeedIds.express)).analysis
 					}
 				}else{
 

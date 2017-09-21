@@ -5,7 +5,6 @@ const Index = r => require.ensure([], () => r(require('../page/Index')), 'index'
 const Reg = r => require.ensure([], () => r(require('../page/Reg')), 'reg')
 const FindPwd = r => require.ensure([], () => r(require('../page/FindPwd')), 'fidPwd')
 const Login = r => require.ensure([], () => r(require('../page/Login')), 'login')
-const Loading = r => require.ensure([], () => r(require('../page/Loading')), 'loading')
 const Exchange = r => require.ensure([], () => r(require('../page/Exchange')), 'exchange')
 const ExchangeDetails = r => require.ensure([], () => r(require('../page/ExchangeDetails')), 'exchangeDetails')
 const ExchangeEdit = r => require.ensure([], () => r(require('../page/ExchangeEdit')), 'exchangeEdit')
@@ -21,6 +20,9 @@ const Setting = r => require.ensure([], () => r(require('../page/Setting')), 'se
 const Correction = r => require.ensure([], () => r(require('../page/Correction')), 'correction')
 const CorrectionVideo = r => require.ensure([], () => r(require('../page/CorrectionVideo')), 'Correctionvideo')
 const CorrectionExam = r => require.ensure([], () => r(require('../page/CorrectionExam')), 'correctionExam')
+const CourseLive = r => require.ensure([], () => r(require('../page/CourseLive')), 'correctionLive')
+const CourseLiveOpen = r => require.ensure([], () => r(require('../page/CourseLiveOpen')), 'correctionLiveOpen')
+const CourseLiveIframe = r => require.ensure([], () => r(require('../page/CourseLiveIframe')), 'correctionLiveIframe')
 
 const CourseExchange = r => require.ensure([], () => r(require('../page/CourseExchange')), 'courseExchange')
 const CourseExchangeList = r => require.ensure([], () => r(require('../page/CourseExchangeList')), 'courseExchangeList')
@@ -38,7 +40,7 @@ export default  new VueRouter({
   routes: [
     {
       path: '/',
-      component: Loading
+      component: Login
     },{
       path: '/index', // 首页
       component: Index
@@ -134,6 +136,18 @@ export default  new VueRouter({
         },{
           path: 'exam',
           component: CorrectionExam
+        }
+      ]
+    },{
+      path: '/courselive',
+      component: CourseLive,
+      children: [
+        {
+          path: 'open',
+          component: CourseLiveOpen
+        },{
+          path: 'iframe',
+          component: CourseLiveIframe
         }
       ]
     },{

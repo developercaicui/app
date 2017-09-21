@@ -15,7 +15,7 @@
 			<a href="javascript:;" v-show="gainOn" @touchend="gainCode" class="gainCode">{{gainCodeText}}</a>
 			<a href="javascript:;"  @touchend="lookPwd" data-index="0" class="look-pwd">&#xe62d;</a>
 			<a href="javascript:;"  @touchend="lookPwd" data-index="1" class="look-pwd again-look-pwd">&#xe62d;</a>
-			<a href="javascript:;" class="sub-ref-info" @touchend="subForm" ref="subFormBtn">{{subFormText}}</a>
+			<a href="javascript:;" class="sub-ref-info" @click="subForm" ref="subFormBtn">{{subFormText}}</a>
 		</main>
 
 	</div>
@@ -115,9 +115,7 @@ export default {
 				this.webApi.alert('密码修改成功, 3秒后即将跳转到登录页');
 
 				setTimeout(()=> {
-					this.$router.push({
-						path: 'login'
-					});
+					g.backLogin();
 				},3000);
 
 

@@ -34,7 +34,7 @@ export default {
 
 			list.map(item =>{
 				let date = new Date(item.updateTime*1000);
-				item.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth())}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}`;
+				item.updateTime = `${date.getFullYear()}-${this.webApi.isSmallTen(date.getMonth() + 1)}-${this.webApi.isSmallTen(date.getDate())}  ${this.webApi.isSmallTen(date.getHours())}:${this.webApi.isSmallTen(date.getMinutes())}`;
 			});
 
 			return list;
