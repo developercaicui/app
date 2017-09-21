@@ -5,7 +5,6 @@ const Index = r => require.ensure([], () => r(require('../page/Index')), 'index'
 const Reg = r => require.ensure([], () => r(require('../page/Reg')), 'reg')
 const FindPwd = r => require.ensure([], () => r(require('../page/FindPwd')), 'fidPwd')
 const Login = r => require.ensure([], () => r(require('../page/Login')), 'login')
-const Loading = r => require.ensure([], () => r(require('../page/Loading')), 'loading')
 const Exchange = r => require.ensure([], () => r(require('../page/Exchange')), 'exchange')
 const ExchangeDetails = r => require.ensure([], () => r(require('../page/ExchangeDetails')), 'exchangeDetails')
 const ExchangeEdit = r => require.ensure([], () => r(require('../page/ExchangeEdit')), 'exchangeEdit')
@@ -41,7 +40,7 @@ export default  new VueRouter({
   routes: [
     {
       path: '/',
-      component: Loading
+      component: Login
     },{
       path: '/index', // 首页
       component: Index
