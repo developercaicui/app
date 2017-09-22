@@ -12,15 +12,15 @@
 		        </div>
 		      </div>
 		      <ul class="right">
-		        <li @click="showSearchBar"><i class="icon-sousuo icon-search2">&#xe651;</i></li>
-		        <li @click="new_answer"><span>提问</span><i class="icon-plus">+</i></li>
+		        <li @click="showSearchBar"><i class="icon-sousuo icon-search2 icon-new-srarch">&#xe651;</i></li>
+		        <li @click="new_answer"><span class="head-r-text">提问+</span></li>
 		      </ul>
 		      <div class="search-bar">
 		        <input type="text" name="input-lx" placeholder="搜索" class="input-txt" ref="searchWord">
 		        <div class="right"><i class="icon-sousuo icon-search2">&#xe651;</i><span @click="goSearch()" class="submit">搜索</span><span @click="hideSearchBar" class="cancel">取消</span></div>
 		      </div>
       </div>
-      
+
 			<div class="all" v-show="defaultAct==0" ref="all">
 				<template>
 
@@ -240,14 +240,14 @@ export default {
           }
           //获取课程信息
           // this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
-          
+
           // alert(JSON.stringify(this.courseInfo))
           let param = {};
           param.self = 0;
           param.courseid= this.courseInfo.courseId;
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
-          // 
+          //
           // param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
@@ -298,7 +298,7 @@ export default {
 	        param.courseid= this.courseInfo.courseId;
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
-          // 
+          //
           // param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
@@ -336,7 +336,7 @@ export default {
             });
 
       },
-		
+
   		setBackground(url) {
   			return `background-image:url(${this.getImgPath(url)})`
   		},
@@ -984,6 +984,27 @@ select {
       left: 50%; top: 4rem;
       margin-left: -1.2rem;
     }
+
+
+		.s-head{
+			.right li i.icon-new-srarch{
+				font-size: .48rem;
+				position: relative;
+				top: -.03rem; left: .35rem;
+			}
+			i.icon-search-f{
+				margin-right: .4rem;
+				top: -.1rem;
+	    	position: relative;
+			}
+		}
+
+		.right{
+			span{
+				font-size: .34rem;
+			}
+		}
+		
 
  }
 </style>
