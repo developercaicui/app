@@ -64,6 +64,10 @@ export default {
 
 		this.title = this.data.chapteName || '';
 
+		if(this.data.videoType == 'video' || this.data.videoType == 'problem') {
+			this.title = this.data.taskName;
+		}
+
 	},
 
   methods: {
@@ -180,6 +184,7 @@ export default {
 
 			this.$emit('submit-data', {
 				type: this.type,
+				elseType: this.data.videoType || '',
 				data: {
 					content: `<p>${this.textDetails}</p><br/>${this.allPicPathHtml}`,
 			    imgPath: this.allPicPath,

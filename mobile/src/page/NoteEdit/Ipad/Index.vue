@@ -133,6 +133,9 @@ export default {
 		this.$refs.isPublicDiv.className = this.isPublic == 1 ? 'select-btn select-btn-active' : 'select-btn';
 		this.headerTitle = this.data.type == 'new' ? '新建笔记 ': '编辑笔记';
 
+		if(this.videoType == 'video' || this.videoType == 'problem') {
+			this.title = this.data.taskName;
+		}
 	},
 
   methods: {
@@ -251,6 +254,7 @@ export default {
 
 			this.$emit('submit-data', {
 				type: this.type,
+				elseType: this.videoType || '',
 				data: {
 					content:	this.textDetails,   // 内容
 					soundPath:	'', // 声音
