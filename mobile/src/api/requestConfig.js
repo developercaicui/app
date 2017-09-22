@@ -27,7 +27,7 @@ export default {
   data: {
     CAICUI: "caicui"
   },
-  timeout: 5000,
+  timeout: 0,
   withCredentials: false,
   responseType: 'json',
   // onUploadProgress: function(progressEvent) {

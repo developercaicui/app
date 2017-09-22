@@ -9,10 +9,10 @@
 
 		<div class="exam-body">
 			<template v-if="exam.examBaseInfo.length">
-				<p>传过来的ids</p>
+				<!-- <p>传过来的ids</p>
 				<ul v-for="(value, key) in examNeedIds">
 					<li>{{ key }}: {{ value }}</li>
-				</ul>
+				</ul> -->
 				<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev" v-if="exam.exerciseActiveIndex != 0"></a>
 				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext" v-if="exam.exerciseActiveIndex != (exam.examBaseInfo.length-1)"></a>
 			</template>
@@ -550,7 +550,9 @@
 					'correctexerciseids' : memberErrorExerciseData.correctexerciseids,
 					'errorexerciseRecords' : JSON.stringify(memberErrorExerciseData.errorexerciseRecords)
 				}).then(res => {
-					
+					this.webApi.alert('试卷已提交，进入我的试卷查看试卷解析');
+					// layer.msg('试卷已提交，进入我的试卷查看试卷解析', {time:2000}, function() {
+					// });
 				});
 
 			},
