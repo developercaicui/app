@@ -44,6 +44,8 @@ export default {
 
 		this.nickName = this.userInfo.nickName;
 
+		this.webApi.remCount();
+
 		window.addEventListener("storage", function (e) {
         window.location.reload();
     });

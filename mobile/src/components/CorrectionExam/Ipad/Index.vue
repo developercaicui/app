@@ -58,7 +58,7 @@ export default {
 
 	created() {
 
-    let memberinfo = JSON.parse(this.webApi.getCookie('memberinfo'));
+    let memberinfo = JSON.parse(this.webApi.getCookie('memberInfo'));
     
     if(memberinfo){
         if(memberinfo.mobile){

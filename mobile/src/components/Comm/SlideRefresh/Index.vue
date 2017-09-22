@@ -366,7 +366,6 @@ export default {
 		position: relative;
 		background-color: #fff;
 		height:auto;
-		overflow-y:auto;
 		z-index: 9;
 	}
 
