@@ -14,11 +14,6 @@ export default {
   components: {
   },
 
-  mounted() {
-
-  },
-
-
   data() {
     return {
       isIpad: false,
