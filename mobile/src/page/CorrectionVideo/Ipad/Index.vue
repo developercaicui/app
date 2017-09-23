@@ -366,7 +366,6 @@ body #mask0 {
 .pop-radios .pop-radio-label .pop-radio-span {
     display: inline-block;
     font-size: 0.25rem;
-    padding-left: 0.1rem;
     font-weight: bold;
     color: #666666;
     vertical-align: middle;
@@ -414,6 +413,8 @@ body #mask0 {
       width:100%;
       height:100%;
       border: 1px solid #eee;
+      padding: 0.2rem 0 0 0;
+      font-size: 0.3rem;
     }
 }
 .taskInfo{

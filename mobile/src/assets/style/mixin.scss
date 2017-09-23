@@ -4,7 +4,7 @@ $headerSize: 0.36rem; // 标题文字大小
 $commPink: #FF366D; // 全局通用色
 $headFont: .28rem; // 头部字体
 $headIconFont: .4rem; // 头部字体图标大小
-$headH1Font: .34rem; // 头部标题字体大小
+$headH1Font: .3rem; // 头部标题字体大小
 $commBackFont: .54rem; // 返回按钮字体大小
 $commTopBack: #f5f5f5; // 通用顶部背景色
 $commTop: .4rem; // 距离顶部距离
@@ -93,7 +93,7 @@ $commTopWhite: #fff; // 公用白色
   @include fc(.24rem, #fff);
   @extend .flexCenter;
   position: fixed;
-  top: 1rem; left: 50%;
+  top: 50%; left: 50%;
   min-width: 2rem;
   background-color: rgba(51, 51, 51, .8);
   z-index: 119;

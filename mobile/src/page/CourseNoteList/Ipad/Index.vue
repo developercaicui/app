@@ -13,7 +13,7 @@
 		      </div>
 		      <ul class="right">
 		        <li @click="showSearchBar"><i class="icon-sousuo icon-search2 icon-new-srarch">&#xe651;</i></li>
-		        <li @click="new_answer"><span class="head-r-text">提问+</span></li>
+		        <li @click="new_answer"><span class="head-r-text">新建+</span></li>
 		      </ul>
 		      <div class="search-bar">
 		        <input type="text" name="input-lx" placeholder="搜索" class="input-txt" ref="searchWord">
@@ -51,7 +51,7 @@
            </template>
 
         </template>
-
+        <img class="no-data" v-show="this.sectionAllList && this.sectionAllList.length === 0 || this.sectionAllList.nodeNum == 0" src="../../../assets/img/404.svg"/>
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
@@ -84,7 +84,7 @@
            </template>
 
         </template>
-
+        <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0 || this.sectionList.nodeNum == 0" src="../../../assets/img/404.svg"/>
 			</div>
 		</main>
 
@@ -140,14 +140,14 @@ export default {
 	updated() {
         //判断是否有数据
 		    if(this.sectionList.length < 1 || this.sectionList.nodeNum == 0){
-          this.$refs.me.classList.add("null")
+          // this.$refs.me.classList.add("null")
       	}else{
-      		this.$refs.me.classList.remove("null")
+      		// this.$refs.me.classList.remove("null")
       	}
         if(this.sectionAllList && this.sectionAllList.nodeNum == 0){
-            this.$refs.all.classList.add("null")
+            // this.$refs.all.classList.add("null")
         }else{
-        	this.$refs.all.classList.remove("null")
+        	// this.$refs.all.classList.remove("null")
         }
 
 	},
@@ -372,6 +372,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ @import "../../../assets/style/mixin";
 .all,.me{
 	min-height: 15rem;
 }
@@ -1007,4 +1008,11 @@ select {
 		
 
  }
+
+.no-data{
+  @extend .ab;
+  @include wh(2.4rem, 2.4rem);
+  left: 50%; top: 4rem;
+  margin-left: -1.2rem;
+}
 </style>

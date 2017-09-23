@@ -145,7 +145,7 @@ export default {
 	created() {
 
 
-      let htmlCss = document.documentElement.style.cssText.split("font-size:")[1].replace("px;","")/2*2.5;
+      let htmlCss = document.documentElement.style.cssText.split("font-size:")[1].replace("px;","")/2*2.4;
       
       document.documentElement.style.fontSize = `${htmlCss}px`;
    
@@ -536,6 +536,7 @@ body[show='about'] #mask2 {
 	transform: translate(0%, 0%);
 	height: 100%;
 	opacity: 1;
+  padding-top: 0.16rem;
 }
 
 .modal .avatar {
@@ -621,14 +622,15 @@ body[show='about'] #mask2 {
 .modal .set_tit {
   height: 1.05rem;
   line-height: 1.05rem;
-  font-size: 0.34rem;
-  color: #494949;
+  font-size: 0.28rem;
+  color: #1D1D1D;
   text-align: center;
   border-radius: 7px 7px 0 0;
   background: #fff;
   border-bottom: 1px solid #a8a8a8;
   position: relative;
   background:#f5f5f5;
+  padding-top: 0.1rem;
 }
 .modal .set_tit .icon-close {
   position: absolute;

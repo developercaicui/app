@@ -118,6 +118,11 @@ export default {
 				@extend .flexCenter;
 				@include fc($headH1Font, #1D1D1D);
 				height: inherit;
+			    width: 60%;
+			    margin: 0 auto;
+			    overflow: hidden;
+			    white-space: nowrap;
+			    text-overflow: ellipsis;
 			}
 
 		}

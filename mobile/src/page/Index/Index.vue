@@ -147,7 +147,39 @@ export default {
 
 				try {
 
-					res.data.map((item, index) =>{
+					var newLastProgress = {
+	                  RecentCourse : []
+	                };
+
+        			for(var i=0;i<this.learningCourseList.length;i++){
+        				for(var j=0;j<res.data.length;j++){
+        					if(this.learningCourseList[i].courseId == res.data[j].courseId){
+			                    this.learningCourseList[i].createDate = res.data[j].createDate;
+			                    this.learningCourseList[i].courseProgress = res.data[j].courseProgress;
+			                    this.learningCourseList[i].progress = res.data[j].progress;
+			                    newLastProgress.RecentCourse.push(this.learningCourseList[i])
+        					}
+        				}
+        			}
+	              
+		            var filterLastProgress = newLastProgress.RecentCourse;
+		            var i = 0,
+		                len = filterLastProgress.length,
+		                j, d;
+		            for (; i < len; i++) {
+		                for (j = 0; j < len; j++) {
+		                  
+		                    if (parseInt(filterLastProgress[i].createDate) > parseInt(filterLastProgress[j].createDate)) {
+		                        d = filterLastProgress[j];
+		                        filterLastProgress[j] = filterLastProgress[i];
+		                        filterLastProgress[i] = d;
+		                    }
+		                }
+		            }
+
+		            this.learningCourseList = filterLastProgress;
+		            
+					this.learningCourseList.map((item, index) =>{
 
 						let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;
 
@@ -155,7 +187,7 @@ export default {
 
 						this.learningCourseList[index].courseProgress = item.courseProgress;
 						this.learningCourseList[index].studyProportion = num > 100 ? 100 : num;
-						this.learningCourseList[index].createTime = item.createDate;
+						// this.learningCourseList[index].createTime = item.createDate;
 
 					});
 
@@ -179,7 +211,7 @@ export default {
 					return false;
 				}
 
-				this.learningCourseList = this.learningCourseList.sort((a, b) => a.createTime - b.createTime );
+				// this.learningCourseList = this.learningCourseList.sort((a, b) => a.createTime - b.createTime );
 
 				// courseId 做比较
 				res.data.map(item => this.learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth() + 1)}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );

@@ -109,6 +109,18 @@ export default {
 				}
 
 				let learningcourseData = res;
+
+				let setListObj = {},setListArr = [];
+
+				for(let i=0;i<res.data.courselist.length;i++){
+				    if(!setListObj[res.data.courselist[i].courseId]){
+				        setListArr.push(res.data.courselist[i]);
+				        setListObj[res.data.courselist[i].courseId] = "1"
+				    }
+				}
+
+				res.data.courselist = setListArr;
+
 				let learninglist = res.data.courselist;
 	    		let courseArr = [];
 				for(let i=0;i<learninglist.length;i++){

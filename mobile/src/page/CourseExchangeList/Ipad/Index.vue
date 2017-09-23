@@ -43,6 +43,7 @@
 	              </div>
 	            </dd>
 	          </dl>
+	          <img class="no-data" v-show="this.exchangeList && this.exchangeList.length === 0" src="../../../assets/img/404.svg"/>
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
@@ -68,6 +69,7 @@
 	              </div>
 	            </dd>
 	          </dl>
+	          <img class="no-data" v-show="this.exchangeListMe && this.exchangeListMe.length === 0" src="../../../assets/img/404.svg"/>
 			</div>
 		</main>
 
@@ -110,14 +112,14 @@ export default {
 
 	updated() {
 		if(this.webApi.isEmpty(this.exchangeList) || this.exchangeList.length<1){
-          this.$refs.all.classList.add("null")
+          // this.$refs.all.classList.add("null")
       	}else{
-      		this.$refs.all.classList.remove("null")
+      		// this.$refs.all.classList.remove("null")
       	}
         if(this.webApi.isEmpty(this.exchangeListMe) || this.exchangeListMe.length<1){
-            this.$refs.me.classList.add("null")
+            // this.$refs.me.classList.add("null")
         }else{
-        	this.$refs.me.classList.remove("null")
+        	// this.$refs.me.classList.remove("null")
         }
 
 	},
@@ -194,10 +196,7 @@ export default {
 	        param.ordertype = 1;
 	        param.pageNo = page;
 	        param.pageSize = 10;
-	        param.courseid= this.courseInfo.courseId;
-	        param.categoryId= this.courseInfo.categoryId;
 	        param.subjectId= this.courseInfo.subjectId;
-	        // param.courseid = "ff8080814f607c24014f6866fdb716fd"
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {
 	            this.webApi.loadingData();
@@ -404,7 +403,7 @@ export default {
 .s-head {
   background: #fff;
   font-size: 0.32rem;
-  height: 1.34rem;
+  height: 1.25rem;
   line-height: 1.25rem;
   position: relative;
   border-bottom: 1px solid #ddd;
@@ -817,4 +816,10 @@ select {
 			font-size: .34rem;
 		}
 	}
+.no-data{
+	@extend .ab;
+	@include wh(2.4rem, 2.4rem);
+	left: 50%; top: 4rem;
+	margin-left: -1.2rem;
+}
 </style>

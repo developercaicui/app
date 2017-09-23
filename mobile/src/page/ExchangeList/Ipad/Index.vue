@@ -114,6 +114,11 @@ export default {
 
 		},
 
+  },
+  mounted() {
+  		this.exchangeData.data.map(item =>{
+          	item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
+        });
   }
 
 }
@@ -165,17 +170,17 @@ export default {
 		}
 
 	.one-top{
-		@include wh(100%, $commTopHeight + 1.04 + rem);
+		@include wh(100%, 1.46rem);
 		position: relative;
 		border-bottom: 1px solid #B9B9B9;
-		padding-top: .1rem;
+		padding-top: .2rem;
 		background-color: $commTopBack;
 		a{
 			@extend .ab;
 			@include fc($headFont, $commPink);
 			left: .38rem; padding-left: .45rem;
 			top: 50%; transform: translateY(-50%);
-			margin-top: .1rem;
+			margin-top: .2rem;
 			&:after{
 				content: '\e669';
 				font-family: 'iconfont';
