@@ -19,7 +19,7 @@
 					<div>{{ item.nikeName }}<span class="msg-num">{{ item.replyCount }}</span></div>
 					<h1>{{ item.title }}</h1>
 					<p v-html="item.contentHtml" class="content-html"></p>
-					<time>{{ item.updateTime }}</time>
+					<time>{{ timeConversion(item.updateTime) }}</time>
 				</section>
 
 		 </SlideRefresh>
@@ -72,6 +72,11 @@ export default {
 
   methods: {
 
+		// 时间转换
+		timeConversion(val) {
+				return `${this.webApi.isEmpty(val)?'':this.webApi.formatDate(val,'Y')}-${this.webApi.formatDate(val,'M')}-${this.webApi.formatDate(val,'D')}   ${this.webApi.formatDate(val,'h')}:${this.webApi.formatDate(val,'m')}`;
+		},
+
 		// 实时状态
 		topStatusChange(status) {
 
@@ -114,12 +119,8 @@ export default {
 
 		},
 
+
   },
-  mounted() {
-  		this.exchangeData.data.map(item =>{
-          	item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
-        });
-  }
 
 }
 
