@@ -37,7 +37,7 @@
 			</div>
 		</footer>
 
-		<input type="file" accept="image/*" multiple @change="handleUploadPic" ref="iptFile" class="ipt-file">
+		<input type="file" accept="image/*" @change="handleUploadPic" ref="iptFile" class="ipt-file">
 	</div>
 
 </template>
@@ -154,7 +154,6 @@ export default {
 			}
 
 			this.$refs.iptFile.click();
-			this.$refs.iptFile.touchstart();
 		},
 
 		// 是否打卡上传图片

@@ -83,6 +83,9 @@ export default {
 						if(data.elseType == 'video' || data.elseType == 'problem') {
 							g.closeNewNote();
 						}else{
+
+							this.webApi.setCookie('updateExchangeList', 'true');
+
 							this.$router.push({
 								path: `/exchange/list`
 							});
