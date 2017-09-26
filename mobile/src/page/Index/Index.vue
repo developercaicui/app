@@ -146,49 +146,56 @@ export default {
 
 				try {
 
-					var newLastProgress = {
-	                  RecentCourse : []
-	                };
+						var newLastProgress = {
+	             RecentCourse : []
+	          };
 
-        			for(var i=0;i<this.learningCourseList.length;i++){
-        				for(var j=0;j<res.data.length;j++){
-        					if(this.learningCourseList[i].courseId == res.data[j].courseId){
-			                    this.learningCourseList[i].createDate = res.data[j].createDate;
-			                    this.learningCourseList[i].courseProgress = res.data[j].courseProgress;
-			                    this.learningCourseList[i].progress = res.data[j].progress;
-			                    newLastProgress.RecentCourse.push(this.learningCourseList[i])
-        					}
-        				}
-        			}
+	    			for(var i=0;i<this.learningCourseList.length;i++){
 
-		            var filterLastProgress = newLastProgress.RecentCourse;
-		            var i = 0,
-		                len = filterLastProgress.length,
-		                j, d;
-		            for (; i < len; i++) {
-		                for (j = 0; j < len; j++) {
+	    				for(var j=0;j<res.data.length;j++){
 
-		                    if (parseInt(filterLastProgress[i].createDate) > parseInt(filterLastProgress[j].createDate)) {
-		                        d = filterLastProgress[j];
-		                        filterLastProgress[j] = filterLastProgress[i];
-		                        filterLastProgress[i] = d;
-		                    }
-		                }
-		            }
+	    					if(this.learningCourseList[i].courseId == res.data[j].courseId){
+	                  this.learningCourseList[i].createDate = res.data[j].createDate;
+	                  this.learningCourseList[i].courseProgress = res.data[j].courseProgress;
+	                  this.learningCourseList[i].progress = res.data[j].progress;
+	                  newLastProgress.RecentCourse.push(this.learningCourseList[i]);
+	    					}else{
+									  newLastProgress.RecentCourse.push(this.learningCourseList[i]);
+								}
 
-		            this.learningCourseList = filterLastProgress;
+	    				}
 
-					this.learningCourseList.map((item, index) =>{
+	    			}
 
-						let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;
+	          var filterLastProgress = newLastProgress.RecentCourse;
+	          var i = 0,
+	              len = filterLastProgress.length,
+	              j, d;
+	          for (; i < len; i++) {
+	            for (j = 0; j < len; j++) {
 
-						if(num === 0) num =  !item.progress ? 0 : 1;
+	              if (parseInt(filterLastProgress[i].createDate) > parseInt(filterLastProgress[j].createDate)) {
+	                  d = filterLastProgress[j];
+	                  filterLastProgress[j] = filterLastProgress[i];
+	                  filterLastProgress[i] = d;
+	              }
 
-						this.learningCourseList[index].courseProgress = item.courseProgress;
-						this.learningCourseList[index].studyProportion = num > 100 ? 100 : num;
-						// this.learningCourseList[index].createTime = item.createDate;
+	            }
+	          }
 
-					});
+			      this.learningCourseList = filterLastProgress;
+
+						this.learningCourseList.map((item, index) =>{
+
+							let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;
+
+							if(num === 0) num =  !item.progress ? 0 : 1;
+
+							this.learningCourseList[index].courseProgress = item.courseProgress;
+							this.learningCourseList[index].studyProportion = num > 100 ? 100 : num;
+							// this.learningCourseList[index].createTime = item.createDate;
+
+						});
 
 				} catch (e) {
 
