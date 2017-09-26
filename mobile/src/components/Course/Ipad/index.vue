@@ -19,7 +19,7 @@
               <h3>{{ item.courseName }}</h3>
             </div>
             <div class="li pro-li">
-              <div class="progress-box">进度： 
+              <div class="progress-box">进度：
                 <div class="progress">
                   <div min="0" max="21" class="progress-bar"></div>
                 </div>
@@ -130,6 +130,8 @@ export default {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
+  min-height: fill-available;
+  min-height: -webkit-fill-available;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;

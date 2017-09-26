@@ -61,7 +61,7 @@ export const changePwdByPhone = params => { return axios.post(`${requestUrl}/api
 
 // 修改用户名
 export const changeUserName = params => { return axios.post(`${requestUrl}/api/zbids/member/editinfo`, qs.stringify(params), headers).then(res => res.data).catch(err => err) };
-// 上传图片
+// 用户上传头像
 export const uploadFile = params => { return axios.post(`${requestUrl}/api/zbids/member/edituserheadr`, params).then(res => res.data).catch(err => err) };
 
 

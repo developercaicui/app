@@ -192,7 +192,8 @@ export default {
 
 	.index-content{
 		padding: 0 1.1rem;
-		min-height: 5rem;
+		min-height: fill-available;
+	  min-height: -webkit-fill-available;
 	}
 
 	.title{
