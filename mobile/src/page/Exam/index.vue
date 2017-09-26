@@ -169,7 +169,12 @@
 				'requestExerciseDetail'
 			]),
 			examBackButton (){
-				examBackButton.clickExamBackButton();
+				if(window.navigator.userAgent.toLocaleLowerCase().indexOf('android') != -1){
+					window.course.back();
+				}else{
+					examBackButton.clickExamBackButton();
+				}
+				
 			},
 			examRequestCallback (examenInfo, status, baseInfo) {
 				let examNeedIds = JSON.parse(this.webApi.getCookie('examNeedIds'));
