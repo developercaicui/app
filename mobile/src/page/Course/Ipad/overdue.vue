@@ -57,7 +57,7 @@ export default {
   created() {
 
     this.getDate()
-    
+
   },
 
 methods: {
@@ -67,7 +67,7 @@ methods: {
     if(status == 'loading') {
 
       this.getDate();
-      
+
     }
 
   },
@@ -87,7 +87,7 @@ methods: {
           if(res.data.courselist.length < 1){
               return false;
           }
-            
+
           this.overdueData = this.webApi.outCourseList(res);
 
           this.sectionList.push(this.overdueData);
@@ -95,7 +95,7 @@ methods: {
           let str = JSON.stringify(this.overdueData);
 
           this.activeBtn = str.substr(2, str.indexOf(':')-3);
-            
+
       }
 
     })
@@ -154,14 +154,14 @@ methods: {
             this.webApi.alert("只有U+课程可以免费申请重听！")
 
         }
-        
+
     }
   },
   updated() {
-  
+
   },
   mounted () {
-    
+
   }
 }
 
@@ -195,7 +195,8 @@ methods: {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
-  min-height: 12.5rem;
+  min-height: fill-available;
+  min-height: -webkit-fill-available;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;
@@ -249,7 +250,7 @@ methods: {
         height: 0.95rem;
         overflow: hidden;
       }
-     
+
   }
 }
 
