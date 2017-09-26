@@ -28,6 +28,8 @@ export default {
 
     let oHtml = document.documentElement;
 
+    if(this.$route.query.deviceType) this.webApi.setCookie('deviceType', this.$route.query.deviceType);
+
     oHtml.dataset.device = this.webApi.getDeviceType();
 
     // 菜单处理
