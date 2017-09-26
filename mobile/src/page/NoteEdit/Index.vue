@@ -32,8 +32,6 @@ export default {
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
-
-
 	},
 
 
@@ -86,6 +84,7 @@ export default {
 							if(data.elseType == 'video' || data.elseType == 'problem') {
 								g.closeNewNote();
 							}else{
+								this.webApi.setCookie('updateNoteList', 'true');
 								this.$router.push({
 									path: `/note/list`
 								});

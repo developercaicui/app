@@ -103,24 +103,15 @@ export default {
 	    }
 	},
 	beforecreate(){
-    this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
+    	// this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
 	},
 	created(){
+		this.courseInfo = this.$route.query;
 		this.getDate(1,0);
 		this.getDate(1,1);
 	},
 
 	updated() {
-		if(this.webApi.isEmpty(this.exchangeList) || this.exchangeList.length<1){
-          // this.$refs.all.classList.add("null")
-      	}else{
-      		// this.$refs.all.classList.remove("null")
-      	}
-        if(this.webApi.isEmpty(this.exchangeListMe) || this.exchangeListMe.length<1){
-            // this.$refs.me.classList.add("null")
-        }else{
-        	// this.$refs.me.classList.remove("null")
-        }
 
 	},
 
@@ -195,7 +186,7 @@ export default {
 	        param.type = 3;
 	        param.ordertype = 1;
 	        param.pageNo = page;
-	        param.pageSize = 10;
+	        param.pageSize = 20;
 	        param.subjectId= this.courseInfo.subjectId;
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {

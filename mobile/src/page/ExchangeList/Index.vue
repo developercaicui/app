@@ -38,6 +38,8 @@ export default {
 
 		if(!this.exchangeData.data) this.fetchList();
 
+		if(this.webApi.getCookie('updateExchangeList') === 'true') this.fetchList();
+
 	},
 
 	computed: {
@@ -53,6 +55,8 @@ export default {
   methods: {
 
 		fetchList() {
+
+			this.webApi.setCookie('updateExchangeList', 'false');
 
 			this.webApi.loadingData();
 

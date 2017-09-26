@@ -70,7 +70,7 @@
 	        	<a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">投诉学服</span></a>
 	        </div>
 	        <ul>
-	          <textarea id="textarea" ref="textarea" name="content" placeholder="亲爱的同学：小财非常欢迎你向小财反馈产品的意见建议和体验感受。我们一定会认真调整，及时反馈。根据你的建议，不断完善和优化我们的产品，为你提供更舒适的学习体验。"></textarea>
+	          <textarea id="textarea" ref="textarea" name="content" placeholder="亲爱的同学：非常欢迎你向我们反馈产品的意见建议和体验感受。我们一定会认真调整，及时反馈。根据你的建议，不断完善和优化我们的产品，为你提供更舒适的学习体验。"></textarea>
 	        </ul>
 	        <div class="pop-tel">联系方式
 	          <input type="text" class="pop-input-tel" ref="popInputTel">

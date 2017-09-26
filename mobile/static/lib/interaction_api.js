@@ -91,7 +91,7 @@ function closeSetting(data = {}) {
 //在学课程跳转课程详情页
 function getClassCourseData(data = {}) {
 
-  g.device == 'ios' ? onlineCouse.getOnlineCourseData(data) : window.course.getClassCourseData(data);
+  g.device == 'ios' ? caicui.getOnlineCourseData(data) : window.course.getClassCourseData(data);
 
 }
 
@@ -118,7 +118,7 @@ function passWeiBoUrl(url) {
 //用于申请重听的路径跳转
 function torenew(url) {
 
-  g.device == 'ios' ? onlineCouse.applyStudyOnlineCourseAgain(url) : window.course.toActivity(url);
+  g.device == 'ios' ? caicui.applyStudyOnlineCourseAgain(url) : window.course.toActivity(url);
 
 }
 

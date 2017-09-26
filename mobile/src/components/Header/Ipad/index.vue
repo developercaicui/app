@@ -4,7 +4,7 @@
 
     <section class="user-info">
       <div class="img-head">
-        <router-link to="editMeInfo"><img :src="`${this.webApi.cdnImgUrl}${userInfo.avatar}`" /></router-link>
+        <router-link to="editMeInfo?origin=index"><img :src="`${this.webApi.cdnImgUrl}${userInfo.avatar}`" /></router-link>
       </div>
       <address class="text">
         <span>{{ userInfo.nickName }}</span>
