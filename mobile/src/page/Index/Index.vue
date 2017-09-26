@@ -34,9 +34,8 @@ export default {
 
 	created() {
 
-
 		this.webApi.delCookie('userInfo');
-    this.webApi.delCookie('token');
+		this.webApi.delCookie('token');
     this.webApi.delCookie('deviceType');
 
     this.webApi.setCookie('userInfo', JSON.stringify(this.$route.query));
@@ -161,14 +160,14 @@ export default {
         					}
         				}
         			}
-	              
+
 		            var filterLastProgress = newLastProgress.RecentCourse;
 		            var i = 0,
 		                len = filterLastProgress.length,
 		                j, d;
 		            for (; i < len; i++) {
 		                for (j = 0; j < len; j++) {
-		                  
+
 		                    if (parseInt(filterLastProgress[i].createDate) > parseInt(filterLastProgress[j].createDate)) {
 		                        d = filterLastProgress[j];
 		                        filterLastProgress[j] = filterLastProgress[i];
@@ -178,7 +177,7 @@ export default {
 		            }
 
 		            this.learningCourseList = filterLastProgress;
-		            
+
 					this.learningCourseList.map((item, index) =>{
 
 						let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;

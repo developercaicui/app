@@ -37,7 +37,7 @@ function setCookie(key, value, days = 30) {
 
 // 跳转到登录页
 function targetLogin() {
-  g.device == 'ios' ? caicui.tokenInvalid('nologin') : window.course.logOff();
+  g.device == 'ios' ? caicui.tokenInvalid('nologin') : window.course.clonesActivity();
 }
 
 // 关闭新建页
