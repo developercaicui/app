@@ -12,6 +12,7 @@ var g = {
   hiddenJiuCuoView: hiddenJiuCuoView,
   outLogin: outLogin,
   passWeiBoUrl: passWeiBoUrl,
+  torenew: torenew,
   getClassCourseData: getClassCourseData,
   clickToPlayVido: clickToPlayVido,
 }
@@ -111,6 +112,13 @@ function hiddenJiuCuoView(data = {}) {
 function passWeiBoUrl(url) {
 
   g.device == 'ios' ? set.passWeiBoUrl(url) : window.course.toActivity(url);
+
+}
+
+//用于申请重听的路径跳转
+function torenew(url) {
+
+  g.device == 'ios' ? onlineCouse.applyStudyOnlineCourseAgain(url) : window.course.toActivity(url);
 
 }
 

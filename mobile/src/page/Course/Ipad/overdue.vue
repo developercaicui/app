@@ -19,7 +19,7 @@
                 <h3>{{ item.courseName }}</h3>
               </div>
               <div class="li cpl-fool">
-                <div tapmode @click="renew(item.isU)" class="btn btn-o">
+                <div @click="renew(item.isU)" class="btn btn-o">
                   <span>申请重听</span>
                 </div>
               </div>
@@ -144,9 +144,10 @@ methods: {
       return `background-image:url(${this.webApi.cdnImgUrl}${url})`
     },
     renew(isU) {
+
         if(isU == true){
 
-            g.passWeiBoUrl('http://www.caicui.com/mc/examReport/add?token='+this.webApi.getCookie('token'))
+            g.torenew('http://www.caicui.com/mc/examReport/add?token='+this.webApi.getCookie('token'))
            
         }else{
 

@@ -9,7 +9,7 @@
       <div class="stydys" v-for="(value,key) in learningData" v-if="activeBtn===key">
         <template v-for="val in value.children">
         <h2>{{ val.subjectName }}</h2>
-        <li class="learnLi" data-coursename="" data-chaptername="" @click="openCourse(item,$event)" v-for="item in val.courseLists">
+        <li class="learnLi" @click="openCourse($event)" :data-data="JSON.stringify(item)" v-for="item in val.courseLists">
           <div :style="setBackground(item.courseBkImage)" class="cpl-head">
             <h4 class="exam_time none"></h4>
             <h4 class="course_due">课程到期：{{ formatDate(item.expirationTime,"Y")+'-'+formatDate(item.expirationTime,'M')+'-'+formatDate(item.expirationTime,'D') }}</h4>
@@ -24,15 +24,6 @@
                   <div :data-courseProgress="item.courseProgress" :data-progress="item.progress" :min="[item.courseProgress?item.courseProgress:0]" :max="[item.taskTotal?item.taskTotal:0]" class="progress-bar"></div>
                 </div>
                 <div class="progress-val"></div>
-              </div>
-            </div>
-            <div class="li cpl-fool">
-              <div onclick="openActivate('CMA Part I 中文 前导','QiQi Wu','吴奇奇','undefined','undefined','/upload/201606/09c9342818e24393a970aa93d25b9a4d.png','1','8a22ecb553eab1280153f36f380a007f','/upload/201604/92da0abdac4a45f5b46f9546ade771ac.jpg',this)" class="btn btn-o" style="display:none;">
-                <span>马上激活</span>
-                <div class="hide data"></div>
-              </div>
-              <div tapmode onclick="renew()" class="btn btn-o" style="display:none;">
-                <span>申请重听</span>
               </div>
             </div>
           </div>
@@ -255,7 +246,11 @@ export default {
 	setBackground(url) {
 		return `background-image:url(${this.webApi.cdnImgUrl}${url})`
 	},
-	openCourse(data,ev) {// 发送课程信息给原生
+	openCourse(ev) {// 发送课程信息给原生
+
+		let obj = this.webApi.recursiveParentNode(ev.target,'li');
+
+		let data = JSON.parse(obj.dataset.data);
 
 		if(data.lock_status != 0 ){
 
@@ -265,7 +260,6 @@ export default {
 
 		}
 
-		let obj = this.webApi.recursiveParentNode(ev.target,'li');
 		let progress = obj.querySelector("div.progress-val").innerText.replace(/\%/g,"");
 		data.studyProportion = progress;
 		data.expirationTime = this.formatDate(data.expirationTime,"Y")+'/'+this.formatDate(data.expirationTime,'M')+'/'+this.formatDate(data.expirationTime,'D');
