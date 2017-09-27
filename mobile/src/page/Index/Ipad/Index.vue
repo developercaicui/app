@@ -17,7 +17,7 @@
 					<a @click.stop="handleSendCouseInfo" :data-data="JSON.stringify(item)" href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-show="index<=3">
 						<div class="info">
 							<h1>{{ item.courseName }}</h1>
-							<time>有效期至：{{ item.examinationDate.includes('1970') ? '暂无考试' :item.examinationDate }}</time>
+							<time>考试时间：{{ item.examinationDate }}</time>
 							<time>课程到期：{{ item.expirationTime }}</time>
 						</div>
 						<div class="process">
