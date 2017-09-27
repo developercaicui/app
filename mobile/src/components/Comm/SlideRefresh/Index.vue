@@ -70,6 +70,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		distanceTop: {
+			type: Number,
+			default: 0
+		}
 	},
 
   data() {
@@ -100,7 +104,7 @@ export default {
 
 	mounted() {
 
-		this.$refs.refreshContent.style.minHeight = `${document.documentElement.getBoundingClientRect().height - this.$refs.refreshContent.getBoundingClientRect().top}px`;
+		this.$refs.refreshContent.style.minHeight = `${document.documentElement.getBoundingClientRect().height - this.distanceTop - this.$refs.refreshContent.getBoundingClientRect().top}px`;
 
 	},
 
