@@ -282,6 +282,9 @@ export default {
 
 			let endTime = new Date().getTime();
 
+			this.screenHeight = document.documentElement.getBoundingClientRect().height;
+			this.contentHeight = this.$refs.refreshContent.offsetHeight;
+
 			// 下滑，
 			if(this.isDirection == "top") {
 
