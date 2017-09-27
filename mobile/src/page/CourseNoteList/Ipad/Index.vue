@@ -137,7 +137,7 @@ export default {
 	},
 
 	updated() {
-        
+
 	},
 
   	methods: {
@@ -1003,7 +1003,7 @@ select {
 				font-size: .34rem;
 			}
 		}
-		
+
 
  }
 
