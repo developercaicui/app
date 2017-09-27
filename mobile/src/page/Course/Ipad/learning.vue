@@ -1,7 +1,7 @@
 <template lang="html">
-	
+
 	<div class="course-content course-pic-list learning" ref="courseContentlearn">
-	<SlideRefresh @top-status-change="topStatusChange">
+	<SlideRefresh @top-status-change="topStatusChange" :distanceTop="styleTop">
 		<div class="learning-navL">
         <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
@@ -19,7 +19,7 @@
               <h3>{{ item.courseName }}</h3>
             </div>
             <div class="li pro-li">
-              <div class="progress-box">进度： 
+              <div class="progress-box">进度：
                 <div class="progress">
                   <div :data-courseProgress="item.courseProgress" :data-progress="item.progress" :min="[item.courseProgress?item.courseProgress:0]" :max="[item.taskTotal?item.taskTotal:0]" class="progress-bar"></div>
                 </div>
@@ -38,33 +38,49 @@
 
 <script>
 
-import {getLearningCourse,getCourseProgres} from '../../../api/port';
 import SlideRefresh from '../../../components/Comm/SlideRefresh';
+import {
+	getLearningCourse,
+	getCourseProgres
+} from '../../../api/port';
 
 export default {
 
+
 	components: {
 		SlideRefresh
-  	},
+  },
 
 	data() {
-	    return {
+	  return {
 			isIpad: false,
-	  		isMobile: false,
+	  	isMobile: false,
 			learningData: {}, // 在学课程列表
 			learningcourse: {},
 			activeBtn: "",
 			imgurl: 'http://cdnimg.caicui.com/',
 			sectionList:[],
-	    }
+			styleTop: 0,
+	  }
 	},
 
 	created() {
-		
+
 		this.getDate();
-		 
+
+		let fSize = parseInt(document.documentElement.style.fontSize) || 0;
+
+		this.styleTop = fSize * 1.4;
+
 	},
 
+  mounted () {
+
+  },
+
+	updated() {
+		this.progressBar();
+  },
 
   methods: {
   	// 课程的实时状态
@@ -73,7 +89,7 @@ export default {
 		if(status == 'loading') {
 
 			this.getDate();
-			
+
 		}
 
 	},
@@ -122,16 +138,16 @@ export default {
 					'memberId':JSON.parse(this.webApi.getCookie("userInfo")).memberId,
 					'courseId':courseArr.toString()
 				}
-				
+
 				// 获取课程学习进度
 				getCourseProgres(params)
 
 				.then(res =>{
 
 					if(res && res.state == 'success'){
-						
+
 						for(let i=0;i<learninglist.length;i++){
-							for(let j=0;j<res.data.length;j++){ 
+							for(let j=0;j<res.data.length;j++){
 								if(learninglist[i].courseId == res.data[j].courseId){
 									learninglist[i].courseProgress = res.data[j].courseProgress;
 						            learninglist[i].createDate = res.data[j].createDate;
@@ -155,21 +171,21 @@ export default {
 						this.learningData = this.webApi.outCourseList(ret);
 
 						this.sectionList.push(this.learningData);
-					  	
+
 						let str = JSON.stringify(this.learningData);
 
 						this.activeBtn = str.substr(2, str.indexOf(':')-3);
-						
-						
+
+
 					}
-					
+
 				})
-				
+
 			}
 
 		})
 	},
-  	
+
   	learningNav(ind) {
 	    this.activeBtn = ind;
 	},
@@ -234,7 +250,7 @@ export default {
 
 	        if($val){
 	            $val.innerHTML = percentage+'%';
-	        }	      
+	        }
 	        if (_t.getAttribute('data')!='1') {
 	            setTimeout(function(){
 	                _t.style.width = percentage + '%';
@@ -265,26 +281,23 @@ export default {
 		data.expirationTime = this.formatDate(data.expirationTime,"Y")+'/'+this.formatDate(data.expirationTime,'M')+'/'+this.formatDate(data.expirationTime,'D');
 		data.token = this.webApi.getCookie('token');
 		data.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;
-		
+
 		g.getClassCourseData(JSON.stringify(data))
 	}
   },
-  updated() {
-	this.progressBar();
-  },
-  mounted () {
 
-    
-  }
 }
 
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/style/mixin";
-.course-content{
-    padding-top:1.4rem;
-}
+
+ @import "../../../assets/style/mixin";
+
+ .course-content{
+    padding-top: 1.4rem;
+ }
+
 .learning-navL {
     line-height: 1rem;
     padding-left: 1.1rem;
@@ -362,7 +375,7 @@ export default {
         height: 0.9rem;
         overflow: hidden;
       }
-     
+
   }
 }
 .course-pic-list li.learnLi:before{

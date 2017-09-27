@@ -28,7 +28,8 @@ axios.interceptors.response.use(response => {
     isPendingRequest = true;
 
     webApi.alert('登录失效，即将跳到登录页');
-
+    webApi.delCookie('userInfo');
+    webApi.delCookie('token');
 
     setTimeout( ()=>{
       if(webApi.getCookie('isTargetLogin') === 'false') {

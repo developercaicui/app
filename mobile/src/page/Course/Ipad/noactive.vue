@@ -44,13 +44,6 @@ import SlideRefresh from '../../../components/Comm/SlideRefresh';
 
 export default {
 
-  props: {
-    styleTop: {
-    	type: Number,
-    	default: 70
-    }
-  },
-
   components: {
     Setactivate,
     SlideRefresh
@@ -65,14 +58,18 @@ export default {
 	      activeBtn: "",
 	      activeCour: false,
 	      sectionList:[],
-	      topStyle: 0,
+	      styleTop: 0,
       }
   },
 
   created() {
 
     this.getDate();
-     
+
+    let fSize = parseInt(document.documentElement.style.fontSize) || 0;
+
+		this.styleTop = fSize * 1.4;
+
   },
 
 
@@ -83,7 +80,7 @@ export default {
 		if(status == 'loading') {
 
 			this.getDate();
-			
+
 		}
 
 	},
@@ -111,7 +108,7 @@ export default {
 	        let str = JSON.stringify(this.noactiveData);
 
 	        this.activeBtn = str.substr(2, str.indexOf(':')-3);
-	            
+
 	      }
 
 	    })
@@ -141,10 +138,13 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/style/mixin";
-.course-content{
- 
-}
+
+ @import "../../../assets/style/mixin";
+
+ .course-content{
+   padding-top: 1.4rem;
+ }
+
 .learning-navL {
     line-height: 1rem;
     padding-left: 1.1rem;
@@ -221,7 +221,7 @@ export default {
         height: 0.95rem;
         overflow: hidden;
       }
-     
+
   }
 }
 

@@ -8,15 +8,13 @@
 			<li data-type="overdue"  @touchend="changeCourse">已过期课程</li>
 		</ul>
 
-		<div ref="courseListWrap" style="margin-top: 1.4rem;">
-			<transition-group name="drop">
-			  <Courselearning :styleTop="styleTop" v-show="currmodule=='learning'" key="learning"></Courselearning>
-			  <Coursenoactive :styleTop="styleTop" v-show="currmodule=='noactive'" key="noactive"></Coursenoactive>
-			  <Courseoverdue :styleTop="styleTop" v-show="currmodule=='overdue'" key="overdue"></Courseoverdue>
-			</transition-group>
-		</div>
-		
-		
+		<transition-group name="drop">
+		  <Courselearning :styleTop="styleTop" v-show="currmodule=='learning'" key="learning"></Courselearning>
+		  <Coursenoactive :styleTop="styleTop" v-show="currmodule=='noactive'" key="noactive"></Coursenoactive>
+		  <Courseoverdue :styleTop="styleTop" v-show="currmodule=='overdue'" key="overdue"></Courseoverdue>
+		</transition-group>
+
+
 	</main>
 
 </template>
@@ -29,13 +27,13 @@ import Courseoverdue from './overdue';
 
 export default {
 
-  	created() {
-  		
-  	},
+	created() {
+
+	},
 
 	updated() {
 
-		
+
 	},
 
 	components: {
@@ -52,7 +50,6 @@ export default {
     }
   },
   mounted () {
-  	this.styleTop = this.$refs.courseListWrap.getBoundingClientRect().top;
   },
   methods: {
   	 changeCourse(ev) {
@@ -64,7 +61,7 @@ export default {
   	 	this.currmodule = ev.target.dataset.type;
 
   	 }
-  	 
+
   }
 
 }
@@ -74,7 +71,7 @@ export default {
 <style lang="scss" scoped>
 
 @import "../../../assets/style/mixin";
-	    
+
 .course-wrap-ipad{
 	background-color:#fff;
 }
@@ -86,8 +83,7 @@ export default {
     padding-top: 0.5rem;
     position: fixed;
     z-index: 10;
-    left: 0;
-    right: 0;
+    left: 0; top: 0; right: 0;
     display: flex;
 	li{
 	    display: inline-block;

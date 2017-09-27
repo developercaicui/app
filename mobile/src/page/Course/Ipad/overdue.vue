@@ -1,7 +1,7 @@
 <template lang="html">
 
   <div class="course-content course-pic-list learning" ref="courseContentover">
-  <SlideRefresh @top-status-change="topStatusChange">
+  <SlideRefresh @top-status-change="topStatusChange" :distanceTop="styleTop">
     <div class="learning-navL">
         <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in overdueData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
@@ -45,18 +45,23 @@ export default {
     },
 
   data() {
-      return {
+    return {
       isIpad: false,
       isMobile: false,
       overdueData: {}, // 在学课程列表
       activeBtn: "",
       sectionList:[],
-      }
+      styleTop: 0,
+    }
   },
 
   created() {
 
-    this.getDate()
+    this.getDate();
+
+    let fSize = parseInt(document.documentElement.style.fontSize) || 0;
+
+		this.styleTop = fSize * 1.4;
 
   },
 
@@ -148,7 +153,7 @@ methods: {
         if(isU == true){
 
             g.torenew('http://www.caicui.com/mc/examReport/add?token='+this.webApi.getCookie('token'))
-           
+
         }else{
 
             this.webApi.alert("只有U+课程可以免费申请重听！")
@@ -168,11 +173,13 @@ methods: {
 </script>
 
 <style lang="scss" scoped>
-@import "../../../assets/style/mixin";
-.course-content{
-    padding-top:1.4rem;
-    min-height: 15rem;
-}
+
+ @import "../../../assets/style/mixin";
+ 
+ .course-content{
+   padding-top:1.4rem;
+ }
+
 .learning-navL {
     line-height: 1rem;
     padding-left: 1.1rem;
