@@ -21,6 +21,7 @@
 		      </div>
       		</div>
 			<div class="all" v-show="defaultAct==0" ref="all">
+				<SlideRefresh @top-status-change="topStatusChangeALL">
 				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
@@ -44,6 +45,7 @@
 	            </dd>
 	          </dl>
 	          <img class="no-data" v-show="this.exchangeList && this.exchangeList.length === 0" src="../../../assets/img/404.svg"/>
+	          </SlideRefresh>
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
@@ -80,8 +82,12 @@
 <script>
 
 import { getExchangeList, getExchangeDetails, searchhNote } from '../../../api/port';
+import SlideRefresh from '../../../components/Comm/SlideRefresh';
 
 export default {
+	components: {
+      SlideRefresh
+    },
 	data() {
 	    return {
 			defaultAct: 0,
@@ -99,16 +105,18 @@ export default {
 		    searchData:'',
 		    page: 1,
 		    params:{},
-		    self: 0
+		    self: 0,
+		    allFlag: false,
+		    meFlag: false
 	    }
 	},
 	beforecreate(){
     	// this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
 	},
 	created(){
+		this.allFlag = true;
 		this.courseInfo = this.$route.query;
 		this.getDate(1,0);
-		this.getDate(1,1);
 	},
 
 	updated() {
@@ -116,15 +124,35 @@ export default {
 	},
 
   	methods: {
+  		//下拉刷新
+	  	topStatusChangeALL(status) {
+
+	    	if(status == 'loading') {
+
+	      		this.getDate(1,0);
+
+	    	}
+
+	  	},
   		set_index(index) {
+
   			this.defaultAct = index;
   			this.self = index;
+
+  			if(!this.meFlag){
+
+  				this.meFlag = true;
+				this.getDate(1,1);
+
+  			}
+
   		},
   		showSearchBar() {
             $('.search-bar').show(300);
         },
         hideSearchBar() {
             $('.search-bar').hide();
+            window.location.reload();
         },//提问
         new_answer() {
         	this.$router.push({
@@ -170,12 +198,10 @@ export default {
               	let keyword = data.keywords;
 
               	if (this.webApi.isEmpty(data.key1.data)||total==0) {
-              	  alert("暂无数据")
-                  // $('#content').html('');
-                  // $('body').addClass('null');
+              	  this.exchangeList = data.key1.data;
                   return false;
               	}
-              	$('body').removeClass('null');
+
               	this.exchangeList = data.key1.data;
 		        this.setListData(this.exchangeList);
 
@@ -305,6 +331,7 @@ export default {
 }
 .all,.me{
 	min-height: 15rem;
+	margin-top: 1.4rem;
 }
 .icon-sousuo{
   font-family:"iconfont";
@@ -396,8 +423,11 @@ export default {
   font-size: 0.32rem;
   height: 1.25rem;
   line-height: 1.25rem;
-  position: relative;
+  position: fixed;
   border-bottom: 1px solid #ddd;
+  top: 0;
+  width: 100%;
+  z-index: 3;
 }
 .s-head .left,
 .header .left,

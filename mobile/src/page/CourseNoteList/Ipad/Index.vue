@@ -125,6 +125,7 @@ export default {
 		    self: 0,
 				isShowList: false, // 是否显示大图
 				picList: [], // 图片列表
+        meFlag: false,
 	    }
 	},
 
@@ -132,24 +133,11 @@ export default {
     this.courseInfo = this.$route.query;
     //获取全部笔记列表
 		this.getAllNote();
-    //获取我的笔记列表
-		this.getMeNote();
 
 	},
 
 	updated() {
-        //判断是否有数据
-		    if(this.sectionList.length < 1 || this.sectionList.nodeNum == 0){
-          // this.$refs.me.classList.add("null")
-      	}else{
-      		// this.$refs.me.classList.remove("null")
-      	}
-        if(this.sectionAllList && this.sectionAllList.nodeNum == 0){
-            // this.$refs.all.classList.add("null")
-        }else{
-        	// this.$refs.all.classList.remove("null")
-        }
-
+        
 	},
 
   	methods: {
@@ -170,8 +158,13 @@ export default {
 			},
 
   		set_index(index) {
-  			this.defaultAct = index;
-  			this.self = index;
+    			this.defaultAct = index;
+    			this.self = index;
+          if(!this.meFlag){
+            this.meFlag = true;
+            //获取我的笔记列表
+            this.getMeNote();
+          }
   		},
   		showSearchBar() {
             this.$router.push({
@@ -180,6 +173,7 @@ export default {
         },
         hideSearchBar() {
             $('.search-bar').hide();
+            window.location.reload();
         },//提问
         new_answer() {
         	this.$router.push({
@@ -375,6 +369,7 @@ export default {
  @import "../../../assets/style/mixin";
 .all,.me{
 	min-height: 15rem;
+  margin-top: 1.4rem;
 }
 .icon-sousuo{
   font-family:"iconfont";
@@ -466,8 +461,11 @@ export default {
   font-size: 0.32rem;
   height: 1.25rem;
   line-height: 1.25rem;
-  position: relative;
+  position: fixed;
   border-bottom: 1px solid #ddd;
+  top: 0;
+  width: 100%;
+  z-index: 3;
 }
 .s-head .left,
 .header .left,
