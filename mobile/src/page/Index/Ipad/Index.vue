@@ -88,54 +88,55 @@ export default {
     }
   },
 
+	updated() {
+
+		let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
+		let arr = ['#4a90e2','#3E4F61','#408684', '#FF366D'];
+
+		canvasList.forEach((obj, index) =>{
+
+				let ctx = obj.getContext('2d');
+				let r = obj.parentNode.getBoundingClientRect().width / 2;
+
+				obj.width = obj.height = r * 2;
+
+				drawArc(ctx, r, obj.dataset.progress, arr[index]);
+		});
+
+
+		function drawArc(ctx, r, num, backColor){
+
+			// 底图
+			ctx.beginPath();
+			ctx.fillStyle = 'rgba(255,255,255,.5)';
+			ctx.arc(r, r, r, 0, 2*Math.PI);
+			ctx.fill();
+
+
+			// 动画层
+			let sAngel = 0 * Math.PI;
+			let eAngel = 0 * Math.PI;
+			let aAngle = Math.PI*1.5;
+
+			ctx.beginPath();
+			ctx.fillStyle = '#fff';
+			ctx.moveTo(r, r);
+			ctx.arc(r, r, r, sAngel, Math.PI*2*(num*0.01));
+			ctx.fill();
+
+			// 覆盖层
+			ctx.beginPath();
+			ctx.fillStyle = backColor;
+			ctx.arc(r, r, r-r/15, 0, 2*Math.PI);
+			ctx.fill();
+
+
+		}
+
+	},
+
+
 	watch: {
-
-		learningCourseList() {
-
-			let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
-			let arr = ['#4a90e2','#3E4F61','#408684'];
-
-			canvasList.forEach((obj, index) =>{
-
-					let ctx = obj.getContext('2d');
-					let r = obj.parentNode.getBoundingClientRect().width / 2;
-
-					obj.width = obj.height = r * 2;
-
-					drawArc(ctx, r, obj.dataset.progress, arr[index]);
-			});
-
-
-			function drawArc(ctx, r, num, backColor){
-
-				// 底图
-				ctx.beginPath();
-				ctx.fillStyle = 'rgba(255,255,255,.5)';
-				ctx.arc(r, r, r, 0, 2*Math.PI);
-				ctx.fill();
-
-
-				// 动画层
-			  let sAngel = 0 * Math.PI;
-			  let eAngel = 0 * Math.PI;
-			  let aAngle = Math.PI*1.5;
-
-				ctx.beginPath();
-			  ctx.fillStyle = '#fff';
-			  ctx.moveTo(r, r);
-			  ctx.arc(r, r, r, sAngel, Math.PI*2*(num*0.01));
-			  ctx.fill();
-
-				// 覆盖层
-				ctx.beginPath();
-				ctx.fillStyle = backColor;
-				ctx.arc(r, r, r-r/15, 0, 2*Math.PI);
-				ctx.fill();
-
-
-			}
-
-		},
 
 	},
 
@@ -218,6 +219,9 @@ export default {
 		 }
 		 &:nth-of-type(3){
 			 background-color: #408684;
+		 }
+		 &:nth-of-type(4){
+			 background-color: #FF366D;
 		 }
 
 		 .info{
