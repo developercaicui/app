@@ -82,12 +82,19 @@ export default {
 
 						setTimeout(() =>{
 							if(data.elseType == 'video' || data.elseType == 'problem') {
+
 								g.closeNewNote();
+
 							}else{
-								this.webApi.setCookie('updateNoteList', 'true');
-								this.$router.push({
-									path: `/note/list`
-								});
+
+								if(document.referrer.includes('coursenote/list')) {
+									this.$router.push(`/coursenote/list`);
+								}else{
+									this.webApi.setCookie('updateNoteList', 'true');
+									this.$router.push(`/note/list`);
+								}
+
+
 							}
 						 }, 1000)
 			})

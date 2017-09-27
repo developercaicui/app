@@ -7,11 +7,15 @@
 			<li data-type="noactive" @touchend="changeCourse">未激活课程</li>
 			<li data-type="overdue"  @touchend="changeCourse">已过期课程</li>
 		</ul>
-		<transition-group name="drop">
-			<Courselearning v-show="currmodule=='learning'" key="learning"></Courselearning>
-			<Coursenoactive v-show="currmodule=='noactive'" key="noactive"></Coursenoactive>
-			<Courseoverdue v-show="currmodule=='overdue'" key="overdue"></Courseoverdue>
-		</transition-group>
+
+		<div ref="courseListWrap" style="margin-top: 1.4rem;">
+			<transition-group name="drop">
+			  <Courselearning :styleTop="styleTop" v-show="currmodule=='learning'" key="learning"></Courselearning>
+			  <Coursenoactive :styleTop="styleTop" v-show="currmodule=='noactive'" key="noactive"></Coursenoactive>
+			  <Courseoverdue :styleTop="styleTop" v-show="currmodule=='overdue'" key="overdue"></Courseoverdue>
+			</transition-group>
+		</div>
+		
 		
 	</main>
 
@@ -44,10 +48,11 @@ export default {
   data() {
     return {
     	currmodule:"learning",
+    	styleTop: 0,
     }
   },
   mounted () {
-
+  	this.styleTop = this.$refs.courseListWrap.getBoundingClientRect().top;
   },
   methods: {
   	 changeCourse(ev) {

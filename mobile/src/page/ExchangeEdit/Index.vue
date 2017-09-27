@@ -81,14 +81,23 @@ export default {
 
 					setTimeout(()=>{
 						if(data.elseType == 'video' || data.elseType == 'problem') {
+
 							g.closeNewNote();
+
 						}else{
 
-							this.webApi.setCookie('updateExchangeList', 'true');
+							if(document.referrer.includes('courseexchange/list')) {
 
-							this.$router.push({
-								path: `/exchange/list`
-							});
+								this.$router.push(`/courseexchange/list`);
+
+							}else{
+
+								this.webApi.setCookie('updateExchangeList', 'true');
+								this.$router.push(`/exchange/list`);
+
+							}
+
+
 						}
 					}, 1000)
 

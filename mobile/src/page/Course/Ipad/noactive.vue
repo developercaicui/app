@@ -1,7 +1,7 @@
 <template lang="html">
 
   <div class="course-content course-pic-list learning" ref="courseContentnoact">
-  <SlideRefresh @top-status-change="topStatusChange">
+  <SlideRefresh @top-status-change="topStatusChange" :distanceTop="styleTop">
       <div class="learning-navL">
         <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in noactiveData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
@@ -44,6 +44,13 @@ import SlideRefresh from '../../../components/Comm/SlideRefresh';
 
 export default {
 
+  props: {
+    styleTop: {
+    	type: Number,
+    	default: 70
+    }
+  },
+
   components: {
     Setactivate,
     SlideRefresh
@@ -58,6 +65,7 @@ export default {
 	      activeBtn: "",
 	      activeCour: false,
 	      sectionList:[],
+	      topStyle: 0,
       }
   },
 
@@ -126,7 +134,7 @@ export default {
 
   },
   mounted () {
-    
+     // this.topStyle = this.$refs.courseContentnoact.getBoundingClientRect().top;
   }
 }
 
@@ -135,8 +143,7 @@ export default {
 <style lang="scss" scoped>
 @import "../../../assets/style/mixin";
 .course-content{
-    padding-top:1.4rem;
-    min-height: 15rem;
+ 
 }
 .learning-navL {
     line-height: 1rem;

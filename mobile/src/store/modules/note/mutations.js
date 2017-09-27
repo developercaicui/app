@@ -22,4 +22,12 @@ export default {
     Object.assign(state.noteDetailsParams, params);
   },
 
+  updateNoteDetailsParams(state, params) {
+    Object.assign(state.noteDetailsParams, params);
+  },
+
+  reductionNoteDetailsList(state) {
+    state.noteDetailsList = [];
+  }
+
 }
