@@ -229,15 +229,14 @@ export default {
         },
       	out() {//退出登录
 
-          g.outLogin();
-
       		loginout({"token":this.webApi.getCookie('token')})
 
       		.then(res =>{
 
 	            this.webApi.delCookie("userInfo")
               this.webApi.delCookie("token")
-
+              g.outLogin();
+              
 	        })
       	},
         // guanbi() {//关闭设置页
@@ -288,6 +287,17 @@ export default {
 
                     this.webApi.alert('发表成功');
 
+                    setTimeout(() => {
+
+                      this.body.setAttribute("show","index");
+
+                      this.$refs.textarea.value = "";
+
+                      $('#pop-radios .pop-radio-label').eq(0).addClass('active').siblings().removeClass('active');
+                   
+
+                    },600)
+                    
                 } else {
 
                     this.webApi.alert(res.msg);
