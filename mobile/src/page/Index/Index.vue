@@ -34,15 +34,11 @@ export default {
 
 	created() {
 
-		let tmpUserInfo = this.webApi.getCookie('userInfo');
-
-		tmpUserInfo = tmpUserInfo ? JSON.parse(tmpUserInfo) : {};
-
 		this.webApi.delCookie('userInfo');
 		this.webApi.delCookie('token');
     this.webApi.delCookie('deviceType');
 
-    this.webApi.setCookie('userInfo', JSON.stringify(Object.assign(this.$route.query, tmpUserInfo)));
+    this.webApi.setCookie('userInfo', JSON.stringify(this.$route.query));
     this.webApi.setCookie('token', this.$route.query.token);
     this.webApi.setCookie('deviceType', this.$route.query.deviceType);
 
@@ -55,7 +51,7 @@ export default {
 		this.webApi.loadingData();
 		this.webApi.setCookie('isTargetLogin', 'false');
 
-		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
+		this.userInfo = this.$route.query;
 
 		this.fetchData();
 

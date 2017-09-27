@@ -21,7 +21,7 @@
 		      </div>
       		</div>
 			<div class="all" v-show="defaultAct==0" ref="all">
-				<SlideRefresh @top-status-change="topStatusChange">
+				<SlideRefresh @top-status-change="topStatusChange" @bottom-status-change="bottomStatusChange">
 				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
@@ -99,8 +99,8 @@ export default {
 		          name: '我的交流',
 		        }
 		      ],
-		    exchangeList: {},
-		    exchangeListMe: {},
+		    exchangeList: [],
+		    exchangeListMe: [],
 		    searchWord: '',
 		    searchData:'',
 		    page: 1,
@@ -133,6 +133,13 @@ export default {
 
 	    	}
 
+	  	},
+	  	bottomStatusChange(status) {
+	  		if(status == 'loading') {
+	  			this.page++;
+	      		this.getDate(this.page,this.self);
+
+	    	}
 	  	},
   		set_index(index) {
 
@@ -202,8 +209,7 @@ export default {
                   return false;
               	}
 
-              	this.exchangeList = data.key1.data;
-		        this.setListData(this.exchangeList);
+		        this.exchangeList = this.setListData(data.key1.data);
 
               	return false;
         	}
@@ -212,7 +218,7 @@ export default {
 	        param.type = 3;
 	        param.ordertype = 1;
 	        param.pageNo = page;
-	        param.pageSize = 20;
+	        param.pageSize = 10;
 	        param.subjectId= this.courseInfo.subjectId;
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {
@@ -224,16 +230,20 @@ export default {
 			.then(res =>{
 
 		      if(res && res.state == 'success'){
-
-		          this.webApi.closeLoadingData();
-
+		      	  if(page == 1){
+		          		this.webApi.closeLoadingData();
+				  }
 		          if(self == 0){
-		          	this.exchangeList = res.data;
-		          	this.setListData(this.exchangeList);
+		          	
+		          	res.data = this.setListData(res.data);
+
+		          	this.exchangeList = this.exchangeList.concat(res.data);
 
 		          }else{
-		          	this.exchangeListMe = res.data;
-		          	this.setListData(this.exchangeListMe);
+
+		          	res.data = this.setListData(res.data);
+
+		          	this.exchangeListMe = this.exchangeListMe.concat(res.data);
 
 		          }
 
@@ -249,6 +259,7 @@ export default {
 	          	item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
 	          	item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' '&& item.taskType == 'video' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
 	        });
+	        return list;
         },
 		// 打开详情
 		answerDetail(item) {
@@ -427,7 +438,7 @@ export default {
   border-bottom: 1px solid #ddd;
   top: 0;
   width: 100%;
-  z-index: 3;
+  z-index: 10;
 }
 .s-head .left,
 .header .left,
