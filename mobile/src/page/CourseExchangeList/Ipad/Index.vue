@@ -21,7 +21,7 @@
 		      </div>
       		</div>
 			<div class="all" v-show="defaultAct==0" ref="all">
-				<SlideRefresh @top-status-change="topStatusChangeALL">
+				<SlideRefresh @top-status-change="topStatusChange">
 				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
@@ -125,7 +125,7 @@ export default {
 
   	methods: {
   		//下拉刷新
-	  	topStatusChangeALL(status) {
+	  	topStatusChange(status) {
 
 	    	if(status == 'loading') {
 
