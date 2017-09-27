@@ -81,6 +81,8 @@ export default {
 		// 接口请求
 		fetchData() {
 
+			let learningCourseList = [];
+
 			// 最近所学课程
 			getLearningCourse({
 				verTT: new Date().getTime(),
@@ -98,7 +100,7 @@ export default {
 					return false;
 				}
 
-				this.learningCourseList = res.data.courselist.map( item => {
+				learningCourseList = res.data.courselist.map( item => {
 
 					let expirationDate = new Date(item.expirationTime*1000);
 
@@ -125,7 +127,7 @@ export default {
 			})
 			.then(() =>{
 
-				let courseIds =  this.learningCourseList.map(item => item.courseId);
+				let courseIds =  learningCourseList.map(item => item.courseId);
 
 
 				// 进度
@@ -150,15 +152,15 @@ export default {
 	             RecentCourse : []
 	          };
 
-	    			for(var i=0;i<this.learningCourseList.length;i++){
+	    			for(var i=0;i<learningCourseList.length;i++){
 
 	    				for(var j=0;j<res.data.length;j++){
 
-	    					if(this.learningCourseList[i].courseId == res.data[j].courseId){
-	                  this.learningCourseList[i].createDate = res.data[j].createDate;
-	                  this.learningCourseList[i].courseProgress = res.data[j].courseProgress;
-	                  this.learningCourseList[i].progress = res.data[j].progress;
-	                  newLastProgress.RecentCourse.push(this.learningCourseList[i]);
+	    					if(learningCourseList[i].courseId == res.data[j].courseId){
+	                  learningCourseList[i].createDate = res.data[j].createDate;
+	                  learningCourseList[i].courseProgress = res.data[j].courseProgress;
+	                  learningCourseList[i].progress = res.data[j].progress;
+	                  newLastProgress.RecentCourse.push(learningCourseList[i]);
 	    					}
 
 	    				}
@@ -181,16 +183,16 @@ export default {
 	            }
 	          }
 
-			      this.learningCourseList = filterLastProgress;
+			      learningCourseList = filterLastProgress;
 
-						this.learningCourseList.map((item, index) =>{
+						learningCourseList.map((item, index) =>{
 
 							let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;
 
 							if(num === 0) num =  !item.progress ? 0 : 1;
 
-							this.learningCourseList[index].courseProgress = item.courseProgress;
-							this.learningCourseList[index].studyProportion = num > 100 ? 100 : num;
+							learningCourseList[index].courseProgress = item.courseProgress;
+							learningCourseList[index].studyProportion = num > 100 ? 100 : num;
 							// this.learningCourseList[index].createTime = item.createDate;
 
 						});
@@ -215,11 +217,12 @@ export default {
 					return false;
 				}
 
-				// this.learningCourseList = this.learningCourseList.sort((a, b) => a.createTime - b.createTime );
+				// learningCourseList = learningCourseList.sort((a, b) => a.createTime - b.createTime );
 
 				// courseId 做比较
-				res.data.map(item => this.learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth() + 1)}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
+				res.data.map(item => learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth() + 1)}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
 
+				this.learningCourseList = learningCourseList;
 			})
 
 		},
