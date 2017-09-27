@@ -127,7 +127,7 @@ export default {
 							break;
 					}
 				}
-				console.log(title)
+				// console.log(title)
 				state.exerciseTitle = title;
 				// return title;
 			}

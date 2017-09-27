@@ -5,9 +5,10 @@ import {Spinner, DatetimePicker } from 'mint-ui';
 
 
 
-import store from './store'
+import store from './store';
 import router from './router/router';
 import webApi from './api/api';
+import VueTouch from 'vue-touch';
 
 
 Vue.use(VueRouter);
@@ -24,3 +25,4 @@ new Vue({
   store,
   render: h => h(App)
 });
+Vue.use(VueTouch, {name: 'v-touch'})

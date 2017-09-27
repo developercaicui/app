@@ -49,7 +49,7 @@
 	import examCorrection from '../../components/CorrectionExam';
 	import examExchangeEdit from '../../components/ExchangeEdit';
 	import examNoteEdit from '../../components/NoteEdit';
-
+	
 	export default {
 		components : {
 			examCards,
@@ -462,11 +462,16 @@
 				}
 			},
 			cardsPosition (index) {
-				if(index>4 || index<this.exam.exerciseNumTotal-4){
-					this.update({
-						"cardsPosLeft" : (index-4)*this.exam.cardsItemWidth
-					})
+				let newWidth = (index-4)*this.exam.cardsItemWidth;
+				if(index<4){
+					newWidth = 0;
+				}else if(index>(this.exam.examNumTotal-9)){
+					newWidth = (this.exam.examNumTotal-9)*this.exam.cardsItemWidth;
 				}
+				this.update({
+					"cardsPosLeft" : newWidth
+				})
+				
 			},
 			exerciseSaveCache () {
 				let exerciseIsCache = this.exerciseIsCache();
