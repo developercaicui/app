@@ -179,9 +179,11 @@ export default {
 
 		.state-edit{
 			 @extend .ab;
-			 right: .35rem; top: 50%; transform: translateY(-50%);
+			 right: .35rem; top: 0; bottom: 0;
 			 font-size: $headFont;
 			 a{
+			 	 @extend .flexCenter;
+				 float: left; height: 100%;
 				 &:nth-of-type(1){
 				 	color: $commPink;
 					margin-right: .3rem;

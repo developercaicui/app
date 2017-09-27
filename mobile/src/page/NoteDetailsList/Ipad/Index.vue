@@ -20,6 +20,8 @@
 				<time>{{ item.updateTime }}</time>
 			</section>
 
+			<img class="no-data" v-show="this.detailsList.length === 0" src="../../../assets/img/404.svg"/>
+
 		</main>
 
 
@@ -116,6 +118,11 @@ export default {
 				@extend .flexCenter;
 				@include fc($headH1Font, #1D1D1D);
 				height: inherit;
+			    width: 60%;
+			    margin: 0 auto;
+			    overflow: hidden;
+			    white-space: nowrap;
+			    text-overflow: ellipsis;
 			}
 
 		}
@@ -156,6 +163,13 @@ export default {
 			 	 @include fc($headFont, $commPink);
 			 }
 	  }
+
+		.no-data{
+			@extend .ab;
+			@include wh(2.4rem, 2.4rem);
+			left: 50%; top: 5rem;
+			margin-left: -1.2rem;
+		}
 
 	}
 

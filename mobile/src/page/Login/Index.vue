@@ -79,7 +79,11 @@ export default {
 
 				setTimeout(() =>{
 					this.$router.push({
+<<<<<<< HEAD
 						path: `/index?avatar=${res.data.avatar}&memberId=${res.data.memberId}&nickName=${res.data.nickName}&token=${res.data.token}`
+=======
+						path: `/index?avatar=${res.data.avatar}&memberId=${res.data.memberId}&nickName=${res.data.nickName}&token=${res.data.token}&deviceType=${this.webApi.getDeviceType()}`
+>>>>>>> dev
 					});
 				},1000)
 

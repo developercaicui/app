@@ -518,9 +518,10 @@ export default {
 	 		@extend .ab;
 			@include wh(1.3rem, .5rem);
 	 		@include fc(.24rem, $commPink);
-			right: .5rem; top: .48rem;
+			right: .5rem; top: .2rem;
 			z-index: 19; text-align: right;
 			display: inline-block;
+			line-height:0.5rem;
 	 }
 	 .look-pwd{
 	 	@extend .ab;

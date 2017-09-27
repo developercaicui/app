@@ -1,9 +1,9 @@
 <template lang="html">
 
   <div class="course-content course-pic-list learning" ref="courseContentnoact">
-  <SlideRefresh @top-status-change="topStatusChange">
+  <SlideRefresh @top-status-change="topStatusChange" :distanceTop="styleTop">
       <div class="learning-navL">
-        <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in noactiveData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
+        <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in noactiveData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
 
       <div class="stydys" v-for="(value,key) in noactiveData" v-if="activeBtn===key">
@@ -27,6 +27,7 @@
         </li>
         </template>
       </div>
+      <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
 	</SlideRefresh>
       <Setactivate v-if="activeCour" :noactive-course="noactiveCourse" @close-me="closeMe"></Setactivate>
 
@@ -55,14 +56,20 @@ export default {
 	      noactiveData: {}, // 在学课程列表
 	      noactiveCourse: {},
 	      activeBtn: "",
-	      activeCour: false
+	      activeCour: false,
+	      sectionList:[],
+	      styleTop: 0,
       }
   },
 
   created() {
 
     this.getDate();
-     
+
+    let fSize = parseInt(document.documentElement.style.fontSize) || 0;
+
+		this.styleTop = fSize * 1.4;
+
   },
 
 
@@ -73,7 +80,7 @@ export default {
 		if(status == 'loading') {
 
 			this.getDate();
-			
+
 		}
 
 	},
@@ -89,18 +96,19 @@ export default {
 	    .then(res =>{
 
 	      if(res && res.state == 'success'){
-	            
-	        this.noactiveData = this.webApi.outCourseList(res);
 
-	        if(this.webApi.isEmpty(this.noactiveData)){
-			      this.$refs.courseContentnoact.classList.add("null")
+	        if(res.data.courselist.length < 1){
 			      return false;
 			}
+
+	        this.noactiveData = this.webApi.outCourseList(res);
+
+	        this.sectionList.push(this.noactiveData);
 
 	        let str = JSON.stringify(this.noactiveData);
 
 	        this.activeBtn = str.substr(2, str.indexOf(':')-3);
-	            
+
 	      }
 
 	    })
@@ -123,17 +131,20 @@ export default {
 
   },
   mounted () {
-    
+     // this.topStyle = this.$refs.courseContentnoact.getBoundingClientRect().top;
   }
 }
 
 </script>
 
 <style lang="scss" scoped>
-.course-content{
-    padding-top:1.4rem;
-    min-height: 15rem;
-}
+
+ @import "../../../assets/style/mixin";
+
+ .course-content{
+   padding-top: 1.4rem;
+ }
+
 .learning-navL {
     line-height: 1rem;
     padding-left: 1.1rem;
@@ -156,6 +167,7 @@ export default {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
+  min-height: 12.5rem;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;
@@ -209,7 +221,7 @@ export default {
         height: 0.95rem;
         overflow: hidden;
       }
-     
+
   }
 }
 
@@ -284,5 +296,10 @@ export default {
   margin:0 0.5rem;
   position:absolute;
 }
-
+.no-data{
+	@extend .ab;
+	@include wh(2.4rem, 2.4rem);
+	left: 50%; top: 4rem;
+	margin-left: -1.2rem;
+}
 </style>

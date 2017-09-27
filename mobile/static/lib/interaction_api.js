@@ -12,6 +12,7 @@ var g = {
   hiddenJiuCuoView: hiddenJiuCuoView,
   outLogin: outLogin,
   passWeiBoUrl: passWeiBoUrl,
+  torenew: torenew,
   getClassCourseData: getClassCourseData,
   clickToPlayVido: clickToPlayVido,
 }
@@ -36,7 +37,11 @@ function setCookie(key, value, days = 30) {
 
 // 跳转到登录页
 function targetLogin() {
+<<<<<<< HEAD
   g.device == 'ios' ? caicui.tokenInvalid('nologin') : window.course.logOff();
+=======
+  g.device == 'ios' ? caicui.tokenInvalid('nologin') : window.course.clonesActivity();
+>>>>>>> dev
 }
 
 // 关闭新建页
@@ -90,7 +95,7 @@ function closeSetting(data = {}) {
 //在学课程跳转课程详情页
 function getClassCourseData(data = {}) {
 
-  g.device == 'ios' ? onlineCouse.getOnlineCourseData(data) : window.course.getClassCourseData(data);
+  g.device == 'ios' ? caicui.getOnlineCourseData(data) : window.course.getClassCourseData(data);
 
 }
 
@@ -111,6 +116,13 @@ function hiddenJiuCuoView(data = {}) {
 function passWeiBoUrl(url) {
 
   g.device == 'ios' ? set.passWeiBoUrl(url) : window.course.toActivity(url);
+
+}
+
+//用于申请重听的路径跳转
+function torenew(url) {
+
+  g.device == 'ios' ? caicui.applyStudyOnlineCourseAgain(url) : window.course.toActivity(url);
 
 }
 

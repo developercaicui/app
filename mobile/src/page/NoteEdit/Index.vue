@@ -32,8 +32,6 @@ export default {
 		this.isIpad = this.$store.getters.getDeviceInfo.isIpad;
 		this.isMobile = this.$store.getters.getDeviceInfo.isMobile;
 
-
-
 	},
 
 
@@ -80,14 +78,25 @@ export default {
 						return false;
 					}
 
-					this.webApi.alert(`${tip}笔记成功, 即将跳转到列表页`, 1500);
+					this.webApi.alert(`${tip}笔记成功, `, 1500);
 
-					setTimeout(()=>{
-						this.$router.push({
-							path: `/note/list`
-						});
-					},1000);
+						setTimeout(() =>{
+							if(data.elseType == 'video' || data.elseType == 'problem') {
 
+								g.closeNewNote();
+
+							}else{
+
+								if(document.referrer.includes('coursenote/list')) {
+									this.$router.push(`/coursenote/list`);
+								}else{
+									this.webApi.setCookie('updateNoteList', 'true');
+									this.$router.push(`/note/list`);
+								}
+
+
+							}
+						 }, 1000)
 			})
 
 		},

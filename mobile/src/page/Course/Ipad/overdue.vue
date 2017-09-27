@@ -1,9 +1,9 @@
 <template lang="html">
 
   <div class="course-content course-pic-list learning" ref="courseContentover">
-  <SlideRefresh @top-status-change="topStatusChange">
+  <SlideRefresh @top-status-change="topStatusChange" :distanceTop="styleTop">
     <div class="learning-navL">
-        <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in overdueData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
+        <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in overdueData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
 
       <div class="stydys" v-for="(value,key) in overdueData" v-if="activeBtn===key">
@@ -19,7 +19,7 @@
                 <h3>{{ item.courseName }}</h3>
               </div>
               <div class="li cpl-fool">
-                <div tapmode @click="renew(item.isU)" class="btn btn-o">
+                <div @click="renew(item.isU)" class="btn btn-o">
                   <span>申请重听</span>
                 </div>
               </div>
@@ -27,6 +27,7 @@
           </li>
         </template>
       </div>
+      <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
       </SlideRefresh>
   </div>
 
@@ -44,16 +45,38 @@ export default {
     },
 
   data() {
-      return {
+    return {
       isIpad: false,
       isMobile: false,
       overdueData: {}, // 在学课程列表
-      activeBtn: ""
-      }
+      activeBtn: "",
+      sectionList:[],
+      styleTop: 0,
+    }
   },
 
   created() {
 
+    this.getDate();
+
+    let fSize = parseInt(document.documentElement.style.fontSize) || 0;
+
+		this.styleTop = fSize * 1.4;
+
+  },
+
+methods: {
+    // 课程的实时状态
+  topStatusChange(status) {
+
+    if(status == 'loading') {
+
+      this.getDate();
+
+    }
+
+  },
+  getDate() {
     let courseParams = {
       pageNo: 1,
       pageSize: 1000,
@@ -65,29 +88,24 @@ export default {
     .then(res =>{
 
       if(res && res.state == 'success'){
-            
-          this.overdueData = this.webApi.outCourseList(res);
 
-          if(this.webApi.isEmpty(this.overdueData)){
-              this.$refs.courseContentover.classList.add("null")
+          if(res.data.courselist.length < 1){
               return false;
           }
+
+          this.overdueData = this.webApi.outCourseList(res);
+
+          this.sectionList.push(this.overdueData);
 
           let str = JSON.stringify(this.overdueData);
 
           this.activeBtn = str.substr(2, str.indexOf(':')-3);
-            
+
       }
 
     })
-    
-     
   },
-
-
-  methods: {
-    
-    learningNav(ind) {
+  learningNav(ind) {
       this.activeBtn = ind;
   },
   formatDate(now, t) {
@@ -131,40 +149,37 @@ export default {
       return `background-image:url(${this.webApi.cdnImgUrl}${url})`
     },
     renew(isU) {
+
         if(isU == true){
-           // if (systemType == 'ios') {
-          //    api.openApp({
-          //         iosUrl: 'http://www.caicui.com/mc/examReport/add?token=' + $api.getStorage('token')
-          //     });
-          // } else {
-          //     api.openApp({
-          //         androidPkg: 'android.intent.action.VIEW',
-          //         mimeType: 'text/html',
-          //         uri: 'http://www.caicui.com/mc/examReport/add?token=' + $api.getStorage('token')
-          //     }, function (ret, err) {
-          //     });
-          // } 
+
+            g.torenew('http://www.caicui.com/mc/examReport/add?token='+this.webApi.getCookie('token'))
+
         }else{
+
             this.webApi.alert("只有U+课程可以免费申请重听！")
+
         }
-        
+
     }
   },
   updated() {
-  
+
   },
   mounted () {
-    
+
   }
 }
 
 </script>
 
 <style lang="scss" scoped>
-.course-content{
-    padding-top:1.4rem;
-    min-height: 15rem;
-}
+
+ @import "../../../assets/style/mixin";
+ 
+ .course-content{
+   padding-top:1.4rem;
+ }
+
 .learning-navL {
     line-height: 1rem;
     padding-left: 1.1rem;
@@ -187,6 +202,8 @@ export default {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
+  min-height: fill-available;
+  min-height: -webkit-fill-available;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;
@@ -240,7 +257,7 @@ export default {
         height: 0.95rem;
         overflow: hidden;
       }
-     
+
   }
 }
 
@@ -315,5 +332,10 @@ export default {
   margin:0 0.5rem;
   position:absolute;
 }
-
+.no-data{
+  @extend .ab;
+  @include wh(2.4rem, 2.4rem);
+  left: 50%; top: 4rem;
+  margin-left: -1.2rem;
+}
 </style>

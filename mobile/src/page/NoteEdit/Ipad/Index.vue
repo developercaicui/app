@@ -37,7 +37,7 @@
 			</div>
 		</footer>
 
-		<input type="file" accept="image/*" capture="camera" @change="handleUploadPic" ref="iptFile" class="ipt-file">
+		<input type="file" accept="image/*" @change="handleUploadPic" ref="iptFile" class="ipt-file">
 	</div>
 
 </template>
@@ -133,6 +133,9 @@ export default {
 		this.$refs.isPublicDiv.className = this.isPublic == 1 ? 'select-btn select-btn-active' : 'select-btn';
 		this.headerTitle = this.data.type == 'new' ? '新建笔记 ': '编辑笔记';
 
+		if(this.videoType == 'video' || this.videoType == 'problem') {
+			this.title = this.data.taskName;
+		}
 	},
 
   methods: {
@@ -151,7 +154,6 @@ export default {
 			}
 
 			this.$refs.iptFile.click();
-			this.$refs.iptFile.touchstart();
 		},
 
 		// 是否打卡上传图片
@@ -251,6 +253,7 @@ export default {
 
 			this.$emit('submit-data', {
 				type: this.type,
+				elseType: this.videoType || '',
 				data: {
 					content:	this.textDetails,   // 内容
 					soundPath:	'', // 声音

@@ -70,6 +70,10 @@ export default {
 			type: Boolean,
 			default: false
 		},
+		distanceTop: {
+			type: Number,
+			default: 0
+		}
 	},
 
   data() {
@@ -100,7 +104,11 @@ export default {
 
 	mounted() {
 
+<<<<<<< HEAD
 		this.$refs.refreshContent.style.minHeight = `${document.documentElement.getBoundingClientRect().height - this.$refs.refreshContent.getBoundingClientRect().top}px`;
+=======
+		this.$refs.refreshContent.style.minHeight = `${document.documentElement.getBoundingClientRect().height - this.distanceTop - this.$refs.refreshContent.getBoundingClientRect().top}px`;
+>>>>>>> dev
 
 	},
 
@@ -278,6 +286,9 @@ export default {
 
 			let endTime = new Date().getTime();
 
+			this.screenHeight = document.documentElement.getBoundingClientRect().height;
+			this.contentHeight = this.$refs.refreshContent.offsetHeight;
+
 			// 下滑，
 			if(this.isDirection == "top") {
 
@@ -366,7 +377,6 @@ export default {
 		position: relative;
 		background-color: #fff;
 		height:auto;
-		overflow-y:auto;
 		z-index: 9;
 	}
 

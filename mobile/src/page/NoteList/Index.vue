@@ -46,7 +46,11 @@ export default {
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {})
 
 		if(this.list.length == 0) this.fetchList();
+<<<<<<< HEAD
 
+=======
+		if(this.webApi.getCookie('updateNoteList') === 'true') this.fetchList();
+>>>>>>> dev
 
 	},
 
@@ -55,6 +59,8 @@ export default {
 
 		// 获取列表
 		fetchList() {
+
+			this.webApi.setCookie('updateNoteList', 'false');
 
 			this.webApi.loadingData();
 

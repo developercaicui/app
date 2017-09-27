@@ -4,7 +4,7 @@
 
     <section class="user-info">
       <div class="img-head">
-        <router-link to="editMeInfo"><img :src="`${this.webApi.cdnImgUrl}${userInfo.avatar}`" /></router-link>
+        <router-link to="editMeInfo?origin=index"><img :src="`${this.webApi.cdnImgUrl}${userInfo.avatar}`" /></router-link>
       </div>
       <address class="text">
         <span>{{ userInfo.nickName }}</span>
@@ -211,7 +211,7 @@ export default {
      position: absolute;
      right: .94rem; bottom: 1.2rem;
      @include wh(.6rem, .6rem);
-     @include fc(.56rem, $commPink);
+     @include fc(.56rem, #666);
      transform: scale(.9);
 
      .msg-num{

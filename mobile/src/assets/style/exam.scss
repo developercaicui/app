@@ -291,9 +291,10 @@ $marginTB-10 : 10px 0;
 			overflow-x: auto;
 			overflow-y: hidden;
 			.exam-cards-box{
-				position: absolute;
-		    top: 0;
-		    left: 0;
+				// position: absolute;
+		  //   top: 0;
+		  //   left: 0;
+		  	transition: transform .3s;
 		    height: 26px;
 			}
 		}

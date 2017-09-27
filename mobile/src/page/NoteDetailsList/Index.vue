@@ -55,6 +55,8 @@ export default {
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {});
 		this.routerData = JSON.parse(this.$route.params.data || {});
 
+		this.$store.commit('noteDetailsList');
+
 		this.fetchDetailsList();
 
 	},

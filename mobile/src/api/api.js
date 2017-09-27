@@ -65,7 +65,13 @@ export default {
 
     let designWidth = deviceType === 'mobile' ? 750 : 2048;
 
+<<<<<<< HEAD
     if(deviceType === 'ipad' && screenWidth*dpr < 2048/8*5.5 ) designWidth = designWidth/8*5;
+=======
+    if(deviceType === 'ipad' && screenWidth*dpr < 2048/4*3 ){
+      designWidth = 2048/4*3.1;
+    } 
+>>>>>>> dev
 
     let initialRem = designWidth / 100;
 

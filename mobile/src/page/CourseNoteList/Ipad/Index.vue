@@ -12,15 +12,15 @@
 		        </div>
 		      </div>
 		      <ul class="right">
-		        <li @click="showSearchBar"><i class="icon-sousuo icon-search2">&#xe651;</i></li>
-		        <li @click="new_answer"><span>提问</span><i class="icon-plus">+</i></li>
+		        <li @click="showSearchBar"><i class="icon-sousuo icon-search2 icon-new-srarch">&#xe651;</i></li>
+		        <li @click="new_answer"><span class="head-r-text">新建+</span></li>
 		      </ul>
 		      <div class="search-bar">
 		        <input type="text" name="input-lx" placeholder="搜索" class="input-txt" ref="searchWord">
 		        <div class="right"><i class="icon-sousuo icon-search2">&#xe651;</i><span @click="goSearch()" class="submit">搜索</span><span @click="hideSearchBar" class="cancel">取消</span></div>
 		      </div>
       </div>
-      
+
 			<div class="all" v-show="defaultAct==0" ref="all">
 				<template>
 
@@ -51,7 +51,7 @@
            </template>
 
         </template>
-
+        <img class="no-data" v-show="this.sectionAllList && this.sectionAllList.length === 0 || this.sectionAllList.nodeNum == 0" src="../../../assets/img/404.svg"/>
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
@@ -84,7 +84,7 @@
            </template>
 
         </template>
-
+        <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0 || this.sectionList.nodeNum == 0" src="../../../assets/img/404.svg"/>
 			</div>
 		</main>
 
@@ -125,6 +125,7 @@ export default {
 		    self: 0,
 				isShowList: false, // 是否显示大图
 				picList: [], // 图片列表
+        meFlag: false,
 	    }
 	},
 
@@ -132,23 +133,10 @@ export default {
     this.courseInfo = this.$route.query;
     //获取全部笔记列表
 		this.getAllNote();
-    //获取我的笔记列表
-		this.getMeNote();
 
 	},
 
 	updated() {
-        //判断是否有数据
-		    if(this.sectionList.length < 1 || this.sectionList.nodeNum == 0){
-          this.$refs.me.classList.add("null")
-      	}else{
-      		this.$refs.me.classList.remove("null")
-      	}
-        if(this.sectionAllList && this.sectionAllList.nodeNum == 0){
-            this.$refs.all.classList.add("null")
-        }else{
-        	this.$refs.all.classList.remove("null")
-        }
 
 	},
 
@@ -170,8 +158,13 @@ export default {
 			},
 
   		set_index(index) {
-  			this.defaultAct = index;
-  			this.self = index;
+    			this.defaultAct = index;
+    			this.self = index;
+          if(!this.meFlag){
+            this.meFlag = true;
+            //获取我的笔记列表
+            this.getMeNote();
+          }
   		},
   		showSearchBar() {
             this.$router.push({
@@ -180,6 +173,7 @@ export default {
         },
         hideSearchBar() {
             $('.search-bar').hide();
+            window.location.reload();
         },//提问
         new_answer() {
         	this.$router.push({
@@ -240,14 +234,22 @@ export default {
           }
           //获取课程信息
           // this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
+<<<<<<< HEAD
           
+=======
+
+>>>>>>> dev
           // alert(JSON.stringify(this.courseInfo))
           let param = {};
           param.self = 0;
           param.courseid= this.courseInfo.courseId;
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
+<<<<<<< HEAD
           // 
+=======
+          //
+>>>>>>> dev
           // param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
@@ -298,7 +300,11 @@ export default {
 	        param.courseid= this.courseInfo.courseId;
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
+<<<<<<< HEAD
           // 
+=======
+          //
+>>>>>>> dev
           // param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
@@ -336,7 +342,7 @@ export default {
             });
 
       },
-		
+
   		setBackground(url) {
   			return `background-image:url(${this.getImgPath(url)})`
   		},
@@ -372,8 +378,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+ @import "../../../assets/style/mixin";
 .all,.me{
 	min-height: 15rem;
+  margin-top: 1.4rem;
 }
 .icon-sousuo{
   font-family:"iconfont";
@@ -465,8 +473,11 @@ export default {
   font-size: 0.32rem;
   height: 1.25rem;
   line-height: 1.25rem;
-  position: relative;
+  position: fixed;
   border-bottom: 1px solid #ddd;
+  top: 0;
+  width: 100%;
+  z-index: 3;
 }
 .s-head .left,
 .header .left,
@@ -985,5 +996,33 @@ select {
       margin-left: -1.2rem;
     }
 
+
+		.s-head{
+			.right li i.icon-new-srarch{
+				font-size: .48rem;
+				position: relative;
+				top: -.03rem; left: .35rem;
+			}
+			i.icon-search-f{
+				margin-right: .4rem;
+				top: -.1rem;
+	    	position: relative;
+			}
+		}
+
+		.right{
+			span{
+				font-size: .34rem;
+			}
+		}
+
+
  }
+
+.no-data{
+  @extend .ab;
+  @include wh(2.4rem, 2.4rem);
+  left: 50%; top: 4rem;
+  margin-left: -1.2rem;
+}
 </style>

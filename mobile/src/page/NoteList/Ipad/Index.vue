@@ -5,8 +5,8 @@
 		<header class="head">
 			<h1>章节列表</h1>
 			<div class="state-edit">
-				<router-link to="search">&#xe651;</router-link>
-				<router-link to="selected">新建&nbsp;<span>+</span></router-link>
+				<router-link to="/note/search">&#xe651; </router-link>
+				<router-link to="/note/selected">新建&nbsp;<span>+</span></router-link>
 			</div>
 		</header>
 
@@ -44,7 +44,7 @@
 
 				</template>
 
-				<img class="no-data" v-show="this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
+				<img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
 
 			</main>
 
@@ -83,11 +83,6 @@ export default {
 			if(status == 'loading') this.$emit('fetch-list');
 		},
 
-		// 实时状态
-		bottomStatusChange(status) {
-			console.log(status);
-		},
-
 		openNoteDetails(ev) {
 
 			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
@@ -100,7 +95,7 @@ export default {
 			}
 
 			this.$router.push({
-				path: `detailslist/${encodeURIComponent(JSON.stringify(data))}`,
+				path: `/note/detailslist/${encodeURIComponent(JSON.stringify(data))}`,
 			});
 
 		},
@@ -216,13 +211,14 @@ export default {
 
 		 .state-edit{
  			@extend .ab;
-			@extend .flexCenter;
- 			right: .35rem; top: 50%; transform: translateY(-50%);
+ 			right: .35rem; top: 0; bottom: 0;
  			font-family: 'iconfont';
  			a{
  				color: $commPink;
+				@extend .flexCenter;
+				height: 100%; float: left;
  				&:nth-of-type(1){
- 					margin-right: .2rem;
+ 					margin-right: .4rem;
 					font-size: $headIconFont;
  				}
  				&:nth-of-type(2){

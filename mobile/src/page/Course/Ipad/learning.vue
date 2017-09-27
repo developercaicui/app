@@ -1,15 +1,15 @@
 <template lang="html">
-	
+
 	<div class="course-content course-pic-list learning" ref="courseContentlearn">
-	<SlideRefresh @top-status-change="topStatusChange">
+	<SlideRefresh @top-status-change="topStatusChange" :distanceTop="styleTop">
 		<div class="learning-navL">
-        <p :class="[(activeBtn==index)?'active':'']" @click="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
+        <p :class="[(activeBtn==index)?'active':'']" @touchend="learningNav(index)" v-for="(value,index) in learningData">{{ value.categoryName ? value.categoryName : "&nbsp;&nbsp;&nbsp;" }}</p>
       </div>
 
       <div class="stydys" v-for="(value,key) in learningData" v-if="activeBtn===key">
         <template v-for="val in value.children">
         <h2>{{ val.subjectName }}</h2>
-        <li class="learnLi" data-coursename="" data-chaptername="" @touchend="openCourse(item,$event)" v-for="item in val.courseLists">
+        <li class="learnLi" @click="openCourse($event)" :data-data="JSON.stringify(item)" v-for="item in val.courseLists">
           <div :style="setBackground(item.courseBkImage)" class="cpl-head">
             <h4 class="exam_time none"></h4>
             <h4 class="course_due">课程到期：{{ formatDate(item.expirationTime,"Y")+'-'+formatDate(item.expirationTime,'M')+'-'+formatDate(item.expirationTime,'D') }}</h4>
@@ -19,27 +19,18 @@
               <h3>{{ item.courseName }}</h3>
             </div>
             <div class="li pro-li">
-              <div class="progress-box">进度： 
+              <div class="progress-box">进度：
                 <div class="progress">
                   <div :data-courseProgress="item.courseProgress" :data-progress="item.progress" :min="[item.courseProgress?item.courseProgress:0]" :max="[item.taskTotal?item.taskTotal:0]" class="progress-bar"></div>
                 </div>
                 <div class="progress-val"></div>
               </div>
             </div>
-            <div class="li cpl-fool">
-              <div onclick="openActivate('CMA Part I 中文 前导','QiQi Wu','吴奇奇','undefined','undefined','/upload/201606/09c9342818e24393a970aa93d25b9a4d.png','1','8a22ecb553eab1280153f36f380a007f','/upload/201604/92da0abdac4a45f5b46f9546ade771ac.jpg',this)" class="btn btn-o" style="display:none;">
-                <span>马上激活</span>
-                <div class="hide data"></div>
-              </div>
-              <div tapmode onclick="renew()" class="btn btn-o" style="display:none;">
-                <span>申请重听</span>
-              </div>
-            </div>
           </div>
         </li>
         </template>
       </div>
-
+		<img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
       </SlideRefresh>
 	</div>
 
@@ -47,32 +38,49 @@
 
 <script>
 
-import {getLearningCourse,getCourseProgres} from '../../../api/port';
 import SlideRefresh from '../../../components/Comm/SlideRefresh';
+import {
+	getLearningCourse,
+	getCourseProgres
+} from '../../../api/port';
 
 export default {
 
+
 	components: {
 		SlideRefresh
-  	},
+  },
 
 	data() {
-	    return {
+	  return {
 			isIpad: false,
-	  		isMobile: false,
+	  	isMobile: false,
 			learningData: {}, // 在学课程列表
 			learningcourse: {},
 			activeBtn: "",
-			imgurl: 'http://cdnimg.caicui.com/'
-	    }
+			imgurl: 'http://cdnimg.caicui.com/',
+			sectionList:[],
+			styleTop: 0,
+	  }
 	},
 
 	created() {
-		
+
 		this.getDate();
-		 
+
+		let fSize = parseInt(document.documentElement.style.fontSize) || 0;
+
+		this.styleTop = fSize * 1.4;
+
 	},
 
+  mounted () {
+
+  },
+
+	updated() {
+		this.progressBar();
+  },
 
   methods: {
   	// 课程的实时状态
@@ -81,7 +89,7 @@ export default {
 		if(status == 'loading') {
 
 			this.getDate();
-			
+
 		}
 
 	},
@@ -102,7 +110,24 @@ export default {
 			this.webApi.closeLoadingData();
 
 			if(res && res.state == 'success'){
+
+				if(res.data.courselist.length < 1){
+				      return false;
+				}
+
 				let learningcourseData = res;
+
+				let setListObj = {},setListArr = [];
+
+				for(let i=0;i<res.data.courselist.length;i++){
+				    if(!setListObj[res.data.courselist[i].courseId]){
+				        setListArr.push(res.data.courselist[i]);
+				        setListObj[res.data.courselist[i].courseId] = "1"
+				    }
+				}
+
+				res.data.courselist = setListArr;
+
 				let learninglist = res.data.courselist;
 	    		let courseArr = [];
 				for(let i=0;i<learninglist.length;i++){
@@ -113,16 +138,16 @@ export default {
 					'memberId':JSON.parse(this.webApi.getCookie("userInfo")).memberId,
 					'courseId':courseArr.toString()
 				}
-				
+
 				// 获取课程学习进度
 				getCourseProgres(params)
 
 				.then(res =>{
 
 					if(res && res.state == 'success'){
-						
+
 						for(let i=0;i<learninglist.length;i++){
-							for(let j=0;j<res.data.length;j++){ 
+							for(let j=0;j<res.data.length;j++){
 								if(learninglist[i].courseId == res.data[j].courseId){
 									learninglist[i].courseProgress = res.data[j].courseProgress;
 						            learninglist[i].createDate = res.data[j].createDate;
@@ -144,26 +169,23 @@ export default {
 						}
 
 						this.learningData = this.webApi.outCourseList(ret);
-						
-					  	if(this.webApi.isEmpty(this.learningData)){
-						      this.$refs.courseContentlearn.classList.add("null")
-						      return false;
-						}
-					  	
+
+						this.sectionList.push(this.learningData);
+
 						let str = JSON.stringify(this.learningData);
 
 						this.activeBtn = str.substr(2, str.indexOf(':')-3);
-						
-						
+
+
 					}
-					
+
 				})
-				
+
 			}
 
 		})
 	},
-  	
+
   	learningNav(ind) {
 	    this.activeBtn = ind;
 	},
@@ -228,7 +250,7 @@ export default {
 
 	        if($val){
 	            $val.innerHTML = percentage+'%';
-	        }	      
+	        }
 	        if (_t.getAttribute('data')!='1') {
 	            setTimeout(function(){
 	                _t.style.width = percentage + '%';
@@ -240,35 +262,42 @@ export default {
 	setBackground(url) {
 		return `background-image:url(${this.webApi.cdnImgUrl}${url})`
 	},
-	openCourse(data,ev) {// 发送课程信息给原生
-		
+	openCourse(ev) {// 发送课程信息给原生
 
 		let obj = this.webApi.recursiveParentNode(ev.target,'li');
+
+		let data = JSON.parse(obj.dataset.data);
+
+		if(data.lock_status != 0 ){
+
+			this.webApi.alert('当前的课程已锁定,续费后即可解锁！');
+
+			return false;
+
+		}
+
 		let progress = obj.querySelector("div.progress-val").innerText.replace(/\%/g,"");
 		data.studyProportion = progress;
 		data.expirationTime = this.formatDate(data.expirationTime,"Y")+'/'+this.formatDate(data.expirationTime,'M')+'/'+this.formatDate(data.expirationTime,'D');
 		data.token = this.webApi.getCookie('token');
 		data.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;
-		
+
 		g.getClassCourseData(JSON.stringify(data))
 	}
   },
-  updated() {
-	this.progressBar();
-  },
-  mounted () {
 
-    
-  }
 }
 
 </script>
 
 <style lang="scss" scoped>
-.course-content{
-    padding-top:1.4rem;
-    min-height: 15rem;
-}
+
+ @import "../../../assets/style/mixin";
+
+ .course-content{
+    padding-top: 1.4rem;
+ }
+
 .learning-navL {
     line-height: 1rem;
     padding-left: 1.1rem;
@@ -346,7 +375,7 @@ export default {
         height: 0.9rem;
         overflow: hidden;
       }
-     
+
   }
 }
 .course-pic-list li.learnLi:before{
@@ -428,5 +457,10 @@ export default {
   margin:0 0.5rem;
   position:absolute;
 }
-
+.no-data{
+	@extend .ab;
+	@include wh(2.4rem, 2.4rem);
+	left: 50%; top: 4rem;
+	margin-left: -1.2rem;
+}
 </style>

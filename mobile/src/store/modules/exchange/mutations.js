@@ -6,6 +6,13 @@ export default {
   },
 	updateExchangeList(state, params) {
 		state.exchangeList = params;
-	}
+	},
+  updateExchangeList(state, params) {
+		state.exchangeList = params;
+	},
+  reductionExchangeList(state) {
+    state.exchangeList = [];
+  }
+
 
 }

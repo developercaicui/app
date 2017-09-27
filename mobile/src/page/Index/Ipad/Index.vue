@@ -14,7 +14,7 @@
 						<h1>在学课程</h1>
 					</div>
 
-					<a @click.stop="handleSendCouseInfo" :data-data="JSON.stringify(item)" href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-show="index<3">
+					<a @click.stop="handleSendCouseInfo" :data-data="JSON.stringify(item)" href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-show="index<=3">
 						<div class="info">
 							<h1>{{ item.courseName }}</h1>
 							<time>有效期至：{{ item.examinationDate.includes('1970') ? '暂无考试' :item.examinationDate }}</time>
@@ -88,11 +88,10 @@ export default {
     }
   },
 
-
 	updated() {
 
 		let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
-		let arr = ['#4a90e2','#3E4F61','#408684'];
+		let arr = ['#4a90e2','#3E4F61','#408684', '#FF366D'];
 
 		canvasList.forEach((obj, index) =>{
 
@@ -115,15 +114,15 @@ export default {
 
 
 			// 动画层
-		  let sAngel = 0 * Math.PI;
-		  let eAngel = 0 * Math.PI;
-		  let aAngle = Math.PI*1.5;
+			let sAngel = 0 * Math.PI;
+			let eAngel = 0 * Math.PI;
+			let aAngle = Math.PI*1.5;
 
 			ctx.beginPath();
-		  ctx.fillStyle = '#fff';
-		  ctx.moveTo(r, r);
-		  ctx.arc(r, r, r, sAngel, Math.PI*2*(num*0.01));
-		  ctx.fill();
+			ctx.fillStyle = '#fff';
+			ctx.moveTo(r, r);
+			ctx.arc(r, r, r, sAngel, Math.PI*2*(num*0.01));
+			ctx.fill();
 
 			// 覆盖层
 			ctx.beginPath();
@@ -133,6 +132,11 @@ export default {
 
 
 		}
+
+	},
+
+
+	watch: {
 
 	},
 
@@ -152,6 +156,12 @@ export default {
 		handleSendCouseInfo(ev) {
 
 			let oA = this.webApi.recursiveParentNode(ev.target, 'a');
+			let data = JSON.parse(oA.dataset.data);
+
+			if(data.lockStatus && data.lockStatus != 0 ){
+				this.webApi.alert('当前的课程已锁定,续费后即可解锁！');
+				return false;
+			}
 
 			g.targetLearningCourses(oA.dataset.data);
 
@@ -163,7 +173,7 @@ export default {
 
 			let oFigure = this.webApi.recursiveParentNode(ev.target, 'figure');
 
-			g.openActivityPage(oFigure.dataset.href);
+			!oFigure.dataset.href ? this.webApi.alert('活动已过期', 1500) : g.openActivityPage(oFigure.dataset.href) ;
 
 		},
 
@@ -183,6 +193,8 @@ export default {
 
 	.index-content{
 		padding: 0 1.1rem;
+		min-height: fill-available;
+	  min-height: -webkit-fill-available;
 	}
 
 	.title{
@@ -207,6 +219,9 @@ export default {
 		 }
 		 &:nth-of-type(3){
 			 background-color: #408684;
+		 }
+		 &:nth-of-type(4){
+			 background-color: #FF366D;
 		 }
 
 		 .info{

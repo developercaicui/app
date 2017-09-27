@@ -9,10 +9,10 @@
 
 		<div class="exam-body">
 			<template v-if="exam.examBaseInfo.length">
-				<p>传过来的ids</p>
+				<!-- <p>传过来的ids</p>
 				<ul v-for="(value, key) in examNeedIds">
 					<li>{{ key }}: {{ value }}</li>
-				</ul>
+				</ul> -->
 				<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev" v-if="exam.exerciseActiveIndex != 0"></a>
 				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext" v-if="exam.exerciseActiveIndex != (exam.examBaseInfo.length-1)"></a>
 			</template>
@@ -49,7 +49,7 @@
 	import examCorrection from '../../components/CorrectionExam';
 	import examExchangeEdit from '../../components/ExchangeEdit';
 	import examNoteEdit from '../../components/NoteEdit';
-
+	
 	export default {
 		components : {
 			examCards,
@@ -169,7 +169,12 @@
 				'requestExerciseDetail'
 			]),
 			examBackButton (){
-				examBackButton.clickExamBackButton();
+				if(window.navigator.userAgent.toLocaleLowerCase().indexOf('android') != -1){
+					window.course.back();
+				}else{
+					examBackButton.clickExamBackButton();
+				}
+				
 			},
 			examRequestCallback (examenInfo, status, baseInfo) {
 				let examNeedIds = JSON.parse(this.webApi.getCookie('examNeedIds'));
@@ -457,11 +462,16 @@
 				}
 			},
 			cardsPosition (index) {
-				if(index>4 || index<this.exam.exerciseNumTotal-4){
-					this.update({
-						"cardsPosLeft" : (index-4)*this.exam.cardsItemWidth
-					})
+				let newWidth = (index-4)*this.exam.cardsItemWidth;
+				if(index<4){
+					newWidth = 0;
+				}else if(index>(this.exam.examNumTotal-9)){
+					newWidth = (this.exam.examNumTotal-9)*this.exam.cardsItemWidth;
 				}
+				this.update({
+					"cardsPosLeft" : newWidth
+				})
+				
 			},
 			exerciseSaveCache () {
 				let exerciseIsCache = this.exerciseIsCache();
@@ -550,7 +560,9 @@
 					'correctexerciseids' : memberErrorExerciseData.correctexerciseids,
 					'errorexerciseRecords' : JSON.stringify(memberErrorExerciseData.errorexerciseRecords)
 				}).then(res => {
-					
+					this.webApi.alert('试卷已提交，进入我的试卷查看试卷解析');
+					// layer.msg('试卷已提交，进入我的试卷查看试卷解析', {time:2000}, function() {
+					// });
 				});
 
 			},

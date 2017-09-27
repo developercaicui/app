@@ -1,8 +1,8 @@
 <template lang="html">
-	<main class="set-info-modal" v-if="isShow">
-		<div class="backdrop"></div>
-	      <div id="mask0" class="modal">
-	        <div @click="guanbi" class="set_tit">设置<i class="icon-close icon-guanbi">&#xe642;</i></div>
+	<main class="set-info-modal">
+		<!-- <div class="backdrop"></div> -->
+	      <div id="mask0" class="modal setting-wrap">
+	        <div @click="guanbi" class="set_tit">设置</div>
 	        <ul @click="modify" class="user-info">
 	          <li>
 	            <div class="left"><img class="avatar"><span class="user_nick"></span></div>
@@ -34,7 +34,7 @@
 	            <div class="left">意见反馈</div>
 	            <div class="right"><i class="icon-jiantou icon-arrow-right">&#xe619;</i></div>
 	          </li>
-	          <li @click="showAbout">
+	          <li @click="showAbout" class="none">
 	            <div class="left">关于财萃</div>
 	            <div class="right"><i class="icon-jiantou icon-arrow-right">&#xe619;</i></div>
 	          </li>
@@ -70,7 +70,7 @@
 	        	<a href="javascript:;" class="pop-radio-label"><span class="pop-radio"><span class="pop-radio-round"></span></span><span class="pop-radio-span">投诉学服</span></a>
 	        </div>
 	        <ul>
-	          <textarea id="textarea" ref="textarea" name="content" placeholder="亲爱的同学：小财非常欢迎你向小财反馈产品的意见建议和体验感受。我们一定会认真调整，及时反馈。根据你的建议，不断完善和优化我们的产品，为你提供更舒适的学习体验。"></textarea>
+	          <textarea id="textarea" ref="textarea" name="content" placeholder="亲爱的同学：非常欢迎你向我们反馈产品的意见建议和体验感受。我们一定会认真调整，及时反馈。根据你的建议，不断完善和优化我们的产品，为你提供更舒适的学习体验。"></textarea>
 	        </ul>
 	        <div class="pop-tel">联系方式
 	          <input type="text" class="pop-input-tel" ref="popInputTel">
@@ -138,35 +138,19 @@ export default {
 
 	data() {
 	    return {
-	    	isShow: true,
-	    	is_ok: true,
         body: document.getElementsByTagName("body")[0]
 	    }
 	},
 
 	created() {
 
-    this.body.setAttribute("style","background:transparent")
-    this.body.setAttribute("show","index")
 
-		getUserInfo({'token':this.webApi.getCookie('token')})
-
-		.then(res =>{//设置联系方式
-
-	      if(res && res.state == 'success'){
-
-	          if(res.data.mobile){
-
-                  this.$refs.popInputTel.value = res.data.mobile
-              }else{
-
-                  this.$refs.popInputTel.value = res.data.email
-
-	      }
-			}
-			
-	    })
-
+      let htmlCss = document.documentElement.style.cssText.split("font-size:")[1].replace("px;","")/2*2.4;
+      
+      document.documentElement.style.fontSize = `${htmlCss}px`;
+   
+     this.body.setAttribute("show","index");
+ 
 	},
 
 	updated() {
@@ -226,7 +210,7 @@ export default {
         openurl(url) {//打开微博
 
             g.passWeiBoUrl(url);
-            
+
         },
       	//退出登录
       	logout() {
@@ -245,22 +229,21 @@ export default {
         },
       	out() {//退出登录
 
-          g.outLogin();
-
       		loginout({"token":this.webApi.getCookie('token')})
 
       		.then(res =>{
 
 	            this.webApi.delCookie("userInfo")
               this.webApi.delCookie("token")
-
+              g.outLogin();
+              
 	        })
       	},
-        guanbi() {//关闭设置页
+        // guanbi() {//关闭设置页
 
-           g.closeSetting();
+        //    g.closeSetting();
 
-        },
+        // },
         setTime() {//选择时间提醒
 
           this.$refs.picker.open();
@@ -294,33 +277,34 @@ export default {
 
 	        this.webApi.loadingData("发表中");
 
-	        if (this.is_ok) {
+          complaintOpinion(param)
 
-	            this.is_ok = false;
+          .then(res =>{
 
-	            complaintOpinion(param)
+             this.webApi.closeLoadingData();
 
-	            .then(res =>{
+             if (res && res.state == 'success') {
 
-	               this.webApi.closeLoadingData();
+                    this.webApi.alert('发表成功');
 
-		           if (res && res.state == 'success') {
+                    setTimeout(() => {
 
-	                    this.webApi.alert('发表成功');
+                      this.body.setAttribute("show","index");
 
-	                    setTimeout(function () {
-	                        this.isShow = !this.isShow
-	                    }, 600);
+                      this.$refs.textarea.value = "";
 
-	                } else {
-	                    this.is_ok = true;
-	                    // this.webApi.alert('发表失败，请重试！');
-	                    this.webApi.alert(res.msg);
-	                }
+                      $('#pop-radios .pop-radio-label').eq(0).addClass('active').siblings().removeClass('active');
+                   
 
-		        })
+                    },600)
+                    
+                } else {
 
-	        }
+                    this.webApi.alert(res.msg);
+              }
+
+          })
+
 	      }
 	},
 	mounted() {
@@ -330,6 +314,38 @@ export default {
 	  	  let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
       	let avatar = this.webApi.cdnImgUrl + JSON.parse(this.webApi.getCookie("userInfo")).avatar;
 
+        let memberinfo = JSON.parse(this.webApi.getCookie('memberInfo'));
+
+        if(memberinfo){
+            if(memberinfo.mobile){
+
+                this.$refs.popInputTel.value = memberinfo.mobile
+
+            }else{
+
+                this.$refs.popInputTel.value = memberinfo.email
+
+            }
+        }else{
+
+            getUserInfo({'token':this.webApi.getCookie('token')})
+
+            .then(res =>{//设置联系方式
+
+                if(res && res.state == 'success'){
+
+                    if(res.data.mobile){
+
+                          this.$refs.popInputTel.value = res.data.mobile
+                      }else{
+
+                          this.$refs.popInputTel.value = res.data.email
+
+                    }
+                }
+
+              })
+        }
 
       	$('.user_nick').html(nickName);
         //设置头像
@@ -470,14 +486,14 @@ body[show='index'] {
   overflow-x: hidden;
 }
 body[show='index'] #mask0 {
-  opacity: 1;
-  -webkit-transform: translate(-50%, -50%);
+  // opacity: 1;
+  // -webkit-transform: translate(-50%, -50%);
 }
 body[show='video'] {
   overflow-x: hidden;
 }
 body[show='video'] #mask0 {
-  -webkit-transform: translate(-250%, -50%);
+  // -webkit-transform: translate(-250%, -50%);
 }
 body[show='video'] #mask3 {
   opacity: 1;
@@ -487,7 +503,7 @@ body[show='feedback'] {
   overflow-x: hidden;
 }
 body[show='feedback'] #mask0 {
-  -webkit-transform: translate(-250%, -50%);
+  // -webkit-transform: translate(-250%, -50%);
 }
 body[show='feedback'] #mask {
   opacity: 1;
@@ -497,7 +513,7 @@ body[show='about'] {
   overflow-x: hidden;
 }
 body[show='about'] #mask0 {
-  -webkit-transform: translate(-250%, -50%);
+  // -webkit-transform: translate(-250%, -50%);
 }
 body[show='about'] #mask2 {
   opacity: 1;
@@ -511,8 +527,8 @@ body[show='about'] #mask2 {
   background: transparent;
 }
 .modal {
-  width: 13rem;
-  height: 11rem;
+  width: 100%;
+  height: 100%;
   font-size: 0.3rem;
   position: absolute;
   top: 50%;
@@ -524,6 +540,15 @@ body[show='about'] #mask2 {
   background: #f3f3f3;
   overflow: hidden;
 }
+
+.setting-wrap{
+	left: 0; right: 0; top: 0;
+	transform: translate(0%, 0%);
+	height: 100%;
+	opacity: 1;
+  padding-top: 0.16rem;
+}
+
 .modal .avatar {
   width: 0.7rem;
   height: 0.7rem;
@@ -605,15 +630,17 @@ body[show='about'] #mask2 {
   right: 0.02rem;
 }
 .modal .set_tit {
-  height: 0.9rem;
-  line-height: 0.9rem;
-  font-size: 0.34rem;
-  color: #494949;
+  height: 1.05rem;
+  line-height: 1.05rem;
+  font-size: 0.28rem;
+  color: #1D1D1D;
   text-align: center;
   border-radius: 7px 7px 0 0;
   background: #fff;
   border-bottom: 1px solid #a8a8a8;
   position: relative;
+  background:#f5f5f5;
+  padding-top: 0.1rem;
 }
 .modal .set_tit .icon-close {
   position: absolute;
@@ -640,7 +667,7 @@ body[show='about'] #mask2 {
   text-align: center;
   border-radius: 0.1rem;
   padding: 0 0.24rem;
-  background: #f2f0f0;
+  background: #ccc;
   position: absolute;
   top: 0.15rem;
   right: 0.24rem;

@@ -84,7 +84,11 @@
 			</div>
 		</footer>
 
+<<<<<<< HEAD
 		<input type="file" accept="image/*"  capture="camera" @change="handleUploadPic" ref="iptFile" class="ipt-file">
+=======
+		<input type="file" accept="image/*" @change="handleUploadPic" ref="iptFile" class="ipt-file">
+>>>>>>> dev
 
 		<photoAlbum :pic-list="picList" v-show="isShowList" @closeBigPic="closeBigPic"></photoAlbum>
 

@@ -33,7 +33,7 @@
 			</div>
 		</footer>
 
-		<input type="file" accept="image/*"  capture="camera" @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
+		<input type="file" accept="image/*"  @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
 
 	</div>
 
@@ -63,6 +63,10 @@ export default {
 		this.data = JSON.parse(this.$route.params.data);
 
 		this.title = this.data.chapteName || '';
+
+		if(this.data.videoType == 'video' || this.data.videoType == 'problem') {
+			this.title = this.data.taskName;
+		}
 
 	},
 
@@ -180,6 +184,7 @@ export default {
 
 			this.$emit('submit-data', {
 				type: this.type,
+				elseType: this.data.videoType || '',
 				data: {
 					content: `<p>${this.textDetails}</p><br/>${this.allPicPathHtml}`,
 			    imgPath: this.allPicPath,

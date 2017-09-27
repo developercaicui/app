@@ -28,8 +28,13 @@ export default {
 
     let oHtml = document.documentElement;
 
+    if(this.$route.query.deviceType) this.webApi.setCookie('deviceType', this.$route.query.deviceType);
+
+<<<<<<< HEAD
+=======
     oHtml.dataset.device = this.webApi.getDeviceType();
 
+>>>>>>> dev
     // 菜单处理
     switch(oHtml.dataset.device) {
         case 'ipad':

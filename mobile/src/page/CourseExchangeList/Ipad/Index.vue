@@ -21,6 +21,7 @@
 		      </div>
       		</div>
 			<div class="all" v-show="defaultAct==0" ref="all">
+				<SlideRefresh @top-status-change="topStatusChange" @bottom-status-change="bottomStatusChange">
 				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
@@ -43,6 +44,8 @@
 	              </div>
 	            </dd>
 	          </dl>
+	          <img class="no-data" v-show="this.exchangeList && this.exchangeList.length === 0" src="../../../assets/img/404.svg"/>
+	          </SlideRefresh>
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
@@ -68,6 +71,7 @@
 	              </div>
 	            </dd>
 	          </dl>
+	          <img class="no-data" v-show="this.exchangeListMe && this.exchangeListMe.length === 0" src="../../../assets/img/404.svg"/>
 			</div>
 		</main>
 
@@ -78,8 +82,12 @@
 <script>
 
 import { getExchangeList, getExchangeDetails, searchhNote } from '../../../api/port';
+import SlideRefresh from '../../../components/Comm/SlideRefresh';
 
 export default {
+	components: {
+      SlideRefresh
+    },
 	data() {
 	    return {
 			defaultAct: 0,
@@ -91,47 +99,67 @@ export default {
 		          name: '我的交流',
 		        }
 		      ],
-		    exchangeList: {},
-		    exchangeListMe: {},
+		    exchangeList: [],
+		    exchangeListMe: [],
 		    searchWord: '',
 		    searchData:'',
 		    page: 1,
 		    params:{},
-		    self: 0
+		    self: 0,
+		    allFlag: false,
+		    meFlag: false
 	    }
 	},
 	beforecreate(){
-    this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
+    	// this.courseInfo = JSON.parse(this.webApi.getCookie('getDiscussInfo'));
 	},
 	created(){
+		this.allFlag = true;
+		this.courseInfo = this.$route.query;
 		this.getDate(1,0);
-		this.getDate(1,1);
 	},
 
 	updated() {
-		if(this.webApi.isEmpty(this.exchangeList) || this.exchangeList.length<1){
-          this.$refs.all.classList.add("null")
-      	}else{
-      		this.$refs.all.classList.remove("null")
-      	}
-        if(this.webApi.isEmpty(this.exchangeListMe) || this.exchangeListMe.length<1){
-            this.$refs.me.classList.add("null")
-        }else{
-        	this.$refs.me.classList.remove("null")
-        }
 
 	},
 
   	methods: {
+  		//下拉刷新
+	  	topStatusChange(status) {
+
+	    	if(status == 'loading') {
+
+	      		this.getDate(1,0);
+
+	    	}
+
+	  	},
+	  	bottomStatusChange(status) {
+	  		if(status == 'loading') {
+	  			this.page++;
+	      		this.getDate(this.page,this.self);
+
+	    	}
+	  	},
   		set_index(index) {
+
   			this.defaultAct = index;
   			this.self = index;
+
+  			if(!this.meFlag){
+
+  				this.meFlag = true;
+				this.getDate(1,1);
+
+  			}
+
   		},
   		showSearchBar() {
             $('.search-bar').show(300);
         },
         hideSearchBar() {
             $('.search-bar').hide();
+            window.location.reload();
         },//提问
         new_answer() {
         	this.$router.push({
@@ -177,14 +205,11 @@ export default {
               	let keyword = data.keywords;
 
               	if (this.webApi.isEmpty(data.key1.data)||total==0) {
-              	  alert("暂无数据")
-                  // $('#content').html('');
-                  // $('body').addClass('null');
+              	  this.exchangeList = data.key1.data;
                   return false;
               	}
-              	$('body').removeClass('null');
-              	this.exchangeList = data.key1.data;
-		        this.setListData(this.exchangeList);
+
+		        this.exchangeList = this.setListData(data.key1.data);
 
               	return false;
         	}
@@ -194,10 +219,7 @@ export default {
 	        param.ordertype = 1;
 	        param.pageNo = page;
 	        param.pageSize = 10;
-	        param.courseid= this.courseInfo.courseId;
-	        param.categoryId= this.courseInfo.categoryId;
 	        param.subjectId= this.courseInfo.subjectId;
-	        // param.courseid = "ff8080814f607c24014f6866fdb716fd"
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {
 	            this.webApi.loadingData();
@@ -208,16 +230,20 @@ export default {
 			.then(res =>{
 
 		      if(res && res.state == 'success'){
-
-		          this.webApi.closeLoadingData();
-
+		      	  if(page == 1){
+		          		this.webApi.closeLoadingData();
+				  }
 		          if(self == 0){
-		          	this.exchangeList = res.data;
-		          	this.setListData(this.exchangeList);
+		          	
+		          	res.data = this.setListData(res.data);
+
+		          	this.exchangeList = this.exchangeList.concat(res.data);
 
 		          }else{
-		          	this.exchangeListMe = res.data;
-		          	this.setListData(this.exchangeListMe);
+
+		          	res.data = this.setListData(res.data);
+
+		          	this.exchangeListMe = this.exchangeListMe.concat(res.data);
 
 		          }
 
@@ -233,6 +259,7 @@ export default {
 	          	item.updateTime = `${this.webApi.isEmpty(item.updateTime)?'':this.webApi.formatDate(item.updateTime,'Y')}-${this.webApi.formatDate(item.updateTime,'M')}-${this.webApi.formatDate(item.updateTime,'D')}   ${this.webApi.formatDate(item.updateTime,'h')}:${this.webApi.formatDate(item.updateTime,'m')}`;
 	          	item.taskprogress = `${item.taskprogress != '-1' && item.taskType != ' '&& item.taskType == 'video' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`;
 	        });
+	        return list;
         },
 		// 打开详情
 		answerDetail(item) {
@@ -315,6 +342,7 @@ export default {
 }
 .all,.me{
 	min-height: 15rem;
+	margin-top: 1.4rem;
 }
 .icon-sousuo{
   font-family:"iconfont";
@@ -406,8 +434,11 @@ export default {
   font-size: 0.32rem;
   height: 1.34rem;
   line-height: 1.25rem;
-  position: relative;
+  position: fixed;
   border-bottom: 1px solid #ddd;
+  top: 0;
+  width: 100%;
+  z-index: 10;
 }
 .s-head .left,
 .header .left,
@@ -817,4 +848,13 @@ select {
 			font-size: .34rem;
 		}
 	}
+<<<<<<< HEAD
+=======
+.no-data{
+	@extend .ab;
+	@include wh(2.4rem, 2.4rem);
+	left: 50%; top: 4rem;
+	margin-left: -1.2rem;
+}
+>>>>>>> dev
 </style>

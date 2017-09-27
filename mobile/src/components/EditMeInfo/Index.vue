@@ -44,6 +44,11 @@ export default {
 
 		this.nickName = this.userInfo.nickName;
 
+<<<<<<< HEAD
+=======
+		this.webApi.remCount();
+
+>>>>>>> dev
 		window.addEventListener("storage", function (e) {
         window.location.reload();
     });
@@ -145,13 +150,23 @@ export default {
 
 				if(this.isChangeNickName && res.state == 'success') this.newUserInfo.nickName = this.nickName;
 
-				this.webApi.delCookie('userInfo')
+
+				this.webApi.delCookie('userInfo');
 				this.webApi.setCookie('userInfo', JSON.stringify(Object.assign(this.userInfo, this.newUserInfo)));
+				this.webApi.setCookie('editUserInfo', JSON.stringify(Object.assign(this.userInfo, this.newUserInfo)));
 
 				this.webApi.closeLoadingData();
 				this.webApi.alert('更新成功', 2000);
+
+
 				setTimeout(()=>{
-					this.$router.go(-1);
+
+					if(this.$route.query.origin && this.$route.query.origin == 'index') {
+						this.$router.push(`/index?avatar=${this.userInfo.avatar}&memberId=${this.userInfo.memberId}&nickName=${this.userInfo.nickName}&token=${this.userInfo.token}&deviceType=${this.webApi.getDeviceType()}`)
+					}else{
+						this.$router.go(-1);
+					}
+
 				},1500)
 
 			})
