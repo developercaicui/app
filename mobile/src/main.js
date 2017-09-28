@@ -9,7 +9,7 @@ import router from './router/router';
 import webApi from './api/api';
 
 Vue.use(VueRouter);
-Vue.use(VueTouch, {name: 'v-touch'})
+Vue.use(VueTouch, {name: 'v-touch'});
 Vue.component(Spinner.name, Spinner); // loading
 Vue.component(DatetimePicker.name, DatetimePicker);//时间选择器
 
