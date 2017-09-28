@@ -3,7 +3,8 @@ import webApi from './api';
 import axios from 'axios';
 import qs from 'qs';
 
-const requestUrl = process.env.NODE_ENV === 'development' ? '' : 'http://api.zbgedu.com'; // 请求地址
+
+const requestUrl = process.env.NODE_ENV === 'development' ? 'http://api.zbgedu.com' : 'http://api.zbgedu.com'; // 请求地址
 
 const LOC = window.location;
 const headers = {
@@ -79,7 +80,7 @@ export const getExamDate = params => { return axios.get(`${requestUrl}/api/busin
 // 最近所学课程
 export const getLearningCourse = params => { return axios.get(`${requestUrl}/api/business/learning/learningcourse/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 // 获取学员一个或者多个课程的学习进度和最后1次学习的章节任务
-export const getCourseProgres = params => { return axios.get(`http://action.caicui.com/api/userAction/course/getCourseProgress/v1.0/?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+export const getCourseProgres = params => { return axios.get(`http://action.zbgedu.com/api/userAction/course/getCourseProgress/v1.0/?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 
 // 获取消息列表
 export const getMsgList = params => { return axios.get(`${requestUrl}/api/study/message/list/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };

@@ -55,8 +55,7 @@ export default {
 
 		this.fetchData();
 
-		this.$store.dispatch('fetchActivityList')
-
+		this.$store.dispatch('fetchActivityList');
 
 	},
 
