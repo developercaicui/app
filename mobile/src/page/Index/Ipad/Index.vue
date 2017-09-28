@@ -17,7 +17,7 @@
 					<a @click.stop="handleSendCouseInfo" :data-data="JSON.stringify(item)" href="javascript:;" class="list" v-for="(item, index) in learningCourseList" v-show="index<=3">
 						<div class="info">
 							<h1>{{ item.courseName }}</h1>
-							<time>有效期至：{{ item.examinationDate.includes('1970') ? '暂无考试' :item.examinationDate }}</time>
+							<time>考试时间：{{ item.examinationDate }}</time>
 							<time>课程到期：{{ item.expirationTime }}</time>
 						</div>
 						<div class="process">
@@ -29,6 +29,9 @@
 						</div>
 					</a>
 
+					<a href="javascript:;" v-if="learningCourseList.length === 0" class="list no-data-list" @click="handleNoData">
+						<div>开始新课程</div>
+					</a>
 
 				</div>
 
@@ -142,6 +145,11 @@ export default {
 
   methods: {
 
+		// 开始新课程
+		handleNoData() {
+			this.webApi.alert('请到线课程栏目里激活新课程');
+		},
+
 		// 课程的实时状态
 		topStatusChange(status) {
 
@@ -249,6 +257,27 @@ export default {
 
 			 }
 
+		 }
+
+	 }
+
+	 a.no-data-list:nth-of-type(1){
+
+		 background-color: #f5f5f5;
+
+		 > div{
+			 @include fc(.36rem, #666);
+			 @include wh(100%, 100%);
+			 @extend .flexCenter;
+			 position: relative;
+			 text-indent: .5rem;
+			 &:before{
+			 	content: '\e601';
+			 	font-family: 'iconfont';
+				@extend .ab; top: 50%; right: 1.75rem;
+				@include fc(.5rem, #666);
+				transform: translate3d(0,-50%,0);
+			 }
 		 }
 
 	 }

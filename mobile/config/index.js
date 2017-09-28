@@ -17,7 +17,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/api': 'http://api.caicui.com/',
+        '/api': 'http://api.zbgedu.com/',
     },
     cssSourceMap: false
   }

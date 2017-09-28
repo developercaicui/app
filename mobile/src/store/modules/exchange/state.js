@@ -2,6 +2,8 @@
 import webApi from '../../../api/api';
 
 export default {
+	courseexchangeList: [],
+	courseeExchangeListMe: [],
 	exchangeList: {},
 	exchangeListParams: {
 			verTT: new Date().getTime(),

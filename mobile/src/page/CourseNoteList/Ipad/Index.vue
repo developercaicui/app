@@ -22,6 +22,9 @@
       </div>
 
 			<div class="all" v-show="defaultAct==0" ref="all">
+
+				<SlideRefresh @top-status-change="topStatusChange">
+
 				<template>
 
           <h1 :data-id="sectionAllList.id">{{sectionAllList.courseName}}</h1>
@@ -52,9 +55,12 @@
 
         </template>
         <img class="no-data" v-show="this.sectionAllList && this.sectionAllList.length === 0 || this.sectionAllList.nodeNum == 0" src="../../../assets/img/404.svg"/>
+
+			 </SlideRefresh>
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
+
 				<template v-for="item in sectionList">
 
           <h1 :data-id="item.id">{{item.courseName}}</h1>
@@ -86,6 +92,7 @@
         </template>
         <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0 || this.sectionList.nodeNum == 0" src="../../../assets/img/404.svg"/>
 			</div>
+
 		</main>
 
 		<photoAlbum :pic-list="picList" v-show="isShowList" @closeBigPic="closeBigPic"></photoAlbum>
@@ -96,13 +103,20 @@
 
 <script>
 
-import { getCourseNoteList, getNoteList, getNoteDetails, searchhNote } from '../../../api/port';
+import SlideRefresh from '../../../components/Comm/SlideRefresh';
 import photoAlbum from '../../../components/Comm/photoAlbum';
+import {
+	getCourseNoteList,
+	getNoteList,
+	getNoteDetails,
+	searchhNote
+} from '../../../api/port';
 
 export default {
 
 	components: {
 		photoAlbum,
+		SlideRefresh
 	},
 
 	data() {
@@ -111,61 +125,76 @@ export default {
       courseInfo: {},//课程信息
       sectionList: [],//我的笔记列表
       sectionAllList: [],//全部笔记列表
-			navList: [
-		        {
-		          name: '全部笔记',
-		        },{
-		          name: '我的笔记',
-		        }
-		      ],
-		    searchWord: '',
-		    searchData:'',
-		    page: 1,
-		    params:{},
-		    self: 0,
-				isShowList: false, // 是否显示大图
-				picList: [], // 图片列表
-        meFlag: false,
-	    }
+			navList: [{
+		    name: '全部笔记',
+		   },{
+		    name: '我的笔记',
+		   }
+		  ],
+	    searchWord: '',
+	    searchData:'',
+	    page: 1,
+	    params:{},
+	    self: 0,
+			isShowList: false, // 是否显示大图
+			picList: [], // 图片列表
+      meFlag: false,
+    }
 	},
 
 	created() {
+
     this.courseInfo = this.$route.query;
-    //获取全部笔记列表
-		this.getAllNote();
+
+		let allNoteList = this.$store.getters.getCourseNoteListAll;
+
+		//获取全部笔记列表
+		if(!allNoteList.children){
+			this.getAllNote();
+		}else{
+			this.sectionAllList = allNoteList;
+		}
 
 	},
 
-	updated() {
-
+	mounted() {
+		document.documentElement.scrollTop = this.webApi.getCookie('notePageTop');
+		this.webApi.setCookie('notePageTop', 0)
 	},
 
-  	methods: {
+  methods: {
 
-			// 打开大图
-			handleOpenBigPic(ev) {
+	 topStatusChange(status) {
+		 if(status == 'loading') this.getAllNote();
+	 },
 
-				let oUl = ev.target.parentNode;
 
-				if(oUl.dataset.pic) this.picList = oUl.dataset.pic.split(',').map(item => `${this.webApi.cdnImgUrl}${item}`);
+	// 打开大图
+	 handleOpenBigPic(ev) {
 
-				this.isShowList = true;
-			},
+		 let oUl = ev.target.parentNode;
 
-			// 关闭大图
-			closeBigPic(off) {
-				this.isShowList = off;
-			},
+		 if(oUl.dataset.pic) this.picList = oUl.dataset.pic.split(',').map(item => `${this.webApi.cdnImgUrl}${item}`);
+		 this.isShowList = true;
 
-  		set_index(index) {
-    			this.defaultAct = index;
-    			this.self = index;
-          if(!this.meFlag){
-            this.meFlag = true;
-            //获取我的笔记列表
-            this.getMeNote();
-          }
-  		},
+	 },
+
+	 // 关闭大图
+	 closeBigPic(off) {
+		 this.isShowList = off;
+	 },
+
+   set_index(index) {
+
+		 this.defaultAct = index;
+		 this.self = index;
+
+      if(!this.meFlag){
+				this.meFlag = true;
+				this.getMeNote();
+      }
+
+   },
   		showSearchBar() {
             this.$router.push({
             path: `/note/search`,
@@ -214,7 +243,10 @@ export default {
 
     		    })
         },
-        getAllNote(){//获取全部课程笔记列表
+
+				// 获取全部课程笔记列表
+        getAllNote(){
+
           //搜索判断,用于第一次搜索结果重新给模板页面赋值
           if(!this.webApi.isEmpty(this.searchData)){
             let data = this.searchData;
@@ -238,11 +270,12 @@ export default {
           // alert(JSON.stringify(this.courseInfo))
           let param = {};
           param.self = 0;
+					param.pageNo = this.page;
           param.courseid= this.courseInfo.courseId;
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
           //
-          // param.courseid= "ff8080814dad5062014db32051b801a2";
+          param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
 
@@ -254,17 +287,24 @@ export default {
 
           .then(res =>{
 
-              if(res && res.state == 'success'){
+						this.webApi.closeLoadingData();
 
-                  this.webApi.closeLoadingData();
+            if(!res || res.state != 'success'){
+							 this.webApi.alert('网络异常，请稍后再试');
+							 return false;
+            }
 
-                    this.sectionAllList = res.data;
+						this.sectionAllList = res.data;
 
-              }
+						this.$store.commit('CHANGE_COURSE_NOTE_LIST_ALL', this.sectionAllList);
 
-            })
+          })
+
         },
-        getMeNote() {//获取我的课程笔记列表
+
+				//获取我的课程笔记列表
+        getMeNote() {
+
         	//搜索判断,用于第一次搜索结果重新给模板页面赋值
         	if(!this.webApi.isEmpty(this.searchData)){
         		let data = this.searchData;
@@ -304,30 +344,34 @@ export default {
 
     			.then(res =>{
 
-    		      if(res && res.state == 'success'){
+						this.webApi.closeLoadingData();
 
-    		          this.webApi.closeLoadingData();
+						if(!res || res.state != 'success') {
+							this.webApi.alert('网络异常，请稍后再试')
+							return false;
+						}
 
-    		          	this.sectionList = res.data.filter(item => item.courseId == this.courseInfo.courseId);
 
-    		      }
+    		    	this.sectionList = res.data.filter(item => item.courseId == this.courseInfo.courseId);
 
     		    })
         },
         openNoteDetails(ev) {// 打开详情
 
-            let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
-            let course = JSON.parse(oSection.dataset.course);
-            let chapter = JSON.parse(oSection.dataset.chapter);
-            let chapterTwo = JSON.parse(oSection.dataset.chaptertwo);
-            let data = {
-              courseData:  Object.assign(course, chapter, chapterTwo),
-              self: this.self
-            }
+					this.webApi.setCookie('notePageTop', document.documentElement.scrollTop);
 
-            this.$router.push({
-              path: `/note/detailslist/${encodeURIComponent(JSON.stringify(data))}`,
-            });
+          let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+          let course = JSON.parse(oSection.dataset.course);
+          let chapter = JSON.parse(oSection.dataset.chapter);
+          let chapterTwo = JSON.parse(oSection.dataset.chaptertwo);
+          let data = {
+            courseData:  Object.assign(course, chapter, chapterTwo),
+            self: this.self
+          }
+
+          this.$router.push({
+            path: `/note/detailslist/${encodeURIComponent(JSON.stringify(data))}`,
+          });
 
       },
 
@@ -357,9 +401,7 @@ export default {
   		}
 
 	},
-	mounted() {
 
-	}
 
 }
 

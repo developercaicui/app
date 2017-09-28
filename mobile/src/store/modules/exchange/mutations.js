@@ -12,7 +12,15 @@ export default {
 	},
   reductionExchangeList(state) {
     state.exchangeList = [];
-  }
+  },
+
+  CHANGE_Course_Exchange_List(state, params) {
+    state.courseexchangeList = params;
+  },
+
+  CHANGE_Course_Exchange_List_Me(state, params) {
+    state.courseeExchangeListMe = params;
+  },
 
 
 }

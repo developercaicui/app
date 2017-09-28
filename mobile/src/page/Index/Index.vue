@@ -55,8 +55,7 @@ export default {
 
 		this.fetchData();
 
-		this.$store.dispatch('fetchActivityList')
-
+		this.$store.dispatch('fetchActivityList');
 
 	},
 
@@ -222,7 +221,12 @@ export default {
 				// courseId 做比较
 				res.data.map(item => learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth() + 1)}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
 
+				learningCourseList.map(item =>{
+					item.examinationDate = item.examinationDate.includes('1970') ? '暂无考试' : item.examinationDate;
+				});
+
 				this.learningCourseList = learningCourseList;
+
 			})
 
 		},

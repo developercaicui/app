@@ -93,13 +93,12 @@ $commTopWhite: #fff; // 公用白色
   @include fc(.24rem, #fff);
   @extend .flexCenter;
   position: fixed;
-  top: 50%; left: 50%;
+  top: 25%; left: 50%;
   min-width: 2rem;
   background-color: rgba(51, 51, 51, .8);
   z-index: 119;
   padding: .1rem .2rem;
   border-radius: 5px;
-  transform: translateX(-50%);
 }
 
 

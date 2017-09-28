@@ -202,7 +202,7 @@ export default {
             param.isU = false;
           }
           param.orderItemId = data.orderID_item_id;
-          let Ttime = $.trim($('input[name=examTime]').val());
+          let Ttime = $.trim($("#setTime")[0].value);
           param.examTime = this.formatDate(Ttime,'Y')+'-'+this.formatDate(Ttime,'M')+'-'+this.formatDate(Ttime,'D')+' '+this.formatDate(Ttime,'h')+':'+this.formatDate(Ttime,'m')+':'+this.formatDate(Ttime,'s');
 
           this.webApi.loadingData('激活中');

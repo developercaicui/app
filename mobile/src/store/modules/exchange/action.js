@@ -12,7 +12,7 @@ export default {
   fetchExchangeList({commit, state}) {
 
     getExchangeList(state.exchangeListParams)
-    
+
     .then(res =>{
 
       webApi.closeLoadingData();

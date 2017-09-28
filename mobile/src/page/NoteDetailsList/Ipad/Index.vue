@@ -13,7 +13,7 @@
 
 		<main>
 
-			<section class="list" :data-section="JSON.stringify(item)" v-for="item in detailsList" :data-id="item.id" @touchend="openDetails">
+			<section class="list" :data-section="JSON.stringify(item)" v-for="item in detailsList" :data-id="item.id" @click="openDetails">
 				<div>{{ item.nikeName }}</div>
 				<h1>{{ item.chaptername }}</h1>
 				<p>{{ item.contentSummary }}</p>

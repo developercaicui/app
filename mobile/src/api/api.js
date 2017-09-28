@@ -67,7 +67,7 @@ export default {
 
     if(deviceType === 'ipad' && screenWidth*dpr < 2048/4*3 ){
       designWidth = 2048/4*3.1;
-    } 
+    }
 
     let initialRem = designWidth / 100;
 
@@ -284,7 +284,7 @@ export default {
 
    },
   // cdn 地址
-  cdnImgUrl: 'http://cdnimg.caicui.com/',
+  cdnImgUrl: 'http://eximg.zbgedu.com/',
   //判断是否为空
   isEmpty(data) {
     if (this.isEmpty1(data) || this.isEmpty2(data)) {

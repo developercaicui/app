@@ -28,6 +28,14 @@ export default {
 
   reductionNoteDetailsList(state) {
     state.noteDetailsList = [];
-  }
+  },
+
+  CHANGE_COURSE_NOTE_LIST_ALL(state, params) {
+    state.courseNoteListAll = params;
+  },
+
+  CHANGE_COURSE_NOTE_LIST_ME(state, params) {
+    state.courseNoteListMe = params;
+  },
 
 }
