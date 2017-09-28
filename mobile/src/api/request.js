@@ -71,7 +71,7 @@ function getArgs(port,params){
 	var thatServer = server[port];
 	var hostName = '';
 	var thatServerUrl = thatServer.url;
-	if(process.env.NODE_ENV == 'production'){ // production development
+	if(process.env.NODE_ENV == 'development'){ // production development
 		if(thatServer.staticDataDemo){
 			args.url = thatServer.staticDataDemo  + "?verTT=" + new Date().getTime();
 			args.type = 'GET';
