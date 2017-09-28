@@ -61,6 +61,9 @@ export default {
   },
   getKnowledgePointInfo(params) {
     return getArgs('getKnowledgePointInfo', params)
+  },
+  actionTaskProgress (params) {
+    return getArgs('actionTaskProgress', params)
   }
 }
 function getArgs(port,params){
@@ -68,7 +71,7 @@ function getArgs(port,params){
 	var thatServer = server[port];
 	var hostName = '';
 	var thatServerUrl = thatServer.url;
-	// if(process.env.NODE_ENV == 'production'){ // production development
+	if(process.env.NODE_ENV == 'production'){ // production development
 		if(thatServer.staticDataDemo){
 			args.url = thatServer.staticDataDemo  + "?verTT=" + new Date().getTime();
 			args.type = 'GET';
@@ -84,14 +87,14 @@ function getArgs(port,params){
 			args.type = thatServer.type ? thatServer.type : 'GET';
 		}
 
-	// }else{
-	// 	hostName = COMMON.host.name;
-	// 	if(thatServer.hostName){
-	// 		hostName = thatServer.hostName;
-	// 	}
-	// 	args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
-	// 	args.type = thatServer.type ? thatServer.type : 'GET';
-	// }
+	}else{
+		hostName = COMMON.host.name;
+		if(thatServer.hostName){
+			hostName = thatServer.hostName;
+		}
+		args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
+		args.type = thatServer.type ? thatServer.type : 'GET';
+	}
 
 	// return args;
 
@@ -144,7 +147,6 @@ function getArgs(port,params){
             'url': '/api/studytools/mycount/v2.1'
         },
         'slide-list': {
-            // 'hostNameDemo' : 'http://api.caicui.com',
             // 'url' : '/api/v2.1/slide/list'
             'url': '/api/article/slide/list'
         },
@@ -169,16 +171,39 @@ function getArgs(port,params){
         },
         'courseBaseInfo': {
             'urlDemo': '/api/v2.1/course/courseBaseInfo/data',
-            'url': '/api/v2.1/course/courseBaseInfo',
+            'url': '/api/v2.1/course/courseBaseInfo/data',
             'type': 'POST'
         },
         'courseDetail': {
             'urlDemo': '/api/teachsource/course/courseDetail/data',
-            'url': '/api/teachsource/course/courseDetail'
+            'url': '/api/teachsource/course/courseDetail/data'
         },
         'coursesBaseInfo': {
+            'urlDemo': '/api/teachsource/course/courseBaseInfo/data',
             'url': '/api/teachsource/course/courseBaseInfo/data'
         },
+        'handout': {
+            'urlDemo': '/api/teachsource/course/courseBaseInfo/data',
+            'url': '/api/teachsource/course/courseBaseInfo/data'
+        },
+        'version': {
+            'urlDemo': '/api/teachsource/course/coursesversionlist/data',
+            'url': '/api/teachsource/course/coursesversionlist/data'
+        },
+        'getNidExerciseDetail': {
+            'hostNameDemo': 'http://192.168.10.112:8083',
+            'urlDemo': '/api/teachsource/examen/getNidExerciseDetail/data',
+            'url': '/api/teachsource/examen/getNidExerciseDetail/data'
+        },
+        'getExerciseIds': {
+            'urlDemo': '/api/teachsource/examen/getExerciseIds/data',
+            'url': '/api/teachsource/examen/getExerciseIds/data'
+        },
+        'getExerciseBaseInfo': {
+            'urlDemo': '/api/teachsource/examen/getExerciseBaseInfo/data',
+            'url': '/api/teachsource/examen/getExerciseBaseInfo/data'
+        },
+
         'getTasksProgress': {
             'url': '/api/v2/study/getTasksProgress'
         },
@@ -190,11 +215,7 @@ function getArgs(port,params){
             // 'url' : '/api/v2.1/study/coursestatus'
             'url': '/api/business/learning/courseactivestatus'
         },
-        'handout': {
-            // 'url' : '/api/v2/course/handout'
-            'url': '/api/teachsource/course/courseBaseInfo',
-            'urlDemo': '/api/teachsource/course/courseBaseInfo/data'
-        },
+        
         'bbslist': {
             'url': '/api/studytools/bbslist/v1.0'
         },
@@ -249,7 +270,7 @@ function getArgs(port,params){
             'url': '/api/studytools/ad_discuss/v2.1'
         },
         'timeList': {
-            'url': '/api/v2/exam/timeList'
+            'url': '/api/teachsource/exam/timeList'
         },
         'active': {
             // 'url' : '/api/v2/course/active'
@@ -263,11 +284,7 @@ function getArgs(port,params){
             'url': '/api/business/complaintOpinion/create/v1.0',
             'type': 'POST'
         },
-        'version': {
-            // 'url' : '/api/course/courselist/version/v3/'
-            'url': '/api/teachsource/course/coursesversionlist',
-            'urlDemo': '/api/teachsource/course/coursesversionlist/data'
-        },
+
         'exercisePointCountCache': {
             'hostNameDemo': 'http://192.168.10.134:8080',
             'url': '/api/extendapi/examen/get_exercise_point_count_cache',
@@ -287,25 +304,20 @@ function getArgs(port,params){
             'url': '/api/userAction/examen/setMemberExerciseState',
             'type': 'POST'
         },
-        'getNidExerciseDetail': {
-            'hostNameDemo': 'http://192.168.10.112:8083',
-            'urlDemo': '/api/teachsource/examen/getNidExerciseDetail/data',
-            'url': '/api/teachsource/examen/getNidExerciseDetail'
-            // 'url' : '/api/teachsource/examen/getNidExerciseDetail'
-        },
+
         'actionGetCourseProgress': {
             'action': 'true',
-            'hostName': 'http://action.caicui.com',
+            'hostName': 'http://action.zbgedu.com',
             'url': '/api/userAction/course/getCourseProgress/v1.0/'
         },
         'actionGetTasksProgress': {
             'action': 'true',
-            'hostName': 'http://action.caicui.com',
+            'hostName': 'http://action.zbgedu.com',
             'url': '/api/userAction/course/getTasksProgress/v1.0/'
         },
         'actionTaskProgress': {
             'action': 'true',
-            'hostName': 'http://action.caicui.com',
+            'hostName': 'http://action.zbgedu.com',
             'url': '/api/userAction/course/taskProgress/v1.0/'
         },
         'wileyCourseActive': {
@@ -315,25 +327,16 @@ function getArgs(port,params){
             'url': '/api/business/order/wileyCourseStudy/v1.0'
         },
         'getAppointmentState': {
-            'hostName': 'http://www.caicui.com',
+            'hostName': window.origin,
             'url': '/publicCourse/getAppointmentState.do',
             'type': 'POST'
         },
         'appointClick': {
-            'hostName': 'http://www.caicui.com',
+            'hostName': window.origin,
             'url': '/publicCourse/appointClick.do',
             'type': 'POST'
         },
-        'getExerciseIds': {
-            'url': '/api/teachsource/examen/getExerciseIds',
-            'urlDemo': '/api/teachsource/examen/getExerciseIds/data'
-        },
-        'getExerciseBaseInfo': {
-            // 'staticDataDemo' : './scripts/staticData/getExerciseBaseInfo.json',
-            'urlDemo': '/api/teachsource/examen/getExerciseBaseInfo/data',
-            'url': '/api/teachsource/examen/getExerciseBaseInfo'
-            // 'url' : '/api/teachsource/examen/getExerciseBaseInfo'
-        },
+        
         'getmembernotprocnoticelist': {
             'url': '/api/business/coursegroup/getmembernotprocnoticelist'
         },
@@ -368,11 +371,11 @@ function getArgs(port,params){
             'type': 'POST'
         },
         'appointment': {
-            'url': '/api/teachsource/opencourse/appointment',
+            'url': '/api/userAction/opencourse/appointment',
             // 'urlDemo': '/api/teachsource/opencourse/appointment/data'
         },
         'getappointmentlist': {
-            'url': '/api/teachsource/opencourse/getappointmentlist',
+            'url': '/api/userAction/opencourse/getappointmentlist',
             // 'urlDemo': '/api/teachsource/opencourse/getappointmentlist/data'
         },
         'includeopencoursegroup': {
@@ -424,9 +427,9 @@ function getArgs(port,params){
             'url': '/api/teachsource/resources/getDetailById'
         },
         'getExamenInfo' : {
-          'url': '/api/teachsource/examen/getExamenInfo'
+            'url': '/api/teachsource/examen/getExamenInfo'
         },
         'getKnowledgePointInfo' : {
-          'url': '/api/teachsource/knowledge/getKnowledgePointInfo'
+            'url': '/api/teachsource/knowledge/getKnowledgePointInfo'
         }
     };

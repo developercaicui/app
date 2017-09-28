@@ -1,27 +1,17 @@
 export default{
 		"ENTER_KEY" : "13",
 		"token": "",
-		"loginLink" : "http://www.caicui.com/login?loginRedirectUrl="+window.location.href+"#hide",
-		//"loginLink" : "http://www.caicui.com/page/login.jsp?loginRedirectUrl=http://www.caicui.com/studycenter/#studycenterIndex",
+		"loginLink" : "http://www.zbgedu.com/index.php?m=user&c=index&a=index",
 		"loginLinkTest" : "#studycenterLogin",
-		"User" : {
-			"isAvatar" : true,
-	    "token" : "85a618ed-58d7-494d-8bf6-4ae5543c0678",
-	    "nickName" : "zpk",
-	    "memberId" : "ff8080815133db0d0151375bfdf30c0d",
-	    "avatar" : "/upload/avatar/big_ff8080815133db0d0151375bfdf30c0d.jpg"
-		},
 		"host": {
-			//"name" : "http://192.168.10.112:8081/",
-			//"name": "http://test.caicui.com",
-			"name": "http://api.caicui.com",
-			"nameAction": "http://action.caicui.com",
+			"name": "http://api.zbgedu.com",
+			"nameAction": "http://action.zbgedu.com",
 			"demoName" : "http://demo.caicui.com",
-			"static" : "http://cdnstatic.caicui.com/",
-			"img" : "http://cdnimg.caicui.com",
-			"imgAddress" : "http://cdnstatic.caicui.com/",
-			"infoAddress" : "http://www.caicui.com/",
-			"IPLocation" : "http://www.caicui.com/api/v2/"
+			"static" : "http://exstatic.zbgedu.com/",
+			"img" : "http://eximg.zbgedu.com",
+			"imgAddress" : "http://exstatic.zbgedu.com/",
+			"infoAddress" : "http://elearning.zbgedu.com/",
+			"IPLocation" : "http://elearning.zbgedu.com/api/v2/"
 		},
 		"product": {
 			"pcWeb": {
