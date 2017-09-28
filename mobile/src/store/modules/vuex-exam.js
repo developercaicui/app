@@ -1,6 +1,5 @@
 import axios from 'axios';
 import Request from '../../api/request';
-import COMMON from '../../api/common';
 export default {
 	state : {
 		categoryId : '',
@@ -127,16 +126,16 @@ export default {
 							break;
 					}
 				}
-				console.log(title)
+				// console.log(title)
 				state.exerciseTitle = title;
 				// return title;
 			}
 	},
 	actions : {
-		requestListDetail ({state, commit}){
+		requestListDetail ({state, commit}, args){
 			axios.all([Request.exerciseList({
 				"knowledge_point_id":state.examId,
-				"member_id":COMMON.User.memberId,
+				"member_id":args.memberId,
 				"examenNum":state.examNum
 			}),Request.exerciseDetail({
 				'exerciseId' : state.exerciseId
@@ -183,10 +182,10 @@ export default {
 
 			}))
 		},
-		requestExerciseList ({state, commit, getters}){
+		requestExerciseList ({state, commit, getters}, args){
 			Request.exerciseList({
 				"knowledge_point_id":state.examId,
-				"member_id":COMMON.User.memberId,
+				"member_id":args.memberId,
 				"examenNum":state.examNum
 			}).then(res => {
 				commit('update',{

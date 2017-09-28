@@ -49,7 +49,7 @@
 	import examCorrection from '../../components/CorrectionExam';
 	import examExchangeEdit from '../../components/ExchangeEdit';
 	import examNoteEdit from '../../components/NoteEdit';
-
+	
 	export default {
 		components : {
 			examCards,
@@ -165,7 +165,6 @@
 			]),
 			...mapActions([
 				'requestListDetail',
-				'requestExerciseList',
 				'requestExerciseDetail'
 			]),
 			examBackButton (){
@@ -278,7 +277,10 @@
 					"chapterId" : this.chapterId,
 					"taskId" : this.taskId,
 				});
-				this.requestListDetail();
+				this.requestListDetail({
+					memberId : this.userInfo.memberId
+				});
+				this.actionTaskProgress('begintest');
 				console.log(this.exam)
 			},
 			exerciseExam (callback){
@@ -341,12 +343,12 @@
 			},
 			exerciseKnowledgeIds (src){
 				// return "ff8080814bee5fde014bfa12b1230114".split(',');
-				return "ff8080814bee5fde014bfa12b1230114,ff8080814b7c866a014b7cfbfcec0329,ff8080814bee5fde014bf772fa340062,ff8080814a7f5035014a951f4a632d5b,ff8080814a7f5035014a963deab62ffb".split(',');
+				// return "ff8080814bee5fde014bfa12b1230114,ff8080814b7c866a014b7cfbfcec0329,ff8080814bee5fde014bf772fa340062,ff8080814a7f5035014a951f4a632d5b,ff8080814a7f5035014a963deab62ffb".split(',');
 				// return "8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(",");
 
 				var iframe=document.createElement("iframe");
 				iframe.setAttribute("id", "knowledgeIds");
-				iframe.setAttribute("src", "http://www.caicui.com/upload/caicui_cache/exercise/"+src);
+				iframe.setAttribute("src", "http://elearning.zbgedu.com/exercisecache/"+src);
 				var body = document.getElementsByTagName("body");  
 				if(body.length){
 				  body[0].appendChild(iframe);
@@ -370,6 +372,15 @@
 				let exerciseId = this.exam.examBaseInfo[index].id;
 				let exerciseOptionIndex = this.exam.exerciseOptionsActiveIndex;
 				if(exerciseOptionIndex !== -1){
+					let num = Math.abs(this.exam.exerciseActiveIndex - index);
+					let action = '';
+					if(num != 1){
+						action = 'seektest';
+					}else{
+						action = 'test';
+					}
+					this.actionTaskProgress(action);
+
 					this.getExerciseStatus();
 					this.exerciseSaveCache(exerciseId);
 					this.exerciseSave();
@@ -461,12 +472,49 @@
 					}
 				}
 			},
-			cardsPosition (index) {
-				if(index>4 || index<this.exam.exerciseNumTotal-4){
-					this.update({
-						"cardsPosLeft" : (index-4)*this.exam.cardsItemWidth
-					})
+			actionTaskProgress(action) {
+				let taskProgressData = {
+			    action: action,
+			    token: this.userInfo.token,
+			    memberId: this.userInfo.memberId,
+			    memberName: this.userInfo.nickname,
+			    progress: this.exam.examProgress,
+			    total: this.exam.examNumTotal,
+			    state: this.exam.examState,
+
+			    taskId: this.exam.taskId,
+			    chapterId: this.exam.chapterId,
+			    courseId: this.exam.courseId,
+			    subjectId: this.exam.subjectId,
+			    categoryId: this.exam.categoryId,
+
+			    taskName: this.exam.examTitle,
+			    chapterName: this.exam.chapterTitle,
+			    courseName: this.exam.courseName,
+			    subjectName: this.exam.subjectName,
+			    categoryName: this.exam.categoryName,
+
+			    isSupply: 0,
+			    createDate: new Date().getTime()
 				}
+				Request.actionTaskProgress({
+					'token': this.userInfo.token,
+					'message': JSON.stringify(taskProgressData)
+				}).then((res) =>{
+					
+				})
+			},
+			cardsPosition (index) {
+				let newWidth = (index-4)*this.exam.cardsItemWidth;
+				if(index<4){
+					newWidth = 0;
+				}else if(index>(this.exam.examNumTotal-9)){
+					newWidth = (this.exam.examNumTotal-9)*this.exam.cardsItemWidth;
+				}
+				this.update({
+					"cardsPosLeft" : newWidth
+				})
+				
 			},
 			exerciseSaveCache () {
 				let exerciseIsCache = this.exerciseIsCache();
@@ -539,6 +587,7 @@
 			exerciseAssignment (){
 				// setMemberExamenFinish
 				// setMemberErrorExercise
+				this.actionTaskProgress('submittest');
 				Request.setMemberExamenFinish({
 					"memberId":this.memberId,
 					"examenid":this.exam.examId,
