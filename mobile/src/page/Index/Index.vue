@@ -223,7 +223,6 @@ export default {
 				res.data.map(item => learningCourseList.map(list => item.categoryId == list.subjectID ? list['examinationDate'] =  `${new Date(item.examinationDate).getFullYear()}/${this.webApi.isSmallTen(new Date(item.examinationDate).getMonth() + 1)}/${this.webApi.isSmallTen(new Date(item.examinationDate).getDate())}` : '暂无考试') );
 
 				learningCourseList.map(item =>{
-					item.examinationDateTime = item.examinationDate.includes('1970') ? 0 : item.examinationDate;
 					item.examinationDate = item.examinationDate.includes('1970') ? '暂无考试' : item.examinationDate;
 				});
 

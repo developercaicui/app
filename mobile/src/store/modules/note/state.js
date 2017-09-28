@@ -24,6 +24,9 @@ export default {
 		token: '',
 		pageSize: 66,
 		pageNo: 1,
-	}
+	},
+
+	courseNoteListAll: {},
+	courseNoteListMe: [],
 
 }

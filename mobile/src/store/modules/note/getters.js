@@ -3,5 +3,6 @@ export default {
 	getNoteList: state => state.noteList,
   getNoteListParams: state => state.noteListParams,
   getNoteDetailsList: state => state.noteDetailsList,
-  getNoteDetailsParams: state => state.noteDetailsParams,
+	getCourseNoteListAll: state => state.courseNoteListAll,
+	getCcourseNoteListMe: state => state.courseNoteListMe,
 }

@@ -8,8 +8,8 @@
 				<input type="text" v-model="keywords" placeholder="搜索">
 			</div>
 			<div class="state-edit">
-				<a href="javascript:;" @touchend="searchCourse">搜索</a>
-				<router-link to="list">取消</router-link>
+				<a href="javascript:;" @click.stop="searchCourse">搜索</a>
+				<a href="javascript:;" @click.stop="backPreviousPage">取消</a>
 			</div>
 		</header>
 
@@ -65,6 +65,11 @@ export default {
 	},
 
   methods: {
+
+		// 上一页
+		backPreviousPage() {
+			this.$router.go(-1);
+		},
 
 		// 搜索课程笔记
 		searchCourse() {

@@ -81,8 +81,12 @@
 
 <script>
 
-import { getExchangeList, getExchangeDetails, searchhNote } from '../../../api/port';
 import SlideRefresh from '../../../components/Comm/SlideRefresh';
+import {
+	 getExchangeList,
+	 getExchangeDetails,
+	 searchhNote
+} from '../../../api/port';
 
 export default {
 	components: {
@@ -92,13 +96,11 @@ export default {
 	    return {
 			defaultAct: 0,
 			courseInfo:{},
-			navList: [
-		        {
-		          name: '全部交流',
-		        },{
-		          name: '我的交流',
-		        }
-		      ],
+			navList: [{
+		    name: '全部交流',
+		  },{
+		    name: '我的交流',
+		  }],
 		    exchangeList: [],
 		    exchangeListMe: [],
 		    searchWord: '',
@@ -116,21 +118,30 @@ export default {
 	created(){
 		this.allFlag = true;
 		this.courseInfo = this.$route.query;
-		this.getDate(1,0);
+
+	  let vuexExchangeList = this.$store.getters.getCourseexchangeList;
+
+		if(vuexExchangeList.length == 0){
+			this.getDate(1, 0);
+		}else{
+			this.exchangeList = vuexExchangeList;
+		}
+
+
 	},
 
-	updated() {
-
+	mounted() {
+		document.documentElement.scrollTop = this.webApi.getCookie('exchangePageTop');
+		this.webApi.setCookie('exchangePageTop', 0)
 	},
+
 
   	methods: {
   		//下拉刷新
 	  	topStatusChange(status) {
 
 	    	if(status == 'loading') {
-
-	      		this.getDate(1,0);
-
+	      	this.getDate(1,0);
 	    	}
 
 	  	},
@@ -149,7 +160,7 @@ export default {
   			if(!this.meFlag){
 
   				this.meFlag = true;
-				this.getDate(1,1);
+					this.getDate(1,1);
 
   			}
 
@@ -198,6 +209,7 @@ export default {
 		    })
         },
         getDate(page,self) {
+
         	//搜索判断,用于第一次搜索结果重新给模板页面赋值
         	if(!this.webApi.isEmpty(this.searchData)){
         		let data = this.searchData;
@@ -234,16 +246,18 @@ export default {
 		          		this.webApi.closeLoadingData();
 				  }
 		          if(self == 0){
-		          	
+
 		          	res.data = this.setListData(res.data);
 
 		          	this.exchangeList = this.exchangeList.concat(res.data);
+
+								this.$store.commit('CHANGE_Course_Exchange_List', this.exchangeList);
 
 		          }else{
 
 		          	res.data = this.setListData(res.data);
 
-		          	this.exchangeListMe = this.exchangeListMe.concat(res.data);
+								if(res.data.length != 0) this.exchangeListMe = this.exchangeListMe.concat(res.data);
 
 		          }
 
@@ -264,33 +278,12 @@ export default {
 		// 打开详情
 		answerDetail(item) {
 
-			// this.webApi.loadingData();
-			//
-			// getExchangeDetails({
-			// 	token: this.webApi.getCookie('token'),
-			// 	id: item.id,
-			// 	pageNo: 1,
-			// 	pageSize: 20,
-			// })
-			//
-			// .then(res =>{
-			//
-			// 	this.webApi.closeLoadingData();
-			//
-			// 	if(!res || res.state != 'success'){
-			// 		this.webApi.alert('打开详情失败，请稍后再试');
-			// 		return false;
-			// 	}
+			this.webApi.setCookie('exchangePageTop', document.documentElement.scrollTop);
 
-				this.$router.push({
-					path: `/exchange/details/${encodeURIComponent(JSON.stringify({ id: item.id}))}`,
-				});
+			this.$router.push({
+				path: `/exchange/details/${encodeURIComponent(JSON.stringify({ id: item.id}))}`,
+			});
 
-				// this.$router.push({
-				// 	path: `details/${encodeURIComponent(JSON.stringify(res.data))}`,
-				// });
-
-			// })
 		},
 		setBackground(url) {
 			return `background-image:url(${this.getImgPath(url)})`
@@ -318,9 +311,6 @@ export default {
 		}
 
 	},
-	mounted() {
-
-	}
 
 }
 
