@@ -39,7 +39,7 @@
 	            <div class="right"><i class="icon-jiantou icon-arrow-right">&#xe619;</i></div>
 	          </li>
 	        </ul>
-	        <ul class="logout" @click="logout">
+	        <ul class="logout" @click.stop="logout">
 	          <li>
 	            <div class="left">退出登录</div>
 	          </li>
@@ -145,12 +145,16 @@ export default {
 	created() {
 
 
-      let htmlCss = document.documentElement.style.cssText.split("font-size:")[1].replace("px;","")/2*2.4;
-      
-      document.documentElement.style.fontSize = `${htmlCss}px`;
-   
+     let htmlCss = document.documentElement.style.cssText.split("font-size:")[1].replace("px;","")/2*2.4;
+
+     document.documentElement.style.fontSize = `${htmlCss}px`;
+
      this.body.setAttribute("show","index");
- 
+
+		 window.addEventListener("storage", function (e) {
+         window.location.reload();
+     });
+
 	},
 
 	updated() {
@@ -214,9 +218,7 @@ export default {
         },
       	//退出登录
       	logout() {
-
            this.$refs.exit.classList.remove('hide')
-
       	},
       	//取消退出登录
       	cancel() {
@@ -236,7 +238,7 @@ export default {
 	            this.webApi.delCookie("userInfo")
               this.webApi.delCookie("token")
               g.outLogin();
-              
+
 	        })
       	},
         // guanbi() {//关闭设置页
@@ -294,10 +296,10 @@ export default {
                       this.$refs.textarea.value = "";
 
                       $('#pop-radios .pop-radio-label').eq(0).addClass('active').siblings().removeClass('active');
-                   
+
 
                     },600)
-                    
+
                 } else {
 
                     this.webApi.alert(res.msg);
