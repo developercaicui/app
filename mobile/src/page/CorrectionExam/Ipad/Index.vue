@@ -139,7 +139,7 @@ body #mask0 {
   position: absolute;
   top: 0.27rem;
   left: 0.32rem;
-  color: #00a085;
+  color: #ff366d;
   font-weight: bold;
   font-size: 0.4rem;
 }

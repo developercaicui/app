@@ -15,7 +15,7 @@
 
 			<SlideRefresh  @top-status-change="topStatusChange">
 
-				<section class="list" v-for="item in exchangeData.data" :data-id="item.id" @touchend="targetDetails">
+				<section class="list" v-for="item in exchangeData.data" :data-id="item.id" @click="targetDetails">
 					<div>{{ item.nikeName }}<span class="msg-num">{{ item.replyCount }}</span></div>
 					<h1>{{ item.title }}</h1>
 					<p v-html="item.contentHtml" class="content-html"></p>

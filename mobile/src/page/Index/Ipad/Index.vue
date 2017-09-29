@@ -38,7 +38,7 @@
 				<div class="the-course the-activity">
 
 					<div class="title">
-						<h1>财萃活动</h1>
+						<h1>热门活动</h1>
 					</div>
 
 					<div class="activity-list" v-for="(item, index) in activityList" v-show="index < 3">
