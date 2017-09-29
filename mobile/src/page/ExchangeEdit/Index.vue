@@ -54,7 +54,7 @@ export default {
 					return false;
 				}
 
-				callback(res.data);
+				callback(res.data[0]);
 
 			});
 

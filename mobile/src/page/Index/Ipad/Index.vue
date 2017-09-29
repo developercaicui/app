@@ -29,7 +29,7 @@
 						</div>
 					</a>
 
-					<a href="javascript:;" v-if="learningCourseList.length === 0" class="list no-data-list" @click="handleNoData">
+					<a href="javascript:;" :style="isNewCourseCss" v-if="learningCourseList.length === 0" class="list no-data-list" @click="handleNoData">
 						<div>开始新课程</div>
 					</a>
 
@@ -88,10 +88,13 @@ export default {
   data() {
     return {
 			topAllLoadEnd: false,
+			isNewCourseCss: 'opacity: 0',
     }
   },
 
 	updated() {
+
+		this.isNewCourseCss = 'opacity: 1';
 
 		let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
 		let arr = ['#4a90e2','#3E4F61','#408684', '#FF366D'];

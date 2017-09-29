@@ -236,7 +236,7 @@ export default {
 
 				this.$emit('upload-pic', formData, res =>{
 
-					this.allPicPath =  `${this.allPicPath}${res.path},`;
+					this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
 					this.isUploadSuccess++;
 
 					// 成功以后提交表单内容

@@ -66,7 +66,7 @@ export default {
 					return false;
 				}
 
-				callback(res.data);
+				callback(res.data[0]);
 
 			});
 
@@ -89,7 +89,7 @@ export default {
 				}
 
 				this.$refs.ipad.getDetails(this.$refs.ipad.dataParams.id);
-				
+
 				this.webApi.alert('评论成功');
 
 			})
