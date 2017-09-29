@@ -240,7 +240,7 @@ export default {
 
 				this.$emit('upload-pic', formData, res =>{
 
-					this.allPicPath =  `${this.allPicPath}<img src="${this.webApi.cdnImgUrl}${res.path}"/>`;
+					this.allPicPath =  `${this.allPicPath}<img src="${this.webApi.cdnImgUrl}${res.storeFileUrl}"/>`;
 					this.isUploadSuccess++;
 
 					// 成功以后提交表单内容

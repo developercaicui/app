@@ -14,7 +14,6 @@
 	          <div @click="opencourseLive" class="live-footer-btn" v-html="liveBtn"><!-- 预约报名 --></div>
 	        </div>  
 		</div>
-		<iframe style="position: absolute;z-index: 2;" width="100%" height="100%" frameborder="no" border="0" marginwidth="0" marginheight="0"></iframe>
 
 	</div>
 
@@ -192,7 +191,7 @@ export default {
 				&:nth-child(2) {
 				    margin-top: 0.1rem;
 				    font-size: 0.3rem;
-				    color: #00a084;
+				    color: #ff366d;
 				}
 		    }
 		}
@@ -220,7 +219,7 @@ export default {
     			height: 0.58rem;
 			    width: 2rem;
 			    border-radius: 0.12rem;
-			    background-color: #00a085;
+			    background-color: #ff366d;
 			    font-size: 0.32rem;
 			    color: #fff;
 			    margin: 0.15rem auto 0.1rem 0;

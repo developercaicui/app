@@ -29,7 +29,7 @@
 						</div>
 					</a>
 
-					<a href="javascript:;" v-if="learningCourseList.length === 0" class="list no-data-list" @click="handleNoData">
+					<a href="javascript:;" :style="isNewCourseCss" v-if="learningCourseList.length === 0" class="list no-data-list" @click="handleNoData">
 						<div>开始新课程</div>
 					</a>
 
@@ -38,7 +38,7 @@
 				<div class="the-course the-activity">
 
 					<div class="title">
-						<h1>财萃活动</h1>
+						<h1>热门活动</h1>
 					</div>
 
 					<div class="activity-list" v-for="(item, index) in activityList" v-show="index < 3">
@@ -88,10 +88,13 @@ export default {
   data() {
     return {
 			topAllLoadEnd: false,
+			isNewCourseCss: 'opacity: 0',
     }
   },
 
 	updated() {
+
+		this.isNewCourseCss = 'opacity: 1';
 
 		let canvasList = this.$refs.canvasArc.querySelectorAll('.canvas-list');
 		let arr = ['#4a90e2','#3E4F61','#408684', '#FF366D'];
