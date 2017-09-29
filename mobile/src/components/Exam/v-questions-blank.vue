@@ -57,7 +57,7 @@ export default{
 	outline: 0;
   width: 196px;
   height: 40px;
-  border: 1px solid #3e9677;
+  border: 1px solid #fc3a6f;
   padding: 0 10px;
 }
 </style>

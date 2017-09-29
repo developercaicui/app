@@ -2,16 +2,16 @@
 
 	<div class="edit-me-head-wrap last-step">
 		<header class="reg-head">
-			<a href="javascript:;" class="back" @touchend="handleBack">&#xe669;</a>
+			<a href="javascript:;" class="back" @touchend.stop="handleBack">&#xe669;</a>
 			<h1>基本信息</h1>
 		</header>
 		<main :class="isMobile?'reg-info reg-info-mobile':'reg-info'" :style="isMobile?'width:85%':''">
-			<div class="upload-img" ref="uploadImgBtn" @touchend="uploadFile"></div>
+			<div class="upload-img" ref="uploadImgBtn" @touchend.stop="uploadFile"></div>
 			<label>
 				<input type="text" v-model="nickName" placeholder="用户名">
 				<span>可用于登录</span>
 			</label>
-			<a href="javascript:;" class="sub-ref-info last-sub-ref-info" @touchend="updateUserInfo">保存</a>
+			<a href="javascript:;" class="sub-ref-info last-sub-ref-info" @touchend.stop="updateUserInfo">保存</a>
 		</main>
 			<input type="file" name="" accept="image/png,image/gif,image/jpeg" @change="changeFile" ref="fileIpt" class="upload-img-ipt"/>
 	</div>
@@ -148,7 +148,6 @@ export default {
 				if(this.isChangeNickName && res.state == 'success') this.newUserInfo.nickName = this.nickName;
 
 
-				this.webApi.delCookie('userInfo');
 				this.webApi.setCookie('userInfo', JSON.stringify(Object.assign(this.userInfo, this.newUserInfo)));
 				this.webApi.setCookie('editUserInfo', JSON.stringify(Object.assign(this.userInfo, this.newUserInfo)));
 

@@ -3,6 +3,7 @@ import webApi from './api';
 import axios from 'axios';
 import qs from 'qs';
 
+
 const requestUrl = process.env.NODE_ENV === 'development' ? 'http://api.zbgedu.com' : 'http://api.zbgedu.com'; // 请求地址
 
 const LOC = window.location;
@@ -93,7 +94,7 @@ export const getOverdueCourse = params => { return axios.get(`${requestUrl}/api/
 export const getExtendInfo = params => { return axios.get(`${requestUrl}/api/v2.1/course/courseExtendInfo?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 
 //查询课程考试时间
-export const timeList = params => { return axios.get(`${requestUrl}/api/v2/exam/timeList?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+export const timeList = params => { return axios.get(`${requestUrl}/api/teachsource/exam/timeList?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 //激活课程
 export const courseActive = params => { return axios.get(`${requestUrl}/api/business/order/courseActive/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 //退出登录
@@ -130,7 +131,7 @@ export const getNewNoteList = params => { return axios.get(`${requestUrl}/api/bu
 export const getNewNoteSectionList = params => { return axios.get(`${requestUrl}/api/teachsource/course/courseDetail?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 
 // 新建笔记上传照片
-export const fileUpload = params => { return axios.post(`${requestUrl}/api/v2.1/commons/fileUpload`, params).then(res => res.data).catch(err => err) };
+export const fileUpload = params => { return axios.post(`${requestUrl}/api/base/file/upload`, params).then(res => res.data).catch(err => err) };
 // 新建笔记
 export const saveNote = params => { return axios.post(`${requestUrl}/api/studytools/nodesave/v2.1`, qs.stringify(params), headers.urlencoded).then(res => res.data).catch(err => err) };
 // 编辑笔记详情

@@ -178,7 +178,7 @@
 			examRequestCallback (examenInfo, status, baseInfo) {
 				let examNeedIds = JSON.parse(this.webApi.getCookie('examNeedIds'));
 				this.examNeedIds = examNeedIds;
-				let express = false;
+				let express = true;
 				if(examNeedIds){
 					if(examNeedIds.express == '0'){
 						express = false;
@@ -505,16 +505,19 @@
 				})
 			},
 			cardsPosition (index) {
-				let newWidth = (index-4)*this.exam.cardsItemWidth;
-				if(index<4){
-					newWidth = 0;
-				}else if(index>(this.exam.examNumTotal-9)){
-					newWidth = (this.exam.examNumTotal-9)*this.exam.cardsItemWidth;
-				}
-				this.update({
-					"cardsPosLeft" : newWidth
-				})
+				if(this.exam.examNumTotal >=9){
+
 				
+					let newWidth = (index-4)*this.exam.cardsItemWidth;
+					if(index<4){
+						newWidth = 0;
+					}else if(index>(this.exam.examNumTotal-9)){
+						newWidth = (this.exam.examNumTotal-9)*this.exam.cardsItemWidth;
+					}
+					this.update({
+						"cardsPosLeft" : newWidth
+					})
+				}
 			},
 			exerciseSaveCache () {
 				let exerciseIsCache = this.exerciseIsCache();
@@ -621,7 +624,7 @@
 					taskId : this.exam.taskId,
 					examName : this.exam.examTitle,
 					examType : this.exam.examType,
-					progress : this.exam.exerciseActiveIndex,
+					progress : this.exam.exerciseActiveIndex+1,
 					exerciseId : this.exam.exerciseId,
 					exerciseName : this.exam.exerciseTitle,
 				}
@@ -637,7 +640,7 @@
 					chapterId : this.exam.chapterId,
 					chapterName : this.exam.chapterName,
 					taskId : this.exam.taskId,
-					progress : this.exam.exerciseActiveIndex,
+					progress : this.exam.exerciseActiveIndex+1,
 				}
 			},
 			isExchangeEditShow (bool) {
@@ -657,7 +660,7 @@
 					taskType : this.exam.examType,
 					taskName : this.exam.taskName,
 					taskId : this.exam.taskId,
-					taskProgress : this.exam.exerciseActiveIndex,
+					taskProgress : this.exam.exerciseActiveIndex+1,
 					type : 'new'
 				}
 			},
