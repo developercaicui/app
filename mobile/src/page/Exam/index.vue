@@ -940,7 +940,7 @@
 				let status = false;
 				let text = '';
 				let context = data[0];
-				if(element.blank && element.myBlank && context.blank.trim() == context.myBlank.trim()){
+				if(context.blank && context.myBlank && context.blank.trim() == context.myBlank.trim()){
 					status = true;
 					text = "正确答案是"+context.blank+"，回答正确";
 				}else{
@@ -994,7 +994,7 @@
 				let status = false;
 				let text = '';
 				let context = data[0];
-				if(element.blank && element.myBlank && context.blank.trim() == context.myBlank.trim()){
+				if(context.blank && context.myBlank && context.blank.trim() == context.myBlank.trim()){
 					status = true;
 					text = "正确答案是"+context.blank+"，回答正确";
 				}else{
