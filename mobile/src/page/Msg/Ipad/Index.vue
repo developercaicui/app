@@ -75,7 +75,7 @@ export default {
     }
   },
 
-  create() {
+  created() {
     this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
   },
 
