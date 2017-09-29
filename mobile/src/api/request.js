@@ -71,30 +71,30 @@ function getArgs(port,params){
 	var thatServer = server[port];
 	var hostName = '';
 	var thatServerUrl = thatServer.url;
-	if(process.env.NODE_ENV == 'development'){ // production development
-		if(thatServer.staticDataDemo){
-			args.url = thatServer.staticDataDemo  + "?verTT=" + new Date().getTime();
-			args.type = 'GET';
-		}else{
-			hostName  = COMMON.host.demoName;
-			if(thatServer.hostNameDemo){
-				hostName = thatServer.hostNameDemo;
-			}
-			if(thatServer.urlDemo){
-				thatServerUrl = thatServer.urlDemo;
-			}
-			args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
-			args.type = thatServer.type ? thatServer.type : 'GET';
-		}
+	// if(process.env.NODE_ENV == 'development'){ // production development
+		// if(thatServer.staticDataDemo){
+		// 	args.url = thatServer.staticDataDemo  + "?verTT=" + new Date().getTime();
+		// 	args.type = 'GET';
+		// }else{
+		// 	hostName  = COMMON.host.demoName;
+		// 	if(thatServer.hostNameDemo){
+		// 		hostName = thatServer.hostNameDemo;
+		// 	}
+		// 	if(thatServer.urlDemo){
+		// 		thatServerUrl = thatServer.urlDemo;
+		// 	}
+		// 	args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
+		// 	args.type = thatServer.type ? thatServer.type : 'GET';
+		// }
 
-	}else{
+	// }else{
 		hostName = COMMON.host.name;
 		if(thatServer.hostName){
 			hostName = thatServer.hostName;
 		}
 		args.url = hostName + thatServerUrl  + "?verTT=" + new Date().getTime();
 		args.type = thatServer.type ? thatServer.type : 'GET';
-	}
+	// }
 
 	// return args;
 
