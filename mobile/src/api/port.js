@@ -130,7 +130,7 @@ export const getNewNoteList = params => { return axios.get(`${requestUrl}/api/bu
 export const getNewNoteSectionList = params => { return axios.get(`${requestUrl}/api/teachsource/course/courseDetail?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 
 // 新建笔记上传照片
-export const fileUpload = params => { return axios.post(`${requestUrl}/api/v2.1/commons/fileUpload`, params).then(res => res.data).catch(err => err) };
+export const fileUpload = params => { return axios.post(`${requestUrl}/api/base/file/upload`, params).then(res => res.data).catch(err => err) };
 // 新建笔记
 export const saveNote = params => { return axios.post(`${requestUrl}/api/studytools/nodesave/v2.1`, qs.stringify(params), headers.urlencoded).then(res => res.data).catch(err => err) };
 // 编辑笔记详情
