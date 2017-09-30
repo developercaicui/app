@@ -191,12 +191,12 @@ export default {
 
 			this.$emit('submit-data', {
 				type: this.type,
-				elseType: this.data.videoType || '',
+				elseType: 'problem',
 				data: {
 					content: `<p>${this.textDetails}</p><br/>${this.allPicPathHtml}`,
 			    imgPath: this.allPicPath,
 			    title: this.title,
-			    clientType: this.data.clientType,
+			    clientType: 'ipad',
 			    subjectId:	this.data.subjectId || '',
 					courseId: this.data.courseId || '',
 					chapterId: this.data.chapterId || '',

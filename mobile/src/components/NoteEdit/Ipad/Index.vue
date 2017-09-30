@@ -10,9 +10,9 @@
 			</div>
 		</header>
 		<div class="edit">
-			<div class="ban" @touchend.stop="handleBackSection">
-				<input type="text" v-model="title" readonly="readonly" class="ban" ref="titleText">
-				<span v-show="!isEdit"></span>
+			<div class="ban">
+				<!-- <input type="text" v-model="title" readonly="readonly" class="ban" ref="titleText">
+				<span v-show="!isEdit"></span> -->
 			</div>
 			<textarea name="name" v-model="textDetails" placeholder="请输入内容"></textarea>
 		</div>
@@ -76,6 +76,7 @@ export default {
   },
 
 	mounted() {
+		alert(JSON.stringify(this.noteEditData))
 		this.data = this.noteEditData;
 
 		try{
@@ -256,7 +257,31 @@ export default {
 		},
 
 		subForm() {
-
+			let a = {
+					content:	this.textDetails,   // 内容
+					soundPath:	'', // 声音
+					clientType:	'ipad', // 设备类型
+					title:	'title', //
+					categoryName:	this.categoryName,
+					chapterId: this.chapterId,
+					taskType:	this.taskType, // 任务类型
+					subjectName: this.subjectName,
+					id: this.noteId,
+					// courseName:	this.data.courseName,
+					subjectId:	this.subjectId,
+					token:	this.webApi.getCookie('token'), // 用户token
+					courseId:	this.data.courseId,
+					chapterName:	this.data.chapterName || this.data.chaptername || 'chapterName',
+					isPublic:	this.isPublic || '0', // 是否公开
+					soundLen:	'', // 声音长度
+					taskName:	this.taskName,
+					taskProgress:	this.taskProgress,
+					imgPath:	this.allPicPath, // 图片路径，逗号分隔
+					categoryId:	this.categoryId,
+					taskId: this.taskId,
+					courseName: this.courseName,
+				}
+			alert(JSON.stringify(a))
 			this.$emit('submit-data', {
 				type: this.type,
 				elseType: 'ipad',
