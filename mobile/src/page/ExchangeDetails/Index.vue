@@ -90,6 +90,11 @@ export default {
 
 				this.$refs.ipad.getDetails(this.$refs.ipad.dataParams.id);
 
+				// 清空评论数据
+				this.$refs.ipad.textDetails = '';
+				this.$refs.ipad.allPicPath = '';
+				this.$refs.ipad.allUploadPic = [];
+
 				this.webApi.alert('评论成功');
 
 			})
