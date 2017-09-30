@@ -90,7 +90,7 @@ $commTopWhite: #fff; // 公用白色
 
 // 全局提示通用样式
 .g-small-alert{
-  @include fc(.24rem, #fff);
+  @include fc(.28rem, #fff);
   @extend .flexCenter;
   position: fixed;
   top: 25%; left: 50%;
