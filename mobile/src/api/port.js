@@ -128,7 +128,7 @@ export const removeExchangeDetails = params => { return axios.get(`${requestUrl}
 // 新建笔记选择要创建的课程
 export const getNewNoteList = params => { return axios.get(`${requestUrl}/api/business/learning/learningcourse/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 // 新建笔记选择要创建的课程的章节
-export const getNewNoteSectionList = params => { return axios.get(`${requestUrl}/api/teachsource/course/courseDetail?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
+export const getNewNoteSectionList = params => { return axios.get(`${requestUrl}/api/teachsource/course/courseDetail/data?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
 
 // 新建笔记上传照片
 export const fileUpload = params => { return axios.post(`${requestUrl}/api/base/file/upload`, params).then(res => res.data).catch(err => err) };

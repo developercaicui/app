@@ -165,24 +165,6 @@ h1, h2, h3, h4, h5, h6{
     margin-top: 0.2rem;
 }
 
-// 全局提示通用样式
-.g-small-alert{
-  font-size: .24rem; color: #fff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: fixed;
-  top: 50%; left: 50%;
-  min-width: 2rem;
-  background-color: rgba(51, 51, 51, .8);
-  z-index: 119;
-  padding: .1rem .2rem;
-  border-radius: 5px;
-  transform: translateX(-50%);
-}
-
-
-
 // 全局loading等待
 
 .g-data-loading-wrap{

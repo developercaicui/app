@@ -12,7 +12,7 @@
 		</header>
 
 		<div class="edit">
-			<input type="text" v-model="title" placeholder="请输入标题">
+			<input type="text" v-model="title" readonly="readonly" disabled="disabled" placeholder="请输入标题">
 			<textarea v-model="textDetails" placeholder="请输入内容"></textarea>
 		</div>
 
@@ -98,6 +98,11 @@ export default {
 
 		// 选择图片
 		handleUploadPic(ev) {
+
+			if(this.$refs.iptFile.files.length > 1) {
+			 this.webApi.alert('抱歉，只能上传一张图片');
+			 return false;
+			}
 
 			let file = this.$refs.iptFile.files[0];
 			let reader = new FileReader();
