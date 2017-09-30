@@ -2,16 +2,16 @@
 
 	<div class="edit-me-head-wrap last-step">
 		<header class="reg-head">
-			<a href="javascript:;" class="back" @touchend.stop="handleBack">&#xe669;</a>
+			<a href="javascript:;" class="back" @touchend.prevent="handleBack">&#xe669;</a>
 			<h1>基本信息</h1>
 		</header>
 		<main :class="isMobile?'reg-info reg-info-mobile':'reg-info'" :style="isMobile?'width:85%':''">
-			<div class="upload-img" ref="uploadImgBtn" @touchend.stop="uploadFile"></div>
+			<div class="upload-img" ref="uploadImgBtn" @touchend.prevent="uploadFile"></div>
 			<label>
 				<input type="text" v-model="nickName" placeholder="用户名">
 				<span>可用于登录</span>
 			</label>
-			<a href="javascript:;" class="sub-ref-info last-sub-ref-info" @touchend.stop="updateUserInfo">保存</a>
+			<a href="javascript:;" class="sub-ref-info last-sub-ref-info" @touchend.prevent="updateUserInfo">保存</a>
 		</main>
 			<input type="file" name="" accept="image/png,image/gif,image/jpeg" @change="changeFile" ref="fileIpt" class="upload-img-ipt"/>
 	</div>
@@ -139,6 +139,8 @@ export default {
 
 			.then(res =>{
 
+				this.webApi.closeLoadingData();
+
 				if(!res || res.state != 'success' && this.isChangeNickName){
 					this.webApi.alert('用户名修改失败，请稍后重新尝试');
 					this.updateState = false;
@@ -151,7 +153,6 @@ export default {
 				this.webApi.setCookie('userInfo', JSON.stringify(Object.assign(this.userInfo, this.newUserInfo)));
 				this.webApi.setCookie('editUserInfo', JSON.stringify(Object.assign(this.userInfo, this.newUserInfo)));
 
-				this.webApi.closeLoadingData();
 				this.webApi.alert('更新成功', 2000);
 
 

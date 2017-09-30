@@ -13,7 +13,7 @@
 
 		<div class="edit">
 			<div class="ban" @touchend.stop="handleBackSection">
-				<input type="text" v-model="title" readonly="readonly" class="ban" ref="titleText">
+				<input type="text" v-model="title" readonly="readonly" disabled="disabled" class="ban" ref="titleText">
 				<span v-show="!isEdit"></span>
 			</div>
 			<textarea name="name" v-model="textDetails" placeholder="请输入内容"></textarea>
@@ -181,6 +181,11 @@ export default {
 		// 上传图片
 		handleUploadPic(ev) {
 
+			if(this.$refs.iptFile.files.length > 1) {
+			 this.webApi.alert('抱歉，只能上传一张图片');
+			 return false;
+			}
+
 			let file = this.$refs.iptFile.files[0];
 			let reader = new FileReader();
 
@@ -330,8 +335,9 @@ export default {
 				span{
 					@extend .ab;
 					@extend .flexCenter;
-					top: 0; right: 1rem;
-					height: 1rem;
+					right: 1rem; top: 50%;
+					height: 1rem; display: block;
+    			transform: translate3d(0,-.2rem,0);
 					&:after{
 						@extend .ab;
 						content: '\e669';

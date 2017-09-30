@@ -68,13 +68,13 @@
 
 		<footer class="leave-msg">
 			<div class="nav">
-				<a href="javascript:;" class="upload-pic-btn" @touchend="handleIsUpload">&#xe6ab;</a>
+				<a href="javascript:;" class="upload-pic-btn" @touchend.stop="handleIsUpload">&#xe6ab;</a>
 				<input type="text" name="" v-model="textDetails" placeholder="评论...">
-				<a href="javascript:;" class="add-msg" @touchend="handleSubPublish">发布</a>
+				<a href="javascript:;" class="add-msg" @touchend.stop="handleSubPublish">发布</a>
 			</div>
 			<div class="upload-details" v-show="isFileOpen">
 				<h1>最多可添加五张图片</h1>
-				<a href="javascript:;" class="upload-btn" @touchend="handleUploadBtn"><span>+</span></a>
+				<a href="javascript:;" class="upload-btn" @touchend.stop="handleUploadBtn"><span>+</span></a>
 				<ul class="show-list-pic">
 					<li v-for="(item, index) in allUploadPic" >
 						<img :src="item.src" />
@@ -269,6 +269,11 @@ export default {
 
 		// 上传图片
 		handleUploadPic(ev) {
+
+			if(this.$refs.iptFile.files.length > 1) {
+			 this.webApi.alert('抱歉，只能上传一张图片');
+			 return false;
+			}
 
 			let file = this.$refs.iptFile.files[0];
 			let reader = new FileReader();
