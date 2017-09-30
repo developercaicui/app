@@ -10,9 +10,9 @@
 			</div>
 		</header>
 		<div class="edit">
-			<div class="ban" @touchend.stop="handleBackSection">
-				<input type="text" v-model="title" readonly="readonly" class="ban" ref="titleText">
-				<span v-show="!isEdit"></span>
+			<div class="ban">
+				<!-- <input type="text" v-model="title" readonly="readonly" class="ban" ref="titleText">
+				<span v-show="!isEdit"></span> -->
 			</div>
 			<textarea name="name" v-model="textDetails" placeholder="请输入内容"></textarea>
 		</div>
@@ -76,6 +76,7 @@ export default {
   },
 
 	mounted() {
+		alert(JSON.stringify(this.noteEditData))
 		this.data = this.noteEditData;
 
 		try{
@@ -117,14 +118,14 @@ export default {
 			});
 
 		}else{
-			this.title = this.data.sectionData.chapterTitle;
+			this.title = this.data.chapterName;
 			this.noteId = '';
 			this.isEdit = false;
-			this.categoryName = this.data.courseData.categoryName;
-			this.subjectId = this.data.courseData.subjectId;
-			this.subjectName = this.data.courseData.subjectName;
-			this.categoryId = this.data.courseData.categoryId;
-			this.chapterId = this.data.sectionData.chapterId;
+			this.categoryName = this.data.categoryName;
+			this.subjectId = this.data.subjectId;
+			this.subjectName = this.data.subjectName;
+			this.categoryId = this.data.categoryId;
+			this.chapterId = this.data.chapterId;
 			this.type = 'new';
 		}
 
@@ -256,7 +257,31 @@ export default {
 		},
 
 		subForm() {
-
+			let a = {
+					content:	this.textDetails,   // 内容
+					soundPath:	'', // 声音
+					clientType:	'ipad', // 设备类型
+					title:	'title', //
+					categoryName:	this.categoryName,
+					chapterId: this.chapterId,
+					taskType:	this.taskType, // 任务类型
+					subjectName: this.subjectName,
+					id: this.noteId,
+					// courseName:	this.data.courseName,
+					subjectId:	this.subjectId,
+					token:	this.webApi.getCookie('token'), // 用户token
+					courseId:	this.data.courseId,
+					chapterName:	this.data.chapterName || this.data.chaptername || 'chapterName',
+					isPublic:	this.isPublic || '0', // 是否公开
+					soundLen:	'', // 声音长度
+					taskName:	this.taskName,
+					taskProgress:	this.taskProgress,
+					imgPath:	this.allPicPath, // 图片路径，逗号分隔
+					categoryId:	this.categoryId,
+					taskId: this.taskId,
+					courseName: this.courseName,
+				}
+			alert(JSON.stringify(a))
 			this.$emit('submit-data', {
 				type: this.type,
 				elseType: 'ipad',
@@ -298,13 +323,30 @@ export default {
 <style lang="scss" scoped>
 
 	@import "../../../assets/style/mixin";
-
+	.exchangeEdit-box{
+		width: 100%;
+		height: 100%;
+	}
+	.exchangeEdit-shadow{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+	}
 	.note-wrap-ipad-edit{
-
-		font-size: 0;
+				font-size: 0;
+		    // padding-top: .64rem;
+		    width: 327px;
+		    position: absolute;
+		    right: 0;
+		    top: 0;
+		    background: #fff;
+		    height: 100%;
 		padding-top: $commTop;
 		background-color: $commTopWhite;
-
+	
 		.edit{
 
 			@include fc(.28rem, #ccc);
@@ -337,9 +379,8 @@ export default {
 				span{
 					@extend .ab;
 					@extend .flexCenter;
-					right: 1rem; top: 50%;
-					height: 1rem; display: block;
-    			transform: translate3d(0,-.2rem,0);
+					top: 0; right: 1rem;
+					height: 1rem;
 					&:after{
 						@extend .ab;
 						content: '\e669';
@@ -357,7 +398,7 @@ export default {
 
 		// 底部留言
 		.leave-msg{
-
+			background: #fff;
 			@extend .show;
 			position: fixed;
 			left: 0; bottom: 0; right: 0;
@@ -468,9 +509,7 @@ export default {
 			font-family: 'iconfont';
 			a{
 				@include fc(.7rem, $commPink);
-				@include wh(1.5rem, 1.05rem);
 				@extend .show;
-				text-align: center; line-height: 1.5;
 			}
 		}
 
@@ -483,10 +522,9 @@ export default {
 		> a{
 			@extend .ab;
 			@include fc($commBackFont, $commPink);
-			@include wh(1.5rem, 1.05rem);
-			@extend .flexCenter;
 			font-family: 'iconfont';
-			left: 0; padding-left: .1rem; top: 0;
+			left: .38rem; padding-left: .1rem;
+			top: 50%; transform: translateY(-50%);
 		}
 
 		h1{

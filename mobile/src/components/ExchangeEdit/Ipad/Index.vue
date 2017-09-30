@@ -191,12 +191,12 @@ export default {
 
 			this.$emit('submit-data', {
 				type: this.type,
-				elseType: this.data.videoType || '',
+				elseType: 'problem',
 				data: {
 					content: `<p>${this.textDetails}</p><br/>${this.allPicPathHtml}`,
 			    imgPath: this.allPicPath,
 			    title: this.title,
-			    clientType: this.data.clientType,
+			    clientType: 'ipad',
 			    subjectId:	this.data.subjectId || '',
 					courseId: this.data.courseId || '',
 					chapterId: this.data.chapterId || '',
@@ -220,11 +220,27 @@ export default {
 <style lang="scss" scoped>
 
 	@import "../../../assets/style/mixin";
-
+	.exchangeEdit-box{
+		width: 100%;
+		height: 100%;
+	}
+	.exchangeEdit-shadow{
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background: rgba(0, 0, 0, 0.3);
+	}
 	.exchange-wrap-ipad-edit{
-
-		font-size: 0;
-		padding-top: .64rem;
+		    font-size: 0;
+    padding-top: .64rem;
+    width: 327px;
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: #fff;
+    height: 100%;
 
 		.edit{
 
@@ -250,7 +266,7 @@ export default {
 
 		// 底部留言
 		.leave-msg{
-
+			    background: #fff;
 			@extend .show;
 			position: fixed;
 			left: 0; bottom: 0; right: 0;
@@ -324,11 +340,10 @@ export default {
 			right: .35rem; top: 50%; transform: translateY(-50%);
 			font-family: 'iconfont';
 			a{
+				color: $commPink;
 				&:nth-of-type(1){
-					@include fc(.7rem, $commPink);
-					@include wh(1.5rem, 1.05rem);
-					@extend .show;
-					text-align: center; line-height: 1.7;
+					font-size: .6rem;
+					margin-right: .3rem;
 				}
 			}
 		}
@@ -342,10 +357,9 @@ export default {
 		> a{
 			@extend .ab;
 			@include fc($commBackFont, $commPink);
-			@include wh(1.5rem, 1.05rem);
-			@extend .flexCenter;
 			font-family: 'iconfont';
-			left: 0; padding-left: .1rem; top: 0;
+			left: .38rem; padding-left: .15rem;
+			top: 50%; transform: translateY(-50%);
 		}
 
 		h1{

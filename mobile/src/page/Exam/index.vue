@@ -9,10 +9,10 @@
 
 		<div class="exam-body">
 			<template v-if="exam.examBaseInfo.length">
-				<!-- <p>传过来的ids</p>
+				<p>传过来的ids</p>
 				<ul v-for="(value, key) in examNeedIds">
 					<li>{{ key }}: {{ value }}</li>
-				</ul> -->
+				</ul>
 				<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev" v-if="exam.exerciseActiveIndex != 0"></a>
 				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext" v-if="exam.exerciseActiveIndex != (exam.examBaseInfo.length-1)"></a>
 			</template>
@@ -25,12 +25,12 @@
 				<li class="exam-button-li">
 					<a @click="exerciseCorrection" href="javascript:;" class="exam-button-a">纠错</a>
 				</li>
-				<li class="exam-button-li" v-if="isNoteAcBtn">
+				<!-- <li class="exam-button-li" v-if="isNoteAcBtn">
 					<a @click="exerciseNoteEdit" href="javascript:;" class="exam-button-a">笔记</a>
 				</li>
 				<li class="exam-button-li" v-if="isNoteAcBtn">
 					<a @click="exerciseExchangeEdit" href="javascript:;" class="exam-button-a">提问</a>
-				</li>
+				</li> -->
 			</ul>
 		</div>
 		<examCorrection v-if="correctionShow" :correction-data="correctionData" @isShow="isCorrectionShow"></examCorrection>

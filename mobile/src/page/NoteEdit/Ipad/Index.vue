@@ -94,8 +94,8 @@ export default {
 
 		// 是否编辑
 		if('detailsData' in this.data){
-			this.textDetails = this.data.detailsData.content;
-			this.title = this.data.detailsData.chaptername;
+			this.textDetails = this.data.content;
+			this.title = this.data.chaptername;
 			this.noteId = this.data.detailsData.id;
 			this.isEdit = true;
 			this.subjectId = 'subjectId';
@@ -118,14 +118,14 @@ export default {
 			});
 
 		}else{
-			this.title = this.data.sectionData.chapterTitle;
+			this.title = this.data.chapterName;
 			this.noteId = '';
 			this.isEdit = false;
-			this.categoryName = this.data.courseData.categoryName;
-			this.subjectId = this.data.courseData.subjectId;
-			this.subjectName = this.data.courseData.subjectName;
-			this.categoryId = this.data.courseData.categoryId;
-			this.chapterId = this.data.sectionData.chapterId;
+			this.categoryName = this.data.categoryName;
+			this.subjectId = this.data.subjectId;
+			this.subjectName = this.data.subjectName;
+			this.categoryId = this.data.categoryId;
+			this.chapterId = this.data.chapterId;
 			this.type = 'new';
 		}
 
@@ -271,7 +271,7 @@ export default {
 					id: this.noteId,
 					subjectId:	this.subjectId,
 					token:	this.webApi.getCookie('token'), // 用户token
-					courseId:	this.data.courseData.courseId,
+					courseId:	this.data.courseId,
 					chapterName:	this.data.sectionData.chapterName || this.data.sectionData.chaptername || 'chapterName',
 					isPublic:	this.isPublic || '0', // 是否公开
 					soundLen:	'', // 声音长度
