@@ -12,7 +12,7 @@
 		</header>
 
 		<div class="edit">
-			<input type="text" v-model="title" readonly="readonly" disabled="disabled" placeholder="请输入标题">
+			<input type="text" v-model="title" placeholder="请输入标题">
 			<textarea v-model="textDetails" placeholder="请输入内容"></textarea>
 		</div>
 
