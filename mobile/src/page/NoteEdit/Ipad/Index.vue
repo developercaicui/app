@@ -4,7 +4,7 @@
 
 
 		<header class="one-top">
-			<a href="javascript:;" @touchend.stop="handleBackSection">&#xe67f;</a>
+			<a href="javascript:;" @touchend.stop="handleBackSection('back')">&#xe67f;</a>
 			<h1>{{ headerTitle }}</h1>
 			<div class="state-edit" @touchend.stop="handleSaveNote">
 				<a href="javascript:;">&#xe654;</a>
@@ -12,7 +12,7 @@
 		</header>
 
 		<div class="edit">
-			<div class="ban" @touchend.stop="handleBackSection">
+			<div class="ban" @touchend.stop="handleBackSection('editIpt')">
 				<input type="text" v-model="title" readonly="readonly" disabled="disabled" class="ban" ref="titleText">
 				<span v-show="!isEdit"></span>
 			</div>

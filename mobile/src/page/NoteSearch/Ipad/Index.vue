@@ -79,6 +79,10 @@ export default {
 
 			let type = 1;
 
+			if(this.keywords == '') {
+				this.webApi.alert('搜索内容不能为空');
+				return false;
+			}
 			// 是否搜索全部
 			if(document.referrer.includes('coursenote')) type = 0;
 

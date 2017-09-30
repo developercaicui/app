@@ -62,6 +62,9 @@ import {
 	changeUserName
 } from '../../api/port';
 
+import $ from 'jQuery';
+import axios from 'axios';
+import qs from 'qs';
 export default {
 
 	components: {
@@ -86,10 +89,18 @@ export default {
   },
 
  created() {
-
+	 //
 	//  this.transformAName = 'slide-left-hide';
 	//  this.transformBName =  'slide-left';
 	//  this.isLast = true;
+
+
+
+	// axios.post(`http://api.zbgedu.com/api/zbids/member/mobilereg`, qs.stringify({token: '213'})).then(res => {
+	// 	console.log(res, 'res');
+	// }).catch(err => {
+	// 	console.log(err, 'err')
+	// })
 
  },
 
@@ -187,7 +198,7 @@ export default {
 			.then(res =>{
 
 				if(!res || res.state != 'success'){
-					this.webApi.alert('网络异常，请稍后在试');
+					this.webApi.alert('网络异常，请稍后在试 token');
 					this.isShowBtn = true;
 					return false;
 				}
@@ -209,7 +220,7 @@ export default {
 			.then(res =>{
 
 				if(!res || res.state != 'success'){
-					this.webApi.alert('网络异常，请稍后在试试');
+					this.webApi.alert('网络异常，请稍后在试试 sendCode');
 					this.isShowBtn = true;
 					return false;
 				}
@@ -246,80 +257,137 @@ export default {
 
 			.then(res =>{
 
-				if(!res || res.state != 'success'){
-					this.webApi.alert();
-					return false;
-				}
 
-				if(res.data == 'true'){
+				if(res.data == 'true') {
 					this.webApi.alert('用户名已存在，请修改用户名！');
 					return false;
 				}
 
-				// 注册
-				mobileReg({
+
+
+				$.post('http://api.zbgedu.com/api/zbids/member/mobilereg', {
 					password: this.pwd,
 					phone: this.mobile,
 					code: this.code,
 					agreement: this.isAgree,
 					token: this.token
-				})
+				}, res =>{
+
+					if(!res || res.state != 'success'){
+						this.webApi.alert(res.msg);
+					  return false;
+					}
+
+					this.regSuccessToken = res.data.token;
+
+					// 上传头像(token调试)
+					formData.append('token', this.regSuccessToken);
+					formData.append('file', file);
+
+
+					uploadFile(formData)
+
+					.then(res =>{
+
+						if(!res || res.state != 'success'){
+							this.webApi.alert('头像上传失败，请登录后到设置里重新上传');
+							return false;
+						}
+
+						return changeUserName({
+							nickName: this.nickName,
+							token: this.regSuccessToken,
+						})
+
+					})
+
+					.then(res =>{
+
+						if(!res || res.state != 'success'){
+							this.webApi.alert('用户名设置失败，请登录后到设置里重新修改');
+							return false;
+						}
+
+						this.webApi.alert('注册成功, 3秒后即将跳转到登录页');
+
+						setTimeout(()=> {
+							g.backLogin();
+						},3000);
+
+
+					})
+
+				});
+
+				// 注册
+				// mobileReg({
+				// 	password: this.pwd,
+				// 	phone: this.mobile,
+				// 	code: this.code,
+				// 	agreement: this.isAgree,
+				// 	token: this.token
+				// })
+
+				// .then(res =>{
+
+					// if(!res || res.state != 'success'){
+					// 	this.webApi.alert(res.msg);
+					//   return false;
+					// }
+
+					// console.log(res);
+
+
+					// this.regSuccessToken = this.data.token;
+					//
+					// // 上传头像(token调试)
+					// formData.append('file',file, file.name);
+					// formData.append('token', this.regSuccessToken);
+					//
+					// return uploadFile(formData)
+
+				// })
+
+				// .then(res =>{
+				//
+				// 	if(!res || res.state != 'success'){
+				// 		this.webApi.alert('头像上传失败，请登录后到设置里重新上传');
+				// 		return false;
+				// 	}
+				//
+				// 	return changeUserName({
+				// 		nickName: this.nickName,
+				// 		token: this.regSuccessToken,
+				// 	})
+				//
+				// })
+				//
+				// .then(res =>{
+				//
+				// 	if(!res || res.state != 'success'){
+				// 		this.webApi.alert('用户名设置失败，请登录后到设置里重新修改');
+				// 		return false;
+				// 	}
+				//
+				// 	this.webApi.alert('注册成功, 3秒后即将跳转到登录页');
+				//
+				// 	setTimeout(()=> {
+				// 		g.backLogin();
+				// 	},3000);
+				//
+				//
+				// })
+
 
 			})
 
-			.then(res =>{
-
-				if(!res){
-					this.webApi.alert();
-				  return false;
-				}
-
-				if(res.state == 'error'){
-					this.webApi.alert(res.msg);
-				  return false;
-				}
 
 
-				this.regSuccessToken = this.data.token;
-
-				// 上传头像(token调试)
-				formData.append('file',file, file.name);
-				formData.append('token', this.regSuccessToken);
-
-				return uploadFile(formData)
-
-			})
-
-			.then(res =>{
-
-				if(!res || res.state != 'success'){
-					this.webApi.alert('头像上传失败，请登录后到设置里重新上传');
-					return false;
-				}
-
-				return changeUserName({
-					nickName: this.nickName,
-					token: this.regSuccessToken,
-				})
-
-			})
-
-			.then(res =>{
-
-				if(!res || res.state != 'success'){
-					this.webApi.alert('用户名设置失败，请登录后到设置里重新修改');
-					return false;
-				}
-
-				this.webApi.alert('注册成功, 3秒后即将跳转到登录页');
-
-				setTimeout(()=> {
-					g.backLogin();
-				},3000);
 
 
-			})
+		},
 
+		updataUserInfo() {
 
 		},
 

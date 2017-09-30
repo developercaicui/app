@@ -2,7 +2,7 @@
 
 	<div class="edit-me-head-wrap last-step">
 		<header class="reg-head">
-			<a href="javascript:;" class="back" @touchend.prevent="handleBack">&#xe669;</a>
+			<a href="javascript:;" class="back" @click="handleBack">&#xe669;</a>
 			<h1>基本信息</h1>
 		</header>
 		<main :class="isMobile?'reg-info reg-info-mobile':'reg-info'" :style="isMobile?'width:85%':''">
