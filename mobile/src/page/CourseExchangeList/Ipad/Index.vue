@@ -35,7 +35,7 @@
 	                <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
 	              </ul>
 	              <div class="footer">
-	                <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ item.replyCount ? item.replyCount : 0 }}</span></div>
+	                <div class="count"><i class="icon-liuyan icon-replys">&#xe632;</i><span>{{ item.replyCount }}</span></div>
 	                <div class="time"><span>{{ item.updateTime }}</span></div>
 	                <div class="course-name">
 	                  <div class="tag-video-time" v-if="item.taskprogress"><i class="icon-play-o icon-video">&#xe63f;</i><span>{{ item.taskprogress }}</span></div>

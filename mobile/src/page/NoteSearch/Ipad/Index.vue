@@ -35,7 +35,10 @@
 export default {
 
 	props: {
-	 'note-data': [Object]
+		noteData: {
+			type: Object,
+			default: {}
+		}
  },
 
 
@@ -74,10 +77,15 @@ export default {
 		// 搜索课程笔记
 		searchCourse() {
 
+			let type = 1;
+
+			// 是否搜索全部
+			if(document.referrer.includes('coursenote')) type = 0;
 
 			this.$emit('search-note', {
 				keywords: this.keywords,
-				pageNo: this.pageNo
+				pageNo: this.pageNo,
+				self: type,
 			});
 
 
@@ -118,7 +126,7 @@ export default {
 		> .body-list{
 
 			font-size: .24rem;
-			padding-top: 1.05rem;
+			padding-top: 1.35rem;
 
 			> .mint-loadmore{
 				padding-bottom: .6rem;
