@@ -27,9 +27,9 @@
           </div>
         </div>
         <div class="course_con">
-          <div id="tb0" class="course_box" v-html="extendInfo.introduce"></div>
-          <div id="tb1" class="course_box none" v-html="extendInfo.detailInfo"></div>
-          <div id="tb2" class="course_box none" v-html="extendInfo.dynamic"></div>
+          <div id="tb0" class="course_box" v-html="extendInfo.intro"></div>
+          <div id="tb1" class="course_box none" v-html="extendInfo.metaDescription"></div>
+          <div id="tb2" class="course_box none" v-html="extendInfo.availability"></div>
         </div>
         <div class="form_box">
           <select id="setTime" name="setTime">

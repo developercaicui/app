@@ -10,7 +10,7 @@
 	          </li>
 	        </ul>
 	        <ul>
-	          <li>
+	          <li class="none">
 	            <div class="left">学习提醒</div>
 	            <div class="right">
 	              <div class="on-off public_box"></div>
@@ -22,7 +22,7 @@
             </li>
 	          <li class="cl chekquality" @click="chekquality">
 	            <div class="left">视频质量</div>
-	            <div class="right quality">普通</div>
+	            <div class="right quality">标清</div>
 	          </li>
 	          <!--li.cl,onclick="clearCache()")
 	          //.left 清理杂项缓存
