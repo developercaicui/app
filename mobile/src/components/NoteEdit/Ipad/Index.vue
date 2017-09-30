@@ -32,7 +32,7 @@
 				</ul>
 			</div>
 		</footer>
-		<input type="file" accept="image/*" capture="camera" @change="handleUploadPic" ref="iptFile" class="ipt-file">
+		<input type="file" accept="image/*" @change="handleUploadPic" ref="iptFile" class="ipt-file">
 	</div>
 	</div>
 </template>
@@ -117,20 +117,24 @@ export default {
 			});
 
 		}else{
-			this.title = this.data.chapterTitle;
+			this.title = this.data.sectionData.chapterTitle;
 			this.noteId = '';
 			this.isEdit = false;
-			this.categoryName = this.data.categoryName;
-			this.subjectId = this.data.subjectId;
-			this.subjectName = this.data.subjectName;
-			this.categoryId = this.data.categoryId;
-			this.chapterId = this.data.chapterId;
+			this.categoryName = this.data.courseData.categoryName;
+			this.subjectId = this.data.courseData.subjectId;
+			this.subjectName = this.data.courseData.subjectName;
+			this.categoryId = this.data.courseData.categoryId;
+			this.chapterId = this.data.sectionData.chapterId;
 			this.type = 'new';
 		}
 
 		this.isPublicText = this.isPublic == 1 ? '私人' : '公开';
 		this.$refs.isPublicDiv.className = this.isPublic == 1 ? 'select-btn select-btn-active' : 'select-btn';
 		this.headerTitle = this.data.type == 'new' ? '新建笔记 ': '编辑笔记';
+
+		if(this.videoType == 'video' || this.videoType == 'problem') {
+			this.title = this.data.taskName;
+		}
 
 	},
 
@@ -151,7 +155,6 @@ export default {
 			}
 
 			this.$refs.iptFile.click();
-			this.$refs.iptFile.touchstart();
 		},
 
 		// 是否打卡上传图片
@@ -178,6 +181,11 @@ export default {
 
 		// 上传图片
 		handleUploadPic(ev) {
+
+			if(this.$refs.iptFile.files.length > 1) {
+			 this.webApi.alert('抱歉，只能上传一张图片');
+			 return false;
+			}
 
 			let file = this.$refs.iptFile.files[0];
 			let reader = new FileReader();
@@ -234,7 +242,7 @@ export default {
 
 				this.$emit('upload-pic', formData, res =>{
 
-					this.allPicPath =  `${this.allPicPath}${res.path},`;
+					this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
 					this.isUploadSuccess++;
 
 					// 成功以后提交表单内容
@@ -251,6 +259,7 @@ export default {
 
 			this.$emit('submit-data', {
 				type: this.type,
+				elseType: 'ipad',
 				data: {
 					content:	this.textDetails,   // 内容
 					soundPath:	'', // 声音
@@ -289,30 +298,13 @@ export default {
 <style lang="scss" scoped>
 
 	@import "../../../assets/style/mixin";
-	.exchangeEdit-box{
-		width: 100%;
-		height: 100%;
-	}
-	.exchangeEdit-shadow{
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.3);
-	}
+
 	.note-wrap-ipad-edit{
-				font-size: 0;
-		    // padding-top: .64rem;
-		    width: 327px;
-		    position: absolute;
-		    right: 0;
-		    top: 0;
-		    background: #fff;
-		    height: 100%;
+
+		font-size: 0;
 		padding-top: $commTop;
 		background-color: $commTopWhite;
-	
+
 		.edit{
 
 			@include fc(.28rem, #ccc);
@@ -345,8 +337,9 @@ export default {
 				span{
 					@extend .ab;
 					@extend .flexCenter;
-					top: 0; right: 1rem;
-					height: 1rem;
+					right: 1rem; top: 50%;
+					height: 1rem; display: block;
+    			transform: translate3d(0,-.2rem,0);
 					&:after{
 						@extend .ab;
 						content: '\e669';
@@ -364,7 +357,7 @@ export default {
 
 		// 底部留言
 		.leave-msg{
-			background: #fff;
+
 			@extend .show;
 			position: fixed;
 			left: 0; bottom: 0; right: 0;
@@ -475,7 +468,9 @@ export default {
 			font-family: 'iconfont';
 			a{
 				@include fc(.7rem, $commPink);
+				@include wh(1.5rem, 1.05rem);
 				@extend .show;
+				text-align: center; line-height: 1.5;
 			}
 		}
 
@@ -488,9 +483,10 @@ export default {
 		> a{
 			@extend .ab;
 			@include fc($commBackFont, $commPink);
+			@include wh(1.5rem, 1.05rem);
+			@extend .flexCenter;
 			font-family: 'iconfont';
-			left: .38rem; padding-left: .1rem;
-			top: 50%; transform: translateY(-50%);
+			left: 0; padding-left: .1rem; top: 0;
 		}
 
 		h1{

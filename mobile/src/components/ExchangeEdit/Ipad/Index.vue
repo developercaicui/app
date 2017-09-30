@@ -14,7 +14,7 @@
 		</header>
 
 		<div class="edit">
-			<input type="text" v-model="title" placeholder="请输入标题">
+			<input type="text" v-model="title" readonly="readonly" disabled="disabled" placeholder="请输入标题">
 			<textarea v-model="textDetails" placeholder="请输入内容"></textarea>
 		</div>
 
@@ -35,8 +35,7 @@
 			</div>
 		</footer>
 
-		<input type="file" accept="image/*"  capture="camera" @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
-
+		<input type="file" accept="image/*"  @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
 	</div>
 	</div>
 </template>
@@ -70,7 +69,9 @@ export default {
 		this.data = this.exchangeEditData;
 
 		this.title = this.data.chapteName || '';
-
+		if(this.data.videoType == 'video' || this.data.videoType == 'problem') {
+			this.title = this.data.taskName;
+		}
 	},
 
   methods: {
@@ -101,6 +102,11 @@ export default {
 
 		// 选择图片
 		handleUploadPic(ev) {
+
+			if(this.$refs.iptFile.files.length > 1) {
+			 this.webApi.alert('抱歉，只能上传一张图片');
+			 return false;
+			}
 
 			let file = this.$refs.iptFile.files[0];
 			let reader = new FileReader();
@@ -183,15 +189,14 @@ export default {
 		subForm() {
 
 
-
-
 			this.$emit('submit-data', {
 				type: this.type,
+				elseType: this.data.videoType || '',
 				data: {
 					content: `<p>${this.textDetails}</p><br/>${this.allPicPathHtml}`,
 			    imgPath: this.allPicPath,
 			    title: this.title,
-			    clientType: 'ipad',
+			    clientType: this.data.clientType,
 			    subjectId:	this.data.subjectId || '',
 					courseId: this.data.courseId || '',
 					chapterId: this.data.chapterId || '',
@@ -215,27 +220,11 @@ export default {
 <style lang="scss" scoped>
 
 	@import "../../../assets/style/mixin";
-	.exchangeEdit-box{
-		width: 100%;
-		height: 100%;
-	}
-	.exchangeEdit-shadow{
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background: rgba(0, 0, 0, 0.3);
-	}
+
 	.exchange-wrap-ipad-edit{
-		    font-size: 0;
-    padding-top: .64rem;
-    width: 327px;
-    position: absolute;
-    right: 0;
-    top: 0;
-    background: #fff;
-    height: 100%;
+
+		font-size: 0;
+		padding-top: .64rem;
 
 		.edit{
 
@@ -261,7 +250,7 @@ export default {
 
 		// 底部留言
 		.leave-msg{
-			    background: #fff;
+
 			@extend .show;
 			position: fixed;
 			left: 0; bottom: 0; right: 0;
@@ -335,10 +324,11 @@ export default {
 			right: .35rem; top: 50%; transform: translateY(-50%);
 			font-family: 'iconfont';
 			a{
-				color: $commPink;
 				&:nth-of-type(1){
-					font-size: .6rem;
-					margin-right: .3rem;
+					@include fc(.7rem, $commPink);
+					@include wh(1.5rem, 1.05rem);
+					@extend .show;
+					text-align: center; line-height: 1.7;
 				}
 			}
 		}
@@ -352,9 +342,10 @@ export default {
 		> a{
 			@extend .ab;
 			@include fc($commBackFont, $commPink);
+			@include wh(1.5rem, 1.05rem);
+			@extend .flexCenter;
 			font-family: 'iconfont';
-			left: .38rem; padding-left: .15rem;
-			top: 50%; transform: translateY(-50%);
+			left: 0; padding-left: .1rem; top: 0;
 		}
 
 		h1{

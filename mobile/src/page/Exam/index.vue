@@ -185,7 +185,6 @@
 					}else if(examNeedIds.express == '1'){
 						express = true;
 					}else{
-						// JSON.parse(it.express).analysis
 						express = JSON.parse(decodeURI(examNeedIds.express)).analysis
 					}
 				}else{
@@ -194,7 +193,6 @@
 				this.update({
 					'isAnalysis' : express
 				})
-				// examBackButton.clickExamBackButton();
 				let examNum = this.examNum;
 				let statusData = '';
 				if(examNum){
@@ -211,7 +209,6 @@
 					examNum = status.data ? status.data.length : 0;
 				}
 
-
 				let exerciseInfo = baseInfo.data;
 				let exemTitle = '';
 				if(examenInfo.data[0] && examenInfo.data[0].title){
@@ -219,31 +216,67 @@
 				}
 				if(this.examType == "knowledge" || this.examType == "testSite"){
 					examNum = 0;
-					// exemTitle = examenInfo.data[0].enTitle;
 					if(examenInfo.data[0] && examenInfo.data[0].enTitle){
 						exemTitle = examenInfo.data[0].enTitle
 					}
 					if(exerciseInfo && exerciseInfo.length){
 						this.cacheKnowledgeLevel1Id = exerciseInfo[0].knowledge_path_level_one_id;
 						this.cacheKnowledgeLevel2Id = exerciseInfo[0].knowledge_path_level_two_id;
-						// this.cacheKnowledgePath = this.cacheKnowledgeLevel1Id + this.cacheKnowledgeLevel2Id;
-						let exerciseKnowledgeIds = this.exerciseKnowledgeIds(exerciseInfo[0].exercise_filename); //cache.data[0].exercise_filename
-						let baseInfoData = [];
-						if(exerciseKnowledgeIds){
-							exerciseKnowledgeIds.forEach((item)=>{
-								baseInfoData.push({
-									"id" : item
+						this.exerciseKnowledgeIds(exerciseInfo[0].exercise_filename,exerciseKnowledgeIds => {
+							let baseInfoData = [];
+							if(exerciseKnowledgeIds){
+								exerciseKnowledgeIds.forEach((item)=>{
+									baseInfoData.push({
+										"id" : item
+									})
 								})
-							})
-						}
-						exerciseInfo = baseInfoData;
+							}
+							let exerciseInfo = baseInfoData;
+
+							if(this.examType == "chapter" || this.examType == "knowledge"){
+								if(examNeedIds){
+									this.categoryId = examNeedIds.categoryId;
+									this.categoryName = examNeedIds.categoryName;
+									this.courseId = examNeedIds.courseId;
+									this.courseName = examNeedIds.courseName;
+									this.chapterId = examNeedIds.chapterId;
+									this.chapterName = examNeedIds.chapterName;
+									this.taskId = examNeedIds.taskId;
+									this.taskName = examNeedIds.taskName;
+								}
+							}
+							this.update({
+								"examTitle" : exemTitle,
+								"examNum" : examNum,
+								"examState" : statusData,
+								"examBaseInfo" : exerciseInfo,
+								"examNumTotal" : exerciseInfo.length,
+								"exerciseLastNid" : this.exerciseLastNid,
+								"exerciseActiveIndex" : this.exerciseLastNid,
+								"exerciseId" : exerciseInfo[this.exerciseLastNid].id,
+								"exerciseDoneCount" : this.exerciseDoneCount,
+								"exerciseErrorNum" : this.exerciseErrorNum,
+								"exerciseRightCount" : this.exerciseRightCount,
+								"exerciseTotalTime" : this.exerciseTotalTime,
+								"examIsFinish" : this.examIsFinish,
+								"categoryId" : this.categoryId,
+								"courseId" : this.courseId,
+								"chapterId" : this.chapterId,
+								"taskId" : this.taskId,
+							});
+							this.requestListDetail({
+								memberId : this.userInfo.memberId
+							});
+							this.actionTaskProgress('begintest');
+
+						});
+						return false;
 					}
 				}else{
 					if(examNeedIds){
 						this.cacheKnowledgeLevel1Id = examNeedIds.courseId;
 						this.cacheKnowledgeLevel2Id = examNeedIds.taskId;
 					}
-					// this.cacheKnowledgePath = this.cacheKnowledgeLevel1Id +','+ this.cacheKnowledgeLevel2Id;
 				}
 				if(this.examType == "chapter" || this.examType == "knowledge"){
 					if(examNeedIds){
@@ -282,6 +315,9 @@
 				});
 				this.actionTaskProgress('begintest');
 				console.log(this.exam)
+			},
+			examRequestCallbackUpdata (){
+
 			},
 			exerciseExam (callback){
 				axios.all([Request.getExamenInfo({
@@ -341,7 +377,7 @@
 					if(callback){callback(examenInfo, status, baseInfo)};
 				}))
 			},
-			exerciseKnowledgeIds (src){
+			exerciseKnowledgeIds (src,callback){
 				// return "ff8080814bee5fde014bfa12b1230114".split(',');
 				// return "ff8080814bee5fde014bfa12b1230114,ff8080814b7c866a014b7cfbfcec0329,ff8080814bee5fde014bf772fa340062,ff8080814a7f5035014a951f4a632d5b,ff8080814a7f5035014a963deab62ffb".split(',');
 				// return "8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(",");
@@ -349,6 +385,7 @@
 				var iframe=document.createElement("iframe");
 				iframe.setAttribute("id", "knowledgeIds");
 				iframe.setAttribute("src", "http://static.zbgedu.com/exercisecache/"+src);
+				iframe.setAttribute("style", "display:none;");
 				var body = document.getElementsByTagName("body");
 				if(body.length){
 				  body[0].appendChild(iframe);
@@ -357,11 +394,16 @@
 				}
 				let iframeData =[];
 				document.getElementById('knowledgeIds').onload=function(){
+
 					if(document.getElementById('knowledgeIds').contentWindow.document.body.innerHTML){
 						let iframeObj = document.getElementById('knowledgeIds').contentWindow.document.body.innerHTML;
 							iframeData = iframeObj.trim().split(",");
-							return iframeData;
+							// iframeData = "ff8080814bee5fde014bfa12b1230114,ff8080814b7c866a014b7cfbfcec0329,ff8080814bee5fde014bf772fa340062,ff8080814a7f5035014a951f4a632d5b,ff8080814a7f5035014a963deab62ffb".split(',')
+							if(callback){callback(iframeData)};
+							
 					}
+					
+
 				};
 				
 			},
