@@ -48,7 +48,7 @@ export default {
 			this.webApi.alert('用户登录信息失效', 2000);
 		}
 
-		// this.webApi.loadingData();
+		this.webApi.loadingData();
 		this.webApi.setCookie('isTargetLogin', 'false');
 
 		this.userInfo = this.$route.query;
@@ -92,7 +92,7 @@ export default {
 
 			.then(res =>{
 
-				// this.webApi.closeLoadingData();
+				this.webApi.closeLoadingData();
 
 				if(!res || res.state != 'success'){
 					this.webApi.alert('网络异常，请稍后再试');
