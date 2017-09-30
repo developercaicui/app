@@ -99,6 +99,11 @@ export default {
 		// 选择图片
 		handleUploadPic(ev) {
 
+			if(this.$refs.iptFile.files.length > 1) {
+			 this.webApi.alert('抱歉，只能上传一张图片');
+			 return false;
+			}
+
 			let file = this.$refs.iptFile.files[0];
 			let reader = new FileReader();
 

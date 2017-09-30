@@ -181,6 +181,11 @@ export default {
 		// 上传图片
 		handleUploadPic(ev) {
 
+			if(this.$refs.iptFile.files.length > 1) {
+			 this.webApi.alert('抱歉，只能上传一张图片');
+			 return false;
+			}
+
 			let file = this.$refs.iptFile.files[0];
 			let reader = new FileReader();
 
@@ -331,7 +336,7 @@ export default {
 					@extend .ab;
 					@extend .flexCenter;
 					right: 1rem; top: 50%;
-					height: 1rem;
+					height: 1rem; display: block;
     			transform: translate3d(0,-.2rem,0);
 					&:after{
 						@extend .ab;
