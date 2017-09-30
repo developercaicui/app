@@ -18,10 +18,10 @@
 					<input type="password" v-model="pwd" placeholder="密码（请输入8-16位，不能有空格，纯数字需至少9位）" ref="pwd">
 					<a href="javascript:;" v-show="isShowBtn" @touchend="gainCode" class="gain-code">{{ gainCodeText }}</a>
 					<a href="javascript:;" @touchend="lookPwd" class="look-pwd">&#xe62d;</a>
-					<div class="is-agree">
+					<!-- <div class="is-agree">
 						<a href="javascript:;" @touchend="isAgreement" class="active">&#xe654;</a>
 						我已阅读并同意<a href="http://www.caicui.com/help/ff80808147db71340147f60c159a0411" target="_blank">《财萃网服务协议》</a>
-					</div>
+					</div> -->
 					<a href="javascript:;" class="sub-ref-info" @touchend="subRegInfo">下一步</a>
 				</main>
 

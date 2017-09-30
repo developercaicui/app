@@ -78,6 +78,11 @@ export default {
 				return false;
 			}
 
+			if(this.code.length > 3) {
+				this.webApi.alert('验证码填写有误');
+				return false;
+			}
+
 			if(!/^\d{9,16}$|^(?!\d+$)\S{8,16}$/.test(this.pwd)){
 				this.webApi.alert('密码格式有误');
 				return false;
@@ -102,13 +107,9 @@ export default {
 
 			.then(res =>{
 
-				if(!res){
-					this.webApi.alert('网络异常，请稍后再试');
-					return false;
-				}
-
-				if(res.state == 'error'){
-					this.webApi.alert(res.msg || '网络异常，请稍后再试');
+				if(!res || res.state != 'success') {
+					this.webApi.alert('密码修改失败');
+					this.subStateModification();
 					return false;
 				}
 
