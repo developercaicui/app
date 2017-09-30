@@ -61,7 +61,7 @@ export default {
 					return false;
 				}
 
-				callback(res.data);
+				callback(res.data[0]);
 
 			});
 
@@ -84,13 +84,33 @@ export default {
 						return false;
 					}
 
-					this.webApi.alert(`新建成功, 即将跳转到列表页`, 1500);
+					this.webApi.alert(`新建成功`, 1500);
 
 					setTimeout(()=>{
-						this.$router.push({
-							path: `/exchange/list`
-						});
-					},1000);
+						if(data.elseType == 'video' || data.elseType == 'problem') {
+
+							g.closeNewNote();
+
+						}else{
+
+							if(document.referrer.includes('courseexchange/list')) {
+
+								this.$router.push(`/courseexchange/list`);
+
+							}else{
+
+								this.webApi.setCookie('updateExchangeList', 'true');
+								this.$router.push(`/exchange/list`);
+
+							}
+
+
+						}
+					}, 1000)
+
+
+
+
 
 			});
 
