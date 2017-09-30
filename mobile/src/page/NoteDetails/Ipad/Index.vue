@@ -6,7 +6,7 @@
 			<a href="javascript:;" @touchend="backDetailsList">&#xe67f;</a>
 			<h1>{{ detailsData.chaptername }}</h1>
 			<div class="state-edit">
-				<a href="javascript:;" @touchend="handleEditNote">&#xe609;</a>
+				<a href="javascript:;" @touchend="handleEditNote" v-if="isEdit">&#xe609;</a>
 				<a href="javascript:;" @touchend="removeDetails">&#xe618;</a>
 			</div>
 		</header>
@@ -38,7 +38,7 @@ import photoAlbum from '../../../components/Comm/photoAlbum';
 
 export default {
 
-	props: ["details-data", 'data'],
+	props: ["details-data", 'data', 'isEdit'],
 
 	components: {
 		photoAlbum,
@@ -48,13 +48,18 @@ export default {
     return {
 			picList: [],
 			picLengthInfo: '共0张',
-			isShowList: false, // 是否显示大图列表
+			isShowList: false,
     }
   },
 
   updated() {
 		this.picList = this.data.detailsData.picList;
 		this.picLengthInfo = `共${ this.picList.length }张`;
+	},
+
+	mouthed() {
+
+
 	},
 
   methods: {

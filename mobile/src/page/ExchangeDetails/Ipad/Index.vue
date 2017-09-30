@@ -151,7 +151,7 @@ export default {
 				token: this.userInfo.token,
 				id: id,
 				pageNo: 1,
-				pageSize: 20,
+				pageSize: 999,
 			})
 
 			.then(res =>{
@@ -172,7 +172,7 @@ export default {
 
 		dataInit() {
 
-			this.picList = this.data.imgPath.split(',').map(item => `${this.webApi.cdnImgUrl}${item}`);
+			this.picList = this.data.imgPath.split(',').map(item => `${this.webApi.exstaticUrl}${item}`);
 
 			this.isRemoveMsg = this.userInfo.memberId === this.data.memberId ? true : false;
 
