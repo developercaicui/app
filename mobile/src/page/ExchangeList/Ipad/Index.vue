@@ -89,7 +89,9 @@ export default {
 
 		// 打开排序类型
 		handleOpenSelect() {
-			this.typeShow = true;
+
+			this.typeShow = !this.typeShow;
+			
 		},
 
 		// 选择排序类型
