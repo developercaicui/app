@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div>
-		<Ipad v-if="isIpad" :data="data" @remove-details="removeDetails" :details-data="detailsData"></Ipad>
+		<Ipad v-if="isIpad" :data="data" :isEdit="isEdit" @remove-details="removeDetails" :details-data="detailsData"></Ipad>
 		<Mobile v-if="isMobile"></Mobile>
 	</div>
 
@@ -25,7 +25,9 @@ export default {
 			isIpad: false,
       isMobile: false,
 			detailsData: [],
-			data: {}
+			data: {},
+			isEdit: false,
+			userInfo: {},
     }
   },
 
@@ -36,7 +38,7 @@ export default {
 
 		// 传递过来的值
 		this.data = JSON.parse(this.$route.params.data);
-
+		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
 		this.webApi.loadingData();
 
@@ -50,12 +52,12 @@ export default {
 
 			this.webApi.closeLoadingData();
 
-
 			if(!res || res.state != 'success'){
 				this.webApi.alert('网络异常，请稍后再试');
 				return false;
 			}
 
+			if(res.data.memberId == this.userInfo.memberId) this.isEdit = true;
 
 			let date = new Date(res.data.updateTime*1000);
 

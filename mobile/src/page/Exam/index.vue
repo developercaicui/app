@@ -348,8 +348,8 @@
 
 				var iframe=document.createElement("iframe");
 				iframe.setAttribute("id", "knowledgeIds");
-				iframe.setAttribute("src", "http://elearning.zbgedu.com/exercisecache/"+src);
-				var body = document.getElementsByTagName("body");  
+				iframe.setAttribute("src", "http://static.zbgedu.com/exercisecache/"+src);
+				var body = document.getElementsByTagName("body");
 				if(body.length){
 				  body[0].appendChild(iframe);
 				}else{

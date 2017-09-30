@@ -228,10 +228,10 @@ export default {
 
     			.then(res =>{
 
+						this.webApi.closeLoadingData();
 
     		      if(res && res.state == 'success'){
 
-    		          this.webApi.closeLoadingData();
 
     		          this.searchData = {key1:res,page:page,keyword:this.params.keyWords}
 
@@ -275,7 +275,7 @@ export default {
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
           //
-          param.courseid= "ff8080814dad5062014db32051b801a2";
+          // param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
 
@@ -326,6 +326,7 @@ export default {
           //获取课程信息
           // this.courseInfo = JSON.parse(this.webApi.getCookie('getCourseNoteInfo'));
           // this.courseInfo = this.$route.query;
+
           console.log(JSON.stringify(this.courseInfo))
         	let param = {};
 	        param.self = 1;
