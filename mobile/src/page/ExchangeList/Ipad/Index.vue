@@ -91,7 +91,7 @@ export default {
 		handleOpenSelect() {
 
 			this.typeShow = !this.typeShow;
-			
+
 		},
 
 		// 选择排序类型

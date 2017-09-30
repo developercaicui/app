@@ -406,6 +406,8 @@ export default {
 		font-size: 0;
 		padding-top: $commTop;
 		background-color: $commTopWhite;
+		overflow-y: auto;
+		min-height: 100%;
 
 		// 底部留言
 		.leave-msg{

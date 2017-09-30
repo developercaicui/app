@@ -61,7 +61,8 @@ export default {
 			this.webApi.loadingData();
 
 			this.$store.commit('updateExchangeListP', {
-				token: this.userInfo.token
+				token: this.userInfo.token,
+				pageSize: 166,
 			});
 
 			this.$store.dispatch('fetchExchangeList');

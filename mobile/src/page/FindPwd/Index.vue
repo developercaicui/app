@@ -78,11 +78,6 @@ export default {
 				return false;
 			}
 
-			if(this.code.length > 3) {
-				this.webApi.alert('验证码填写有误');
-				return false;
-			}
-
 			if(!/^\d{9,16}$|^(?!\d+$)\S{8,16}$/.test(this.pwd)){
 				this.webApi.alert('密码格式有误');
 				return false;
