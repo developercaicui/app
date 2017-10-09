@@ -25,12 +25,12 @@
 				<li class="exam-button-li">
 					<a @click="exerciseCorrection" href="javascript:;" class="exam-button-a">纠错</a>
 				</li>
-				<!-- <li class="exam-button-li" v-if="isNoteAcBtn">
+				<li class="exam-button-li" v-if="isNoteAcBtn">
 					<a @click="exerciseNoteEdit" href="javascript:;" class="exam-button-a">笔记</a>
 				</li>
 				<li class="exam-button-li" v-if="isNoteAcBtn">
 					<a @click="exerciseExchangeEdit" href="javascript:;" class="exam-button-a">提问</a>
-				</li> -->
+				</li>
 			</ul>
 		</div>
 		<examCorrection v-if="correctionShow" :correction-data="correctionData" @isShow="isCorrectionShow"></examCorrection>
@@ -683,7 +683,17 @@
 					chapterName : this.exam.chapterName,
 					taskId : this.exam.taskId,
 					progress : this.exam.exerciseActiveIndex+1,
+				 taskType : this.exam.examType
 				}
+				// this.exchangeEditData = {
+				// 	subjectId : 'ff8080814d1db79b014d2d99d2c8029a',
+				// 	courseId : 'ff8080814dc1dc4e014dfb46c66d209c',
+				// 	chapterId : 'ff8080814dc1dc4e014dfb46c8e32128',
+				// 	chapterName : 'Introduction',
+				// 	taskId : 'ff8080814dc1dc4e014dfb46c8e92129',
+				// 	progress : this.exam.exerciseActiveIndex+1,
+				// 	taskType : this.exam.examType
+				// }
 			},
 			isExchangeEditShow (bool) {
 				this.exchangeEditShow = bool;
@@ -705,6 +715,21 @@
 					taskProgress : this.exam.exerciseActiveIndex+1,
 					type : 'new'
 				}
+				// this.noteEditData = {
+				// 	categoryId : 'ff8080814c7e36d9014c9c3219fa01a8',
+				// 	categoryName : 'CIMA',
+				// 	subjectId : 'ff8080814d1db79b014d2d99d2c8029a',
+				// 	subjectName : 'F2',
+				// 	courseId : 'ff8080814dc1dc4e014dfb46c66d209c',
+				// 	courseName : 'CIMA Advanced Financial Reporting (F2)',
+				// 	chapterId : 'ff8080814dc1dc4e014dfb46c8e32128',
+				// 	chapterName : 'Introduction',
+				// 	taskType : 'video',
+				// 	taskName : 'Introduction-1',
+				// 	taskId : 'ff8080814dc1dc4e014dfb46c8e92129',
+				// 	taskProgress : this.exam.exerciseActiveIndex+1,
+				// 	type : 'new'
+				// }
 			},
 			isNoteEditShow (bool) {
 				this.noteEditShow = bool;

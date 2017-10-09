@@ -76,7 +76,6 @@ export default {
   },
 
 	mounted() {
-		alert(JSON.stringify(this.noteEditData))
 		this.data = this.noteEditData;
 
 		try{
@@ -284,7 +283,7 @@ export default {
 			alert(JSON.stringify(a))
 			this.$emit('submit-data', {
 				type: this.type,
-				elseType: 'ipad',
+				elseType: 'problem',
 				data: {
 					content:	this.textDetails,   // 内容
 					soundPath:	'', // 声音

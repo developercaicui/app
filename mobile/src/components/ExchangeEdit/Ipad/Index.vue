@@ -65,10 +65,10 @@ export default {
   },
 
 	mounted() {
-
+		console.log(this.exchangeEditData)
 		this.data = this.exchangeEditData;
 
-		this.title = this.data.chapteName || '';
+		this.title = this.data.chapterName || '';
 		if(this.data.videoType == 'video' || this.data.videoType == 'problem') {
 			this.title = this.data.taskName;
 		}
@@ -200,12 +200,12 @@ export default {
 			    subjectId:	this.data.subjectId || '',
 					courseId: this.data.courseId || '',
 					chapterId: this.data.chapterId || '',
-					chapteName: this.data.chapteName || '',
+					chapterName: this.data.chapterName || '',
 			    token: this.webApi.getCookie('token'),
 					taskId: this.data.taskId || '',
 					taskType: this.data.taskType || '',
 			    taskProgress:	this.data.taskProgress || 0,  //任务进度
-			    type: this.taskType == 'video' ? 1 : 0 , // 0是讨论  1是问答
+			    type: 1 , // 0是讨论  1是问答
 				}
 			});
 
