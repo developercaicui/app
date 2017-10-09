@@ -9,10 +9,10 @@
 
 		<div class="exam-body">
 			<template v-if="exam.examBaseInfo.length">
-				<p>传过来的ids</p>
+				<!-- <p>传过来的ids</p>
 				<ul v-for="(value, key) in examNeedIds">
 					<li>{{ key }}: {{ value }}</li>
-				</ul>
+				</ul> -->
 				<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev" v-if="exam.exerciseActiveIndex != 0"></a>
 				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext" v-if="exam.exerciseActiveIndex != (exam.examBaseInfo.length-1)"></a>
 			</template>
@@ -237,12 +237,30 @@
 								if(examNeedIds){
 									this.categoryId = examNeedIds.categoryId;
 									this.categoryName = examNeedIds.categoryName;
+									this.subjectId = examNeedIds.subjectId;
+									this.subjectName = examNeedIds.subjectName;
 									this.courseId = examNeedIds.courseId;
 									this.courseName = examNeedIds.courseName;
 									this.chapterId = examNeedIds.chapterId;
 									this.chapterName = examNeedIds.chapterName;
 									this.taskId = examNeedIds.taskId;
 									this.taskName = examNeedIds.taskName;
+									this.update({
+										categoryId : examNeedIds.categoryId,
+										categoryName : examNeedIds.categoryName,
+
+										subjectId : examNeedIds.subjectId,
+										subjectName : examNeedIds.subjectName,
+
+										courseId : examNeedIds.courseId,
+										courseName : examNeedIds.courseName,
+
+										chapterId : examNeedIds.chapterId,
+										chapterName : examNeedIds.chapterName,
+
+										taskId : examNeedIds.taskId,
+										taskName : examNeedIds.taskName,
+									});
 								}
 							}
 							this.update({
@@ -282,12 +300,30 @@
 					if(examNeedIds){
 						this.categoryId = examNeedIds.categoryId;
 						this.categoryName = examNeedIds.categoryName;
+						this.subjectId = examNeedIds.subjectId;
+						this.subjectName = examNeedIds.subjectName;
 						this.courseId = examNeedIds.courseId;
 						this.courseName = examNeedIds.courseName;
 						this.chapterId = examNeedIds.chapterId;
 						this.chapterName = examNeedIds.chapterName;
 						this.taskId = examNeedIds.taskId;
 						this.taskName = examNeedIds.taskName;
+						this.update({
+							categoryId : examNeedIds.categoryId,
+							categoryName : examNeedIds.categoryName,
+
+							subjectId : examNeedIds.subjectId,
+							subjectName : examNeedIds.subjectName,
+
+							courseId : examNeedIds.courseId,
+							courseName : examNeedIds.courseName,
+
+							chapterId : examNeedIds.chapterId,
+							chapterName : examNeedIds.chapterName,
+
+							taskId : examNeedIds.taskId,
+							taskName : examNeedIds.taskName,
+						});
 					}
 				}
 				this.update({
@@ -378,6 +414,8 @@
 				}))
 			},
 			exerciseKnowledgeIds (src,callback){
+				// if(callback){callback("8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(","))};
+				// return;
 				// return "ff8080814bee5fde014bfa12b1230114".split(',');
 				// return "ff8080814bee5fde014bfa12b1230114,ff8080814b7c866a014b7cfbfcec0329,ff8080814bee5fde014bf772fa340062,ff8080814a7f5035014a951f4a632d5b,ff8080814a7f5035014a963deab62ffb".split(',');
 				// return "8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(",");

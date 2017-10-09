@@ -92,42 +92,51 @@ export default {
 
 
 		// 是否编辑
-		if('detailsData' in this.data){
-			this.textDetails = this.data.detailsData.content;
-			this.title = this.data.detailsData.chaptername;
-			this.noteId = this.data.detailsData.id;
-			this.isEdit = true;
-			this.subjectId = 'subjectId';
-			this.subjectName = 'subjectName';
-			this.categoryName = 'categoryName';
-			this.categoryId = 'categoryId';
-			this.chapterId = this.data.detailsData.charpterId;
-			this.type = 'edit';
-			this.isPublic = this.data.detailsDataisPublic;
-			this.clientType = this.data.detailsData.clientType;
+		// if('detailsData' in this.data){
+		// 	this.textDetails = this.data.detailsData.content;
+		// 	this.title = this.data.detailsData.chaptername;
+		// 	this.noteId = this.data.detailsData.id;
+		// 	this.isEdit = true;
+		// 	this.subjectId = 'subjectId';
+		// 	this.subjectName = 'subjectName';
+		// 	this.categoryName = 'categoryName';
+		// 	this.categoryId = 'categoryId';
+		// 	this.chapterId = this.data.detailsData.charpterId;
+		// 	this.type = 'edit';
+		// 	this.isPublic = this.data.detailsDataisPublic;
+		// 	this.clientType = this.data.detailsData.clientType;
 
-			this.data.detailsData.picAllPath.map(src =>{
+		// 	this.data.detailsData.picAllPath.map(src =>{
 
-				this.allUploadPic.push({
-					src: `${this.webApi.cdnImgUrl}${src}`,
-					path: src,
-					file: null
-				});
+		// 		this.allUploadPic.push({
+		// 			src: `${this.webApi.cdnImgUrl}${src}`,
+		// 			path: src,
+		// 			file: null
+		// 		});
 
-			});
+		// 	});
 
-		}else{
-			this.title = this.data.chapterName;
-			this.noteId = '';
-			this.isEdit = false;
-			this.categoryName = this.data.categoryName;
-			this.subjectId = this.data.subjectId;
-			this.subjectName = this.data.subjectName;
-			this.categoryId = this.data.categoryId;
-			this.chapterId = this.data.chapterId;
-			this.type = 'new';
-		}
-
+		// }else{
+		// 	this.title = this.data.chapterName;
+		// 	this.noteId = '';
+		// 	this.isEdit = false;
+		// 	this.categoryName = this.data.categoryName;
+		// 	this.subjectId = this.data.subjectId;
+		// 	this.subjectName = this.data.subjectName;
+		// 	this.categoryId = this.data.categoryId;
+		// 	this.chapterId = this.data.chapterId;
+		// 	this.type = 'new';
+		// }
+		this.title = this.data.chapterName;
+		this.noteId = '';
+		this.isEdit = false;
+		this.categoryName = this.data.categoryName;
+		this.subjectId = this.data.subjectId;
+		this.subjectName = this.data.subjectName;
+		this.categoryId = this.data.categoryId;
+		this.chapterId = this.data.chapterId;
+		this.type = 'new';
+			
 		this.isPublicText = this.isPublic == 1 ? '私人' : '公开';
 		this.$refs.isPublicDiv.className = this.isPublic == 1 ? 'select-btn select-btn-active' : 'select-btn';
 		this.headerTitle = this.data.type == 'new' ? '新建笔记 ': '编辑笔记';
@@ -280,7 +289,7 @@ export default {
 					taskId: this.taskId,
 					courseName: this.courseName,
 				}
-			alert(JSON.stringify(a))
+			// alert(JSON.stringify(a))
 			this.$emit('submit-data', {
 				type: this.type,
 				elseType: 'problem',
