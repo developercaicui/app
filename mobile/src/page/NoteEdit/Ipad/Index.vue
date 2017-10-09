@@ -302,6 +302,7 @@ export default {
 		font-size: 0;
 		padding-top: $commTop;
 		background-color: $commTopWhite;
+		overflow-y: hidden;
 
 		.edit{
 
@@ -326,10 +327,10 @@ export default {
 				margin-bottom: .5rem;
 
 				input{
-					@include wh(18rem, .6rem);
+					@include wh(80%, .6rem);
 					border: none; font-size: .28rem;
 					outline: 0; color: #ccc;
-					margin-top: .2rem;
+					margin-top: .2rem; background-color: #fff;
 				}
 
 				span{
