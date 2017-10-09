@@ -174,7 +174,7 @@ export default {
    .user-info{
      position: absolute;
      width: 4rem;
-     left: 1.6rem; top: .46rem;
+     left: 1rem; top: .46rem;
 
      .text{
        position: absolute;

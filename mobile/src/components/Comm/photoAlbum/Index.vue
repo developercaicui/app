@@ -222,8 +222,7 @@ export default {
 			left: 0;
 		}
 		img{
-			margin-top: -2rem;
-			max-width: 100%; width: 100%;
+			height: 100%;
 		}
 	}
 }
