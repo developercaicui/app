@@ -89,8 +89,8 @@ export default {
 					setTimeout(()=>{
 						if(data.elseType == 'video' || data.elseType == 'problem') {
 
-							g.closeNewNote();
-
+							// g.closeNewNote();
+							this.$emit('isShow',false);
 						}else{
 
 							if(document.referrer.includes('courseexchange/list')) {

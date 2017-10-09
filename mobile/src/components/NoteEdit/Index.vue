@@ -87,13 +87,13 @@ export default {
 						return false;
 					}
 
-					this.webApi.alert(`${tip}笔记成功, 即将跳转到列表页`, 1500);
+					this.webApi.alert(`${tip}笔记成功`, 1500);
 
 					setTimeout(() =>{
 							if(data.elseType == 'video' || data.elseType == 'problem') {
 
-								g.closeNewNote();
-
+								// g.closeNewNote();
+								this.$emit('isShow',false);
 							}else{
 
 								if(document.referrer.includes('coursenote/list')) {
