@@ -153,7 +153,7 @@ export default {
 		getImgPath(imgPath) {//处理图片路径
 			if(imgPath.length>0){
 				  if(imgPath.substr(0,4)!="http"){
-				     return this.webApi.cdnImgUrl+imgPath;
+				     return this.webApi.exstaticUrl+imgPath;
 				  }else{
 				  	return imgPath;
 				  }
