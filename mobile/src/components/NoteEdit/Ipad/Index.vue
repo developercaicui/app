@@ -85,7 +85,6 @@ export default {
 			this.videoType = this.data.videoType || '';
 			this.courseName =  this.data.courseName || 'courseName';
 			this.taskProgress = this.data.taskProgress || 0;
-
 		}catch(e) {
 
 		}
