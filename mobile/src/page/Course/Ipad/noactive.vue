@@ -167,7 +167,6 @@ export default {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
-  min-height: 12.5rem;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;
@@ -256,7 +255,7 @@ export default {
 .progress-box .progress .progress-bar {
   width: 0;
   height: 0.1rem;
-  background: #ff366d;
+  background: $themeColor;
   border-radius: 0.05rem;
   transition: all 1.2s 0.8s;
 }
@@ -272,8 +271,8 @@ export default {
   display: inline-block;
   text-align: center;
   padding: 0 0.5rem;
-  border: 1px solid #ff366d;
-  background: #ff366d;
+  border: 1px solid $themeColor;
+  background: $themeColor;
   color: #fff;
   margin: auto 0.2rem;
   height: 0.6rem;
@@ -291,7 +290,7 @@ export default {
   text-indent: 0.05rem;
 }
 .btn.btn-o {
-  color: #ff366d;
+  color: $themeColor;
   background: none;
   margin:0 0.5rem;
   position:absolute;

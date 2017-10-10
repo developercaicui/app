@@ -7,7 +7,7 @@
           <div :style="setBackground(noactiveCourse.courseBkImage)" class="left_box courseImg"></div>
           <div class="right_box">
             <h2 id="courseName">您正在激活的课程</h2>
-            <dl class="avatar-dl"><img :src="this.webApi.cdnImgUrl+noactiveCourse.teacherImage" class="avatar">
+            <dl class="avatar-dl"><img :src="noactiveCourse.teacherImage ? this.webApi.cdnImgUrl+noactiveCourse.teacherImage : this.webApi.cdnImgUrl+'upload/teacherImage.png'" class="avatar">
               <dt>{{ noactiveCourse.teacherName }}</dt>
               <dd>{{ noactiveCourse.teacherHonor }}</dd>
             </dl>
@@ -36,7 +36,7 @@
             <option selected value="选择考试时间">选择考试时间</option>
             <option v-if="timeList" v-for="item in timeList" :value="item.time/1000"> {{(formatDate(item.time/1000,'Y')+'-'+formatDate(item.time/1000,'M')+'-'+formatDate(item.time/1000,'D'))}}</option>
           </select>
-          
+
           <label>
             <input type="checkbox" name="agree">同意激活
           </label>
@@ -67,7 +67,7 @@ export default {
   },
 
   components: {
-      
+
   },
 
   data() {
@@ -90,7 +90,7 @@ export default {
         if(res && res.state == 'success'){
 
             this.extendInfo = res.data[0];
-              
+
         }
 
       })
@@ -104,15 +104,15 @@ export default {
         if(res && res.state == 'success'){
 
             this.timeList = res.data;
-              
+
         }
 
       })
-     
+
   },
 
   methods: {
-    
+
     openTab(a){
         $('#tb'+a).show().siblings().hide();
         $('.btn-group .btn').removeClass('active').eq(a).addClass('active');
@@ -171,7 +171,7 @@ export default {
 
               return false;
           }
-          
+
           if(!this.webApi.isEmpty(this.timeList)){
 
               if ($.trim($('select[name=setTime]').val()) == '选择考试时间'){
@@ -189,10 +189,10 @@ export default {
               this.do_active(data);
 
           }
-             
+
       },
       do_active(data) {
-      
+
           let param = {};
           param.courseId = data.courseId;
           param.token = this.webApi.getCookie('token');
@@ -220,8 +220,8 @@ export default {
                 setTimeout(() => {
                     location.reload();
                 },2000)
-                
-                  
+
+
             }else{
                 this.webApi.alert('激活失败，请重试！')
             }
@@ -238,19 +238,22 @@ export default {
   },
   mounted () {
   // console.log(JSON.stringify(this.noactiveCourse))
-    
-    
+
+
   }
 }
 
 </script>
 
 <style lang="scss" scoped>
+
+  @import "../../../assets/style/mixin";
+
 .icon-back{
   font-family:"iconfont";
   font-size:0.26rem;
   font-weight: 700;
-  color: #ff366d;
+  color: $themeColor;
   speak: none;
   font-style: normal;
   font-variant: normal;
@@ -435,8 +438,8 @@ export default {
   display: inline-block;
   text-align: center;
   padding: 0 0.5rem;
-  border: 1px solid #ff366d;
-  background: #ff366d;
+  border: 1px solid $themeColor;
+  background: $themeColor;
   color: #fff;
   margin: auto 0.2rem;
   height: 0.6rem;
@@ -454,7 +457,7 @@ export default {
   text-indent: 0.05rem;
 }
 .btn.btn-o {
-  color: #ff366d;
+  color: $themeColor;
   background: none;
   margin:0 0.5rem;
   position:absolute;
@@ -474,8 +477,8 @@ li {
   display: inline-block;
   text-align: center;
   padding: 0 0.5rem;
-  border: 1px solid #ff366d;
-  background: #ff366d;
+  border: 1px solid $themeColor;
+  background: $themeColor;
   color: #fff;
   margin: auto 0.2rem;
 }
@@ -490,7 +493,7 @@ li {
   text-indent: 0.05rem;
 }
 .btn.btn-o {
-  color: #ff366d;
+  color: $themeColor;
   background: none;
 }
 .btn-group {
@@ -522,11 +525,11 @@ li {
   border-right: 0;
 }
 .btn-group.btn-success .btn {
-  color: #ff366d;
-  border: 1px solid #ff366d;
+  color: $themeColor;
+  border: 1px solid $themeColor;
 }
 .btn-group.btn-success .btn.active {
-  background: #ff366d;
+  background: $themeColor;
 }
 
 </style>

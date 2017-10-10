@@ -541,6 +541,8 @@ body[show='about'] #mask2 {
   border-radius: 7px;
   background: #f3f3f3;
   overflow: hidden;
+  padding-top: 0.16rem;
+
 }
 
 .setting-wrap{
@@ -548,7 +550,6 @@ body[show='about'] #mask2 {
 	transform: translate(0%, 0%);
 	height: 100%;
 	opacity: 1;
-  padding-top: 0.16rem;
 }
 
 .modal .avatar {
@@ -588,7 +589,7 @@ body[show='about'] #mask2 {
   color: #494949;
 }
 .modal ul li .icon-check {
-  color: #ff366d;
+  color: $themeColor;
   font-size: 0.4rem;
   display: none;
 }
@@ -620,7 +621,7 @@ body[show='about'] #mask2 {
   box-shadow: 1px 1px #c0c0bc;
 }
 .modal .public_box {
-  background: #ff366d;
+  background: $themeColor;
 }
 .modal .public_box::before {
   left: 0.02rem;
@@ -654,16 +655,15 @@ body[show='about'] #mask2 {
 }
 .modal .set_tit .icon-arrow-left {
   position: absolute;
-  top: 0.27rem;
+  top: 0.35rem;
   left: 0.32rem;
-  color: #ff366d;
+  color: $themeColor;
   font-weight: bold;
   font-size: 0.4rem;
 }
 .modal .set_tit .send_btn {
   font-size: 0.28rem;
   color: #494949;
-  font-weigth: bold;
   height: 0.6rem;
   line-height: 0.6rem;
   text-align: center;
@@ -671,7 +671,7 @@ body[show='about'] #mask2 {
   padding: 0 0.24rem;
   background: #ccc;
   position: absolute;
-  top: 0.15rem;
+  top: 0.25rem;
   right: 0.24rem;
 }
 .modal .exit {
@@ -717,18 +717,18 @@ body[show='about'] #mask2 {
   width: 50%;
   float: left;
   text-align: center;
-  color: #ff366d;
+  color: $themeColor;
 }
 .modal textarea {
   min-height: 2.5rem;
   line-height: 0.4rem;
   font-size: 0.3rem;
   color: #494949;
-  padding: 0.2rem 0;
+  padding: 0.2rem 0.2rem;
   border: 0;
   border-radius: 7px;
   background: #fff;
-  width: 100%;
+  width: 97%;
   outline: none;
 }
 /*å…³äºŽè´¢èƒè¯¾å ‚*/
@@ -752,7 +752,7 @@ body[show='about'] #mask2 {
   text-align: center;
   line-height: 0.55rem;
   font-size: 0.32rem;
-  color: #ff366d;
+  color: $themeColor;
 }
 .erweima .about_words {
   text-align: center;

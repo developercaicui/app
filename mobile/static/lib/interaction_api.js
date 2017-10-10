@@ -84,7 +84,7 @@ function getCourseNoteInfo(data = {}) {
 //关闭设置页
 function closeSetting(data = {}) {
 
-  g.device == 'ios' ? set.clickSetBack(data) : window.course.closeSetting();
+  g.device == 'ios' ? caicui.clickSetBack(data) : window.course.closeSetting();
 
 }
 
@@ -98,20 +98,20 @@ function getClassCourseData(data = {}) {
 //点击交流跳转视频页
 function clickToPlayVido(data = {}) {
 
-  g.device == 'ios' ? videoBtn.clickToPlayVido(data) : window.course.toMediaActivity(data);
+  g.device == 'ios' ? caicui.clickToPlayVido(data) : window.course.toMediaActivity(data);
 
 }
 //关闭视频纠错页
 function hiddenJiuCuoView(data = {}) {
 
-  g.device == 'ios' ? jiuCuoView.hiddenJiuCuoView() : window.course.hiddenJiuCuoView();
+  g.device == 'ios' ? caicui.hiddenJiuCuoView() : window.course.hiddenJiuCuoView();
 
 }
 
 //打开浏览器
 function passWeiBoUrl(url) {
 
-  g.device == 'ios' ? set.passWeiBoUrl(url) : window.course.toActivity(url);
+  g.device == 'ios' ? caicui.passWeiBoUrl(url) : window.course.toActivity(url);
 
 }
 
@@ -125,7 +125,7 @@ function torenew(url) {
 //退出登录
 function outLogin(data = {}) {
 
-  g.device == 'ios' ? set.clickLoginLaunch() : window.course.logOff();
+  g.device == 'ios' ? caicui.clickLoginLaunch() : window.course.logOff();
 
 }
 
