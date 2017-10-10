@@ -4,7 +4,7 @@
 
 		<div class="main">
 			<div class="course-test-title">
-	         	<p v-html="liveTitle"></p> 
+	         	<p v-html="liveTitle"></p>
 	         	<p v-html="liveTime"></p>
 	      	</div>
 	      	<div class="detail">
@@ -12,7 +12,7 @@
 	      	</div>
 	      	<div class="live-footer">
 	          <div @click="opencourseLive" class="live-footer-btn" v-html="liveBtn"><!-- 预约报名 --></div>
-	        </div>  
+	        </div>
 		</div>
 
 	</div>
@@ -36,7 +36,7 @@ export default {
     }
   },
   created() {
-  
+
   	 this.data =  {
                                     "id": "0451F553230B448DA99FCE30C4BA2ECA",
                                     "taskId": "9cd3531bbfb0563634e9bda29dbe3311",
@@ -75,7 +75,7 @@ export default {
                                     "openCourseLiveRoomPassword": "",
                                     "openCourseLiveManageId": "CB735BE8334BC857"
                                 }
-        
+
         this.data = this.$route.query;
 
         this.startTime = this.data.openCourseStartTime;
@@ -122,7 +122,7 @@ export default {
 	              console.log('https://view.csslcloud.net/api/view/login?roomid='+values.roomid+"&userid="+values.userid+"&viewername="+values.viewername+"&viewertoken="+values.viewertoken)
 
 	              this.$router.push('iframe?roomid='+values.roomid+"&userid="+values.userid+"&viewername="+values.viewername+"&viewertoken="+values.viewertoken)
-	          } 
+	          }
 
   		}
   	},
@@ -191,7 +191,7 @@ export default {
 				&:nth-child(2) {
 				    margin-top: 0.1rem;
 				    font-size: 0.3rem;
-				    color: #ff366d;
+				    color: $themeColor;
 				}
 		    }
 		}
@@ -219,7 +219,7 @@ export default {
     			height: 0.58rem;
 			    width: 2rem;
 			    border-radius: 0.12rem;
-			    background-color: #ff366d;
+			    background-color: $themeColor;
 			    font-size: 0.32rem;
 			    color: #fff;
 			    margin: 0.15rem auto 0.1rem 0;
@@ -228,7 +228,7 @@ export default {
 			    border-radius: 0.3rem;
     		}
 		}
-		
+
 	}
 
 

@@ -73,7 +73,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.comm-reg-wrap{
-	div,h1{margin:0;padding:0;}.g-data-loading{width:2rem;height:2rem;position:fixed;left:50%;top:50%;transform:translate3d(-50%,-50%,0);background-color:rgba(0,0,0,.7);border-radius:5px;text-align:center}.showbox{position:absolute;top:.12rem;bottom:0;left:0;right:0;padding:5%}.loader:before{content:'';display:block;padding-top:100%}.circular{animation:rotate 2s linear infinite;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto}.path{stroke-dasharray:1,200;stroke-dashoffset:0;animation:dash 1.5s ease-in-out infinite,color 6s ease-in-out infinite;stroke-linecap:round}@keyframes rotate{100%{transform:rotate(360deg)}}@keyframes dash{0%{stroke-dasharray:1,200;stroke-dashoffset:0}50%{stroke-dasharray:89,200;stroke-dashoffset:-35px}100%{stroke-dasharray:89,200;stroke-dashoffset:-124px}}@keyframes color{0%,100%{stroke:#FF366D}40%{stroke:#FF366D}66%{stroke:#FF366D}80%,90%{stroke:#FF366D}}
-}
+
+	@import "../../assets/style/mixin";
+
+  .comm-reg-wrap{
+	  div,h1{margin:0;padding:0;}.g-data-loading{width:2rem;height:2rem;position:fixed;left:50%;top:50%;transform:translate3d(-50%,-50%,0);background-color:rgba(0,0,0,.7);border-radius:5px;text-align:center}.showbox{position:absolute;top:.12rem;bottom:0;left:0;right:0;padding:5%}.loader:before{content:'';display:block;padding-top:100%}.circular{animation:rotate 2s linear infinite;height:100%;transform-origin:center center;width:100%;position:absolute;top:0;bottom:0;left:0;right:0;margin:auto}.path{stroke-dasharray:1,200;stroke-dashoffset:0;animation:dash 1.5s ease-in-out infinite,color 6s ease-in-out infinite;stroke-linecap:round}@keyframes rotate{100%{transform:rotate(360deg)}}@keyframes dash{0%{stroke-dasharray:1,200;stroke-dashoffset:0}50%{stroke-dasharray:89,200;stroke-dashoffset:-35px}100%{stroke-dasharray:89,200;stroke-dashoffset:-124px}}@keyframes color{0%,100%{stroke: $themeColor}40%{stroke: $themeColor}66%{stroke: $themeColor}80%,90%{stroke: $themeColor}}
+  }
 </style>
