@@ -1,6 +1,6 @@
 <template lang="html">
 	 <main>
-      <CorrectionExam :correctionData="correctionData" v-if="isShowpre" @isShow="isShow"></CorrectionExam> 
+      <CorrectionExam :correctionData="correctionData" v-if="isShowpre" @isShow="isShow"></CorrectionExam>
    </main>
 </template>
 
@@ -35,7 +35,7 @@ export default {
 	},
 
 	updated() {
-    
+
 
 	},
 
@@ -47,11 +47,11 @@ export default {
 		 isShow(boll) {
       console.log(boll)
       this.isShowpre = boll
-    }   
+    }
 	},
 	mounted() {
-    
-    
+
+
 	}
 
 }
@@ -139,7 +139,7 @@ body #mask0 {
   position: absolute;
   top: 0.27rem;
   left: 0.32rem;
-  color: #ff366d;
+  color: $themeColor;
   font-weight: bold;
   font-size: 0.4rem;
 }
@@ -271,7 +271,7 @@ body #mask0 {
 }
 .taskInfo p:nth-child(1){
   height: 0.5rem;
-  border: 1px solid #ff366d;
+  border: 1px solid $themeColor;
   border-radius: 5px;
   margin-top: 0.2rem;
   margin-left: 0.1rem;
@@ -296,7 +296,7 @@ body #mask0 {
 .taskInfo-time span:nth-child(1){
     width: 0.5rem;
     height: 100%;
-    background: #ff366d;
+    background: $themeColor;
     border-radius: 3px;
 }
 .taskInfo-time span:nth-child(1):before{
@@ -345,10 +345,10 @@ body #mask0 {
     display: inline-block;
     width: 2.2rem;
     height: 0.5rem;
-    border: 1px solid #ff366d;
+    border: 1px solid $themeColor;
     text-align: center;
     line-height: 0.5rem;
-    color: #ff366d;
+    color: $themeColor;
     font-weight: bold;
     font-size: 0.26rem;
 }
@@ -356,7 +356,7 @@ body #mask0 {
     margin-right: 0.4rem;
 }
 .pop-tel div p.active{
-    background: #ff366d;
+    background: $themeColor;
     color: #fff;
 }
 </style>

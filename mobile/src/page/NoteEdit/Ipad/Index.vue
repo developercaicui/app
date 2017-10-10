@@ -91,6 +91,7 @@ export default {
 
 		}
 
+		console.log(this.data);
 
 		// 是否编辑
 		if('detailsData' in this.data){
@@ -118,7 +119,7 @@ export default {
 			});
 
 		}else{
-			this.title = this.data.chapterName;
+			this.title = this.data.sectionData.chapterTitle;
 			this.noteId = '';
 			this.isEdit = false;
 			this.categoryName = this.data.categoryName;
@@ -229,7 +230,7 @@ export default {
 			this.allUploadPic.map((item, index) =>{
 
 				if(!item.file) {
-					this.allPicPath =  `${this.allPicPath}${item.path},`;
+					this.allPicPath =  `${this.allPicPath}${item.storeFileUrl},`;
 					this.isUploadSuccess++;
 					return false;
 				}
@@ -243,9 +244,9 @@ export default {
 
 					this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
 					this.isUploadSuccess++;
-
+					
 					// 成功以后提交表单内容
-					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+					// if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
 
 				});
 

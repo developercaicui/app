@@ -588,7 +588,7 @@ body[show='about'] #mask2 {
   color: #494949;
 }
 .modal ul li .icon-check {
-  color: #ff366d;
+  color: $themeColor;
   font-size: 0.4rem;
   display: none;
 }
@@ -620,7 +620,7 @@ body[show='about'] #mask2 {
   box-shadow: 1px 1px #c0c0bc;
 }
 .modal .public_box {
-  background: #ff366d;
+  background: $themeColor;
 }
 .modal .public_box::before {
   left: 0.02rem;
@@ -656,7 +656,7 @@ body[show='about'] #mask2 {
   position: absolute;
   top: 0.27rem;
   left: 0.32rem;
-  color: #ff366d;
+  color: $themeColor;
   font-weight: bold;
   font-size: 0.4rem;
 }
@@ -717,7 +717,7 @@ body[show='about'] #mask2 {
   width: 50%;
   float: left;
   text-align: center;
-  color: #ff366d;
+  color: $themeColor;
 }
 .modal textarea {
   min-height: 2.5rem;
@@ -752,7 +752,7 @@ body[show='about'] #mask2 {
   text-align: center;
   line-height: 0.55rem;
   font-size: 0.32rem;
-  color: #ff366d;
+  color: $themeColor;
 }
 .erweima .about_words {
   text-align: center;

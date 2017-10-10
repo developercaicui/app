@@ -365,8 +365,8 @@ export default {
   display: inline-block;
   text-align: center;
   padding: 0 0.5rem;
-  border: 1px solid #ff366d;
-  background: #ff366d;
+  border: 1px solid $themeColor;
+  background: $themeColor;
   color: #fff;
   margin: auto 0.2rem;
 }
@@ -381,7 +381,7 @@ export default {
   text-indent: 0.05rem;
 }
 .btn.btn-o {
-  color: #ff366d;
+  color: $themeColor;
   background: none;
 }
 .btn-group {
@@ -413,11 +413,11 @@ export default {
   border-right: 0;
 }
 .btn-group.btn-success .btn {
-  color: #ff366d;
-  border: 1px solid #ff366d;
+  color: $themeColor;
+  border: 1px solid $themeColor;
 }
 .btn-group.btn-success .btn.active {
-  background: #ff366d;
+  background: $themeColor;
 }
 .s-head {
   background: #fff;
@@ -444,7 +444,7 @@ export default {
 .header .left,
 .s-head .right,
 .header .right {
-  color: #ff366d;
+  color: $themeColor;
   font-size: 0.28rem;
 }
 .s-head .left .red,
@@ -540,8 +540,8 @@ export default {
   white-space: nowrap;
 }
 .header-nav li.active {
-  color: #ff366d;
-  border-bottom: 3px solid #ff366d;
+  color: $themeColor;
+  border-bottom: 3px solid $themeColor;
 }
 .search-bar {
   display: none;
@@ -584,7 +584,7 @@ select {
   border: 1px solid #eee;
   display: block;
   margin: 0.2rem 0;
-  color: #ff366d;
+  color: $themeColor;
   outline: none;
   -webkit-appearance: none !important;
 }
@@ -710,10 +710,10 @@ select {
   margin-left: 0.2rem;
 }
 .cont-list dd .add-answer[isadd="no"] {
-  color: #ff366d;
+  color: $themeColor;
 }
 .cont-list dd .add-answer i {
-  background: #ff366d;
+  background: $themeColor;
   padding: 0 0.3rem;
   border-radius: 0.3rem;
   color: #fff;
