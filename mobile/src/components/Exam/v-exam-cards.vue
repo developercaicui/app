@@ -69,22 +69,26 @@
 				this.startX = e.deltaX;
 			},
 			touchMove (e){
-				var newPosLeft = this.exam.cardsPosLeft-(e.deltaX-this.startX);
-				if(newPosLeft<0){
-					this.update({
-						"cardsPosLeft" : 0
-					})
-				}else if(newPosLeft > (this.exam.examNumTotal-9)*this.exam.cardsItemWidth){
-					this.update({
-						"cardsPosLeft" : (this.exam.examNumTotal-9)*this.exam.cardsItemWidth
-					})
-				}else{
-					this.update({
-						"cardsPosLeft" : newPosLeft
-					})
+				// console.log(this.exam.examNumTotal>=9)
+				if(this.exam.examNumTotal <9){
+					return ;
 				}
-				this.startX = e.deltaX;
-				
+
+					var newPosLeft = this.exam.cardsPosLeft-(e.deltaX-this.startX);
+					if(newPosLeft<0){
+						this.update({
+							"cardsPosLeft" : 0
+						})
+					}else if(newPosLeft > (this.exam.examNumTotal-9)*this.exam.cardsItemWidth){
+						this.update({
+							"cardsPosLeft" : (this.exam.examNumTotal-9)*this.exam.cardsItemWidth
+						})
+					}else{
+						this.update({
+							"cardsPosLeft" : newPosLeft
+						})
+					}
+					this.startX = e.deltaX;
 			},
 			touchEnd (e){
 				// this.update({
