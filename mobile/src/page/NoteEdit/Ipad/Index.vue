@@ -244,9 +244,9 @@ export default {
 
 					this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
 					this.isUploadSuccess++;
-					
+
 					// 成功以后提交表单内容
-					// if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
 
 				});
 
