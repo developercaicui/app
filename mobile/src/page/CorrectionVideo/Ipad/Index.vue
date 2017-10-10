@@ -71,9 +71,12 @@ export default {
 
     this.task_info_detail = this.$route.query;
 
-		let memberinfo = JSON.parse(this.webApi.getCookie('memberinfo'));
+		let memberinfo;
     
-    if(memberinfo){
+    if(this.webApi.getCookie('memberinfo')){
+      
+        memberinfo = JSON.parse(this.webApi.getCookie('memberinfo'));
+
         if(memberinfo.mobile){
 
             this.mobile = memberinfo.mobile
@@ -445,6 +448,7 @@ body #mask0 {
     text-overflow: ellipsis;
     white-space: nowrap;
     width: 66%;
+    padding-top: 0.1rem;
 }
 .taskInfo-time span{
   display: inline-block;

@@ -14,12 +14,16 @@
 			</header>
 
 			<SlideRefresh  @top-status-change="topStatusChange">
-
+				
 				<section class="list" v-for="item in exchangeData.data" :data-id="item.id" @click="targetDetails">
 					<div>{{ item.nikeName }}<span class="msg-num">{{ item.replyCount }}</span></div>
 					<h1>{{ item.title }}</h1>
-					<p v-html="item.contentHtml" class="content-html"></p>
-					<time>{{ timeConversion(item.updateTime) }}</time>
+					<p v-if="item.contentSummary" v-html="item.contentSummary" class="content-html"></p>
+					<ul class="pic-group" v-if="setImg(item.imgPath)">
+		                <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" ></li>
+		                <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
+		            </ul>
+					<time><div class="tag-video-time" v-if="setTaskprogress(item)"><i class="icon-play-o icon-video">&#xe63f;</i><span>{{ setTaskprogress(item) }}</span></div>{{ timeConversion(item.updateTime) }}</time>
 				</section>
 
 		 </SlideRefresh>
@@ -68,6 +72,11 @@ export default {
 					text: '精华讨论',
 				}]
     }
+  },
+  created(){
+
+  	  
+
   },
 
   methods: {
@@ -120,7 +129,38 @@ export default {
 
 
 		},
+		setTaskprogress(item){
+			return `${item.taskprogress != '-1' && item.taskType != ' '&& item.taskType == 'video' && item.courseId && item.courseId != ' ' && item.chapterId && item.chapterId != ' ' && item.taskId && item.taskId != ' '?this.webApi.formatType(item.taskType,item.taskprogress):''}`
+		},
+		setImg(imgPath) {
 
+	         return `${this.webApi.isEmpty(imgPath)?'':imgPath}`;
+	
+        },
+		setBackground(url) {
+			return `background-image:url(${this.getImgPath(url)})`
+		},
+		setImgPath(imgPaths) {
+			let imgPath=imgPaths.split(',');
+			let imgPathArr=[];
+            for(let i in imgPath) {
+              if(!this.webApi.isEmpty(imgPath[i])) {
+                imgPathArr.push(imgPath[i]);
+              }
+            }
+            return imgPathArr;
+		},
+		getImgPath(imgPath) {//处理图片路径
+			if(imgPath.length>0){
+				  if(imgPath.substr(0,4)!="http"){
+				     return this.webApi.cdnImgUrl+imgPath;
+				  }else{
+				  	return imgPath;
+				  }
+			 }else{
+			 	return imgPath;
+			 }
+		}
 
   },
 
@@ -152,11 +192,14 @@ export default {
 				font-size: .28rem;
 				margin: .25rem 0;
 			}
+			p{
+				padding:0.2rem 0;
+			}
 			time{
 				@extend .show;
 				color: #ACACAC;
 				text-align: right;
-				padding-bottom: .4rem;
+				padding-top: 0.1rem;
 			}
 			.msg-num{
 				position: absolute;
@@ -226,6 +269,75 @@ export default {
 
 
 	}
+.icon-video{
+  font-family:"iconfont";
+  font-size:0.3rem;
+  font-weight: 700;
+  speak: none;
+  font-style: normal;
+  font-variant: normal;
+  text-transform: none;
+  line-height: 100%;
+  vertical-align: middle;
+}
+.tag-video-time {
+  float:left;
+  margin-right: 0.2rem;
+  padding: 0.02rem 0.1rem;
+  border: 1px solid #8cc152;
+  color: #8cc152;
+  border-radius: 0.3rem;
+  min-width: 1.2rem;
+}
+.tag-video-time i,
+.tag-video-time span {
+  line-height: 0.3rem;
+  vertical-align: middle;
+  margin: 0 0.05rem;
+  font-style: normal;
+}
 
-
+/**通用图片组**/
+.pic-group-detail {
+  padding: 0.2rem 0.3rem;
+}
+.pic-group-detail img {
+  width: 100%;
+  margin: 0.1rem 0;
+}
+.pic-group {
+  margin: 0.3rem 0;
+  font-size: 0;
+  white-space: nowrap;
+  position: relative;
+  overflow: hidden;
+  height: 2rem;
+  display: table;
+}
+.pic-group li {
+  width: 3rem;
+  height: 2rem;
+  line-height: 2rem;
+  text-align: center;
+  background: #eee no-repeat center;
+  background-size: cover;
+  float: left;
+  z-index: 100;
+}
+.pic-group li:nth-child(2) {
+  margin: 0 0.3rem;
+}
+.pic-group b:nth-child(4) {
+  position: absolute;
+  z-index: 9999;
+  bottom: 0;
+  background-color: rgba(0,0,0,0.5);
+  color: #fff;
+  height: 0.4rem;
+  width: 1rem;
+  text-align: center;
+  line-height: 0.4rem;
+  font-size: 0.22rem;
+  margin-left: -1rem;
+}
 </style>

@@ -22,10 +22,10 @@
       		</div>
 			<div class="all" v-show="defaultAct==0" ref="all">
 				<SlideRefresh @top-status-change="topStatusChange" @bottom-status-change="bottomStatusChange">
-				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList">
+				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList" @click="answerDetail(item)">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
-	              <div @click="answerDetail(item)" courseId="" taskId="" data-id="" data-key="" class="link-box">
+	              <div courseId="" taskId="" data-id="" data-key="" class="link-box">
 	                <div class="name">{{ item.nikeName }}</div>
 	                <div class="title">{{ item.title }}</div>
 	                <div class="describe">{{ item.contentSummary }}</div>
@@ -49,10 +49,10 @@
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
-				<dl id="li" class="cont-list" v-for="(item,index) in exchangeListMe">
+				<dl id="li" class="cont-list" v-for="(item,index) in exchangeListMe" @click="answerDetail(item)">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
-	              <div @click="answerDetail(item)" courseId="" taskId="" data-id="" data-key="" class="link-box">
+	              <div courseId="" taskId="" data-id="" data-key="" class="link-box">
 	                <div class="name">{{ item.nikeName }}</div>
 	                <div class="title">{{ item.title }}</div>
 	                <div class="describe">{{ item.contentSummary }}</div>

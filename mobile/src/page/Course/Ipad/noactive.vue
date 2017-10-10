@@ -167,7 +167,6 @@ export default {
 .stydys{
   margin-left: 1.1rem;
   margin-top: 0.38rem;
-  min-height: 12.5rem;
   h2 {
       padding-bottom: 0.1rem;
       font-size: 0.26rem;

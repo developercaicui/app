@@ -7,7 +7,7 @@
           <div :style="setBackground(noactiveCourse.courseBkImage)" class="left_box courseImg"></div>
           <div class="right_box">
             <h2 id="courseName">您正在激活的课程</h2>
-            <dl class="avatar-dl"><img :src="this.webApi.cdnImgUrl+noactiveCourse.teacherImage" class="avatar">
+            <dl class="avatar-dl"><img :src="noactiveCourse.teacherImage ? this.webApi.cdnImgUrl+noactiveCourse.teacherImage : this.webApi.cdnImgUrl+'upload/teacherImage.png'" class="avatar">
               <dt>{{ noactiveCourse.teacherName }}</dt>
               <dd>{{ noactiveCourse.teacherHonor }}</dd>
             </dl>
