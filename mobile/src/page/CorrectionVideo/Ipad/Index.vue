@@ -71,7 +71,6 @@ export default {
 
     this.task_info_detail = this.$route.query;
 
-
 		let memberinfo;
     
     if(this.webApi.getCookie('memberinfo')){

@@ -167,7 +167,7 @@ export default {
 
 				this.$emit('upload-pic', formData, res =>{
 
-					this.allPicPathHtml =  `${this.allPicPathHtml}<img src="${res.storeFileUrl}"/>`;
+					this.allPicPathHtml =  `${this.allPicPathHtml}<img src="${this.webApi.exstaticUrl}${res.storeFileUrl}"/>`;
 					this.allPicPath = `${this.allPicPath}${res.path},`;
 
 					this.isUploadSuccess++;
