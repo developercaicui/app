@@ -620,7 +620,7 @@ select {
 }
 .pic-group b:nth-child(4) {
   position: absolute;
-  z-index: 9999;
+  z-index: 9;
   bottom: 0;
   background-color: rgba(0,0,0,0.5);
   color: #fff;

@@ -284,8 +284,10 @@ export default {
 
    },
   // cdn 地址
-  cdnImgUrl: 'http://eximg.zbgedu.com/',
-  exstaticUrl: 'http://exstatic.zbgedu.com/',
+  // cdnImgUrl: 'http://eximg.zbgedu.com/',
+  // exstaticUrl: 'http://exstatic.zbgedu.com/',
+  cdnImgUrl: 'http://cdnimg.caicui.com/',
+  exstaticUrl: 'http://cdnimg.caicui.com/', 
   //判断是否为空
   isEmpty(data) {
     if (this.isEmpty1(data) || this.isEmpty2(data)) {

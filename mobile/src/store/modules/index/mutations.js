@@ -23,7 +23,7 @@ export default {
     Object.assign(state.loginLogData, params);
   },
 	updateActivityList(state, params) {
-		state.activityLis = params;
+		state.activityList = params;
 	}
 
 }
