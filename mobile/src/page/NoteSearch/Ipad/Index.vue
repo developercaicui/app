@@ -176,8 +176,8 @@ export default {
 
 		.enter-ipt{
 			@extend .ab;
-			@include wh(17.4rem, .5rem);
-			left: .3rem; top: .25rem;
+			@include wh(83%, .5rem);
+			left: .3rem; top: .45rem;
 			&:before{
 				@include fc(.46rem, #B9B9B9);
 				@extend .ab;

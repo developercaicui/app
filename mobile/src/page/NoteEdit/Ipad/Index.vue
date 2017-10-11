@@ -311,12 +311,12 @@ export default {
 			@include fc(.28rem, #ccc);
 
 			textarea{
-				width: 96%;
-				@include wh(96%, 8.27rem);
+				@extend .ab;
 				@extend .borderBox;
 				@include fc(.27rem, #333);
 				padding: .15rem .2rem;
 				margin-left: 2%;
+				width: 96%; top: 2.4rem; bottom: 3rem;
 				border: 1px solid #eee;
 			}
 
@@ -416,6 +416,7 @@ export default {
 
 			.nav{
 				height: 1.02rem;
+				background-color: #fff;
 			}
 			.upload-pic-btn{
 				@extend .ab;
