@@ -223,7 +223,7 @@ export default {
 	.exchange-wrap-ipad-edit{
 
 		font-size: 0;
-		padding-top: .64rem;
+		padding-top: $commTop;
 
 		.edit{
 

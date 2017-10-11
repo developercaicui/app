@@ -205,7 +205,7 @@ export default {
 
 		header.head{
 
-			@include wh(100%, 1.05rem);
+			@include wh(100%, 1.46rem);
 			position: relative;
 			border-bottom: 1px solid #B9B9B9;
 			background-color: #f5f5f5;
@@ -214,13 +214,14 @@ export default {
 				@extend .flexCenter;
 			  @include fc(.3rem, #1D1D1D);
 				height: inherit;
+				padding-top: 0.4rem;
 			}
 
 		 }
 
 		 .state-edit{
  			@extend .ab;
- 			right: .35rem; top: 0; bottom: 0;
+ 			right: .35rem; top: 28%; bottom: 0;
  			font-family: 'iconfont';
  			a{
  				color: $commPink;

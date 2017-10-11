@@ -508,7 +508,7 @@ export default {
   border-bottom: 1px solid #ddd;
   top: 0;
   width: 100%;
-  z-index: 3;
+  z-index: 10;
 }
 .s-head .left,
 .header .left,
