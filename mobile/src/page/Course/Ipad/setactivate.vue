@@ -345,7 +345,7 @@ export default {
 }
 
 .tc_box {
-  position: absolute;
+  position: fixed;
   width: 14rem;
   height: 12rem;
   left: 50%;

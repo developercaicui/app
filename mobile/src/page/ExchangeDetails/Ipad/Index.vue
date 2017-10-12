@@ -471,10 +471,11 @@ export default {
 			.nav{
 
 				height: 1.02rem;
+				background-color: #fff;
 
 				input{
 					@extend .ab;
-					@include wh(17.6rem, .5rem);
+					@include wh(85%, .5rem);
 					@include fc(.24rem, #999);
 					@extend .borderBox;
 					top: .25rem; left: 1.2rem;

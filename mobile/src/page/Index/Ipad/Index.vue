@@ -327,6 +327,10 @@ export default {
 		 display: inline-block;
 		 margin-bottom: .5rem; margin-right: .5rem;
 
+		 figure{
+		 	height: 100%;
+		 }
+		 
 		 &:nth-of-type(3n){
 			 margin-left: 0rem;
 		 }

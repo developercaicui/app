@@ -158,13 +158,16 @@ export default {
 					return false;
 				}
 
-				 // 获取token
-				 return getToken({
-					 appType: 'aPad',
-	 				 appId: 'aPadCourse',
-	 				 appKey: 'f7e4ebaa872f38db7b548b870c13e79e'
-				 });
 
+			})
+
+			if(this.gainOn) return false;
+
+			// 获取token
+			getToken({
+				appType: 'aPad',
+				appId: 'aPadCourse',
+				appKey: 'f7e4ebaa872f38db7b548b870c13e79e'
 			})
 
 			.then(res =>{

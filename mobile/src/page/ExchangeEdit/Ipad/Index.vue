@@ -242,7 +242,10 @@ export default {
 			}
 
 			textarea{
-				@include wh(100%, 8.27rem);
+				@extend .ab;
+				width: 96%;
+				top: 2.5rem; bottom: 3rem;
+				left: 2%; right: 2%;
 			}
 		}
 
@@ -307,6 +310,7 @@ export default {
 
 			.nav{
 				height: 1.02rem;
+				background-color: #fff;
 			}
 			.upload-pic-btn{
 				@extend .ab;
