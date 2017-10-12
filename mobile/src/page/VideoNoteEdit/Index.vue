@@ -1,7 +1,7 @@
 <template lang="html">
 
 	<div class="comm-reg-wrap">
-		<div style="position:fixed;left:0;right:0;bottom:0;top:0;background-color:rgba(0,0,0,0);z-index:119;">
+		<!-- <div style="position:fixed;left:0;right:0;bottom:0;top:0;background-color:rgba(0,0,0,0);z-index:119;">
 		<div class="g-data-loading">
 			<div class="showbox">
 				<div class="loader" style="position:relative;margin:0 auto;width:1rem;">
@@ -12,7 +12,7 @@
 			</div>
 			<h1 style="font-size:.25rem;color:#fff;transform: translate3d(0,1.4rem,0);">加载中...</h1>
 		</div>
-	</div>
+	</div> -->
 	</div>
 
 </template>

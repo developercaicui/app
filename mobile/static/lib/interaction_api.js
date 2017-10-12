@@ -15,6 +15,7 @@ var g = {
   torenew: torenew,
   getClassCourseData: getClassCourseData,
   clickToPlayVido: clickToPlayVido,
+  closeLoading: closeLoading,
 }
 
 
@@ -42,12 +43,17 @@ function targetLogin() {
 
 // 关闭新建页
 function closeNewNote() {
-  g.device == 'ios' ? NoetAndRequest.hiddenAddNoteViewOrRequestView('jj') : window.course.back();
+  g.device == 'ios' ? caicui.hiddenAddNoteViewOrRequestView('jj') : window.course.back();
 }
 
 // 退回登录页面
 function backLogin() {
   g.device == 'ios' ? clickBtn.registerBack('reg') : window.course.back();
+}
+
+// 关闭Loading
+function closeLoading() {
+  g.device == 'ios' ? caicui.hiddenLoadingImageView() : window.course.clonesProgress();
 }
 
 // 跳出窗口打开活动页
