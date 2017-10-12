@@ -36,9 +36,9 @@ export default {
 
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo'));
 
-		if(!this.exchangeData.data) this.fetchList();
+		if(!this.exchangeData.data) this.fetchList(true);
 
-		if(this.webApi.getCookie('updateExchangeList') === 'true') this.fetchList();
+		if(this.webApi.getCookie('updateExchangeList') === 'true') this.fetchList(true);
 
 	},
 
@@ -54,11 +54,11 @@ export default {
 
   methods: {
 
-		fetchList() {
+		fetchList(isOff) {
 
 			this.webApi.setCookie('updateExchangeList', 'false');
 
-			this.webApi.loadingData();
+			if(!isOff) this.webApi.loadingData();
 
 			this.$store.commit('updateExchangeListP', {
 				token: this.userInfo.token,

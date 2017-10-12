@@ -122,7 +122,7 @@ export default {
 	  let vuexExchangeList = this.$store.getters.getCourseexchangeList;
 
 		if(vuexExchangeList.length == 0){
-			this.getDate(1, 0);
+			this.getDate(1, 0, true);
 		}else{
 			this.exchangeList = vuexExchangeList;
 		}
@@ -208,7 +208,7 @@ export default {
 
 		    })
         },
-        getDate(page,self) {
+        getDate(page, self, isOff) {
 
         	//搜索判断,用于第一次搜索结果重新给模板页面赋值
         	if(!this.webApi.isEmpty(this.searchData)){
@@ -234,7 +234,8 @@ export default {
 	        param.subjectId= this.courseInfo.subjectId;
 	        param.token = this.webApi.getCookie('token');
 	        if (page == 1) {
-	            this.webApi.loadingData();
+						if(!isOff) this.webApi.loadingData();
+	           // this.webApi.loadingData();
 	        }
 
 			getExchangeList(param)
@@ -242,9 +243,11 @@ export default {
 			.then(res =>{
 
 		      if(res && res.state == 'success'){
-		      	  if(page == 1){
-		          		this.webApi.closeLoadingData();
-				  }
+
+							if(page == 1){
+								isOff ? g.closeLoading() : this.webApi.closeLoadingData() ;
+				  		}
+
 		          if(self == 0){
 
 		          	res.data = this.setListData(res.data);
