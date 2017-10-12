@@ -43,6 +43,11 @@ export default {
     }
   },
 
+	 watch: {
+		 picList() {
+			 this.nowIndex = 0;
+		 }
+	 },
 
 	 updated() {
 
