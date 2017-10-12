@@ -195,11 +195,11 @@ export default {
 
 	 .reg-head{
 
-		@include wh(100%, 1.45rem);
+		@include wh(100%, 1.25rem);
  		position: relative;
  		padding: $commTop .4rem 0;
-		background-color: $commPink;
-
+		background-color: $commTopBack;
+		border-bottom: 1px solid #dfdfdf;
  		.back{
  			position: absolute;
 			left: 0;
@@ -207,15 +207,16 @@ export default {
  			font-family: 'iconfont';
 			@extend .flexCenter;
 			@include wh(1.5rem, 1.05rem);
- 			@include fc($commBackFont, #fff);
+ 			@include fc($commBackFont, $commPink);
+ 			padding-top: 0.2rem;
  		}
 
  		h1{
  			@extend .ab;
- 			@include fc($headH1Font, #fff);
+ 			@include fc($headH1Font,#000);
 			@extend .flexCenter;
 			padding-left: .4rem;
- 			left: 0; top: $commTop; right: 0;
+ 			left: 0; top: 0.2rem; right: 0;
  			height: 1.05rem;
  		}
 

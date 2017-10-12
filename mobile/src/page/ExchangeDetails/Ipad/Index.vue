@@ -4,7 +4,7 @@
 
 		<header class="one-top">
 			<a href="javascript:;" @click.stop="closeMe">&#xe67f;</a>
-			<h1 ref="reply">讨论详情（未回复）</h1>
+			<h1 ref="reply">交流详情 (未回复)</h1>
 			<div class="state-edit" @touchend="removeDetails">
 				<a href="javascript:;"></a>
 				<a href="javascript:;" v-show="isRemoveMsg">&#xe618;</a>
