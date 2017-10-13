@@ -77,16 +77,21 @@ export default {
 		},
 		arrEntities (state){
 			let newContent = '';
+
 			if(typeof state.exerciseContext == 'string'){
+				// console.log(state.exerciseContext)
+				let context = state.exerciseContext.replace(/<[^>]+>/g,"").replace(/(^\s+)|(\s+$)/g,"").replace(/(\r)|(\n)|(\t)/g,'')
+				// console.log(context)
 				try{
-					newContent = JSON.parse(JSON.parse(JSON.stringify(state.exerciseContext)));
+					newContent = JSON.parse(JSON.parse(JSON.stringify(context)));
 				}catch(e){
-					if(state.exerciseContext.substring(0,3) == "'[{"){
-						newContent = state.exerciseContext.substring(1,state.exerciseContext.length-1);
+					if(context.substring(0,3) == "'[{"){
+						newContent = context.substring(1,context.length-1);
 						newContent = JSON.parse(newContent);
 					}else{
+						
 						let arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"', '#39': "'" };
-						newContent = state.exerciseContext.replace(/&(lt|gt|nbsp|amp|quot|#39);/ig, function(all, t) { return arrEntities[t]; });
+						newContent = context.replace(/&(lt|gt|nbsp|amp|quot|#39);/ig, function(all, t) { return arrEntities[t]; });
 						newContent = newContent.substring(1,newContent.length-1);
 						newContent = JSON.parse(JSON.parse(JSON.stringify(newContent)));
 					}
