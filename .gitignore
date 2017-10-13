@@ -2,5 +2,7 @@
 mobile/dist/
 ipad/node_modules/
 mobile/node_modules/
+mobile/distCaicui/
+mobile/distZbgedu/
 mobile/src/store/modules/state.js
 mobile/src/api/request.js

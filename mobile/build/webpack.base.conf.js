@@ -4,7 +4,7 @@ const utils = require('./utils');
 const projectRoot = path.resolve(__dirname, '../');
 
 const env = process.env.NODE_ENV;
-const cssSourceMapDev = (env === 'development' && config.dev.cssSourceMap);
+const cssSourceMapDev = (env === 'developZbgedu' || env === 'developCaicui' && config.dev.cssSourceMap);
 const cssSourceMapProd = (env === 'production' && config.build.productionSourceMap);
 const useCssSourceMap = cssSourceMapDev || cssSourceMapProd;
 

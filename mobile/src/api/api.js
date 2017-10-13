@@ -1,6 +1,7 @@
 
 import { getUserInfo } from './port';
 
+console.log(process.env.NODE_ENV);
 
 export default {
 
@@ -284,10 +285,9 @@ export default {
 
    },
   // cdn 地址
-  // cdnImgUrl: 'http://eximg.zbgedu.com/',
-  // exstaticUrl: 'http://exstatic.zbgedu.com/',
-  cdnImgUrl: 'http://cdnimg.caicui.com/',
-  exstaticUrl: 'http://cdnimg.caicui.com/',
+  cdnImgUrl: process.env.NODE_ENV.includes('developZbgedu') ? 'http://eximg.zbgedu.com/' : 'http://cdnimg.caicui.com/',
+  exstaticUrl: process.env.NODE_ENV.includes('developZbgedu') ? 'http://exstatic.zbgedu.com/' : 'http://cdnimg.caicui.com/',
+
   //判断是否为空
   isEmpty(data) {
     if (this.isEmpty1(data) || this.isEmpty2(data)) {
