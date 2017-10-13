@@ -52,12 +52,5 @@ export default{
 
 </script>
 <style>
-.exercises-input{
-	display: inline-block;
-	outline: 0;
-  width: 196px;
-  height: 40px;
-  border: 1px solid #fc3a6f;
-  padding: 0 10px;
-}
+
 </style>

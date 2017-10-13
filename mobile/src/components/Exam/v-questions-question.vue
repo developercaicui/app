@@ -51,14 +51,5 @@ export default{
 
 </script>
 <style>
-.exercises-textarea{
-  width: 100%;
-  height: 110px;
-  outline: 0;
-  border: 1px solid #fc3a6f;
-  padding: 10px;
-  margin-top: 20px;
-  resize: none;
-  box-sizing: border-box;
-}
+
 </style>
