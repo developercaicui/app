@@ -111,6 +111,7 @@ export default {
     this.$store.commit('updateLoginLogParams', {
         memberid: this.userInfo.memberId,
     });
+    
     this.$store.dispatch('fetchLoginLog');
 
   },

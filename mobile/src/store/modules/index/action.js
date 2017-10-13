@@ -38,7 +38,7 @@ export default {
     .then(res =>{
 
       let data = {
-          time: !res || res.state != 'success' ? new Date().getTime() : webApi.stringData(res.data[0].loginTime)
+          time: !res || res.state != 'success' ? new Date().getTime() : webApi.stringData(res.data[0].loginTime/1000)
       }
 
       commit('updateLoginLog', data);

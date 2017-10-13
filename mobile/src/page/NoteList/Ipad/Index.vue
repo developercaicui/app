@@ -20,25 +20,25 @@
 
 					<template v-for="twoItem in item.children">
 
-						<section class="list" :data-id="twoItem.id" v-if="twoItem.nodeNum!=0">
+						<section class="list" :data-id="twoItem.id">
 							<div>
 								<span></span>
-								<h1>{{ twoItem.chapterTitle }}</h1>
+								<h1 @click.stop="shrinkList">{{ twoItem.chapterTitle }}</h1>
 							</div>
 
 							<template v-for="threeItem in twoItem.children">
 
-							<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)"  :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+							<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)"  @click.stop="openNoteDetails($event, threeItem.isLeaf)" :data-id="threeItem.id">
 								<div>
-									<h1>{{ threeItem.chapterTitle }}</h1>
-									<!-- <i>{{ threeItem.nodeNum }}</i> -->
+									<h1 :data-nodenum="threeItem.nodeNum">{{ threeItem.chapterTitle }}</h1>
+									<i v-if="threeItem.nodeNum > 0 && threeItem.isLeaf">{{ threeItem.nodeNum }}</i>
 								</div>
 
 								<template v-for="fourItem in threeItem.children">
-									<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(threeItem)" :data-chaptertwo="JSON.stringify(fourItem)" @click.stop="openNoteDetails" :data-id="fourItem.id" v-if="fourItem.nodeNum!=0">
+									<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(threeItem)" :data-chaptertwo="JSON.stringify(fourItem)" @click.stop="openNoteDetails($event, true)" :data-id="fourItem.id">
 										<div>
-											<h1>{{ fourItem.chapterTitle }}</h1>
-											<i>{{ fourItem.nodeNum }}</i>
+											<h1 :data-nodenum="fourItem.nodeNum">{{ fourItem.chapterTitle }}</h1>
+											<i v-if="fourItem.nodeNum > 0">{{ fourItem.nodeNum }}</i>
 										</div>
 									</section>
 								</template>
@@ -92,7 +92,20 @@ export default {
 			if(status == 'loading') this.$emit('fetch-list');
 		},
 
-		openNoteDetails(ev) {
+		// 收缩列表
+		shrinkList(ev) {
+
+			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+
+			oSection.classList.contains('shrink-list') ? oSection.classList.remove('shrink-list') : oSection.classList.add('shrink-list');
+
+		},
+
+		openNoteDetails(ev, isOff) {
+
+			let _obj = ev.target;
+
+			if(_obj.dataset.nodenum < 1 || !isOff) return;
 
 			let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
 			let course = JSON.parse(oSection.dataset.course);
@@ -140,6 +153,17 @@ export default {
 					}
 					> div h1{
 						font-size: .24rem;
+					}
+				}
+
+			}
+
+			&.shrink-list{
+				height: 1.2rem;
+				overflow: hidden;
+				> div{
+					> span:after{
+							transform: rotate(-270deg);
 					}
 				}
 			}

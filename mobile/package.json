@@ -4,8 +4,10 @@
   "description": "",
   "author": "",
   "scripts": {
-    "dev": "node build/dev-server.js",
-    "build": "node build/build.js"
+    "dev:caicui": "node build/dev-server.js caicui",
+    "dev:zbgedu": "node build/dev-server.js zbgedu",
+    "build:caicui": "node build/build.js caicui",
+    "build:zbgedu": "node build/build.js zbgedu"
   },
   "repository": "",
   "dependencies": {

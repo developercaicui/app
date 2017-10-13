@@ -245,7 +245,7 @@ export default {
         },
 
 				// 获取全部课程笔记列表
-        getAllNote(isOff=false){
+        getAllNote(isOff){
 
           //搜索判断,用于第一次搜索结果重新给模板页面赋值
           if(!this.webApi.isEmpty(this.searchData)){
@@ -274,7 +274,7 @@ export default {
           param.courseid= this.courseInfo.courseId;
           param.categoryId= this.courseInfo.categoryId;
           param.subjectId= this.courseInfo.subjectId;
-          //
+
           // param.courseid= "ff8080814dad5062014db32051b801a2";
           // param.categoryId= this.courseInfo.categoryId;
           // param.subjectId= this.courseInfo.subjectId;
@@ -284,11 +284,13 @@ export default {
 					if(!isOff) this.webApi.loadingData();
 
 
-          getCourseNoteList(param)
+          getCourseNoteList(param).then(res =>{
 
-          .then(res =>{
+						try{
+							isOff ? g.closeLoading() : this.webApi.closeLoadingData() ;
+						}catch(e){
 
-						isOff ? g.closeLoading() : this.webApi.closeLoadingData() ; 
+						}
 
             if(!res || res.state != 'success'){
 							 this.webApi.alert('网络异常，请稍后再试');

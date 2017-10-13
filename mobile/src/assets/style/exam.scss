@@ -1,4 +1,7 @@
-$examColor : #00a185; // #00a185; #43b0ab; #fc3a6f;
+
+@import "./theme";
+
+$examColor : $globalThemeColor;
 $examFontSize : 18px;
 $examTask : 22px;
 $triangleWidth : 10px;
@@ -54,11 +57,11 @@ $marginTB-10 : 10px 0;
 		display: inline-block;
 		@include WH(30px,30px);
 		border-right: 1px solid #313131;
-		
+
 	}
 	$triangleWidth : 12px;
 	.triangle{
-		
+
 	}
 	.triangle::before{
 		@include absolute();
@@ -98,7 +101,7 @@ $marginTB-10 : 10px 0;
 	.triangle{
 		@include WH(80px,80px);
 		margin-top: -40px;
-		
+
 	}
 	.exercises-prev{
 		@include absolute($top: 50%);
@@ -216,7 +219,7 @@ $marginTB-10 : 10px 0;
 			font-size: $examFontSize;
 			border: 1px solid #e6e6e6;
 			background-color: #f4fff8;
-			
+
 			.analysis-answer{
 				line-height: 30px;
 				p{
@@ -298,7 +301,7 @@ $marginTB-10 : 10px 0;
 		    height: 26px;
 			}
 		}
-		
+
 		.exam-cards-li{
 			float: left;
 			@include WH(38px, 26px);
@@ -346,7 +349,7 @@ $marginTB-10 : 10px 0;
 				margin-top: 5px;
 			}
 		}
-		
+
 		.exam-cards-success{
 			.exam-cards-a{
 				color: #fff;
