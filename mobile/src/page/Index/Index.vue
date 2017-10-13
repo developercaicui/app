@@ -99,11 +99,12 @@ export default {
 						g.closeLoading();
 						this.webApi.closeLoadingData();
 					}catch(e){
+						this.webApi.closeLoadingData();
 					}
 
 					return false;
 				}
-
+// this.learningCourseList = res.data.courselist
 				learningCourseList = res.data.courselist.map( item => {
 
 					let expirationDate = new Date(item.expirationTime*1000);
@@ -130,7 +131,7 @@ export default {
 
 			})
 			.then(() =>{
-
+				
 				let courseIds =  learningCourseList.map(item => item.courseId);
 
 
@@ -152,6 +153,7 @@ export default {
 						g.closeLoading();
 						this.webApi.closeLoadingData();
 					}catch(e){
+						this.webApi.closeLoadingData();
 					}
 
 					return false;
@@ -159,13 +161,13 @@ export default {
 
 				try {
 
-						var newLastProgress = {
+						let newLastProgress = {
 	             RecentCourse : []
 	          };
 
-	    			for(var i=0;i<learningCourseList.length;i++){
+	    			for(let i=0;i<learningCourseList.length;i++){
 
-	    				for(var j=0;j<res.data.length;j++){
+	    				for(let j=0;j<res.data.length;j++){
 
 	    					if(learningCourseList[i].courseId == res.data[j].courseId){
 	                  learningCourseList[i].createDate = res.data[j].createDate;
@@ -178,8 +180,8 @@ export default {
 
 	    			}
 
-	          var filterLastProgress = newLastProgress.RecentCourse;
-	          var i = 0,
+	          let filterLastProgress = newLastProgress.RecentCourse;
+	          let i = 0,
 	              len = filterLastProgress.length,
 	              j, d;
 	          for (; i < len; i++) {
@@ -197,12 +199,12 @@ export default {
 			      learningCourseList = filterLastProgress;
 
 						learningCourseList.map((item, index) =>{
-
-							let num = parseInt(item.courseProgress/this.learningCourseList[index].taskTotal*100) || 0;
+			      
+							let num = parseInt(item.courseProgress/item.taskTotal*100) || 0;
 
 							if(num === 0) num =  !item.progress ? 0 : 1;
 
-							learningCourseList[index].courseProgress = item.courseProgress;
+							// learningCourseList[index].courseProgress = item.courseProgress;
 							learningCourseList[index].studyProportion = num > 100 ? 100 : num;
 							// this.learningCourseList[index].createTime = item.createDate;
 
@@ -227,7 +229,13 @@ export default {
 					g.closeLoading();
 					this.webApi.closeLoadingData();
 				}catch(e){
-					console.log(e);
+
+				}
+
+				try{
+				  this.webApi.closeLoadingData();
+				}catch(e){
+					
 				}
 
 				if(!res || res.state != 'success'){
