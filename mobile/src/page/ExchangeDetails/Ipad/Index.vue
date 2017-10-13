@@ -16,7 +16,7 @@
           <dt><img :src="data.headImg" class="avatar"></dt>
           <dd>
             <div class="name"><span>{{ data.nikeName }}</span>
-              <div onclick="addAnswer(this)" isadd="yes" class="add-answer" v-if='data.memberId == JSON.parse(this.webApi.getCookie("userInfo")).memberId'><i>...</i><span>问题补充</span></div>
+              <div @click="addAnswer" isadd="yes" class="add-answer" v-if='data.memberId == JSON.parse(this.webApi.getCookie("userInfo")).memberId'><i>...</i><span>问题补充</span></div>
             </div>
             <div class="title">{{ data.title }}</div>
             <div class="describe">{{ data.content ? data.content : '' }}</div>
@@ -69,7 +69,7 @@
 		<footer class="leave-msg">
 			<div class="nav">
 				<a href="javascript:;" class="upload-pic-btn" @touchend.stop="handleIsUpload">&#xe6ab;</a>
-				<input type="text" name="" v-model="textDetails" placeholder="评论...">
+				<input type="text" name="" v-model="textDetails" placeholder="评论..." ref="addMsg">
 				<a href="javascript:;" class="add-msg" @touchend.stop="handleSubPublish">发布</a>
 			</div>
 			<div class="upload-details" v-show="isFileOpen">
@@ -380,6 +380,11 @@ export default {
           divHtmlimgArr.push(divHtmlimg[i].getAttribute("src"));
        }
        return divHtmlimgArr;
+    },
+    addAnswer(ev) {
+    	
+    	this.$refs.addMsg.setAttribute("placeholder","问题补充...");
+
     }
   }
 
