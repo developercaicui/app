@@ -4,14 +4,14 @@ export default{
 		"loginLink" : "http://www.zbgedu.com/index.php?m=user&c=index&a=index",
 		"loginLinkTest" : "#studycenterLogin",
 		"host": {
-			"name": "http://api.zbgedu.com",
-			"nameAction": "http://action.zbgedu.com",
-			"demoName" : "http://demo.caicui.com",
-			"static" : "http://exstatic.zbgedu.com/",
-			"img" : "http://eximg.zbgedu.com",
-			"imgAddress" : "http://exstatic.zbgedu.com/",
-			"infoAddress" : "http://elearning.zbgedu.com/",
-			"IPLocation" : "http://elearning.zbgedu.com/api/v2/"
+			"name": process.env.NODE_ENV.includes('developZbgedu') ? "http://api.zbgedu.com" : "http://api.caicui.com",
+			"nameAction": process.env.NODE_ENV.includes('developZbgedu') ? "http://action.zbgedu.com" : "http://action.caicui.com",
+			"demoName" : process.env.NODE_ENV.includes('developZbgedu') ? "http://demo.caicui.com" : "http://demo.caicui.com",
+			"static" : process.env.NODE_ENV.includes('developZbgedu') ? "http://exstatic.zbgedu.com/" : "http://cdnstatic.caicui.com/",
+			"img" : process.env.NODE_ENV.includes('developZbgedu') ? "http://eximg.zbgedu.com" : "http://cdnimg.caicui.com",
+			"imgAddress" : process.env.NODE_ENV.includes('developZbgedu') ? "http://exstatic.zbgedu.com/" : "http://cdnstatic.caicui.com/",
+			"infoAddress" : process.env.NODE_ENV.includes('developZbgedu') ? "http://elearning.zbgedu.com/" : "http://www.caicui.com/",
+			"IPLocation" : process.env.NODE_ENV.includes('developZbgedu') ? "http://elearning.zbgedu.com/api/v2/" : "http://www.caicui.com/api/v2/"
 		},
 		"product": {
 			"pcWeb": {
