@@ -150,7 +150,7 @@ export default {
 
 		//获取全部笔记列表
 		if(!allNoteList.children){
-			this.getAllNote();
+			this.getAllNote(true);
 		}else{
 			this.sectionAllList = allNoteList;
 		}
@@ -245,7 +245,7 @@ export default {
         },
 
 				// 获取全部课程笔记列表
-        getAllNote(){
+        getAllNote(isOff=false){
 
           //搜索判断,用于第一次搜索结果重新给模板页面赋值
           if(!this.webApi.isEmpty(this.searchData)){
@@ -281,13 +281,14 @@ export default {
 
           param.token = this.webApi.getCookie('token');
 
-          this.webApi.loadingData();
+					if(!isOff) this.webApi.loadingData();
+
 
           getCourseNoteList(param)
 
           .then(res =>{
 
-						this.webApi.closeLoadingData();
+						isOff ? g.closeLoading() : this.webApi.closeLoadingData() ; 
 
             if(!res || res.state != 'success'){
 							 this.webApi.alert('网络异常，请稍后再试');
@@ -508,7 +509,7 @@ export default {
   border-bottom: 1px solid #ddd;
   top: 0;
   width: 100%;
-  z-index: 3;
+  z-index: 10;
 }
 .s-head .left,
 .header .left,

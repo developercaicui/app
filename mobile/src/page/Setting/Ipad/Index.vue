@@ -541,7 +541,7 @@ body[show='about'] #mask2 {
   border-radius: 7px;
   background: #f3f3f3;
   overflow: hidden;
-  padding-top: 0.16rem;
+  //padding-top: 0.16rem;
 
 }
 

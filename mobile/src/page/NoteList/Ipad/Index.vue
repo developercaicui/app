@@ -28,11 +28,20 @@
 
 							<template v-for="threeItem in twoItem.children">
 
-							<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)" @click.stop="openNoteDetails" :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
+							<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)"  :data-id="threeItem.id" v-if="threeItem.nodeNum!=0">
 								<div>
 									<h1>{{ threeItem.chapterTitle }}</h1>
-									<i>{{ threeItem.nodeNum }}</i>
+									<!-- <i>{{ threeItem.nodeNum }}</i> -->
 								</div>
+
+								<template v-for="fourItem in threeItem.children">
+									<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(threeItem)" :data-chaptertwo="JSON.stringify(fourItem)" @click.stop="openNoteDetails" :data-id="fourItem.id" v-if="fourItem.nodeNum!=0">
+										<div>
+											<h1>{{ fourItem.chapterTitle }}</h1>
+											<i>{{ fourItem.nodeNum }}</i>
+										</div>
+									</section>
+								</template>
 
 							</section>
 
@@ -125,7 +134,7 @@ export default {
 			  padding-left: 0rem;
 				padding-right: 0;
 				> section.list{
-					padding-left: 0;
+					padding-left: .3rem;
 					> div span{
 						@extend .hide;
 					}
@@ -196,7 +205,7 @@ export default {
 
 		header.head{
 
-			@include wh(100%, 1.05rem);
+			@include wh(100%, 1.46rem);
 			position: relative;
 			border-bottom: 1px solid #B9B9B9;
 			background-color: #f5f5f5;
@@ -205,13 +214,14 @@ export default {
 				@extend .flexCenter;
 			  @include fc(.3rem, #1D1D1D);
 				height: inherit;
+				padding-top: 0.4rem;
 			}
 
 		 }
 
 		 .state-edit{
  			@extend .ab;
- 			right: .35rem; top: 0; bottom: 0;
+ 			right: .35rem; top: 28%; bottom: 0;
  			font-family: 'iconfont';
  			a{
  				color: $commPink;

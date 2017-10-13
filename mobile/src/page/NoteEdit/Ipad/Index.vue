@@ -82,9 +82,9 @@ export default {
 		try{
 
 			this.taskName = this.data.taskName || 'taskName';
-			this.taskId = this.data.taskId || '';
+			this.taskId = this.data.taskId || 'taskId';
 			this.videoType = this.data.videoType || '';
-			this.courseName =  this.data.sectionData.courseName || 'courseName';
+			this.courseName =  this.data.sectionData.courseName || this.data.courseData.courseName || 'courseName';
 			this.taskProgress = this.data.taskProgress || 0;
 
 		}catch(e) {
@@ -95,8 +95,8 @@ export default {
 
 		// 是否编辑
 		if('detailsData' in this.data){
-			this.textDetails = this.data.content;
-			this.title = this.data.chaptername;
+			this.textDetails = this.data.detailsData.content || this.data.content;
+			this.title = this.data.detailsData.chaptername || this.data.chaptername;
 			this.noteId = this.data.detailsData.id;
 			this.isEdit = true;
 			this.subjectId = 'subjectId';
@@ -119,14 +119,15 @@ export default {
 			});
 
 		}else{
-			this.title = this.data.sectionData.chapterTitle;
+			this.title = this.data.chapterTitle || this.data.sectionData.chapterTitle;
 			this.noteId = '';
 			this.isEdit = false;
-			this.categoryName = this.data.categoryName;
-			this.subjectId = this.data.subjectId;
-			this.subjectName = this.data.subjectName;
-			this.categoryId = this.data.categoryId;
-			this.chapterId = this.data.chapterId;
+			this.categoryName = this.data.courseData.categoryName || this.data.categoryName;
+			this.subjectId = this.data.courseData.subjectId || this.data.subjectId;
+			this.subjectName = this.data.courseData.subjectName || this.data.subjectName;
+			this.categoryId = this.data.courseData.categoryId || this.data.categoryId;
+			this.chapterId = this.data.sectionData.chapterId || this.data.chapterId;
+			this.courseId = this.data.courseData.courseId || this.data.courseId;
 			this.type = 'new';
 		}
 
@@ -244,9 +245,9 @@ export default {
 
 					this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
 					this.isUploadSuccess++;
-					
+
 					// 成功以后提交表单内容
-					// if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
 
 				});
 
@@ -264,16 +265,16 @@ export default {
 					content:	this.textDetails,   // 内容
 					soundPath:	'', // 声音
 					clientType:	this.clientType, // 设备类型
-					title:	this.videoType == 'video' ? this.taskName : 'title', //
+					title:	this.videoType == 'video' ? this.taskName : 'title',
 					categoryName:	this.categoryName,
 					chapterId: this.chapterId,
-					taskType:	this.videoType, // 任务类型
+					taskType:	this.videoType || this.type, // 任务类型
 					subjectName: this.subjectName,
 					id: this.noteId,
 					subjectId:	this.subjectId,
 					token:	this.webApi.getCookie('token'), // 用户token
-					courseId:	this.data.courseId,
-					chapterName:	this.data.sectionData.chapterName || this.data.sectionData.chaptername || 'chapterName',
+					courseId:	this.courseId || 'courseId',
+					chapterName:	this.data.sectionData.chapterTitle || this.title || 'chapterName',
 					isPublic:	this.isPublic || '0', // 是否公开
 					soundLen:	'', // 声音长度
 					taskName:	this.taskName,
@@ -310,12 +311,12 @@ export default {
 			@include fc(.28rem, #ccc);
 
 			textarea{
-				width: 96%;
-				@include wh(96%, 8.27rem);
+				@extend .ab;
 				@extend .borderBox;
 				@include fc(.27rem, #333);
 				padding: .15rem .2rem;
 				margin-left: 2%;
+				width: 96%; top: 2.4rem; bottom: 3rem;
 				border: 1px solid #eee;
 			}
 
@@ -415,6 +416,7 @@ export default {
 
 			.nav{
 				height: 1.02rem;
+				background-color: #fff;
 			}
 			.upload-pic-btn{
 				@extend .ab;

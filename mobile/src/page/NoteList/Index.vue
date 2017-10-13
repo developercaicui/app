@@ -45,8 +45,8 @@ export default {
 
 		this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {})
 
-		if(this.list.length == 0) this.fetchList();
-		if(this.webApi.getCookie('updateNoteList') === 'true') this.fetchList();
+		if(this.list.length == 0) this.fetchList(true);
+		if(this.webApi.getCookie('updateNoteList') === 'true') this.fetchList(true);
 
 	},
 
@@ -54,11 +54,11 @@ export default {
   methods: {
 
 		// 获取列表
-		fetchList() {
+		fetchList(isOff) {
 
 			this.webApi.setCookie('updateNoteList', 'false');
 
-			this.webApi.loadingData();
+			if(!isOff) this.webApi.loadingData();
 
 			this.$store.commit('updateNoteListParams', {
 					token: this.userInfo.token,

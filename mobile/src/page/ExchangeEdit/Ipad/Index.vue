@@ -160,6 +160,7 @@ export default {
 
 			this.allUploadPic.map((item, index) =>{
 
+
 				let formData = new FormData();
 
 				formData.append(`file`, item.file);
@@ -168,7 +169,7 @@ export default {
 				this.$emit('upload-pic', formData, res =>{
 
 					this.allPicPathHtml =  `${this.allPicPathHtml}<img src="${this.webApi.exstaticUrl}${res.storeFileUrl}"/>`;
-					this.allPicPath = `${this.allPicPath}${res.path},`;
+					this.allPicPath = `${this.allPicPath}${res.storeFileUrl},`;
 
 					this.isUploadSuccess++;
 
@@ -222,7 +223,7 @@ export default {
 	.exchange-wrap-ipad-edit{
 
 		font-size: 0;
-		padding-top: .64rem;
+		padding-top: $commTop;
 
 		.edit{
 
@@ -241,7 +242,10 @@ export default {
 			}
 
 			textarea{
-				@include wh(100%, 8.27rem);
+				@extend .ab;
+				width: 96%;
+				top: 2.5rem; bottom: 3rem;
+				left: 2%; right: 2%;
 			}
 		}
 
@@ -306,6 +310,7 @@ export default {
 
 			.nav{
 				height: 1.02rem;
+				background-color: #fff;
 			}
 			.upload-pic-btn{
 				@extend .ab;

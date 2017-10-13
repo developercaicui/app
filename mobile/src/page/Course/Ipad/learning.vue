@@ -66,7 +66,7 @@ export default {
 
 	created() {
 
-		this.getDate();
+		this.getDate(true);
 
 		let fSize = parseInt(document.documentElement.style.fontSize) || 0;
 
@@ -88,26 +88,26 @@ export default {
 
 		if(status == 'loading') {
 
-			this.getDate();
+			this.getDate(false);
 
 		}
 
 	},
-	getDate() {
+	getDate(isOff) {
 		let courseParams = {
 			pageNo: 1,
 			pageSize: 1000,
 			token: this.webApi.getCookie('token')
 		};
 
-		this.webApi.loadingData();
+		if(!isOff) this.webApi.loadingData();
 
 		// 获取在学课程列表
 		getLearningCourse(courseParams)
 
 		.then(res =>{
 
-			this.webApi.closeLoadingData();
+			isOff ? g.closeLoading() : this.webApi.closeLoadingData();
 
 			if(res && res.state == 'success'){
 

@@ -122,9 +122,11 @@ export default {
     openActivate(item) {
     	this.activeCour = true;
     	this.noactiveCourse = item;
+    	document.body.style.overflow = 'hidden';
     },
     closeMe() {
     	this.activeCour = false;
+    	document.body.style.overflow = 'auto';
     }
   },
   updated() {

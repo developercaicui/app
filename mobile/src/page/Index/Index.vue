@@ -48,7 +48,7 @@ export default {
 			this.webApi.alert('用户登录信息失效', 2000);
 		}
 
-		this.webApi.loadingData();
+		// this.webApi.loadingData();
 		this.webApi.setCookie('isTargetLogin', 'false');
 
 		this.userInfo = this.$route.query;
@@ -92,10 +92,15 @@ export default {
 
 			.then(res =>{
 
-				this.webApi.closeLoadingData();
-
 				if(!res || res.state != 'success'){
 					this.webApi.alert('网络异常，请稍后再试');
+
+					try{
+						g.closeLoading();
+						this.webApi.closeLoadingData();
+					}catch(e){
+					}
+
 					return false;
 				}
 
@@ -142,6 +147,13 @@ export default {
 
 				if(!res || res.state != 'success'){
 					this.webApi.alert('网络异常，请稍后再试');
+
+					try{
+						g.closeLoading();
+						this.webApi.closeLoadingData();
+					}catch(e){
+					}
+
 					return false;
 				}
 
@@ -210,6 +222,13 @@ export default {
 
 			})
 			.then(res =>{
+
+				try{
+					g.closeLoading();
+					this.webApi.closeLoadingData();
+				}catch(e){
+					console.log(e);
+				}
 
 				if(!res || res.state != 'success'){
 					this.webApi.alert('网络异常，请稍后再试');
