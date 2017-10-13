@@ -3,16 +3,6 @@
 
 [访问百度脑涂][1]
 
-## 开发人员任务安排
-
-李鹏：用户登录，第三方，下载视频，观看视频，课程首页
-
-张杰：注册，测试登陆界面，首页，笔记，交流，消息中心，
-
-朱军营：我的，（在学、未激活，已过期）课程，视频缓存
-
-赵攀科：题库，试卷，知识点，错题
-
 ## 编译设置
 
 ```
@@ -20,10 +10,12 @@
 npm install
 
 # 启动服务
-npm run dev
+npm run dev:caicui   
+npm run dev:zbgedu   
 
 # 打包压缩
-npm run build
+npm run build:caicui
+npm run build:zbgedu
 ```
 
 ## 技术栈 vue  + vue-router + vuex + webpack + ES6/7 + axios + sass + flex
