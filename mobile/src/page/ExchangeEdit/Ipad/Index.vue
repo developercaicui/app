@@ -234,6 +234,7 @@ export default {
 				@extend .borderBox;
 				@include fc(.24rem, #333);
 				padding: .15rem .2rem;
+				max-height: 80%; height: 80%;
 			}
 
 			input{

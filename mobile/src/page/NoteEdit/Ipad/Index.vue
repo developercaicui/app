@@ -318,6 +318,7 @@ export default {
 				margin-left: 2%;
 				width: 96%; top: 2.4rem; bottom: 3rem;
 				border: 1px solid #eee;
+				max-height: 80%; height: 80%;
 			}
 
 			.ban{
