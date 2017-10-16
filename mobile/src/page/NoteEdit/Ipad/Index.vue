@@ -183,7 +183,7 @@ export default {
 		// 上传图片
 		handleUploadPic(ev) {
 
-			if(this.$refs.iptFile.files.length > 1) {
+			if(this.$refs.iptFile.files.length != 1) {
 			 this.webApi.alert('抱歉，只能上传一张图片');
 			 return false;
 			}
@@ -304,7 +304,6 @@ export default {
 		font-size: 0;
 		padding-top: $commTop;
 		background-color: $commTopWhite;
-		overflow-y: hidden;
 
 		.edit{
 
@@ -318,7 +317,7 @@ export default {
 				margin-left: 2%;
 				width: 96%; top: 2.4rem; bottom: 3rem;
 				border: 1px solid #eee;
-				max-height: 80%; height: 80%;
+				max-height: 80%; height: 66%;
 			}
 
 			.ban{

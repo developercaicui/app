@@ -99,7 +99,7 @@ export default {
 		// 选择图片
 		handleUploadPic(ev) {
 
-			if(this.$refs.iptFile.files.length > 1) {
+			if(this.$refs.iptFile.files.length != 1) {
 			 this.webApi.alert('抱歉，只能上传一张图片');
 			 return false;
 			}
@@ -234,7 +234,6 @@ export default {
 				@extend .borderBox;
 				@include fc(.24rem, #333);
 				padding: .15rem .2rem;
-				max-height: 80%; height: 80%;
 			}
 
 			input{
@@ -247,6 +246,7 @@ export default {
 				width: 96%;
 				top: 2.5rem; bottom: 3rem;
 				left: 2%; right: 2%;
+				max-height: 80%; height: 66%;
 			}
 		}
 

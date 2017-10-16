@@ -270,7 +270,7 @@ export default {
 		// 上传图片
 		handleUploadPic(ev) {
 
-			if(this.$refs.iptFile.files.length > 1) {
+			if(this.$refs.iptFile.files.length != 1) {
 			 this.webApi.alert('抱歉，只能上传一张图片');
 			 return false;
 			}
