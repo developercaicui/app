@@ -5,7 +5,7 @@
 		<slot name="top">
 			<div class="slide-top" v-if="isTopShow">
 				<span class="text" v-show="topStatus !== 'loading'">{{ topText }}</span>
-				<mt-spinner type="snake" color="#FF366D" v-show="topStatus === 'loading'"></mt-spinner>
+				<mt-spinner type="snake" :color="spanColor" v-show="topStatus === 'loading'"></mt-spinner>
 			</div>
 		</slot>
 
@@ -16,7 +16,7 @@
 		<slot name="bottom">
 			<div class="slide-bottom" v-if="isBottomShow">
 				<span class="text" v-show="bottomStatus !== 'loading'">{{ bottomText }}</span>
-				<mt-spinner type="snake" color="#FF366D" v-show="bottomStatus === 'loading'"></mt-spinner>
+				<mt-spinner type="snake" :color="spanColor" v-show="bottomStatus === 'loading'"></mt-spinner>
 			</div>
 		</slot>
 
@@ -92,6 +92,7 @@ export default {
 			startTime: new Date().getTime(),
 			isBottomShow: true,
 			isTopShow: true,
+			spanColor: process.env.NODE_ENV.includes('developZbgedu') ? '#FF366D' : '#00a185'
     }
   },
 

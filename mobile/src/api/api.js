@@ -1,8 +1,6 @@
 
 import { getUserInfo } from './port';
 
-console.log(process.env.NODE_ENV);
-
 export default {
 
   /**

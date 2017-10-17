@@ -12,10 +12,10 @@
 			<input type="number" v-model="code" placeholder="验证码">
 			<input type="password" v-model="pwd" placeholder="新密码（请输入8-16位，不能有空格，纯数字需至少9位）" ref="pwd">
 			<input type="password"  v-model="againPwd" placeholder="再输入一次" ref="againPwd">
-			<a href="javascript:;" v-show="gainOn" @touchend="gainCode" class="gainCode">{{gainCodeText}}</a>
+			<a href="javascript:;" v-show="gainOn" @touchend="gainCode" class="gainCode">{{ gainCodeText }}</a>
 			<a href="javascript:;"  @touchend="lookPwd" data-index="0" class="look-pwd">&#xe62d;</a>
 			<a href="javascript:;"  @touchend="lookPwd" data-index="1" class="look-pwd again-look-pwd">&#xe62d;</a>
-			<a href="javascript:;" class="sub-ref-info" @click="subForm" ref="subFormBtn">{{subFormText}}</a>
+			<a href="javascript:;" class="sub-ref-info" @click="subForm" ref="subFormBtn">{{ subFormText }}</a>
 		</main>
 
 	</div>
@@ -156,59 +156,58 @@ export default {
 					this.webApi.alert('手机号未注册，请先去注册');
 					this.gainOn = true;
 					return false;
+				} else{
+
+					// 获取token
+					getToken({
+						appType: 'aPad',
+						appId: 'aPadCourse',
+						appKey: 'f7e4ebaa872f38db7b548b870c13e79e'
+					})
+
+					.then(res =>{
+
+						if(!res || res.state != 'success'){
+							this.webApi.alert('网络异常，请稍后再试');
+							this.gainOn = true;
+							return false;
+						}
+
+						this.token = res.data.token;
+
+						// 发送验证码
+						return sendCode({
+							templateSn: '09',
+							phone: this.mobile,
+							captcha: '', // 图片验证码
+							type: "send",
+							isResend: '1',
+							token: this.token
+						})
+
+					})
+
+					.then(res =>{
+
+						if(!res || res.state != 'success'){
+							this.webApi.alert('发送失败，请稍后再试');
+							this.gainOn = true;
+							return false;
+						}
+
+						this.countDown();
+
+
+					})
+
 				}
 
 
 			})
 
-			if(this.gainOn) return false;
 
-			// 获取token
-			getToken({
-				appType: 'aPad',
-				appId: 'aPadCourse',
-				appKey: 'f7e4ebaa872f38db7b548b870c13e79e'
-			})
 
-			.then(res =>{
 
-				if(!res || res.state != 'success'){
-					this.webApi.alert('网络异常，请稍后再试');
-					this.gainOn = true;
-					return false;
-				}
-
-				this.token = res.data.token;
-
-				// 发送验证码
-				return sendCode({
-					templateSn: '09',
-          phone: this.mobile,
-          captcha: '', // 图片验证码
-          type: "send",
-          isResend: '1',
-          token: this.token
-				})
-
-			})
-
-			.then(res =>{
-
-				if(!res || res.state != 'success'){
-					this.webApi.alert('发送失败，请稍后再试');
-					this.gainOn = true;
-					return false;
-				}
-
-				this.countDown();
-
-			})
-
-			.catch(err =>{
-				this.webApi.alert('网络异常，请稍后再试');
-				this.gainOn = true;
-				return false;
-			})
 
 		},
 
