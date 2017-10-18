@@ -3,6 +3,5 @@ export default {
   getUserDetails: state => state.userDetails,
   getUserExamData: state => state.examData,
 	getLoginLogData: state => state.loginLogData,
-	getActivityList: state => state.activityList,
-	getCourseState: state => state.courseState,
+	getActivityList: state => state.activityList
 }

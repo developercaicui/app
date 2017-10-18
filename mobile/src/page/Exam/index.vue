@@ -425,7 +425,7 @@
 				if(process.env.NODE_ENV.includes('developZbgedu')){
 					iframe.setAttribute("src", "http://static.zbgedu.com/exercisecache/"+src);
 				}else{
-					iframe.setAttribute("src", "http://www.caicui.com/upload/caicui_cache/exercise/"+src);
+					iframe.setAttribute("src", "http://static.caicui.com/upload/caicui_cache/exercise/"+src);
 				}
 				iframe.setAttribute("style", "display:none;");
 				var body = document.getElementsByTagName("body");

@@ -1,11 +1,11 @@
 <template lang="html">
 
-	<div class="exchange-wrap-ipad-details">
+	<div class="exchange-wrap-ipad-details" ref="exchangeWrapIpad">
 
 		<header class="one-top">
-			<a href="javascript:;" @click.stop="closeMe">&#xe67f;</a>
+			<a href="javascript:;" @touchend.stop="closeMe">&#xe67f;</a>
 			<h1 ref="reply">交流详情 (未回复)</h1>
-			<div class="state-edit" @touchend="removeDetails">
+			<div class="state-edit" @touchend.stop="removeDetails">
 				<a href="javascript:;"></a>
 				<a href="javascript:;" v-show="isRemoveMsg">&#xe618;</a>
 			</div>
@@ -137,6 +137,8 @@ export default {
 
 		this.getDetails(this.dataParams.id);
 
+		this.$refs.exchangeWrapIpad.style.minHeight = `${document.documentElement.clientHeight}px`;
+
 	},
 
   methods: {
@@ -166,13 +168,21 @@ export default {
 				this.data = res.data;
 
 				this.dataInit();
+
 			});
 
 		},
 
 		dataInit() {
 
-			this.picList = this.data.imgPath.split(',').map(item => `${this.webApi.exstaticUrl}${item}`);
+			 this.data.imgPath.split(',').map(src => {
+
+				 if(src && src.length > 0) {
+
+					 this.picList.push(`${this.webApi.exstaticUrl}${src}`)
+				 }
+
+			});
 
 			this.isRemoveMsg = this.userInfo.memberId === this.data.memberId ? true : false;
 
@@ -201,10 +211,17 @@ export default {
 
 			let oUl = this.webApi.recursiveParentNode(ev.target, 'ul')
 
-			this.picList = oUl.dataset.allimg.split(',') || [];
+			this.picList = [];
 
-			this.picList = this.picList.map(item =>{
-				return item.includes('http') ? item : `${this.webApi.cdnImgUrl}${item}`;
+			oUl.dataset.allimg.split(',').map(src =>{
+				if(src && src.length > 0) {
+					  if(src.substr(0,4)!="http"){
+					     this.picList.push(`${this.webApi.cdnImgUrl}${src}`)
+					  }else{
+					  	this.picList.push(`${src}`)
+					  }
+				 }
+
 			});
 
 			this.isShowList = true;
@@ -577,7 +594,7 @@ export default {
 
 	.one-top{
 		position: relative;
-		@include wh(100%, 1.05rem);
+		@include wh(100%, 1.45rem);
 		border-bottom: 1px solid #B9B9B9;
 		background-color: #fff;
 		> a{
@@ -586,7 +603,7 @@ export default {
 			@include wh(1.5rem, 1.05rem);
 			@extend .flexCenter;
 			font-family: 'iconfont';
-			left: 0; padding-left: .1rem; top: 0;
+			left: 0; padding-left: .1rem; top: 0.2rem;
 		}
 
 		h1{

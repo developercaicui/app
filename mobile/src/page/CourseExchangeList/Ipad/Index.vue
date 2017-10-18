@@ -17,12 +17,12 @@
 		      </ul>
 		      <div class="search-bar">
 		        <input type="text" name="input-lx" placeholder="搜索" class="input-txt" ref="searchWord">
-		        <div class="right"><i class="icon-sousuo icon-search-f">&#xe651;</i><span @click="goSearch()" class="submit">搜索</span><span @click="hideSearchBar" class="cancel">取消</span></div>
+		        <div class="right"><i class="icon-sousuo icon-search-f">&#xe651;</i><span @click="goSearch()" class="submit">搜索</span><span @click.stop="hideSearchBar" class="cancel">取消</span></div>
 		      </div>
       		</div>
 			<div class="all" v-show="defaultAct==0" ref="all">
 				<SlideRefresh @top-status-change="topStatusChange" @bottom-status-change="bottomStatusChange">
-				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList" @click="answerDetail(item)">
+				<dl id="li" class="cont-list" v-for="(item,index) in exchangeList" @click.stop="answerDetail(item)">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
 	              <div courseId="" taskId="" data-id="" data-key="" class="link-box">
@@ -49,7 +49,7 @@
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
-				<dl id="li" class="cont-list" v-for="(item,index) in exchangeListMe" @click="answerDetail(item)">
+				<dl id="li" class="cont-list" v-for="(item,index) in exchangeListMe" @click.stop="answerDetail(item)">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
 	              <div courseId="" taskId="" data-id="" data-key="" class="link-box">
@@ -170,7 +170,6 @@ export default {
         },
         hideSearchBar() {
             $('.search-bar').hide();
-            window.location.reload();
         },//提问
         new_answer() {
         	this.$router.push({

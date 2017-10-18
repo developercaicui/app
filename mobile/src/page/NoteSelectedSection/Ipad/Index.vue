@@ -215,7 +215,7 @@ export default {
 
 		> header{
 			position: relative;
-			@include wh(100%, 1.05rem);
+			@include wh(100%, 1.45rem);
 			border-bottom: 1px solid #B9B9B9;
 			background-color: #fff;
 			> a{
@@ -224,7 +224,7 @@ export default {
 				@include wh(1.5rem, 1.05rem);
 				@extend .flexCenter;
 				font-family: 'iconfont';
-				left: 0; padding-left: .1rem; top: 0;
+				left: 0; padding-left: .1rem; top: 0.2rem;
 			}
 
 			h1{
