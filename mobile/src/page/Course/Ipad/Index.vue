@@ -9,8 +9,8 @@
 		</ul>
 
 		<transition-group name="drop">
-		  <Courselearning :styleTop="styleTop" v-show="currmodule=='learning'" key="learning"></Courselearning>
-		  <Coursenoactive :styleTop="styleTop" v-show="currmodule=='noactive'" key="noactive"></Coursenoactive>
+		  <Courselearning :courseState="courselearnState" :styleTop="styleTop" v-show="currmodule=='learning'" key="learning"></Courselearning>
+		  <Coursenoactive @changeCourseState="changeCourseState" :courseState="coursenoactState" :styleTop="styleTop" v-show="currmodule=='noactive'" key="noactive"></Coursenoactive>
 		  <Courseoverdue :styleTop="styleTop" v-show="currmodule=='overdue'" key="overdue"></Courseoverdue>
 		</transition-group>
 
@@ -47,11 +47,19 @@ export default {
     return {
     	currmodule:"learning",
     	styleTop: 0,
+    	courselearnState: null,
+    	coursenoactState: null,
     }
   },
   mounted () {
   },
   methods: {
+
+  	changeCourseState(state) {
+  	  this.courselearnState = state;
+  	  this.coursenoactState = !state;
+  	},
+
   	 changeCourse(ev) {
 
   	 	for(let obj of ev.target.parentNode.querySelectorAll('li')) obj.classList.remove('active')

@@ -40,7 +40,7 @@
           <label>
             <input type="checkbox" name="agree">同意激活
           </label>
-          <div class="intro">激活课程后即可正常学习，请注意，激活动作无法撤销，此课程一旦激活将在190天后失效，失效后将无法继续学习。请在有效期内合理安排学习进度。</div>
+          <div class="intro">{{ "激活课程后即可正常学习，请注意，激活动作无法撤销，此课程一旦激活将在" + noactiveCourse.expirationDate + "天后失效，失效后将无法继续学习。请在有效期内合理安排学习进度。" }}</div>
           <div @click="sure()" class="btn active_ok">激活</div>
         </div>
       </div>
@@ -109,7 +109,14 @@ export default {
 
       })
 
+       
+
+
   },
+
+
+
+
 
   methods: {
 
@@ -205,7 +212,10 @@ export default {
           let Ttime = $.trim($("#setTime")[0].value);
           param.examTime = this.formatDate(Ttime,'Y')+'-'+this.formatDate(Ttime,'M')+'-'+this.formatDate(Ttime,'D')+' '+this.formatDate(Ttime,'h')+':'+this.formatDate(Ttime,'m')+':'+this.formatDate(Ttime,'s');
 
+
           this.webApi.loadingData('激活中');
+
+
 
           courseActive(param)
 
@@ -218,12 +228,14 @@ export default {
                 this.webApi.alert('课程激活成功!');
 
                 setTimeout(() => {
-                    location.reload();
-                },2000)
+                    this.$emit('updateCourseState', true);
+                    this.closeAlert();
+                },600)
 
 
             }else{
                 this.webApi.alert('激活失败，请重试！')
+                this.webApi.closeLoadingData();
             }
 
           })

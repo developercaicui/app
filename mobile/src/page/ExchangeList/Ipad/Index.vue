@@ -178,9 +178,9 @@ export default {
 
 		.no-data{
 			@extend .ab;
-			@include wh(2.2rem, 2.2rem);
-			left: 50%; top: 40%;
-			margin-left: -1.1rem;
+			@include wh(2.4rem, 2.4rem);
+			left: 50%; top: 5.46rem;
+			margin-left: -1.2rem;
 			z-index: 11;
 		}
 
