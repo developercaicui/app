@@ -7,7 +7,7 @@
 			<!-- <a href="javascript:;">&#xe60f;</a> -->
 	  </header>
 
-		<main>
+		<main ref="photoAlbumMain">
 			<ul class="pic-list">
 				<li @touchstart="tStart"  @touchmove="tMove"  @touchend="tEnd"  v-for="(item, index) in picList" :style="disposeCss(index)" :data-index="index"><img :src="item"></li>
 			</ul>
@@ -34,6 +34,7 @@ export default {
     return {
 			nowIndex: -0, // 默认第几张图片
 			screenWidth: 0, // 屏幕宽度
+			screenHeight: 0, // 屏幕高度
 			startX: 0, // 按下的X
 			numX: 0, // 上一次停留位置
 			touchLength: 1, // 几根手指
@@ -54,8 +55,10 @@ export default {
 		// 相册基本初始
 		let oHtml = document.documentElement;
 
-		this.screenWidth =  oHtml.clientWidth || oHtml.getBoundClientRect().width
+		this.screenWidth =  oHtml.clientWidth || oHtml.getBoundClientRect().width;
+		this.screenHeight =  oHtml.clientHeight || oHtml.getBoundClientRect().height;
 		this.$refs.listInfo.innerHTML = `1/${this.picList.length}`;
+		this.$refs.photoAlbumMain.style.cssText = `height:${this.screenHeight-this.$refs.photoAlbumMain.offsetTop}px;width:${this.screenWidth}px`;
 	},
 
   methods: {
@@ -187,6 +190,7 @@ export default {
 	font-size: 0;
 	position: fixed;
 	left: 0; right: 0; bottom: 0; top: 0;
+	height: 100%; width: 100%;
 	background-color: #000;
 	z-index: 119;
 
@@ -217,7 +221,7 @@ export default {
 		overflow: hidden;
 	}
 	.pic-list{
-		@include wh(auto, 100%)
+		@include wh(100%, 100%)
 		position: absolute;
 		left: 0;
 		li{
@@ -228,7 +232,7 @@ export default {
 			text-align: center;
 		}
 		img{
-			height: 100%;
+			height: 100%; width: 100%;
 		}
 	}
 }

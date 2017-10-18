@@ -1,11 +1,11 @@
 <template lang="html">
 
-	<div class="exchange-wrap-ipad-details">
+	<div class="exchange-wrap-ipad-details" ref="exchangeWrapIpad">
 
 		<header class="one-top">
-			<a href="javascript:;" @click.stop="closeMe">&#xe67f;</a>
+			<a href="javascript:;" @touchend.stop="closeMe">&#xe67f;</a>
 			<h1 ref="reply">交流详情 (未回复)</h1>
-			<div class="state-edit" @touchend="removeDetails">
+			<div class="state-edit" @touchend.stop="removeDetails">
 				<a href="javascript:;"></a>
 				<a href="javascript:;" v-show="isRemoveMsg">&#xe618;</a>
 			</div>
@@ -136,6 +136,8 @@ export default {
 		this.dataParams = JSON.parse(this.$route.params.data || {});
 
 		this.getDetails(this.dataParams.id);
+
+		this.$refs.exchangeWrapIpad.style.minHeight = `${document.documentElement.clientHeight}px`;
 
 	},
 
