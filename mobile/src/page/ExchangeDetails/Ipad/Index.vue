@@ -166,13 +166,20 @@ export default {
 				this.data = res.data;
 
 				this.dataInit();
+
 			});
 
 		},
 
 		dataInit() {
 
-			this.picList = this.data.imgPath.split(',').map(item => `${this.webApi.exstaticUrl}${item}`);
+			 this.data.imgPath.split(',').map(src => {
+
+				 if(src && src.length > 0) {
+					 this.picList.push(`${this.webApi.exstaticUrl}${src}`)
+				 }
+
+			});
 
 			this.isRemoveMsg = this.userInfo.memberId === this.data.memberId ? true : false;
 
@@ -201,10 +208,10 @@ export default {
 
 			let oUl = this.webApi.recursiveParentNode(ev.target, 'ul')
 
-			this.picList = oUl.dataset.allimg.split(',') || [];
+			this.picList = [];
 
-			this.picList = this.picList.map(item =>{
-				return item.includes('http') ? item : `${this.webApi.cdnImgUrl}${item}`;
+			oUl.dataset.allimg.split(',').map(src =>{
+				if(src.length > 0) this.picList.push(`${this.webApi.cdnImgUrl}${src}`);
 			});
 
 			this.isShowList = true;

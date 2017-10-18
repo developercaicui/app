@@ -225,6 +225,7 @@ export default {
 			@extend .flexCenter;
 			position: absolute;
 			left: 0;
+			text-align: center;
 		}
 		img{
 			height: 100%;

@@ -53,7 +53,11 @@ function backLogin() {
 
 // 关闭Loading
 function closeLoading() {
-  g.device == 'ios' ? caicui.hiddenLoadingImageView() : window.course.clonesProgress();
+  try{
+    g.device == 'ios' ? caicui.hiddenLoadingImageView() : window.course.clonesProgress();
+  }catch(e){
+    console.error(e);
+  }
 }
 
 // 跳出窗口打开活动页
