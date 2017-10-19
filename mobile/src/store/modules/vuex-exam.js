@@ -93,7 +93,7 @@ export default {
 						newContent = context.replace(/&(lt|gt|nbsp|amp|quot|#39);/ig, function(all, t) { return arrEntities[t]; });
 						try{
 							let newContentTry = newContent;
-							newContentTry.substring(1,newContentTry.length-1);
+							newContentTry = newContentTry.substring(1,newContentTry.length-1);
 							newContent = JSON.parse(JSON.parse(JSON.stringify(newContentTry)));
 						}catch(e){
 							try{

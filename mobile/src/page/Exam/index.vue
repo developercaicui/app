@@ -13,8 +13,10 @@
 				<ul v-for="(value, key) in examNeedIds">
 					<li>{{ key }}: {{ value }}</li>
 				</ul> -->
-				<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev" v-if="exam.exerciseActiveIndex != 0"></a>
-				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext" v-if="exam.exerciseActiveIndex != (exam.examBaseInfo.length-1)"></a>
+				<!-- <a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev" v-if="exam.exerciseActiveIndex != 0"></a>
+				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext" v-if="exam.exerciseActiveIndex != (exam.examBaseInfo.length-1)"></a> -->
+				<a href="javascript:;" class="triangle exercises-prev" @click="exercisePrev"></a>
+				<a href="javascript:;" class="triangle exercises-next" @click="exerciseNext"></a>
 			</template>
 			<questions @analysisstatus="analysisEvent"></questions>
 		</div>
@@ -101,9 +103,9 @@
 					if(this.exam.examType == 'chapter' || this.exam.examType == 'realImitate'){
 						return true;
 					}else{
-						if(this.exam.exerciseActiveIndex == (this.exam.examNumTotal-1)){
-							return true;
-						}
+						// if(this.exam.exerciseActiveIndex == (this.exam.examNumTotal-1)){
+						// 	return true;
+						// }
 					}
 				}
 			},
@@ -414,6 +416,8 @@
 				}))
 			},
 			exerciseKnowledgeIds (src,callback){
+				if(callback){callback("ff8080814d75e63a014d7a5aad930480,ff8080814d75e63a014d7b1368b0059b,ff8080814d75e63a014d7b1854ec059f,ff8080814d75e63a014d7c16c08e06a0,a95201f807e68787f0b42b4f437a73aa,ff8080814d75e63a014d7ab126e704fd,ff8080814d75e63a014d7c11748b0699,ff8080814d75e63a014d7e7e6c6a0886,ff8080814d75e63a014d7e8160d4088a,ff8080814d75e63a014d8adc9cdc1935".split(","))};
+				return;
 				// if(callback){callback("8a22ecb553c543220153cb6fbba100ac,8a22ecb55175206901517789c54c08d9,8a22ecb551752069015177790493088b,8a22ecb55678b61b015697341cc8016b,ff8080814f3eb9ed014f4f74cd04222c,ff8080814f3eb9ed014f4e90d4d11dfa,8a22ecb5517520690151773fb5f907af,8a22ecb55162140001516676e4a80b77".split(","))};
 				// return;
 				// return "ff8080814bee5fde014bfa12b1230114".split(',');
