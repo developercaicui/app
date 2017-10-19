@@ -29,6 +29,7 @@ axios.interceptors.response.use(response => {
 
     webApi.alert('登录失效，即将跳到登录页');
 
+    webApi.setCookie("isnologin","true");
 
     setTimeout( ()=>{
       if(webApi.getCookie('isTargetLogin') === 'false') {
@@ -39,7 +40,9 @@ axios.interceptors.response.use(response => {
     },2000)
 
 
+
   }else{
+    webApi.setCookie("isnologin","false");
     return response;
   }
 
