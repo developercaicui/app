@@ -175,7 +175,7 @@ export default {
 
 		> header{
 			position: relative;
-			@include wh(100%, 1.05rem);
+			@include wh(100%, 1.45rem);
 			border-bottom: 1px solid #B9B9B9;
 			background-color: #fff;
 			> a{

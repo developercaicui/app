@@ -46,10 +46,13 @@ import {
 
 export default {
 
+  
+	props: [ 'courseState' ],
 
 	components: {
 		SlideRefresh
-  },
+    },
+
 
 	data() {
 	  return {
@@ -64,13 +67,21 @@ export default {
 	  }
 	},
 
+
+	 watch: {
+	   	
+	  	courseState(state) {
+	  		if(state) {
+	   		  this.getDate();
+	   	   	  console.log('learning', state);
+   		  }
+	    },
+
+	},
+
 	created() {
 
 		this.getDate(true);
-
-		let fSize = parseInt(document.documentElement.style.fontSize) || 0;
-
-		this.styleTop = fSize * 1.4;
 
 	},
 
@@ -107,8 +118,12 @@ export default {
 
 		.then(res =>{
 
-			isOff ? g.closeLoading() : this.webApi.closeLoadingData();
+			try{
+				isOff ? g.closeLoading() : this.webApi.closeLoadingData();
+			}catch(ee){
 
+			}
+			
 			if(res && res.state == 'success'){
 
 				if(res.data.courselist.length < 1){
@@ -171,7 +186,7 @@ export default {
 						this.learningData = this.webApi.outCourseList(ret);
 
 						this.sectionList.push(this.learningData);
-
+console.log(this.sectionList)
 						let str = JSON.stringify(this.learningData);
 
 						this.activeBtn = str.substr(2, str.indexOf(':')-3);
@@ -281,7 +296,6 @@ export default {
 		data.expirationTime = this.formatDate(data.expirationTime,"Y")+'/'+this.formatDate(data.expirationTime,'M')+'/'+this.formatDate(data.expirationTime,'D');
 		data.token = this.webApi.getCookie('token');
 		data.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;
-
 		g.getClassCourseData(JSON.stringify(data))
 	}
   },

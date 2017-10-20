@@ -100,7 +100,7 @@ function closeSetting(data = {}) {
 
 //在学课程跳转课程详情页
 function getClassCourseData(data = {}) {
-
+  
   g.device == 'ios' ? caicui.getOnlineCourseData(data) : window.course.getClassCourseData(data);
 
 }

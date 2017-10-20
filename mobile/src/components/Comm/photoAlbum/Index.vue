@@ -8,7 +8,7 @@
 	  </header>
 
 		<main ref="photoAlbumMain">
-			<ul class="pic-list">
+			<ul class="pic-list" ref="ulPicList">
 				<li @touchstart="tStart"  @touchmove="tMove"  @touchend="tEnd"  v-for="(item, index) in picList" :style="disposeCss(index)" :data-index="index"><img :src="item"></li>
 			</ul>
 		</main>
@@ -70,7 +70,14 @@ export default {
 
 		// 关闭大图显示
 		handleCloseBigShow() {
-			this.$emit('closeBigPic', false)
+			this.$emit('closeBigPic', false);
+			this.webApi.addCss(this.$refs.ulPicList, {
+			  'transition': '0s',
+			  'transform': `translate3d(0,0,0)`
+		    });
+
+		    Object.assign(this.$data, this.$options.data())
+			
 		},
 
 		// 按下
@@ -146,7 +153,7 @@ export default {
 
 				this.webApi.addCss(oUl, { 'transition': '.3s ease' });
 
-				if (Math.abs(this.startX - touch.clientX) > this.screenWidth / 3) {
+				if (Math.abs(this.startX - touch.clientX) > this.screenWidth / 4) {
 
 					this.startX - touch.clientX > 0 ? this.nowIndex-- : this.nowIndex++;
 
@@ -156,11 +163,14 @@ export default {
 					this.numX = this.nowIndex * this.screenWidth;
 
 					this.$refs.listInfo.innerHTML = `${-this.nowIndex + 1}/${this.picList.length}`;
+
+					this.webApi.addCss(oUl, {
+					   'transform': `translate3d(${this.numX}px,0,0)`
+				    });
+
 				}
 
-				this.webApi.addCss(oUl, {
-					'transform': `translate3d(${this.numX}px,0,0)`
-				});
+				
 
 			}
 

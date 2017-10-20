@@ -29,7 +29,7 @@
       </div>
       <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
 	</SlideRefresh>
-      <Setactivate v-if="activeCour" :noactive-course="noactiveCourse" @close-me="closeMe"></Setactivate>
+      <Setactivate @updateCourseState="updateCourseState" v-if="activeCour" :noactive-course="noactiveCourse" @close-me="closeMe"></Setactivate>
 
   </div>
 
@@ -49,6 +49,9 @@ export default {
     SlideRefresh
   },
 
+  props: [ 'courseState' ],
+
+
   data() {
       return {
 	      isIpad: false,
@@ -60,6 +63,20 @@ export default {
 	      sectionList:[],
 	      styleTop: 0,
       }
+  },
+
+  watch: {
+   	
+   	courseState(state) {
+
+   		if(!state) {
+   		  this.getDate();
+   	   		console.log('noactive', state);
+   		    this.$emit('changeCourseState', false);
+   		}
+
+   	},
+
   },
 
   created() {
@@ -74,6 +91,11 @@ export default {
 
 
   methods: {
+
+  	updateCourseState(state) {
+  	  this.$emit('changeCourseState', state)
+  	},
+
     // 课程的实时状态
 	topStatusChange(status) {
 

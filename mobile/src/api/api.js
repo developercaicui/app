@@ -196,6 +196,8 @@ export default {
     */
    alert(message = '网络异常，请稍后再试', time = 2000, zIndex = 199) {
 
+     if(this.getCookie('isnologin') == "true" && !message.includes('登录失效')) return false;
+
      let oDiv = document.createElement('div');
 
      try {

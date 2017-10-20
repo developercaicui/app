@@ -178,6 +178,7 @@ export default {
 			 this.data.imgPath.split(',').map(src => {
 
 				 if(src && src.length > 0) {
+
 					 this.picList.push(`${this.webApi.exstaticUrl}${src}`)
 				 }
 
@@ -213,7 +214,14 @@ export default {
 			this.picList = [];
 
 			oUl.dataset.allimg.split(',').map(src =>{
-				if(src.length > 0) this.picList.push(`${this.webApi.cdnImgUrl}${src}`);
+				if(src && src.length > 0) {
+					  if(src.substr(0,4)!="http"){
+					     this.picList.push(`${this.webApi.cdnImgUrl}${src}`)
+					  }else{
+					  	this.picList.push(`${src}`)
+					  }
+				 }
+
 			});
 
 			this.isShowList = true;
@@ -586,7 +594,7 @@ export default {
 
 	.one-top{
 		position: relative;
-		@include wh(100%, 1.05rem);
+		@include wh(100%, 1.45rem);
 		border-bottom: 1px solid #B9B9B9;
 		background-color: #fff;
 		> a{
@@ -595,7 +603,7 @@ export default {
 			@include wh(1.5rem, 1.05rem);
 			@extend .flexCenter;
 			font-family: 'iconfont';
-			left: 0; padding-left: .1rem; top: 0;
+			left: 0; padding-left: .1rem; top: 0.2rem;
 		}
 
 		h1{
