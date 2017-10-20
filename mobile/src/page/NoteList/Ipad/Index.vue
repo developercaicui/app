@@ -20,7 +20,7 @@
 
 					<template v-for="twoItem in item.children">
 
-						<section class="list" :data-id="twoItem.id">
+						<section v-if="twoItem.nodeNum != 0" class="list" :data-id="twoItem.id">
 							<div>
 								<span></span>
 								<h1 @click.stop="shrinkList">{{ twoItem.chapterTitle }}</h1>
@@ -28,14 +28,14 @@
 
 							<template v-for="threeItem in twoItem.children">
 
-							<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)"  @click.stop="openNoteDetails($event, threeItem.isLeaf)" :data-id="threeItem.id">
+							<section v-if="threeItem.nodeNum != 0" class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)"  @click.stop="openNoteDetails($event, threeItem.isLeaf)" :data-id="threeItem.id">
 								<div>
 									<h1 :data-nodenum="threeItem.nodeNum">{{ threeItem.chapterTitle }}</h1>
 									<i v-if="threeItem.nodeNum > 0 && threeItem.isLeaf">{{ threeItem.nodeNum }}</i>
 								</div>
 
 								<template v-for="fourItem in threeItem.children">
-									<section class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(threeItem)" :data-chaptertwo="JSON.stringify(fourItem)" @click.stop="openNoteDetails($event, true)" :data-id="fourItem.id">
+									<section v-if="fourItem.nodeNum != 0" class="list" :data-course="JSON.stringify(item)" :data-chapter="JSON.stringify(threeItem)" :data-chaptertwo="JSON.stringify(fourItem)" @click.stop="openNoteDetails($event, true)" :data-id="fourItem.id">
 										<div>
 											<h1 :data-nodenum="fourItem.nodeNum">{{ fourItem.chapterTitle }}</h1>
 											<i v-if="fourItem.nodeNum > 0">{{ fourItem.nodeNum }}</i>
