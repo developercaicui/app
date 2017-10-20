@@ -107,6 +107,8 @@ export default {
 
 		this.$refs.refreshContent.style.minHeight = `${document.documentElement.getBoundingClientRect().height - this.distanceTop - this.$refs.refreshContent.getBoundingClientRect().top}px`;
 
+		document.querySelectorAll('.v-wrap')[0].style.height = `auto`;
+
 	},
 
 	watch: {
@@ -173,10 +175,10 @@ export default {
 
 	updated() {
 
-		let oHtml = document.documentElement
+		let oWrap = document.querySelectorAll('.v-wrap')[0];
 
-		this.screenWidth = oHtml.getBoundingClientRect().width;
-		this.screenHeight = oHtml.getBoundingClientRect().height;
+		this.screenWidth = oWrap.getBoundingClientRect().width;
+		this.screenHeight = oWrap.getBoundingClientRect().height;
 		this.contentHeight = this.$refs.refreshContent.offsetHeight;
 
 	},
@@ -283,8 +285,10 @@ export default {
 
 			let endTime = new Date().getTime();
 
-			this.screenHeight = document.documentElement.getBoundingClientRect().height;
+			this.screenHeight = document.querySelectorAll('.v-wrap')[0].getBoundingClientRect().height;
 			this.contentHeight = this.$refs.refreshContent.offsetHeight;
+
+			console.log(this.contentHeight);
 
 			// 下滑，
 			if(this.isDirection == "top") {
@@ -334,7 +338,7 @@ export default {
 
 			}
 
-			// 点击实际过短不算滑动
+			// 点击时间过短不算滑动
 			if(endTime - this.startTime < 300) {
 				this.webApi.addCss(this.$refs.refreshContent, {
 					transition: '0',
