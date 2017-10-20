@@ -249,9 +249,11 @@ export default {
 
 			.then(res =>{
 
+          isOff ? g.closeLoading() : this.webApi.closeLoadingData() ;
+
+
 		      if(res && res.state == 'success'){
 
-							isOff ? g.closeLoading() : this.webApi.closeLoadingData() ;
 
 		          if(self == 0){
 
