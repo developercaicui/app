@@ -192,7 +192,11 @@ export default {
 				let fileData = file[i];
 				let reader = new FileReader();
 
-				reader.readAsDataURL(fileData);
+				try{
+					reader.readAsDataURL(fileData);
+				}catch(e){
+
+				}
 
 				reader.onload = (evt) =>{
 
@@ -229,7 +233,12 @@ export default {
 				return false;
 			}
 
-			this.isUploadSuccess = 0;
+			if(this.type == 'edit' || this.allUploadPic.length == 5){
+				this.subForm();
+				return false;
+			}
+
+			this.isUploadSuccess = this.allUploadPic.length || 0;
 
 			this.allUploadPic.map((item, index) =>{
 
@@ -239,20 +248,27 @@ export default {
 					return false;
 				}
 
-				let formData = new FormData();
 
-				formData.append(`file`, item.file);
-				formData.append('token', this.webApi.getCookie('token'));
+				if(item.file) {
 
-				this.$emit('upload-pic', formData, res =>{
+					let formData = new FormData();
 
-					this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
-					this.isUploadSuccess++;
+					formData.append(`file`, item.file);
+					formData.append('token', this.webApi.getCookie('token'));
 
-					// 成功以后提交表单内容
-					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+					this.$emit('upload-pic', formData, res =>{
 
-				});
+						this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
+						this.isUploadSuccess++;
+
+						// 成功以后提交表单内容
+						if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+
+					});
+
+				}
+
+
 
 			});
 
