@@ -87,7 +87,7 @@ export default {
 
 							}else{
 
-								if(this.webApi.getCookie('referrer').includes('coursenote/list')) {
+								if((this.webApi.getCookie('referrer') || '').includes('coursenote/list')) {
 									this.webApi.setCookie('referrer', 'node/list');
 									this.$router.push(`/coursenote/list`);
 								}else{

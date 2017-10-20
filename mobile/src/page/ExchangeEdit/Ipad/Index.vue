@@ -249,7 +249,7 @@ export default {
 			textarea{
 				@extend .ab;
 				width: 96%;
-				top: 2.5rem; bottom: 3rem;
+				top: 2.8rem; bottom: 3rem;
 				left: 2%; right: 2%;
 				max-height: 80%; height: 66%;
 			}

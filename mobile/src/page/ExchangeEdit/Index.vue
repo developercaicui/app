@@ -86,15 +86,12 @@ export default {
 
 						}else{
 
-							if(document.referrer.includes('courseexchange/list')) {
-
+							if((this.webApi.getCookie('courseReferrer') || '').includes('courseexchange/list')) {
+								this.webApi.setCookie('courseReferrer', 'exchange/list');
 								this.$router.push(`/courseexchange/list`);
-
 							}else{
-
 								this.webApi.setCookie('updateExchangeList', 'true');
 								this.$router.push(`/exchange/list`);
-
 							}
 
 

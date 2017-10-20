@@ -148,8 +148,7 @@ export default {
 	  	bottomStatusChange(status) {
 	  		if(status == 'loading') {
 	  			this.page++;
-	      		this.getDate(this.page,this.self);
-
+	      	this.getDate(this.page,this.self);
 	    	}
 	  	},
   		set_index(index) {
@@ -170,11 +169,16 @@ export default {
         },
         hideSearchBar() {
             $('.search-bar').hide();
-        },//提问
+        },
+				//提问
         new_answer() {
+
+					this.webApi.setCookie('courseReferrer', '/courseexchange/list');
+
         	this.$router.push({
-				path: `/exchange/edit/${encodeURIComponent(JSON.stringify(this.exchangeList[0]))}`,
-			});
+						path: `/exchange/edit/${encodeURIComponent(JSON.stringify(this.exchangeList[0]))}`,
+					});
+
         },//搜索
         goSearch() {
         	this.params.keyWords = this.webApi.isEmpty(this.$refs.searchWord.value) ? '' : this.$refs.searchWord.value;

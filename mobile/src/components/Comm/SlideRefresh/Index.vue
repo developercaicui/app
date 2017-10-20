@@ -348,7 +348,7 @@ export default {
 
 			setTimeout(()=>{
 				if(this.bottomStatus === 'loading' && this.bottomAllLoaded === false)  this.onBottomLoaded(true);
-				if(this.topStatus === 'loading' && this.topAllLoaded === false)  this.onTopLoaded(true);
+				if(this.topStatus === 'loading' && this.topAllLoaded === falseq)  this.onTopLoaded(true);
 			}, 1000);
 
 		},
