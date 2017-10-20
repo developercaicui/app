@@ -95,7 +95,7 @@ export default {
 
     this.$store.commit('updateMsgListParams', {
         token: this.userInfo.token,
-        self: 0,
+        self: 0
     });
     this.$store.dispatch('fetchMsgList');
 

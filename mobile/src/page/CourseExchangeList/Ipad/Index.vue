@@ -141,7 +141,12 @@ export default {
 	  	topStatusChange(status) {
 
 	    	if(status == 'loading') {
-	      	this.getDate(1,0);
+          if(this.defaultAct == 0){
+            this.exchangeList = [];
+          }else{
+            this.exchangeListMe = [];
+          }
+	      	this.getDate(1,this.defaultAct);
 	    	}
 
 	  	},
@@ -232,10 +237,9 @@ export default {
 	        param.pageSize = 10;
 	        param.subjectId= this.courseInfo.subjectId;
 	        param.token = this.webApi.getCookie('token');
-	        if (page == 1) {
-						if(!isOff) this.webApi.loadingData();
+					if(!isOff) this.webApi.loadingData();
 	           // this.webApi.loadingData();
-	        }
+	        
 
 			getExchangeList(param)
 
@@ -243,9 +247,7 @@ export default {
 
 		      if(res && res.state == 'success'){
 
-							if(page == 1){
-								isOff ? g.closeLoading() : this.webApi.closeLoadingData() ;
-				  		}
+							isOff ? g.closeLoading() : this.webApi.closeLoadingData() ;
 
 		          if(self == 0){
 
