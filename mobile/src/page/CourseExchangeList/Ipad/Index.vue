@@ -243,7 +243,7 @@ export default {
 	        param.token = this.webApi.getCookie('token');
 					if(!isOff) this.webApi.loadingData();
 	           // this.webApi.loadingData();
-	        
+
 
 			getExchangeList(param)
 
