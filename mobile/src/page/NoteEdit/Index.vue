@@ -87,7 +87,8 @@ export default {
 
 							}else{
 
-								if(document.referrer.includes('coursenote/list')) {
+								if(this.webApi.getCookie('referrer').includes('coursenote/list')) {
+									this.webApi.setCookie('referrer', 'node/list');
 									this.$router.push(`/coursenote/list`);
 								}else{
 									this.webApi.setCookie('updateNoteList', 'true');
