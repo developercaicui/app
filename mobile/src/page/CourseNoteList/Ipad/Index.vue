@@ -203,12 +203,18 @@ export default {
         hideSearchBar() {
             $('.search-bar').hide();
             window.location.reload();
-        },//提问
+        },
+				//提问
         new_answer() {
+
+					this.webApi.setCookie('referrer', 'coursenote/list');
+
         	this.$router.push({
     				path: `/note/selected`,
     			});
-        },//搜索
+
+        },
+				//搜索
         goSearch() {
         	this.params.keyWords = this.webApi.isEmpty(this.$refs.searchWord.value) ? '' : this.$refs.searchWord.value;
 
