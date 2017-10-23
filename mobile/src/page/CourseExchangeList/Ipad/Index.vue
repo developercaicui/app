@@ -44,7 +44,7 @@
 	              </div>
 	            </dd>
 	          </dl>
-	          <img class="no-data" v-show="this.exchangeList && this.exchangeList.length === 0" src="../../../assets/img/404.svg"/>
+	          <img class="no-data" v-show="this.exchangeList && this.exchangeList.length === 0 && allStatus" src="../../../assets/img/404.svg"/>
 	          </SlideRefresh>
 			</div>
 
@@ -71,7 +71,7 @@
 	              </div>
 	            </dd>
 	          </dl>
-	          <img class="no-data" v-show="this.exchangeListMe && this.exchangeListMe.length === 0" src="../../../assets/img/404.svg"/>
+	          <img class="no-data" v-show="this.exchangeListMe && this.exchangeListMe.length === 0 && meStatus" src="../../../assets/img/404.svg"/>
 			</div>
 		</main>
 
@@ -103,6 +103,8 @@ export default {
 		  }],
 		    exchangeList: [],
 		    exchangeListMe: [],
+        allStatus: false,
+        meStatus: false,
 		    searchWord: '',
 		    searchData:'',
 		    page: 1,
@@ -257,6 +259,8 @@ export default {
 
 		          if(self == 0){
 
+                this.allStatus = true;
+
 		          	res.data = this.setListData(res.data);
 
 		          	this.exchangeList = this.exchangeList.concat(res.data);
@@ -264,6 +268,8 @@ export default {
 								this.$store.commit('CHANGE_Course_Exchange_List', this.exchangeList);
 
 		          }else{
+                
+                this.meStatus = true;
 
 		          	res.data = this.setListData(res.data);
 

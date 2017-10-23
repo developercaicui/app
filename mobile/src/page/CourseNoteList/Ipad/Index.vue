@@ -54,7 +54,7 @@
            </template>
 
         </template>
-        <img class="no-data" v-show="this.sectionAllList && this.sectionAllList.length === 0 || this.sectionAllList.nodeNum == 0" src="../../../assets/img/404.svg"/>
+        <img class="no-data" v-show="this.sectionAllList && this.sectionAllList.length === 0 && allStatus || this.sectionAllList.nodeNum == 0" src="../../../assets/img/404.svg"/>
 
 			 </SlideRefresh>
 			</div>
@@ -90,7 +90,7 @@
            </template>
 
         </template>
-        <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0 || this.sectionList.nodeNum == 0" src="../../../assets/img/404.svg"/>
+        <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0 && meStatus || this.sectionList.nodeNum == 0" src="../../../assets/img/404.svg"/>
 			</div>
 
 		</main>
@@ -125,6 +125,8 @@ export default {
       courseInfo: {},//课程信息
       sectionList: [],//我的笔记列表
       sectionAllList: [],//全部笔记列表
+      allStatus: false,
+      meStatus: false,
 			navList: [{
 		    name: '全部笔记',
 		   },{
@@ -303,6 +305,8 @@ export default {
 							 return false;
             }
 
+            this.allStatus = true;
+
 						this.sectionAllList = res.data;
 
 						this.$store.commit('CHANGE_COURSE_NOTE_LIST_ALL', this.sectionAllList);
@@ -361,6 +365,7 @@ export default {
 							return false;
 						}
 
+            this.meStatus = true;
 
     		    	this.sectionList = res.data.filter(item => item.courseId == this.courseInfo.courseId);
 
