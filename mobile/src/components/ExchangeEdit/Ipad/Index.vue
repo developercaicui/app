@@ -169,6 +169,7 @@ export default {
 
 			this.allUploadPic.map((item, index) =>{
 
+
 				let formData = new FormData();
 
 				formData.append(`file`, item.file);
@@ -176,8 +177,8 @@ export default {
 
 				this.$emit('upload-pic', formData, res =>{
 
-					this.allPicPathHtml =  `${this.allPicPathHtml}<img src="${res.path}"/>`;
-					this.allPicPath = `${this.allPicPath}${res.path},`;
+					this.allPicPathHtml =  `${this.allPicPathHtml}<img src="${this.webApi.exstaticUrl}${res.storeFileUrl}"/>`;
+					this.allPicPath = `${this.allPicPath}${res.storeFileUrl},`;
 
 					this.isUploadSuccess++;
 

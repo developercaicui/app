@@ -242,30 +242,42 @@ export default {
 				return false;
 			}
 
-			this.isUploadSuccess = 0;
+			if(this.type == 'edit' || this.allUploadPic.length == 5){
+				this.subForm();
+				return false;
+			}
+
+			this.isUploadSuccess = this.allUploadPic.length || 0;
 
 			this.allUploadPic.map((item, index) =>{
 
 				if(!item.file) {
-					this.allPicPath =  `${this.allPicPath}${item.path},`;
+					this.allPicPath =  `${this.allPicPath}${item.storeFileUrl},`;
 					this.isUploadSuccess++;
 					return false;
 				}
 
-				let formData = new FormData();
 
-				formData.append(`file`, item.file);
-				formData.append('token', this.webApi.getCookie('token'));
+				if(item.file) {
 
-				this.$emit('upload-pic', formData, res =>{
+					let formData = new FormData();
 
-					this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
-					this.isUploadSuccess++;
+					formData.append(`file`, item.file);
+					formData.append('token', this.webApi.getCookie('token'));
 
-					// 成功以后提交表单内容
-					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+					this.$emit('upload-pic', formData, res =>{
 
-				});
+						this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
+						this.isUploadSuccess++;
+
+						// 成功以后提交表单内容
+						if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+
+					});
+
+				}
+
+
 
 			});
 
