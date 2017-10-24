@@ -27,7 +27,7 @@
           </li>
         </template>
       </div>
-      <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
+      <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0 && dataState" src="../../../assets/img/404.svg"/>
       </SlideRefresh>
   </div>
 
@@ -48,7 +48,8 @@ export default {
     return {
       isIpad: false,
       isMobile: false,
-      overdueData: {}, // 在学课程列表
+      overdueData: {}, // 过期课程列表
+      dataState: false,
       activeBtn: "",
       sectionList:[],
       styleTop: 0,
@@ -90,6 +91,7 @@ methods: {
       if(res && res.state == 'success'){
 
           if(res.data.courselist.length < 1){
+              this.dataState = true;
               return false;
           }
 
@@ -101,6 +103,7 @@ methods: {
 
           this.activeBtn = str.substr(2, str.indexOf(':')-3);
 
+          this.dataState = true;
       }
 
     })

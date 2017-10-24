@@ -60,7 +60,7 @@
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
-
+        <SlideRefresh @top-status-change="topStatusChange">
 				<template v-for="item in sectionList">
 
           <h1 :data-id="item.id">{{item.courseName}}</h1>
@@ -91,6 +91,7 @@
 
         </template>
         <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0 && meStatus || this.sectionList.nodeNum == 0" src="../../../assets/img/404.svg"/>
+        </SlideRefresh>
 			</div>
 
 		</main>
@@ -167,7 +168,17 @@ export default {
   methods: {
 
 	 topStatusChange(status) {
-		 if(status == 'loading') this.getAllNote();
+		 if(status == 'loading'){
+        if(this.defaultAct == 0){
+            this.allStatus = false;
+            this.sectionAllList = [];
+            this.getAllNote();
+        }else{
+          this.meStatus = false;
+          this.sectionList = [];
+          this.getMeNote();
+        }
+     } 
 	 },
 
 

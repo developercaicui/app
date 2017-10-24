@@ -27,7 +27,7 @@
         </li>
         </template>
       </div>
-      <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
+      <img class="no-data" v-show="this.sectionList && this.sectionList.length === 0 && dataState" src="../../../assets/img/404.svg"/>
 	</SlideRefresh>
       <Setactivate @updateCourseState="updateCourseState" v-if="activeCour" :noactive-course="noactiveCourse" @close-me="closeMe"></Setactivate>
 
@@ -56,7 +56,8 @@ export default {
       return {
 	      isIpad: false,
 	      isMobile: false,
-	      noactiveData: {}, // 在学课程列表
+	      noactiveData: {}, // 未激活课程列表
+        dataState: false,
 	      noactiveCourse: {},
 	      activeBtn: "",
 	      activeCour: false,
@@ -120,6 +121,7 @@ export default {
 	      if(res && res.state == 'success'){
 
 	        if(res.data.courselist.length < 1){
+            this.dataState = true;
 			      return false;
 			}
 
@@ -131,6 +133,7 @@ export default {
 
 	        this.activeBtn = str.substr(2, str.indexOf(':')-3);
 
+          this.dataState = true;
 	      }
 
 	    })

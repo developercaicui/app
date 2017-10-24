@@ -30,7 +30,7 @@
         </li>
         </template>
       </div>
-		<img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
+		<img class="no-data" v-show="this.sectionList && this.sectionList.length === 0 && dataState" src="../../../assets/img/404.svg"/>
       </SlideRefresh>
 	</div>
 
@@ -59,6 +59,7 @@ export default {
 			isIpad: false,
 	  	isMobile: false,
 			learningData: {}, // 在学课程列表
+			dataState: false,
 			learningcourse: {},
 			activeBtn: "",
 			imgurl: 'http://cdnimg.caicui.com/',
@@ -127,6 +128,7 @@ export default {
 			if(res && res.state == 'success'){
 
 				if(res.data.courselist.length < 1){
+					  this.dataState = true;
 				      return false;
 				}
 
@@ -190,6 +192,8 @@ console.log(this.sectionList)
 						let str = JSON.stringify(this.learningData);
 
 						this.activeBtn = str.substr(2, str.indexOf(':')-3);
+				
+						this.dataState = true;
 
 
 					}

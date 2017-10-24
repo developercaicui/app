@@ -49,6 +49,7 @@
 			</div>
 
 			<div class="me" v-show="defaultAct==1" ref="me">
+      <SlideRefresh @top-status-change="topStatusChange" @bottom-status-change="bottomStatusChange">
 				<dl id="li" class="cont-list" v-for="(item,index) in exchangeListMe" @click.stop="answerDetail(item)">
 	            <dt><img :src="item.headImg" class="avatar"></dt>
 	            <dd>
@@ -72,6 +73,7 @@
 	            </dd>
 	          </dl>
 	          <img class="no-data" v-show="this.exchangeListMe && this.exchangeListMe.length === 0 && meStatus" src="../../../assets/img/404.svg"/>
+            </SlideRefresh>
 			</div>
 		</main>
 
@@ -144,8 +146,10 @@ export default {
 
 	    	if(status == 'loading') {
           if(this.defaultAct == 0){
+            this.allStatus = false;
             this.exchangeList = [];
           }else{
+            this.meStatus = false;
             this.exchangeListMe = [];
           }
 	      	this.getDate(1,this.defaultAct);
@@ -175,6 +179,7 @@ export default {
             $('.search-bar').show(300);
         },
         hideSearchBar() {
+          this.searchData = '';
             $('.search-bar').hide();
         },
 				//提问
