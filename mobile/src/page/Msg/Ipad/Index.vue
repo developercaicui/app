@@ -247,8 +247,7 @@ export default {
 
     > span.no-data{
       @extend .show;
-      @include wh(2.4rem, 2.4rem);
-      transform: translate3d(1.6rem, 1.4rem, 0);
+      transform: translate3d(0,-.8rem,0);
     }
 
     figure{
