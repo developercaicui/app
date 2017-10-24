@@ -78,7 +78,7 @@ export default {
 						return false;
 					}
 
-					this.webApi.alert(`${tip}笔记成功, `, 1500);
+					this.webApi.alert(`${tip}笔记成功`, 1500);
 
 						setTimeout(() =>{
 							if(data.elseType == 'video' || data.elseType == 'problem') {
