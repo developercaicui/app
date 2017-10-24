@@ -290,8 +290,6 @@ export default {
 			this.screenHeight = document.querySelectorAll('.v-wrap')[0].getBoundingClientRect().height;
 			this.contentHeight = this.$refs.refreshContent.offsetHeight;
 
-			console.log(this.contentHeight);
-
 			// 下滑，
 			if(this.isDirection == "top") {
 

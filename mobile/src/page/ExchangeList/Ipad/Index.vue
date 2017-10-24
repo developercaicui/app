@@ -14,7 +14,7 @@
 			</header>
 
 			<SlideRefresh  @top-status-change="topStatusChange">
-				
+
 				<section class="list" v-for="item in exchangeData.data" :data-id="item.id" @click="targetDetails">
 					<div>{{ item.nikeName }}<span class="msg-num">{{ item.replyCount }}</span></div>
 					<h1>{{ item.title }}</h1>
@@ -27,7 +27,7 @@
 				</section>
 
 		 </SlideRefresh>
-			<img src="../../../assets/img/404.svg" class="no-data" :data-num="exchangeData.totalCount" v-show="exchangeData.totalCount === 0">
+			<img src="../../../assets/img/404.svg" class="no-data" :data-num="exchangeData.totalCount" v-show="!this.firstLoading && exchangeData.totalCount === 0">
 
 		</main>
 
@@ -70,14 +70,19 @@ export default {
 					text: '回复数量',
 				},{
 					text: '精华讨论',
-				}]
+				}],
+				firstLoading: true,
     }
   },
-  created(){
 
-  	  
+	watch: {
 
-  },
+		exchangeData() {
+			this.firstLoading = false;
+		}
+
+	},
+
 
   methods: {
 
@@ -135,7 +140,7 @@ export default {
 		setImg(imgPath) {
 
 	         return `${this.webApi.isEmpty(imgPath)?'':imgPath}`;
-	
+
         },
 		setBackground(url) {
 			return `background-image:url(${this.getImgPath(url)})`

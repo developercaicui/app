@@ -53,7 +53,7 @@
 
 				</template>
 
-				<img class="no-data" v-show="this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
+				<img class="no-data" v-show="!this.firstLoading && this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
 
 			</main>
 
@@ -82,8 +82,17 @@ export default {
 
   data() {
     return {
+			firstLoading: true, // 是否是首次加载
     }
   },
+
+	watch: {
+
+		sectionList() {
+			this.firstLoading = false;
+		}
+
+	},
 
   methods: {
 

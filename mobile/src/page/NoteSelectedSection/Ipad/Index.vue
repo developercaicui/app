@@ -48,6 +48,8 @@
 
 		</main>
 
+	 <img class="no-data" v-show="!this.firstLoading && this.sectionList && this.sectionList.length === 0" src="../../../assets/img/404.svg"/>
+
 	</div>
 
 </template>
@@ -57,11 +59,11 @@
 export default {
 
 	props: {
-		'section-list': {
+		'sectionList': {
 			type: Array,
 			default: []
 		},
-		'course-data': {
+		'courseData': {
 			type: Object,
 			default: {}
 		}
@@ -69,10 +71,15 @@ export default {
 
   data() {
     return {
+			firstLoading: true,
     }
   },
 
-	created(){
+	watch: {
+
+		sectionList() {
+			this.firstLoading = false;
+		},
 
 	},
 

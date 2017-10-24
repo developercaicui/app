@@ -13,6 +13,8 @@
 		  </template>
 		</SlideRefresh>
 
+		<img class="no-data" v-show="!this.firstLoading && this.selectedData && this.selectedData.courselist.length === 0" src="../../../assets/img/404.svg"/>
+
 	</div>
 
 </template>
@@ -28,7 +30,7 @@ export default {
   },
 
 	props: {
-		'selectedData': {
+		selectedData: {
 			type: Object,
 			default: {}
 		}
@@ -36,8 +38,17 @@ export default {
 
   data() {
     return {
+			firstLoading: true
     }
   },
+
+	watch: {
+
+		selectedData(d) {
+			this.firstLoading = false;
+		}
+
+	},
 
   methods: {
 
