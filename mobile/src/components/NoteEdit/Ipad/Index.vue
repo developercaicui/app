@@ -190,24 +190,33 @@ export default {
 		// 上传图片
 		handleUploadPic(ev) {
 
-			if(this.$refs.iptFile.files.length > 1) {
-			 this.webApi.alert('抱歉，只能上传一张图片');
-			 return false;
+			let file = this.$refs.iptFile.files;
+			let i = 0, len = file.length;
+			let allLen = this.allUploadPic.length;
+
+			len = 5 - allLen;
+
+			for (i=0; i<len; i++) {
+
+				let fileData = file[i];
+				let reader = new FileReader();
+
+				try{
+					reader.readAsDataURL(fileData);
+				}catch(e){
+
+				}
+
+				reader.onload = (evt) =>{
+
+					this.allUploadPic.push({
+						src: evt.target.result,
+						file: fileData
+					});
+
+	      }
+
 			}
-
-			let file = this.$refs.iptFile.files[0];
-			let reader = new FileReader();
-
-			reader.readAsDataURL(file);
-
-			reader.onload = (evt) =>{
-
-				this.allUploadPic.push({
-					src: evt.target.result,
-					file: file
-				});
-
-      }
 
 		},
 
