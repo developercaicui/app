@@ -134,7 +134,7 @@ export default {
     // 获取消息列表
     gainMsgList(type) {
 
-      this.msgList = [];
+      this.$store.commit('updateMsgList', []);
 
       this.$store.commit('updateMsgListParams', {
           type: type,
@@ -146,8 +146,9 @@ export default {
 
     // 消息条目数更新
     updataMsgState(data) {
-      this.msgNum = this.totalCount = this.totalCount - data.num;
-      this.msgList = data.list;
+      this.totalCount = this.totalCount - data.num;
+      this.msgNum = this.msgNum - data.num;
+      this.gainMsgList(data.type)
     },
 
     // 打开消息列表
