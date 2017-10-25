@@ -204,8 +204,6 @@ export default {
 
 		onBottomLoaded(isOff) {
 
-			console.log('-12');
-
 			this.bottomStatus = 'end';
 			this.bottomAllLoaded = false;
 

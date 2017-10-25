@@ -13,7 +13,6 @@ export default {
     verTT: new Date().getTime(),
     pageNo: 1,
     pageSize: 99,
-    type: 0,
     isRead: 0,
     token: ''
   },

@@ -10,6 +10,69 @@ export default {
   preloadImages(arr) {
 
   },
+/**
+  * 图片预加载
+  * @type { file } 文件
+  * @type { cd } 回调函数
+  */
+  pictureCompress(file, cd) {
+
+    const setting = {
+      mime: 'image/jpeg',
+      quality: 0.6,
+      fileName: '',
+    }
+
+    setting.fileName = this.randomName(setting.mime);
+
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
+
+
+    let _reader = new FileReader(),
+        _img, _base64Img;
+
+
+      _reader.onload = (ev) => {
+
+        _img = new Image();
+
+        _img.onload = function() {
+          ctx.drawImage(_img, 0, 0);
+          _base64Img = canvas.toDataURL(setting.mime, setting.quality);
+          cd(dataURLtoBlob(_base64Img), setting.fileName);
+        };
+
+        _img.src = _reader.result;
+
+      };
+
+      _reader.readAsDataURL(file);
+
+
+      function dataURLtoBlob(dataurl) {
+
+          let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+              bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+          while (n--) {
+              u8arr[n] = bstr.charCodeAt(n);
+          }
+
+          return new Blob([u8arr], { type: mime });
+      }
+
+
+
+  },
+
+  /**
+    * 随机图片名
+    * @type   { mime }    文件类型
+    * @return { String }  文件名
+    */
+  randomName(mime) {
+    return `${new Date().getTime()}.${mime.replace(/^.+\/{1}(.+)$/g,'$1')}`;
+  },
 
 /**
   * 是否登录

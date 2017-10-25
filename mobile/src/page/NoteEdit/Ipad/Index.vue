@@ -36,7 +36,7 @@
 				</ul>
 			</div>
 		</footer>
-
+		<canvas id="canvas" width="300" height="300"></canvas>
 		<input type="file" multiple="multiple" accept="image/*" @change="handleUploadPic" ref="iptFile" class="ipt-file">
 	</div>
 
@@ -224,7 +224,7 @@ export default {
 		handleSaveNote() {
 
 			if(!this.textDetails) {
-				this.webApi.alert('标题不能为空')
+				this.webApi.alert('内容不能为空')
 				return false;
 			}
 
@@ -233,14 +233,15 @@ export default {
 				return false;
 			}
 
-			if(this.type == 'edit' || this.allUploadPic.length == 5){
+			if(this.type == 'edit' && this.allUploadPic.length == 5){
 				this.subForm();
 				return false;
 			}
 
-			this.isUploadSuccess = this.allUploadPic.length || 0;
+			this.isUploadSuccess = this.type != 'edit' ? 0 : this.allUploadPic.length;
 
 			this.allUploadPic.map((item, index) =>{
+
 
 				if(!item.file) {
 					this.allPicPath =  `${this.allPicPath}${item.storeFileUrl},`;
@@ -248,23 +249,30 @@ export default {
 					return false;
 				}
 
-
 				if(item.file) {
 
-					let formData = new FormData();
+					this.webApi.pictureCompress(item.file, (newFile, name) =>{
 
-					formData.append(`file`, item.file);
-					formData.append('token', this.webApi.getCookie('token'));
+							let formData = new FormData();
 
-					this.$emit('upload-pic', formData, res =>{
+							formData.append(`file`,newFile, name);
+							formData.append('token', this.webApi.getCookie('token'));
 
-						this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
-						this.isUploadSuccess++;
+							this.$emit('upload-pic', formData, res =>{
 
-						// 成功以后提交表单内容
-						if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+								this.allPicPath =  `${this.allPicPath}${res.storeFileUrl},`;
+								this.isUploadSuccess++;
+
+								// 成功以后提交表单内容
+								console.log(this.allUploadPic.length, this.isUploadSuccess);
+
+								if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+
+							});
 
 					});
+
+
 
 				}
 
@@ -274,6 +282,7 @@ export default {
 
 
 		},
+
 
 		subForm() {
 
@@ -334,7 +343,7 @@ export default {
 				@include fc(.27rem, #333);
 				padding: .15rem .2rem;
 				margin-left: 2%;
-				width: 96%; top: 2.4rem; bottom: 3rem;
+				width: 96%; top: 2.8rem; bottom: 3rem;
 				border: 1px solid #eee;
 				max-height: 80%; height: 66%;
 			}
