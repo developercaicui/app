@@ -22,7 +22,7 @@
             </li>
 	          <li class="cl chekquality" @click="chekquality">
 	            <div class="left">视频质量</div>
-	            <div class="right quality">标清</div>
+	            <div class="right quality" v-html="quality"></div>
 	          </li>
 	          <!--li.cl,onclick="clearCache()")
 	          //.left 清理杂项缓存
@@ -97,8 +97,8 @@
 	          <!--    span 官方网站-->
 	          <li @click="togWx"><span>微信公众号</span></li>
 	          <li @click="openurl('http://weibo.com/icaicui')"><span>官方微博</span></li>
-	          <li onclick="update()" class="update none"><span>在线升级</span></li>
-	          <li onclick="praise()" class="none"><span>给财萃课堂好评</span></li>
+	          <!-- <li onclick="update()" class="update none"><span>在线升级</span></li> -->
+	          <!-- <li onclick="praise()" class="none"><span>给财萃课堂好评</span></li> -->
 	        </ul>
 	      </div>
 	      <div id="mask3" class="modal">
@@ -107,11 +107,11 @@
 	          <div @click="closeIndex" class="icon-jiantou2 icon-arrow-left">&#xe669;</div><span>视频质量</span>
 	        </div>
 	        <ul class="list sel_quality">
-	          <li class="active" @click="selquality">
+	          <li :class="[(quality=='标清')?'active':'']" @click="selquality">
 	            <div class="left">标清</div>
 	            <div class="right"><i class="icon-duigou4 icon-check">&#xe654;</i></div>
 	          </li>
-	          <li @click="selquality">
+	          <li :class="[(quality=='高清')?'active':'']" @click="selquality">
 	            <div class="left">高清</div>
 	            <div class="right"><i class="icon-duigou4 icon-check">&#xe654;</i></div>
 	          </li>
@@ -138,7 +138,8 @@ export default {
 
 	data() {
 	    return {
-        body: document.getElementsByTagName("body")[0]
+        body: document.getElementsByTagName("body")[0],
+        quality: this.webApi.getCookie('quality') ? this.webApi.getCookie('quality') : '标清',
 	    }
 	},
 
@@ -184,10 +185,12 @@ export default {
           this.body.setAttribute("show","video")
 
       	},
-      	selquality(ev) {
+      	selquality(ev) {//设置视频质量
       		let quality = ev.target.innerText;
 
-          document.getElementsByClassName("chekquality")[0].getElementsByClassName("quality")[0].innerHTML = quality
+          this.quality = quality;
+
+          this.webApi.setCookie('quality', quality);
 
           this.body.setAttribute("show","index")
       	},
@@ -406,18 +409,6 @@ export default {
           }
           that.webApi.setCookie('is_notice', is_notice);
       	});
-
-        // 设置视频质量
-      	let chekquality;
-
-        $('#mask3 li').on('click', function () {
-	          let quality = $(this).find('.left').html();
-	          that.webApi.setCookie('quality', quality);
-	          $('.chekquality').find('.quality').html(quality);
-	          $('body').attr('show','index');
-	          $(this).addClass('active').siblings().removeClass('active');
-        });
-
 
 	}
 

@@ -56,6 +56,7 @@ export default {
 
 		this.$refs.uploadImgBtn.style.cssText = `
 			 background:url(${this.webApi.cdnImgUrl}${this.userInfo.avatar}?s=${Math.random()}) center center no-repeat;
+			 background-size:100% 100%;
 		`;
 
 
