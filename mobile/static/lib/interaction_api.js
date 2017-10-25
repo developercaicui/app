@@ -91,6 +91,13 @@ function getCourseNoteInfo(data = {}) {
 
 }
 
+// 获取设备型号
+function getDeviceType(data = {}) {
+
+  setCookie('getDeviceType', data);
+
+}
+
 //关闭设置页
 function closeSetting(data = {}) {
 

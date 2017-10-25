@@ -269,7 +269,7 @@ export default {
 	        //let title=content.substr(0,20);
 	        let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
 	        let param = {};
-	        let systype = "ios";
+	        let systype = this.webApi.getCookie("getDeviceType");
 	        param.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;//投诉人id
 	        param.memberName = nickName;//投诉人昵称
 	        param.cmptType = $(".pop-radio-label.active").find(".pop-radio-span").text();//投诉类型

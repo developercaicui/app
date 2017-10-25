@@ -148,7 +148,7 @@ export default {
           
           let nickName = JSON.parse(this.webApi.getCookie("userInfo")).nickName;
           let param = {};
-          let systype = "ipad";
+          let systype = this.webApi.getCookie("getDeviceType");
 
           param.memberId = JSON.parse(this.webApi.getCookie("userInfo")).memberId;//投诉人id
           param.memberName = nickName;//投诉人昵称

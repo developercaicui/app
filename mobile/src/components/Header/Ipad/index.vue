@@ -92,7 +92,7 @@ export default {
   created() {
 
     this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {});
-
+    this.userInfo.avatar = this.userInfo.avatar+'?s='+Math.random();
     this.$store.commit('updateMsgListParams', {
         token: this.userInfo.token,
         self: 0
