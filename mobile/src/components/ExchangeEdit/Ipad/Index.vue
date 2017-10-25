@@ -35,7 +35,7 @@
 			</div>
 		</footer>
 
-		<input type="file" accept="image/*"  @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
+		<input type="file" multiple="multiple" accept="image/*"  @change="handleUploadPic" name="" value="" ref="iptFile" class="ipt-file">
 	</div>
 	</div>
 </template>
