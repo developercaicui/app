@@ -250,20 +250,24 @@ export default {
 
 			this.allUploadPic.map((item, index) =>{
 
-				let formData = new FormData();
+			 this.webApi.pictureCompress(item.file, (newFile, name) =>{
 
-				formData.append(`file`, item.file);
-				formData.append('token', this.webApi.getCookie('token'));
+				 let formData = new FormData();
 
-				this.$emit('upload-pic', formData, res =>{
+	 				formData.append(`file`, newFile, name);
+	 				formData.append('token', this.webApi.getCookie('token'));
 
-					this.allPicPath =  `${this.allPicPath}<img src="${this.webApi.cdnImgUrl}${res.storeFileUrl}"/>`;
-					this.isUploadSuccess++;
+	 				this.$emit('upload-pic', formData, res =>{
 
-					// 成功以后提交表单内容
-					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+	 					this.allPicPath =  `${this.allPicPath}<img src="${this.webApi.cdnImgUrl}${res.storeFileUrl}"/>`;
+	 					this.isUploadSuccess++;
 
-				});
+	 					// 成功以后提交表单内容
+	 					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+
+	 				});
+
+			 });
 
 			});
 
