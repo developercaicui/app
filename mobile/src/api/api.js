@@ -13,33 +13,41 @@ export default {
 /**
   * 图片预加载
   * @type { file } 文件
-  * @type { callback } 回调函数
+  * @type { cd } 回调函数
   */
-  pictureCompress(file, callback) {
+  pictureCompress(file, cd) {
 
-    let oCanvas = document.createElement('canvas');
-    let ctx = oCanvas.getContext('2d');
-    let base64Img = '';
-    let fileMime = '';
+    const setting = {
+      mime: 'image/jpeg',
+      quality: 0.6,
+      fileName: '',
+    }
 
-    let reader = new FileReader();
+    setting.fileName = this.randomName(setting.mime);
 
-      reader.onload = (ev) => {
+    let canvas = document.createElement('canvas');
+    let ctx = canvas.getContext('2d');
 
-        let _img = new Image();
+
+    let _reader = new FileReader(),
+        _img, _base64Img;
+
+
+      _reader.onload = (ev) => {
+
+        _img = new Image();
 
         _img.onload = function() {
-
           ctx.drawImage(_img, 0, 0);
-          base64Img = oCanvas.toDataURL('image/jpeg', 0.6);
-          callback(dataURLtoBlob(base64Img), `${new Date().getTime()}.${fileMime.replace(/^.+\/{1}(.+)$/g,'$1')}`);
+          _base64Img = canvas.toDataURL(setting.mime, setting.quality);
+          cd(dataURLtoBlob(_base64Img), setting.fileName);
         };
 
-        _img.src = reader.result;
+        _img.src = _reader.result;
 
       };
 
-      reader.readAsDataURL(file);
+      _reader.readAsDataURL(file);
 
 
       function dataURLtoBlob(dataurl) {
@@ -49,10 +57,21 @@ export default {
           while (n--) {
               u8arr[n] = bstr.charCodeAt(n);
           }
-          fileMime = mime;
+
           return new Blob([u8arr], { type: mime });
       }
 
+
+
+  },
+
+  /**
+    * 随机图片名
+    * @type   { mime }    文件类型
+    * @return { String }  文件名
+    */
+  randomName(mime) {
+    return `${new Date().getTime()}.${mime.replace(/^.+\/{1}(.+)$/g,'$1')}`;
   },
 
 /**
