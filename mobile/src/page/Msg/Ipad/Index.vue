@@ -16,7 +16,7 @@
               <p v-html="item.content.substr(0,22)"></p>
             </section>
           </figure>
-          <span class="no-data" v-show="msgList.length==0?true:false"><img src="../../../assets/img/404.svg"></span>
+          <span class="no-data" v-show="isFirst"><img src="../../../assets/img/404.svg"></span>
         </div>
       </section>
       <section class="msg-content-details" ref="msgContentDetails">
@@ -70,7 +70,8 @@ export default {
           name: '站内消息',
         }
       ],
-      defaultIndex: 0,
+      defaultIndex: 1,
+      isFirst: false,
       userInfo: {},
     }
   },
@@ -82,6 +83,14 @@ export default {
   mounted(){
 
     this.msgListData = this.msgList;
+
+  },
+
+  watch: {
+
+    msgList(list) {
+      this.isFirst = list.length == 0 ? true : false ;
+    },
 
   },
 

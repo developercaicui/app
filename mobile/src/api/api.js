@@ -10,6 +10,50 @@ export default {
   preloadImages(arr) {
 
   },
+/**
+  * 图片预加载
+  * @type { file } 文件
+  * @type { callback } 回调函数
+  */
+  pictureCompress(file, callback) {
+
+    let oCanvas = document.createElement('canvas');
+    let ctx = oCanvas.getContext('2d');
+    let base64Img = '';
+    let fileMime = '';
+
+    let reader = new FileReader();
+
+      reader.onload = (ev) => {
+
+        let _img = new Image();
+
+        _img.onload = function() {
+
+          ctx.drawImage(_img, 0, 0);
+          base64Img = oCanvas.toDataURL('image/jpeg', 0.6);
+          callback(dataURLtoBlob(base64Img), `${new Date().getTime()}.${fileMime.replace(/^.+\/{1}(.+)$/g,'$1')}`);
+        };
+
+        _img.src = reader.result;
+
+      };
+
+      reader.readAsDataURL(file);
+
+
+      function dataURLtoBlob(dataurl) {
+
+          let arr = dataurl.split(','), mime = arr[0].match(/:(.*?);/)[1],
+              bstr = atob(arr[1]), n = bstr.length, u8arr = new Uint8Array(n);
+          while (n--) {
+              u8arr[n] = bstr.charCodeAt(n);
+          }
+          fileMime = mime;
+          return new Blob([u8arr], { type: mime });
+      }
+
+  },
 
 /**
   * 是否登录

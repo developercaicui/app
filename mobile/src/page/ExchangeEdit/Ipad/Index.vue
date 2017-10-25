@@ -110,7 +110,6 @@ export default {
 				let fileData = file[i];
 				let reader = new FileReader();
 
-				reader.readAsDataURL(fileData);
 
 				reader.onload = (evt) =>{
 
@@ -120,6 +119,12 @@ export default {
 					});
 
 	      }
+
+				try{
+					reader.readAsDataURL(fileData);
+				}catch(e){
+
+				}
 
 			}
 
@@ -165,23 +170,34 @@ export default {
 
 			this.allUploadPic.map((item, index) =>{
 
+				if(item.file) {
 
-				let formData = new FormData();
+					this.webApi.pictureCompress(item.file, (newFile, name) =>{
 
-				formData.append(`file`, item.file);
-				formData.append('token', this.webApi.getCookie('token'));
+						let formData = new FormData();
 
-				this.$emit('upload-pic', formData, res =>{
 
-					this.allPicPathHtml =  `${this.allPicPathHtml}<img src="${this.webApi.exstaticUrl}${res.storeFileUrl}"/>`;
-					this.allPicPath = `${this.allPicPath}${res.storeFileUrl},`;
+						formData.append(`file`, newFile, name);
+						formData.append('token', this.webApi.getCookie('token'));
 
-					this.isUploadSuccess++;
+						this.$emit('upload-pic', formData, res =>{
 
-					// 成功以后提交表单内容
-					if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+							this.allPicPathHtml =  `${this.allPicPathHtml}<img src="${this.webApi.exstaticUrl}${res.storeFileUrl}"/>`;
+							this.allPicPath = `${this.allPicPath}${res.storeFileUrl},`;
 
-				});
+							this.isUploadSuccess++;
+
+							// 成功以后提交表单内容
+							if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+
+						});
+
+					});
+
+				}
+
+
+
 
 			});
 
