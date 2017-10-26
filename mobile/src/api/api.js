@@ -183,7 +183,7 @@ export default {
   delCookie(key) {
 
     if(window.localStorage){
-      window.localStorage.clear();
+      window.localStorage.removeItem(key);
       return;
     }
 
