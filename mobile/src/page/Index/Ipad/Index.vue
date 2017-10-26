@@ -150,7 +150,7 @@ export default {
 
 		// 开始新课程
 		handleNoData() {
-			this.webApi.alert('请到线课程栏目里激活新课程');
+			this.webApi.alert('请到在线课程栏目里激活新课程');
 		},
 
 		// 课程的实时状态

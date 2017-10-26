@@ -5,6 +5,10 @@ const themeColor = env.NODE_ENV.includes('developZbgedu') ? '#fc3a6f' : '#00a185
 const themeConfig = './src/assets/style/config.scss';
 const outputTheme = './src/assets/style/theme.scss';
 
+console.log(`
+  ${env.NODE_ENV.includes('developZbgedu') ? '中博' : '财萃'}
+`);
+
 fs.readFile(themeConfig, 'utf-8', (err, data) => {
 
   if(err) throw err;
