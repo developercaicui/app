@@ -494,7 +494,7 @@ export default {
  		.back{
 			@include fc($commBackFont, $commPink);
  			position: absolute;
- 			z-index: 9; top: $commTop;
+ 			z-index: 9; top: 0.2rem;
  			height: 1.05rem;
  			display: flex;
  			align-items: center;
@@ -506,16 +506,17 @@ export default {
  			@include fc(.32rem, #000);
 			@extend .flexCenter;
 			padding-left: .4rem;
- 			left: 0; top: $commTop; right: 0;
+ 			left: 0; top: 0.2rem; right: 0;
  			height: 1.05rem;
  		}
 
 		.step{
 			@extend .ab;
-			@include fc(.24rem, #000);
+			@include fc(.32rem, #000);
 			@extend .flexCenter;
 			right: .5rem;
 			height: 1.05rem;
+			padding-top: 0.4rem;
 		}
 	 }
 

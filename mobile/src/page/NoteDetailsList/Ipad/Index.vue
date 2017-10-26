@@ -20,7 +20,7 @@
 				<time>{{ item.updateTime }}</time>
 			</section>
 
-			<img class="no-data" v-show="this.detailsList.length === 0" src="../../../assets/img/404.svg"/>
+			<img class="no-data" v-show="isFirst" src="../../../assets/img/404.svg"/>
 
 		</main>
 
@@ -45,6 +45,7 @@ export default {
 			data: {
 				chaptername: '',
 				data: {},
+				isFirst: false,
 			}
     }
   },
@@ -54,6 +55,15 @@ export default {
 		this.data = JSON.parse(this.$route.params.data);
 
 	},
+
+	watch: {
+
+		detailsList(list) {
+			this.isFirst = list.length !=0 ? false : true ;
+		}
+
+	},
+
 
   methods: {
 

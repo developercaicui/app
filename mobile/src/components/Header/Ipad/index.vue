@@ -17,7 +17,7 @@
     </aside>
     <aside href="javascript:;" class="is-msg" @touchend="openMsgListAlert">
       <span>&#xe67e;</span>
-      <span class="msg-num" v-if="totalCount>0">{{ totalCount }}</span>
+      <span class="msg-num" v-show="msgNum > 0">{{ msgNum }}</span>
     </aside>
     <MyMsg :msgList="msgList" @gain-msg-list="gainMsgList" @updata-msg-state="updataMsgState" @close-msg-alert="closeMsgListAlert" :isMsgWrap="isMsgWrap"></MyMsg>
   </header>
@@ -40,8 +40,21 @@ export default {
       courseTime: '', // 最近考试时间
       isMsgWrap: false, // 是否显示消息列表
       totalCount: 0, // 消息数
+      msgNum: 0,
+      isFirst: true,
       userInfo: {},
     }
+  },
+
+  watch: {
+
+    totalCount() {
+
+      if(this.isFirst) this.msgNum = this.totalCount;
+      this.isFirst = false;
+
+    }
+
   },
 
   computed: {
@@ -92,10 +105,10 @@ export default {
   created() {
 
     this.userInfo = JSON.parse(this.webApi.getCookie('userInfo') || {});
-
+    this.userInfo.avatar = this.userInfo.avatar+'?s='+Math.random();
+    
     this.$store.commit('updateMsgListParams', {
         token: this.userInfo.token,
-        self: 0
     });
     this.$store.dispatch('fetchMsgList');
 
@@ -111,7 +124,7 @@ export default {
     this.$store.commit('updateLoginLogParams', {
         memberid: this.userInfo.memberId,
     });
-    
+
     this.$store.dispatch('fetchLoginLog');
 
   },
@@ -122,8 +135,10 @@ export default {
     // 获取消息列表
     gainMsgList(type) {
 
+      this.$store.commit('updateMsgList', []);
+
       this.$store.commit('updateMsgListParams', {
-          self: type,
+          type: type,
       });
 
       this.$store.dispatch('fetchMsgList');
@@ -133,7 +148,8 @@ export default {
     // 消息条目数更新
     updataMsgState(data) {
       this.totalCount = this.totalCount - data.num;
-      this.msgList = data.list;
+      this.msgNum = this.msgNum - data.num;
+      this.gainMsgList(data.type)
     },
 
     // 打开消息列表

@@ -16,7 +16,7 @@
               <p v-html="item.content.substr(0,22)"></p>
             </section>
           </figure>
-          <span class="no-data" v-show="msgList.length==0?true:false"><img src="../../../assets/img/404.svg"></span>
+          <span class="no-data" v-show="isFirst" ref="noData"><img src="../../../assets/img/404.svg"></span>
         </div>
       </section>
       <section class="msg-content-details" ref="msgContentDetails">
@@ -70,7 +70,8 @@ export default {
           name: '站内消息',
         }
       ],
-      defaultIndex: 0,
+      defaultIndex: 1,
+      isFirst: false,
       userInfo: {},
     }
   },
@@ -85,10 +86,20 @@ export default {
 
   },
 
+  watch: {
+
+    msgList(list) {
+      this.isFirst = list.length == 0 ? true : false ;
+    },
+
+  },
+
   methods: {
 
     // 切换消息类型
     switchMsgType(ev) {
+
+      this.$refs.noData.style.display = 'none';
 
       this.defaultIndex = ev.target.dataset.index;
 
@@ -127,7 +138,8 @@ export default {
 
       this.$emit('updata-msg-state', {
         num: 1,
-        list: this.msgList.filter(item => item.id != id)
+        list: this.msgList.filter(item => item.id != id),
+        type: this.defaultIndex
       });
 
       updateLogStatus({
@@ -189,10 +201,11 @@ export default {
 
   .msg-content{
 
+    @include wh(100%, 100%);
     @extend .ab;
     left: 0; top: 0;
-    @include wh(100%, 100%);
-
+    background-color: #fff;
+    z-index: 1;
 
     nav{
 
@@ -297,7 +310,7 @@ export default {
     background-color: #fff;
     border-radius: .2rem;
     z-index: 11;
-    transition: .7s;
+    transition: .4s;
     transform: translate3d(5.9rem,0,0);
 
     &.msg-content-details-active{

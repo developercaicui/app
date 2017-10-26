@@ -1,0 +1,211 @@
+
+@import "./theme";
+
+$themeColor: $globalThemeColor; // 主题颜色风格（粉
+$headerSize: 0.36rem; // 标题文字大小
+$commPink: $globalThemeColor; // 全局通用色
+$headFont: .28rem; // 头部字体
+$headIconFont: .4rem; // 头部字体图标大小
+$headH1Font: .3rem; // 头部标题字体大小
+$commBackFont: .54rem; // 返回按钮字体大小
+$commTopBack: #f5f5f5; // 通用顶部背景色
+$commTop: 0rem; // 距离顶部距离
+$commTopHeight: .4;
+$commTopWhite: #fff; // 公用白色
+
+@mixin wh($w, $h) {
+  width: $w;
+  height: $h;
+}
+
+@mixin fc($font, $color) {
+  font-size: $font;
+  color: $color;
+}
+
+@mixin show() {
+  display: block;
+}
+@mixin hide() {
+  display: none;
+}
+
+
+.flexCenter{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.show{
+  display: block;
+}
+
+.hide{
+  display: none;
+}
+
+.ab{
+  position: absolute;
+}
+
+.borderBox{
+  box-sizing: border-box;
+}
+
+
+.content-padding-left{
+  padding-left: 1.6rem;
+}
+.mobile-wrap{
+  padding-bottom: 1rem;
+}
+
+.text-ellipsis{
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+// 整屏向左滑进
+.slide-left-enter-active {
+  transition: all .7s ease;
+}
+.slide-left-leave-active {
+  transition: all .7s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+}
+.slide-left-enter, .slide-left-leave-to {
+  transform: translateX(20.48rem);
+}
+// 整屏向左滑出
+.slide-left-hide-enter-active {
+  transition: all .8s ease;
+  transition-delay: .1s;
+}
+.slide-left-hide-leave-active {
+  transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+  transition-delay: .1s;
+}
+.slide-left-hide-enter, .slide-left-hide-leave-to {
+  transform: translateX(-20.48rem);
+}
+
+// 全局提示通用样式
+.g-small-alert{
+  @include fc(.28rem, #fff);
+  @extend .flexCenter;
+  position: fixed;
+  top: 25%; left: 50%;
+  min-width: 2rem;
+  background-color: rgba(51, 51, 51, .8);
+  z-index: 119;
+  padding: .1rem .2rem;
+  border-radius: 5px;
+  transform: translate3d(-50%, 0, 0);
+}
+
+
+
+// 全局loading等待
+
+.g-data-loading-wrap{
+  position: fixed;
+  left: 0; right: 0; bottom: 0; top: 0;
+  background-color: rgba(0,0,0,0);
+  z-index: 119;
+}
+
+.g-data-loading{
+
+  @include wh(2rem, 2rem);
+  position: fixed;
+  left: 50%; top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+  background-color: rgba(0,0,0,.7);
+  border-radius: 5px;
+  text-align: center;
+
+  h1{
+    @include fc(.25rem, #fff);
+    transform: translate3d(0,1.4rem,0);
+  }
+
+  .showbox {
+    position: absolute;
+    top: .12rem; bottom: 0; left: 0; right: 0;
+    padding: 5%;
+  }
+
+  .loader {
+    position: relative;
+    margin: 0 auto;
+    width: 1rem;
+    &:before {
+      content: '';
+      display: block;
+      padding-top: 100%;
+    }
+  }
+
+  .circular {
+    animation: rotate 2s linear infinite;
+    height: 100%;
+    transform-origin: center center;
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+  }
+
+  .path {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+    animation: dash 1.5s ease-in-out infinite, color 6s ease-in-out infinite;
+    stroke-linecap: round;
+  }
+
+
+}
+
+
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dasharray: 1, 200;
+    stroke-dashoffset: 0;
+  }
+  50% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -35px;
+  }
+  100% {
+    stroke-dasharray: 89, 200;
+    stroke-dashoffset: -124px;
+  }
+}
+
+
+@keyframes color {
+  100%,
+  0% {
+    stroke: $commPink;
+  }
+  40% {
+    stroke: $commPink;
+  }
+  66% {
+    stroke: $commPink;
+  }
+  80%,
+  90% {
+    stroke: $commPink;
+  }
+}

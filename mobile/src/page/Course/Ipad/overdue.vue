@@ -19,7 +19,8 @@
                 <h3>{{ item.courseName }}</h3>
               </div>
               <div class="li cpl-fool">
-                <div @click="renew(item.isU)" class="btn btn-o">
+                <p class="clp-info">请登录中博教育官网申请重听</p>
+                <div @click="renew(item.isU)" class="btn btn-o" style="display:none;">
                   <span>申请重听</span>
                 </div>
               </div>
@@ -338,5 +339,8 @@ methods: {
   @include wh(2.4rem, 2.4rem);
   left: 50%; top: 4rem;
   margin-left: -1.2rem;
+}
+.clp-info{
+  color: $themeColor;
 }
 </style>

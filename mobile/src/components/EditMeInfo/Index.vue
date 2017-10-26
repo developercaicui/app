@@ -55,7 +55,8 @@ export default {
 	mounted() {
 
 		this.$refs.uploadImgBtn.style.cssText = `
-			 background:url(${this.webApi.cdnImgUrl}${this.userInfo.avatar}) center center no-repeat;
+			 background:url(${this.webApi.cdnImgUrl}${this.userInfo.avatar}?s=${Math.random()}) center center no-repeat;
+			 background-size:100% 100%;
 		`;
 
 

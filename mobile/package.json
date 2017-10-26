@@ -5,7 +5,7 @@
   "author": "",
   "scripts": {
     "dev:caicui": "node build/dev-server.js caicui",
-    "dev:zbgedu": "node build/dev-server.js caicui",
+    "dev:zbgedu": "node build/dev-server.js zbgedu",
     "build:caicui": "node build/build.js caicui",
     "build:zbgedu": "node build/build.js zbgedu",
     "dev": "node build/dev-server.js zbgedu",

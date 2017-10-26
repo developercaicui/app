@@ -96,7 +96,7 @@ export default {
           return false;
         }
 
-        commit('updateMsgList', res.data);
+        commit('updateMsgList', res.data || []);
 
       })
 
