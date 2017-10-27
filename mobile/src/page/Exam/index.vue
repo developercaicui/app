@@ -693,13 +693,16 @@
 			exerciseAssignment (){
 				// setMemberExamenFinish
 				// setMemberErrorExercise
-				this.actionTaskProgress('submittest');
+				
 				Request.setMemberExamenFinish({
 					"memberId":this.memberId,
 					"examenid":this.exam.examId,
 					"examenNum":this.exam.examNum
 				}).then(res => {
-					
+					this.update({
+						'examIsFinish' : 1
+					})
+					this.actionTaskProgress('submittest');
 				});
 				let memberErrorExerciseData = this.getMemberErrorExerciseData();
 				Request.setMemberErrorExercise({
