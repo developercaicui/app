@@ -71,6 +71,7 @@ export default {
 			taskId: '',
 			courseName: '',
 			taskProgress: 0,
+			defaultPicLen: 0,
     }
   },
 
@@ -104,8 +105,8 @@ export default {
 			this.type = 'edit';
 			this.isPublic = this.data.detailsDataisPublic;
 			this.clientType = this.data.detailsData.clientType;
+			this.defaultPicLen = this.data.detailsData.picAllPath.length;
 			this.allPicPath = `${this.data.detailsData.picAllPath.join(',')},`;
-
 			this.data.detailsData.picAllPath.map(src =>{
 
 				this.allUploadPic.push({
@@ -220,6 +221,8 @@ export default {
 
 			this.allUploadPic = this.allUploadPic.filter((item, index) => index != removeIndex && item);
 
+			if(this.type == 'edit') this.allPicPath = (this.allUploadPic.map(item => item.path || '')).join(',');
+			
 			this.isUploadSuccess--;
 
 		},
@@ -244,6 +247,10 @@ export default {
 
 			if(this.type != 'edit') this.isUploadSuccess = 0;	
 
+			if(this.type == 'edit' && this.defaultPicLen != this.isUploadSuccess) {
+				this.subForm();
+				return false;
+			}
 
 			this.allUploadPic.map((item, index) =>{
 
@@ -281,7 +288,7 @@ export default {
 		},
 
 
-		subForm() {
+		subForm() {	
 
 			this.$emit('submit-data', {
 				type: this.type,

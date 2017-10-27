@@ -38,6 +38,10 @@ export default {
         _img = new Image();
 
         _img.onload = function() {
+
+          canvas.width = _img.width;
+          canvas.height = _img.height;
+          ;
           ctx.drawImage(_img, 0, 0);
           _base64Img = canvas.toDataURL(setting.mime, setting.quality);
           cd(dataURLtoBlob(_base64Img), setting.fileName);

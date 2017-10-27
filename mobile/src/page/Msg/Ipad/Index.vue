@@ -10,7 +10,7 @@
         </nav>
         <div class="list-wrap">
           <figure @click.stop="openMsgDetails" v-for="item in msgList" :data-id="item.id">
-            <img src="http://cdnimg.caicui.com/upload/avatar/big_ff808081492d486801492d4a28f50004.jpg" />
+            <span class="msg-user-head">&#xe626;</span>
             <section>
               <h1>{{ item.sender }}<time>{{ item.sentTime }}</time></h1>
               <p v-html="item.content.substr(0,22)"></p>
@@ -26,7 +26,7 @@
         </div>
         <div class="list-wrap">
           <figure>
-            <img src="http://cdnimg.caicui.com/upload/avatar/big_ff808081492d486801492d4a28f50004.jpg" />
+            <span class="msg-user-head">&#xe626;</span>
             <section>
               <h1>{{ details.sender }}</h1>
               <p v-html="details.content"></p>
@@ -271,11 +271,16 @@ export default {
       &:last-of-type{
         border-bottom-width: 0;
       }
-
-      img{
+      
+      .msg-user-head{
         @extend .ab;
         @include wh(.6rem, .6rem);
+        @include fc(.35rem, $commPink);
+        display: flex;
+        align-items: center; justify-content: center;
+        font-family: 'iconfont';
         border-radius: 100%;
+        border: 1px solid $commPink;
       }
 
       section{
