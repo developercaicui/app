@@ -139,7 +139,7 @@ export default {
 	data() {
 	    return {
         body: document.getElementsByTagName("body")[0],
-        quality: this.webApi.getCookie('quality') ? this.webApi.getCookie('quality') : '标清',
+        quality: '',
 	    }
 	},
 
@@ -151,6 +151,8 @@ export default {
      document.documentElement.style.fontSize = `${htmlCss}px`;
 
      this.body.setAttribute("show","index");
+
+     this.quality = this.webApi.getCookie('quality') ? this.webApi.getCookie('quality') : '标清';
 
 		 window.addEventListener("storage", function (e) {
          window.location.reload();

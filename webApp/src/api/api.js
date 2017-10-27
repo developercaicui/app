@@ -3,14 +3,6 @@ import { getUserInfo } from './port';
 
 export default {
 
-  /**
-    * 图片预加载
-    * @type {Array} 图片数组
-    */
-  preloadImages(arr) {
-
-  },
-
 /**
   * 是否登录
   * @return {Boolean}  true为已登录 false为登录
@@ -42,13 +34,8 @@ export default {
 
     let device = window.navigator.userAgent.toLocaleLowerCase();
     let screenWidth = document.documentElement.getBoundingClientRect().width;
-    let type = this.getCookie('deviceType') || 'null';
 
-    if(type.includes('ipad') || type.includes('mobile')) return this.getCookie('deviceType');
-
-    if(screenWidth > 800) return 'ipad';
-    if(screenWidth < 800) return 'mobile';
-
+    return process.env.DEVICE_TYPE || this.getCookie('deviceType') || 'null';
 
   },
 
@@ -64,9 +51,7 @@ export default {
 
     let designWidth = deviceType === 'mobile' ? 750 : 2048;
 
-    if(deviceType === 'ipad' && screenWidth*dpr < 2048/4*3 ){
-      designWidth = 2048/4*3.1;
-    }
+    if(deviceType === 'ipad' && screenWidth*dpr < 2048/4*3 ) designWidth = 2048/4*3.1;
 
     let initialRem = designWidth / 100;
 

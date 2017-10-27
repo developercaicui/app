@@ -1,5 +1,5 @@
 require('shelljs/global')
-env.NODE_ENV = 'production';
+env.NODE_ENV = 'build';
 
 const path = require('path');
 const config = require('../config');
@@ -9,7 +9,7 @@ const webpackConfig = require('./webpack.prod.conf');
 
 console.log(`
    Tip:\n
-   构建中，请等候...
+   项目构建中，请耐心等候...
 `);
 
 const spinner = ora('building for production...');

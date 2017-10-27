@@ -3,7 +3,7 @@ import webApi from './api';
 import axios from 'axios';
 import qs from 'qs';
 
-const domain = process.env.NODE_ENV.includes('developZbgedu') ? 'zbgedu' : 'caicui';
+const domain = process.env.WEB_SITE.includes('zbgedu') ? 'zbgedu' : 'caicui';
 const requestUrl =  `http://api.${domain}.com`;
 
 const LOC = window.location;
@@ -15,6 +15,8 @@ const headers = {
   },
 
 };
+
+if(__DEV__) console.log(`\%c\n${process.env.HELP.replace(/\/n/g,'\n\n')}`,'color: red');
 
 let isPendingRequest = false;
 

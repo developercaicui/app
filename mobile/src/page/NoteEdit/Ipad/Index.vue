@@ -36,7 +36,6 @@
 				</ul>
 			</div>
 		</footer>
-		<canvas id="canvas" width="300" height="300"></canvas>
 		<input type="file" multiple="multiple" accept="image/*" @change="handleUploadPic" ref="iptFile" class="ipt-file">
 	</div>
 
@@ -105,6 +104,7 @@ export default {
 			this.type = 'edit';
 			this.isPublic = this.data.detailsDataisPublic;
 			this.clientType = this.data.detailsData.clientType;
+			this.allPicPath = `${this.data.detailsData.picAllPath.join(',')},`;
 
 			this.data.detailsData.picAllPath.map(src =>{
 
@@ -113,6 +113,8 @@ export default {
 					path: src,
 					file: null
 				});
+
+				this.isUploadSuccess++;
 
 			});
 
@@ -218,6 +220,8 @@ export default {
 
 			this.allUploadPic = this.allUploadPic.filter((item, index) => index != removeIndex && item);
 
+			this.isUploadSuccess--;
+
 		},
 
 		// 保存笔记
@@ -233,21 +237,16 @@ export default {
 				return false;
 			}
 
-			if(this.type == 'edit' && this.allUploadPic.length == 5){
+			if(this.type == 'edit' && this.allUploadPic.length == 5 && this.isUploadSuccess > 4){
 				this.subForm();
 				return false;
 			}
 
-			this.isUploadSuccess = this.type != 'edit' ? 0 : this.allUploadPic.length;
+			if(this.type != 'edit') this.isUploadSuccess = 0;	
+
 
 			this.allUploadPic.map((item, index) =>{
 
-
-				if(!item.file) {
-					this.allPicPath =  `${this.allPicPath}${item.storeFileUrl},`;
-					this.isUploadSuccess++;
-					return false;
-				}
 
 				if(item.file) {
 
@@ -264,9 +263,7 @@ export default {
 								this.isUploadSuccess++;
 
 								// 成功以后提交表单内容
-								console.log(this.allUploadPic.length, this.isUploadSuccess);
-
-								if(this.allUploadPic.length == this.isUploadSuccess) this.subForm();
+								if(this.allUploadPic.length <= this.isUploadSuccess) this.subForm();
 
 							});
 
