@@ -352,7 +352,6 @@
 					memberId : this.userInfo.memberId
 				});
 				this.actionTaskProgress('begintest');
-				console.log(this.exam)
 			},
 			examRequestCallbackUpdata (){
 
@@ -688,7 +687,6 @@
 						exerciseRightCount : exerciseRightCount,
 						examIsFinish : examIsFinish
 					})
-					console.log(callback)
 					if(callback){callback()};
 				})
 			},

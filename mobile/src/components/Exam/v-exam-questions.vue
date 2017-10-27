@@ -58,9 +58,7 @@
 			...mapState(['exam']),
 			exerciseContextJson (){
 				if(this.exam.exerciseContext && this.exam.exerciseContext.length){
-					console.log(this.exam.exerciseContext)
 					this.arrEntities();
-					console.log(this.exam.exerciseContext)
 					return this.exam.exerciseContext;
 				}
 				
