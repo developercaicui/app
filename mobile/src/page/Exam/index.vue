@@ -565,8 +565,8 @@
 			    action: action,
 			    token: this.userInfo.token,
 			    memberId: this.userInfo.memberId,
-			    memberName: this.userInfo.nickname,
-			    progress: this.exam.examProgress,
+			    memberName: this.userInfo.nickName,
+			    progress: this.exam.exerciseActiveIndex,
 			    total: this.exam.examNumTotal,
 			    state: this.exam.examState,
 
@@ -577,7 +577,7 @@
 			    categoryId: this.exam.categoryId,
 
 			    taskName: this.exam.examTitle,
-			    chapterName: this.exam.chapterTitle,
+			    chapterName: this.exam.chapterName,
 			    courseName: this.exam.courseName,
 			    subjectName: this.exam.subjectName,
 			    categoryName: this.exam.categoryName,
@@ -585,11 +585,17 @@
 			    isSupply: 0,
 			    createDate: new Date().getTime()
 				}
+
 				Request.actionTaskProgress({
 					'token': this.userInfo.token,
 					'message': JSON.stringify(taskProgressData)
+					// 'message' : '{"token":"'+this.userInfo.token+'","memberId":"'+this.userInfo.memberId+'","progress":77,"total":75,"taskId":"ff8080814dc1dc4e014dfb46c8e92129","chapterId":"ff8080814dc1dc4e014dfb46c8e32128","courseId":"ff8080814dc1dc4e014dfb46c66d209c","subjectId":"ff8080814d1db79b014d2d99d2c8029a","categoryId":"ff8080814c7e36d9014c9c3219fa01a8","taskName":"Introduction-1","chapterName":"Introduction","courseName":"CIMA Advanced Financial Reporting (F2)","subjectName":"F2","categoryName":"CIMA","state":0,"action":"stop","memberName":"Rainy","isSupply":0,"createDate":1509073356495}'
 				}).then((res) =>{
-					
+					Request.actionGetTasksProgress({
+						'token': this.userInfo.token,
+						'memberId' : this.userInfo.memberId,
+						'courseId' : 'ff8080814dc1dc4e014dfb46c66d209c'
+					})
 				})
 			},
 			cardsPosition (index) {

@@ -64,6 +64,9 @@ export default {
   },
   actionTaskProgress(params) {
     return getArgs('actionTaskProgress', params)
+  },
+  actionGetTasksProgress(params) {
+    return getArgs('actionGetTasksProgress', params)
   }
 }
 
