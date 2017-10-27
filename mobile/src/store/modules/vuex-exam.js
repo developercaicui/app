@@ -22,6 +22,7 @@ export default {
 		examTitle : '',
 		examCache : [],
 		examState : [],
+		examStatus : 0,
 		examBaseInfo : [],
 		examNum : '',
 		examNumTotal : 0,

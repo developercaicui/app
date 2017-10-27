@@ -467,11 +467,14 @@
 					}else{
 						action = 'test';
 					}
-					this.actionTaskProgress(action);
+					
 
 					this.getExerciseStatus();
 					this.exerciseSaveCache(exerciseId);
-					this.exerciseSave();
+					this.exerciseSave((action) => {
+						this.actionTaskProgress(action);
+					});
+
 				}
 				this.update({
 					exerciseId : exerciseId,
@@ -540,7 +543,9 @@
 						})
 						this.getExerciseStatus();
 						this.exerciseSaveCache();
-						this.exerciseSave();
+						this.exerciseSave(() => {
+							this.actionTaskProgress('test');
+						});
 					}
 				}
 			},
@@ -556,7 +561,9 @@
 						})
 						this.getExerciseStatus();
 						this.exerciseSaveCache();
-						this.exerciseSave();
+						this.exerciseSave(() => {
+							this.actionTaskProgress('test');
+						});
 					}
 				}
 			},
@@ -568,7 +575,7 @@
 			    memberName: this.userInfo.nickName,
 			    progress: this.exam.exerciseActiveIndex,
 			    total: this.exam.examNumTotal,
-			    state: this.exam.examState,
+			    state: this.exam.examIsFinish,
 
 			    taskId: this.exam.taskId,
 			    chapterId: this.exam.chapterId,
@@ -590,6 +597,8 @@
 					'token': this.userInfo.token,
 					'message': JSON.stringify(taskProgressData)
 					// 'message' : '{"token":"'+this.userInfo.token+'","memberId":"'+this.userInfo.memberId+'","progress":77,"total":75,"taskId":"ff8080814dc1dc4e014dfb46c8e92129","chapterId":"ff8080814dc1dc4e014dfb46c8e32128","courseId":"ff8080814dc1dc4e014dfb46c66d209c","subjectId":"ff8080814d1db79b014d2d99d2c8029a","categoryId":"ff8080814c7e36d9014c9c3219fa01a8","taskName":"Introduction-1","chapterName":"Introduction","courseName":"CIMA Advanced Financial Reporting (F2)","subjectName":"F2","categoryName":"CIMA","state":0,"action":"stop","memberName":"Rainy","isSupply":0,"createDate":1509073356495}'
+					// token:'6a8d85ae-8847-4442-b89d-b71e05578363',
+					// message:'{"action":"test","token":"6a8d85ae-8847-4442-b89d-b71e05578363","memberId":"ac622d298d9311e7a63100163e022e38","progress":66,"total":2,"taskId":"ff8080814f607c24014f68a1246f1775","chapterId":"ff8080814f607c24014f6873934c1706","courseId":"ff8080814f607c24014f6866fdb716fd","subjectId":"ff808081473905e701476204cb6c006f","categoryId":"ff808081473905e701475cd3c2080001","taskName":"ACCA F1 Accountant in Business-CH2章节测评","chapterName":"Chapter 2 Types of Business Organisation [0] ","courseName":"ACCA F1 Accountant in Business(体验课)","subjectName":"F1","categoryName":"ACCA","state":0,"memberName":"candy","isSupply":0,"createDate":1509094504936}'
 				}).then((res) =>{
 					// Request.actionGetTasksProgress({
 					// 	'token': this.userInfo.token,
@@ -624,7 +633,7 @@
 					});
 				}
 			},
-			exerciseSave (args){
+			exerciseSave (callback){
 				let exerciseActiveIndex = this.exam.exerciseActiveIndex;
 				let exerciseDoneCount = +this.exam.exerciseDoneCount+1;
 				let exerciseErrorNum = 0;
@@ -679,6 +688,8 @@
 						exerciseRightCount : exerciseRightCount,
 						examIsFinish : examIsFinish
 					})
+					console.log(callback)
+					if(callback){callback()};
 				})
 			},
 			exerciseAssignment (){
@@ -879,7 +890,9 @@
 				if(exerciseOptionIndex !== -1){
 
 					this.exerciseSaveCache();
-					this.exerciseSave();
+					this.exerciseSave( () => {
+						this.actionTaskProgress('analysis');
+					});
 
 				}
 			},
