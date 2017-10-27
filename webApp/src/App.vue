@@ -1,6 +1,6 @@
 <template lang="html">
 
-  <main class="v-wrap">
+  <main class="v-wrap" @touchmove.prevent>
     <router-view></router-view>
   </main>
 
