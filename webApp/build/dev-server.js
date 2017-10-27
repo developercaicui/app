@@ -1,5 +1,5 @@
 const config = require('../config');
-if (!process.env.NODE_ENV) process.env.NODE_ENV = config.dev.env
+if (!process.env) process.env = config.dev.env
 const path = require('path');
 const express = require('express');
 const webpack = require('webpack');
@@ -62,7 +62,6 @@ apiRouter.route('/:apiName')
   fs.readFile('./src/mock/db.json', 'utf8', function (err, data) {
     if (err) throw err
     var data = JSON.parse(data)
-    console.log(data)
     if (data[req.params.apiName]) {
       res.json(data[req.params.apiName])
     }

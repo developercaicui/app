@@ -3,9 +3,10 @@ const config = require('../config');
 const utils = require('./utils');
 const projectRoot = path.resolve(__dirname, '../');
 
-const env = process.env.NODE_ENV;
-const cssSourceMapDev = (env === 'developZbgedu' || env === 'developCaicui' && config.dev.cssSourceMap);
-const cssSourceMapProd = (env === 'production' && config.build.productionSourceMap);
+const env = require('../config/dev.env');
+const filePath = require('../config/file.path');
+const cssSourceMapDev = (env.WEB_SITE.includes('zbgedu') || env.WEB_SITE.includes('caicui') && config.dev.cssSourceMap);
+const cssSourceMapProd = (env.NODE_ENV.includes('build') && config.build.productionSourceMap);
 const useCssSourceMap = cssSourceMapDev || cssSourceMapProd;
 
 module.exports = {
@@ -14,7 +15,7 @@ module.exports = {
   },
   output: {
     path: config.build.assetsRoot,
-    publicPath: process.env.NODE_ENV === 'production' ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
+    publicPath: env.NODE_ENV.includes('build') ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
     filename: '[name].js'
   },
   resolve: {
@@ -25,8 +26,8 @@ module.exports = {
       'src': path.resolve(__dirname, '../src'),
       'assets': path.resolve(__dirname, '../src/assets'),
       'components': path.resolve(__dirname, '../src/components'),
-      'page': path.resolve(__dirname, '../src/page'),
-      'router': path.resolve(__dirname, '../src/router'),
+      'ipad': path.resolve(__dirname, '../src/Ipad'),
+      'mobile': path.resolve(__dirname, '../src/Mobile'),
       'api': path.resolve(__dirname, '../src/api'),
       'store': path.resolve(__dirname, '../src/store'),
     }

@@ -15,7 +15,7 @@
 
 <script>
 
-import MsgList from '../../../page/Msg/Mobile';
+import MsgList from '../..//Msg/Mobile';
 
 export default {
 

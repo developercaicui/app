@@ -1,18 +1,18 @@
 const path = require('path');
 const env = require('./dev.env');
-const theme = require('./theme-color');
-const outerFile = env.NODE_ENV.includes('developZbgedu') ? 'distZbgedu' : 'distCaicui';
+const theme = require('./theme.color');
+const pageRouter = require('./select.router');
 
 module.exports = {
   build: {
-    env: require('./prod.env'),
-    index: path.resolve(__dirname, `../${outerFile}/index.html`),
-    assetsRoot: path.resolve(__dirname, `../${outerFile}`),
+    env: env,
+    index: path.resolve(__dirname, `../dist/index.html`),
+    assetsRoot: path.resolve(__dirname, `../dist`),
     assetsSubDirectory: 'static',
     assetsPublicPath: './',
     productionSourceMap: false,
     productionGzip: false,
-    productionGzipExtensions: ['js', 'css']
+    productionGzipExtensions: ['js', 'csws']
   },
   dev: {
     env: env,
@@ -20,7 +20,7 @@ module.exports = {
     assetsSubDirectory: 'static',
     assetsPublicPath: '/',
     proxyTable: {
-        '/api': env.NODE_ENV.includes('developZbgedu') ? 'http://api.zbgedu.com' : 'http://api.caicui.com/',
+        '/api': env.WEB_SITE.includes('zbgedu') ? 'http://api.zbgedu.com' : 'http://api.caicui.com/',
     },
     cssSourceMap: false
   }

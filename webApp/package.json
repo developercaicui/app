@@ -1,16 +1,12 @@
 {
   "name": "mobile",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "",
   "author": "",
   "scripts": {
     "start": "node build/start.js",
-    "dev:caicui": "node build/dev-server.js caicui",
-    "dev:zbgedu": "node build/dev-server.js caicui",
-    "build:caicui": "node build/build.js caicui",
-    "build:zbgedu": "node build/build.js zbgedu",
-    "dev": "node build/dev-server.js zbgedu",
-    "build": "node build/build.js zbgedu"
+    "dev": "node build/dev-server.js",
+    "build": "node build/build.js"
   },
   "repository": "",
   "dependencies": {

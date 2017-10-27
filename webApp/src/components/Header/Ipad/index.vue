@@ -26,7 +26,7 @@
 
 <script>
 
-import MyMsg from '../../../page/Msg/Ipad';
+import MyMsg from '../../Msg/Ipad';
 
 export default {
 
@@ -111,7 +111,7 @@ export default {
     this.$store.commit('updateLoginLogParams', {
         memberid: this.userInfo.memberId,
     });
-    
+
     this.$store.dispatch('fetchLoginLog');
 
   },

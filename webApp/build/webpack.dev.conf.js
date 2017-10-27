@@ -1,4 +1,5 @@
 const config = require('../config');
+const env = require('../config/dev.env');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const utils = require('./utils');
@@ -16,12 +17,8 @@ module.exports = merge(baseWebpackConfig, {
   devtool: '#eval-source-map',
   plugins: [
     new webpack.DefinePlugin({
-      'process.env': config.dev.env
-    }),
-    new webpack.ProvidePlugin({
-      $:"jquery",
-      jQuery:"jquery",
-      "window.jQuery":"jquery"
+      'process.env': env,
+      '__DEV__': env.NODE_ENV.includes('dev') ? true : false
     }),
     new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
