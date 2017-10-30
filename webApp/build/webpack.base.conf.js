@@ -11,7 +11,7 @@ const useCssSourceMap = cssSourceMapDev || cssSourceMapProd;
 
 module.exports = {
   entry: {
-    app: './src/main.js'
+    app: `./${env.PAGE_SRC.replace(/"/g,'')}/main.js`
   },
   output: {
     path: config.build.assetsRoot,
@@ -21,16 +21,7 @@ module.exports = {
   resolve: {
     extensions: ['', '.js', '.vue'],
     fallback: [path.join(__dirname, '../node_modules')],
-    alias: {
-      'vue$': 'vue/dist/vue',
-      'src': path.resolve(__dirname, '../src'),
-      'assets': path.resolve(__dirname, '../src/assets'),
-      'components': path.resolve(__dirname, '../src/components'),
-      'ipad': path.resolve(__dirname, '../src/Ipad'),
-      'mobile': path.resolve(__dirname, '../src/Mobile'),
-      'api': path.resolve(__dirname, '../src/api'),
-      'store': path.resolve(__dirname, '../src/store'),
-    }
+    alias: env.DEVICE_TYPE.includes('mobile') ? filePath.mobile :  filePath.ipad
   },
   resolveLoader: {
     fallback: [path.join(__dirname, '../node_modules')]

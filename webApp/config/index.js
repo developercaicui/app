@@ -1,7 +1,6 @@
 const path = require('path');
 const env = require('./dev.env');
 const theme = require('./theme.color');
-const pageRouter = require('./select.router');
 
 module.exports = {
   build: {

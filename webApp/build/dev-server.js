@@ -59,7 +59,7 @@ var apiRouter = express.Router()
 
 apiRouter.route('/:apiName')
 .all(function (req, res) {
-  fs.readFile('./src/mock/db.json', 'utf8', function (err, data) {
+  fs.readFile(`./${config.dev.env.PAGE_SRC.replace(/"/g,'')}/mock/db.json`, 'utf8', function (err, data) {
     if (err) throw err
     var data = JSON.parse(data)
     if (data[req.params.apiName]) {

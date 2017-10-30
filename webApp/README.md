@@ -25,29 +25,24 @@ npm start
 
 ```
 .
-├── build                                       // 配置文件
-├── config                                      // 环境配置区分
-├── dist                                        // 项目文件
-├── src                                         // 源码目录
-│   ├── mock                                    // 数据交互假数据
+├── build                                         // 配置文件
+├── config                                        // 环境配置区分
+├── dist                                          // 项目文件
+├── srcIpad                                       // Ipad源码
+├── srcMobile                                     // 手机源码
+│   ├── mock                                      // 假数据        
+│   ├── api                                       // 公用Api接口封装
+│   ├── port                                      // 线上接口
+│   ├── components                                // 木偶组件
+│   ├── containers                                // 智能组件
+│   ├── base                                      // 基础组件（如下拉刷新）
+│   ├── router                                    // 路由
+│   ├── store                                     // 状态机
+│   └── assets                                    // 资源
 │
-│   ├── api                                     // 常用接口封装
-│   ├── components                              // 组件
-│   ├── Ipad                                    // Ipad页面组件
-│   ├── Mobile                                  // 手机页面组件
-│   ├── router
-│   │   ├── ipad.js                             // ipad路由配置
-│   │   ├── mobile.js                           // 手机路由配置
-│   │   └── index.js                            // 路由入口
-│ 
-│   ├── store                                   // vuex状态管理
+│   ├── App.vue                                
+│   ├── main.js                                
 │
-│   └── assets                                  // 资源文件
-│
-│   ├── App.vue                                 // 页面入口文件
-│   ├── main.js                                 // 程序入口文件
-│
-├── index.html                                  // 入口html文件
 .
 
 ```
