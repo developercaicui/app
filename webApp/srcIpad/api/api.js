@@ -3,13 +3,6 @@ import { getUserInfo } from './port';
 
 export default {
 
-  /**
-    * 图片预加载
-    * @type {Array} 图片数组
-    */
-  preloadImages(arr) {
-
-  },
 /**
   * 图片预加载
   * @type { file } 文件

@@ -313,19 +313,19 @@ const server = {
   'actionGetCourseProgress': {
     'action': 'true',
     // 'hostName': 'http://action.zbgedu.com',
-    'hostName': process.env.NODE_ENV.includes('developZbgedu') ? 'http://action.zbgedu.com' : 'http://action.caicui.com',
+    'hostName': process.env.NODE_ENV.includes('zbgedu') ? 'http://action.zbgedu.com' : 'http://action.caicui.com',
     'url': '/api/userAction/course/getCourseProgress/v1.0/'
   },
   'actionGetTasksProgress': {
     'action': 'true',
     // 'hostName': 'http://action.zbgedu.com',
-    'hostName': process.env.NODE_ENV.includes('developZbgedu') ? 'http://action.zbgedu.com' : 'http://action.caicui.com',
+    'hostName': process.env.NODE_ENV.includes('zbgedu') ? 'http://action.zbgedu.com' : 'http://action.caicui.com',
     'url': '/api/userAction/course/getTasksProgress/v1.0/'
   },
   'actionTaskProgress': {
     'action': 'true',
     // 'hostName': 'http://action.zbgedu.com',
-    'hostName': process.env.NODE_ENV.includes('developZbgedu') ? 'http://action.zbgedu.com' : 'http://action.caicui.com',
+    'hostName': process.env.NODE_ENV.includes('zbgedu') ? 'http://action.zbgedu.com' : 'http://action.caicui.com',
     'url': '/api/userAction/course/taskProgress/v1.0/'
   },
   'wileyCourseActive': {

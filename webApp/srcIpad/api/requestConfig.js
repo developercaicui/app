@@ -1,7 +1,7 @@
 import Qs from 'qs'
 export default {
   url: '',
-  baseURL: process.env.NODE_ENV.includes('developZbgedu') ? "http://elearning.zbgedu.com" : "http://www.caicui.com",
+  baseURL: process.env.NODE_ENV.includes('zbgedu') ? "http://elearning.zbgedu.com" : "http://www.caicui.com",
   method: 'get',
   transformRequest: [
     function(data) {

@@ -3,7 +3,7 @@ import webApi from './api';
 import axios from 'axios';
 import qs from 'qs';
 
-const domain = process.env.WEB_SITE.includes('zbgedu') ? 'zbgedu' : 'caicui';
+const domain = process.env.NODE_ENV.includes('zbgedu') ? 'zbgedu' : 'caicui';
 const requestUrl =  `http://api.${domain}.com`;
 
 const LOC = window.location;
