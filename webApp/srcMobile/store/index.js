@@ -1,12 +1,18 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import index from 'srcIpad/store/modules/index'; // 试卷
+import createLogger from 'vuex/dist/logger';
+
+import note from './modules/note'; // 笔记相关
 
 Vue.use(Vuex);
 
+const debug = process.env.NODE_ENV.includes('dev');
+
 export default new Vuex.Store({
   modules: {
-    index,
-  }
+    note,
+  },
+  strict: debug,
+  plugins: debug ? [createLogger()] : []
 });

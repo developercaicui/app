@@ -1,39 +1,36 @@
 <template lang="html">
 
-<div class="">
-  index
-</div>
+  <div class="cookit-info" v-html="cookieTip"></div>
+
 </template>
 
 <script type="text/ecmascript-6">
 
-import ActiviceList from './subpage/activice_list';
-import courseList from './subpage/course_list';
-
 export default {
-
-  components: {
-    ActiviceList,
-    courseList
-  },
 
   data() {
     return {
-
+      cookieTip: '',
     }
   },
 
   created() {
 
-  },
+    this.webApi.setCookie('userInfo', JSON.stringify(this.$route.query));
+    this.webApi.setCookie('token', this.$route.query.token);
 
-  methods: {
+    this.cookieTip = `用户信息已添加成功。<br/><br/>Token：${this.$route.query.token}`;
 
   }
-
 
 }
 </script>
 
 <style lang="scss" scoped>
+
+.cookit-info{
+  padding: .5rem; line-height: 1.5;
+  font-size: .28rem; color: #f00;
+}
+
 </style>

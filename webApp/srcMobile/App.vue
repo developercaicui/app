@@ -1,8 +1,8 @@
 <template lang="html">
 
-  <main class="v-wrap">
+  <div class="v-wrap">
     <router-view></router-view>
-  </main>
+  </div>
 
 </template>
 
@@ -32,10 +32,6 @@ export default {
 
 
   },
-
-  methods: {
-
-  }
 
 }
 

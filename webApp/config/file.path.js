@@ -15,10 +15,11 @@ module.exports = {
     IpadApi: path.resolve(__dirname, `../srcIpad/api`),
     IpadStore: path.resolve(__dirname, `../srcIpad/store`),
     api: path.resolve(__dirname, `../srcMobile/api`),
-    assets: path.resolve(__dirname, `../assets`),
-    base: path.resolve(__dirname, `../base`),
-    compoenets: path.resolve(__dirname, `../compoenets`),
-    containers: path.resolve(__dirname, `../containers`),
+    assets: path.resolve(__dirname, `../srcMobile/assets`),
+    base: path.resolve(__dirname, `../srcMobile/base`),
+    compoenets: path.resolve(__dirname, `../srcMobile/compoenets`),
+    containers: path.resolve(__dirname, `../srcMobile/containers`),
+    store:  path.resolve(__dirname, `../srcMobile/store`),
   }),
 
 };
