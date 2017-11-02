@@ -264,8 +264,9 @@ export default {
 				}
 
 
+				const domain = process.env.NODE_ENV.includes('developZbgedu') ? 'zbgedu' : 'caicui';
 
-				$.post('http://api.zbgedu.com/api/zbids/member/mobilereg', {
+				$.post(`http://api.${domain}.com/api/zbids/member/mobilereg`, {
 					password: this.pwd,
 					phone: this.mobile,
 					code: this.code,

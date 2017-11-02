@@ -84,7 +84,7 @@ export default {
 			}
 
 			if(this.pwd !== this.againPwd){
-				this.webApi.alert('俩次密码输入不一致');
+				this.webApi.alert('两次密码输入不一致');
 				return false;
 			}
 
