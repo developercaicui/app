@@ -7,6 +7,7 @@ const Exam = r => require.ensure([], () => r(require('srcIpad/page/Exam')), 'exa
 const Index = r => require.ensure([], () => r(require('../containers/Index')), 'index');
 const Note = r => require.ensure([], () => r(require('../containers/Note')), 'note');
 const NoteList = r => require.ensure([], () => r(require('../containers/NoteList')), 'notelist');
+const NoteDetailsList = r => require.ensure([], () => r(require('../containers/NoteDetailsList')), 'notedetailslist');
 
 
 export default  new VueRouter({
@@ -25,7 +26,11 @@ export default  new VueRouter({
       component: Note,
       children: [{
         path: 'list', // 笔记列表
-        component: NoteList
+        component: NoteList,
+
+      },{
+        path: 'detailslist', // 详情列表
+        component: NoteDetailsList
       }]
     },{
       path: '/exam/:type/:id',

@@ -1,14 +1,13 @@
 <template lang="html">
 
-
 </template>
 
 <script type="text/ecmascript-6">
 
-
 export default {
 
   components: {
+
   },
 
   data() {
@@ -17,9 +16,7 @@ export default {
     }
   },
 
-
-  mounted() {
-
+  created() {
 
   },
 
@@ -27,10 +24,9 @@ export default {
 
   }
 
+
 }
-
 </script>
+
 <style lang="scss" scoped>
-
-
 </style>

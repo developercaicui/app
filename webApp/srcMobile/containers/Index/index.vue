@@ -1,25 +1,37 @@
 <template lang="html">
 
-  <div class="cookit-info" v-html="cookieTip"></div>
+  <div class="index-wrap">
+    <courseList></courseList>
+    <activityList></activityList>
+  </div>
 
 </template>
 
 <script type="text/ecmascript-6">
 
+import activityList from './subpage/activity_list';
+import courseList from './subpage/course_list';
+
 export default {
+
+  components: {
+    activityList,
+    courseList
+  },
 
   data() {
     return {
-      cookieTip: '',
+
     }
   },
 
   created() {
 
+    this.webApi.delCookie('userInfo');
+		this.webApi.delCookie('token');
+
     this.webApi.setCookie('userInfo', JSON.stringify(this.$route.query));
     this.webApi.setCookie('token', this.$route.query.token);
-
-    this.cookieTip = `用户信息已添加成功。<br/><br/>Token：${this.$route.query.token}`;
 
   }
 
@@ -28,9 +40,12 @@ export default {
 
 <style lang="scss" scoped>
 
-.cookit-info{
-  padding: .5rem; line-height: 1.5;
-  font-size: .28rem; color: #f00;
-}
+ @import "../../assets/style/mixin";
+
+ .index-wrap{
+   font-size: 0; line-height: 1;
+   background-color: #fff;
+   min-height: 100%;
+ }
 
 </style>

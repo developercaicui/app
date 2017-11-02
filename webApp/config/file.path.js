@@ -17,7 +17,7 @@ module.exports = {
     api: path.resolve(__dirname, `../srcMobile/api`),
     assets: path.resolve(__dirname, `../srcMobile/assets`),
     base: path.resolve(__dirname, `../srcMobile/base`),
-    compoenets: path.resolve(__dirname, `../srcMobile/compoenets`),
+    components: path.resolve(__dirname, `../srcMobile/components`),
     containers: path.resolve(__dirname, `../srcMobile/containers`),
     store:  path.resolve(__dirname, `../srcMobile/store`),
   }),
