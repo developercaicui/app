@@ -222,7 +222,7 @@ export default {
 			this.allUploadPic = this.allUploadPic.filter((item, index) => index != removeIndex && item);
 
 			if(this.type == 'edit') this.allPicPath = (this.allUploadPic.map(item => item.path || '')).join(',');
-			
+
 			this.isUploadSuccess--;
 
 		},
@@ -245,7 +245,7 @@ export default {
 				return false;
 			}
 
-			if(this.type != 'edit') this.isUploadSuccess = 0;	
+			if(this.type != 'edit') this.isUploadSuccess = 0;
 
 			if(this.type == 'edit' && this.defaultPicLen != this.isUploadSuccess) {
 				this.subForm();
@@ -288,7 +288,9 @@ export default {
 		},
 
 
-		subForm() {	
+		subForm() {
+
+			if(this.allPicPath.substring(0,1) == ',') this.allPicPath = this.allPicPath.substring(1);
 
 			this.$emit('submit-data', {
 				type: this.type,
