@@ -72,6 +72,7 @@ export default {
 			courseName: '',
 			taskProgress: 0,
 			defaultPicLen: 0,
+			courseId: '',
     }
   },
 
@@ -86,6 +87,7 @@ export default {
 			this.videoType = this.data.videoType || '';
 			this.courseName =  this.data.sectionData.courseName || this.data.courseData.courseName || 'courseName';
 			this.taskProgress = this.data.taskProgress || 0;
+			this.courseId = this.data.courseData.courseId || '';
 
 		}catch(e) {
 
@@ -247,7 +249,7 @@ export default {
 
 			if(this.type != 'edit') this.isUploadSuccess = 0;
 
-			if(this.type == 'edit' && this.defaultPicLen != this.isUploadSuccess) {
+			if(this.type == 'edit' && this.allUploadPic.length == this.isUploadSuccess) {
 				this.subForm();
 				return false;
 			}
@@ -290,8 +292,6 @@ export default {
 
 		subForm() {
 
-			if(this.allPicPath.substring(0,1) == ',') this.allPicPath = this.allPicPath.substring(1);
-
 			this.$emit('submit-data', {
 				type: this.type,
 				elseType: this.videoType || '',
@@ -317,6 +317,7 @@ export default {
 					categoryId:	this.categoryId,
 					taskId: this.taskId,
 					courseName: this.courseName,
+					courseId: this.courseId,
 				}
 			});
 
