@@ -282,6 +282,7 @@ export default {
     right: 0;
     bottom: 0;
     background: rgba(0,0,0,0.6);
+    z-index: 10;
 }
 .backdrop.opacity {
     background: rgba(0,0,0,0);
@@ -291,11 +292,12 @@ export default {
   font-size: 0.3rem;
   display: table;
   color: #fff;
-  position: relative;
+  position: absolute;
   z-index: 9;
   margin: 0.2rem 0.2rem;
   border-radius: 0.2rem;
   padding: 0.2rem 0;
+  top: 1.8rem;
 }
 .dropdown-menu:before {
   content: '';
