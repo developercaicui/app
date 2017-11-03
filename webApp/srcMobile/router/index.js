@@ -9,6 +9,10 @@ const Note = r => require.ensure([], () => r(require('../containers/Note')), 'no
 const NoteList = r => require.ensure([], () => r(require('../containers/NoteList')), 'notelist');
 const NoteDetailsList = r => require.ensure([], () => r(require('../containers/NoteDetailsList')), 'notedetailslist');
 
+const Exchange = r => require.ensure([], () => r(require('../containers/Exchange')), 'exchange');
+const ExchangeListAll = r => require.ensure([], () => r(require('../containers/ExchangeListAll')), 'exchangelistall');
+const ExchangeListMe = r => require.ensure([], () => r(require('../containers/ExchangeListMe')), 'exchangelistme');
+const ExchangeDetails = r => require.ensure([], () => r(require('../containers/ExchangeDetails')), 'exchangedetails');
 
 export default  new VueRouter({
   mode: 'hash',
@@ -31,6 +35,21 @@ export default  new VueRouter({
       },{
         path: 'detailslist', // 详情列表
         component: NoteDetailsList
+      }]
+    },{
+      path: '/exchange',
+      component: Exchange,
+      children: [{
+        path: 'alllist', // 全部交流列表
+        component: ExchangeListAll,
+
+      },{
+        path: 'melist', // 我的交流列表
+        component: ExchangeListMe,
+
+      },{
+        path: 'details', // 交流详情
+        component: ExchangeDetails
       }]
     },{
       path: '/exam/:type/:id',
