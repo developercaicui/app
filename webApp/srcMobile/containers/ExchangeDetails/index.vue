@@ -4,8 +4,7 @@
 
     <header class="head">
       <a href="javascript:;" class="iconfont icon-article-back" @click="backPreviousPage"></a>
-      <span>课程笔记</span>
-      <a href="javascript:;" class="iconfont icon-jia"></a>
+      <span>交流详情</span>
     </header>
 
     <main class="cont">
@@ -18,7 +17,7 @@
 
 <script type="text/ecmascript-6">
 
-import detailsList from "components/NoteDetailsList";
+import detailsList from "components/exchangeDetails";
 
 export default {
 
@@ -71,16 +70,23 @@ export default {
   font-size: 0; line-height: 1;
   min-height: 100%;
   overflow-y: auto; overflow-x: hidden;
+  background: #f2f2f2;
 }
 
 .head{
-
+  width: 100%;
   text-align: center;
-  height: 1rem; border-bottom: 1px solid #EFEFEF;
+  height: .9rem;
   @extend .flexCenter;
-
+  background: #fff;
+  border-bottom: 1px solid #dddddd;
+  position:fixed;
+  left: 0;
+  top: 0;
+  z-index:10;
   span{
-    @include fc($headerSize, #202020);
+    @include fc($headerSize, #000);
+    font-weight: bold;
   }
   a{
     @extend .ab;
@@ -88,10 +94,7 @@ export default {
     @include fc(.36rem, $themeColor);
     @extend .flexCenter;
     &:nth-of-type(1){
-      left: 0; font-size: .44rem;
-    }
-    &:nth-of-type(2){
-      right: 0;
+      left: 0;
     }
   }
 

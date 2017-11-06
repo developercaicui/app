@@ -18,7 +18,7 @@
       <li v-for="(item,index) in menulist" @click="menuEvent(index)">{{item}}</li>
     </ul>
 
-    <main style="margin-top:1.8rem;">
+    <main style="margin-top:1.7rem;">
         <allList></allList>
     </main>
 
@@ -81,120 +81,18 @@ export default {
 
         this.isShowMenu = !this.isShowMenu;
     },
-    // 选择笔记类型 0 为我的  1为全部
-    bindSelectType(ev) {
-
-      let oA = this.webApi.recursiveParentNode(ev.target, 'a');
-
-      this.defaultTabIndex = oA.dataset.index;
-
-      this.navBarMove(this.defaultTabIndex);
-
-      this.touchOldX = -(this.defaultTabIndex * this.screenWidth);
-
-      this.webApi.addCss(this.$refs.listWrap, {
-        transform: `translate3d(${ this.touchOldX }px,0,0)`
-      });
-
-    },
 
     // 关闭搜索
     closeNoteSearch(flag) {
       this.isHinddenSearch = flag;
     },
 
-    // 搜索笔记
+    // 搜索交流
     searchNoteList() {
       this.isHinddenSearch = true;
     },
 
 
-    navBarMove(index) {
-
-      let oSpan = this.$refs.navWrap.querySelectorAll('span');
-
-      this.webApi.addCss(this.$refs.navBar, {
-        transform: `translate3d(${ oSpan[index].offsetLeft - oSpan[index].offsetWidth }px,0,0)`
-      });
-
-    },
-
-    // 笔记与全部笔记滑动切换
-    bindTouchMove(type, ev) {
-
-			let _touch = ev.changedTouches[0];
-
-      let _moveX, _endX = 0;
-
-      switch(type) {
-        case 'start':
-
-          this.touchStartX = _touch.pageX;
-
-          this.webApi.addCss(this.$refs.listWrap, {
-            transition: `0s`
-          });
-
-        break;
-
-        case 'move':
-
-          _moveX = _touch.pageX;
-
-          let __x = _moveX - this.touchStartX;
-
-          if(__x > 0 && this.defaultTabIndex == 0) {
-            this.touchIsMove = false;
-            break;
-          }
-
-          if(this.defaultTabIndex == 1 && __x < 0) {
-            this.touchIsMove = false;
-            break;
-          }
-
-          this.touchIsMove = true;
-
-          this.webApi.addCss(this.$refs.navBar, {
-            transform: `translate3d(${ Math.abs((__x + -this.touchOldX) * this.specificValue) }px,0,0)`
-          });
-
-          this.webApi.addCss(this.$refs.listWrap, {
-            transform: `translate3d(${ __x + -this.touchOldX }px,0,0)`
-          });
-
-        break;
-
-        case 'end':
-
-          _endX = _touch.pageX;
-
-          if (!this.touchIsMove) {
-            this.navBarMove(this.defaultTabIndex);
-            break;
-          };
-
-          if (this.screenWidth/3 < Math.abs(_endX - this.touchStartX)) {
-            this.defaultTabIndex = this.defaultTabIndex == 0 ? 1 : 0 ;
-          }
-
-          this.touchOldX = this.defaultTabIndex * this.screenWidth;
-
-          this.webApi.addCss(this.$refs.listWrap, {
-            transition: `.4s`
-          });
-
-          this.webApi.addCss(this.$refs.listWrap, {
-            transform: `translate3d(-${ this.touchOldX }px,0,0)`
-          });
-
-          this.navBarMove(this.defaultTabIndex);
-
-        break;
-      }
-
-
-    }
 
   }
 
@@ -292,7 +190,7 @@ export default {
   font-size: 0.3rem;
   display: table;
   color: #fff;
-  position: absolute;
+  position: fixed;
   z-index: 9;
   margin: 0.2rem 0.2rem;
   border-radius: 0.2rem;

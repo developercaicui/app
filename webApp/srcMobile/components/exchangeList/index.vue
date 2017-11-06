@@ -12,10 +12,10 @@
                 <p class="line-22"><span>2015-12-13 </span><span>14:17</span></p> 
             </div>
           </div> <!-- 讨论内容--> 
-          <div class="talk-content-describe">
-              <div onclick="next()" class="current-talk">
-                <h5><span class="questions">#问答#</span>老师好，请问这道题为什么选a，不理解</h5>
-                <p>请问这个南烈中的转换成本的约当产量为什么不是氨 纶装完工转出数量加上氨纶服装期末wip就可以了？ 为什么还要加上完工转出的丝绸</p>
+          <div class="talk-content-describe" @click="openDetail()">
+              <div class="current-talk">
+                <h5><span class="questions">#问答#</span>老师好，请问这道题为什么选a，不理解不理解不理解不理解不理解不理解</h5>
+                <p style="overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3; ">请问这个南烈中的转换成本的约当产量为什么不是氨 纶装完工转出数量加上氨纶服装期末wip就可以了？ 为什么还要加上完工转出的丝绸请问这个南烈中的转换成本的约当产量为什么不是氨 纶装完工转出数量加上氨纶服装期末wip就可以了？ 为什么还要加上完工转出的丝绸请问这个南烈中的转换成本的约当产量为什么不是氨 纶装完工转出数量加上氨纶服装期末wip就可以了？ 为什么还要加上完工转出的丝绸</p>
               </div>
               <ul class="pic-group">
                 <li onclick="openImageBrower()"><img src="../../assets/img/talkpic.png" alt=""></li>
@@ -121,7 +121,11 @@ export default {
     setBg(imgsrc) {
         return `background-image:url(${imgsrc})`
     },
-
+    openDetail() {
+        this.$router.push({
+          path: `/exchange/details`,
+        });
+    },
   }
 
 }
@@ -187,22 +191,6 @@ export default {
   vertical-align: middle;
   margin-left: 0.14rem;
 }
-.talk-right {
-  position: absolute;
-  right: 0;
-}
-.talk-right .t-img-message {
-      height: 0.3rem;
-    width: 0.35rem;
-  vertical-align: middle;
-  margin-right: 0.06rem;
-}
-.talk-right2 .t-img-message {
-      height: 0.3rem;
-    width: 0.35rem;
-  vertical-align: middle;
-  margin-right: 0.06rem;
-}
 .my-talk-list {
   width: 100%;
   margin-bottom: 0.2rem;
@@ -224,6 +212,7 @@ export default {
   color: #7c7c7c;
   font-size: 0.24rem;
   /*max-height: 1.2rem;*/
+
 }
 .current-talk h5,
 .current-talk p {
@@ -237,6 +226,18 @@ export default {
 .detail .current-talk p {
   /*max-height: 12rem;*/
   overflow: visible;
+}
+.current-talk h5{
+    overflow:hidden; //超出的文本隐藏
+    text-overflow:ellipsis; //溢出用省略号显示
+    white-space:nowrap; //溢出不换行
+}
+.talk-warp .current-talk p{
+    overflow:hidden; 
+    text-overflow:ellipsis;
+    display:-webkit-box; 
+    -webkit-box-orient:vertical;
+    -webkit-line-clamp:2;
 }
 .current-talk h5 span.questions{
     color: #3ba9fe;
@@ -303,7 +304,7 @@ export default {
 .pic-group b {
   position: absolute;
   z-index: 5;
-  top: 1.6rem;
+  top: 1.5rem;
   background-color: rgba(0,0,0,0.5);
   color: #fff;
   height: 0.4rem;
@@ -312,8 +313,9 @@ export default {
   line-height: 0.4rem;
   font-size: 0.22rem;
   margin-left: -1%;
-  transform: translate(-100%, 0);
-  -webkit-transform: translate(-100%, 0);
+  transform: translate(-120%, 0);
+  -webkit-transform: translate(-120%, 0);
+  border-radius: 0.2rem;
 }
 
 
@@ -346,7 +348,9 @@ export default {
       top: 0.2rem;
     }
 }
-
+.talk-event p:last-child i{
+    font-size: 0.48rem;
+}
 .new-talk-btn{
     width: .9rem;
     height: .9rem;
