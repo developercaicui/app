@@ -145,6 +145,11 @@ export default {
       return `background-image:url(${this.webApi.cdnImgUrl}${url})`
     },
     openActivate(item) {
+
+      if(item.lock_status != 0){
+          this.webApi.alert('当前的课程已锁定,续费后即可解锁！');
+          return false;
+      }
     	this.activeCour = true;
     	this.noactiveCourse = item;
     	document.body.style.overflow = 'hidden';
