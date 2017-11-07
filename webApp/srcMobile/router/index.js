@@ -11,8 +11,15 @@ const NoteDetailsList = r => require.ensure([], () => r(require('../containers/N
 
 const Exchange = r => require.ensure([], () => r(require('../containers/Exchange')), 'exchange');
 const ExchangeListAll = r => require.ensure([], () => r(require('../containers/ExchangeListAll')), 'exchangelistall');
-const ExchangeListMe = r => require.ensure([], () => r(require('../containers/ExchangeListMe')), 'exchangelistme');
-const ExchangeDetails = r => require.ensure([], () => r(require('../containers/ExchangeDetails')), 'exchangedetails');
+
+import ExchangeListMe from '../containers/ExchangeListMe';
+import ExchangeDetails from '../containers/ExchangeDetails';
+import ExchangeSearch from '../containers/ExchangeSearch';
+import ExchangeNewTalk from '../containers/ExchangeNewTalk';
+// const ExchangeListMe = r => require.ensure([], () => r(require('../containers/ExchangeListMe')), 'exchangelistme');
+// const ExchangeDetails = r => require.ensure([], () => r(require('../containers/ExchangeDetails')), 'exchangedetails');
+// const ExchangeSearch = r => require.ensure([], () => r(require('../containers/ExchangeSearch')), 'exchangesearch');
+// const ExchangeNewTalk = r => require.ensure([], () => r(require('../containers/ExchangeNewTalk')), 'exchangenewtalk');
 
 export default  new VueRouter({
   mode: 'hash',
@@ -42,14 +49,18 @@ export default  new VueRouter({
       children: [{
         path: 'alllist', // 全部交流列表
         component: ExchangeListAll,
-
       },{
         path: 'melist', // 我的交流列表
         component: ExchangeListMe,
-
       },{
         path: 'details', // 交流详情
         component: ExchangeDetails
+      },{
+        path: 'search', // 搜索交流
+        component: ExchangeSearch
+      },{
+        path: 'newtalk', // 搜索交流
+        component: ExchangeNewTalk
       }]
     },{
       path: '/exam/:type/:id',

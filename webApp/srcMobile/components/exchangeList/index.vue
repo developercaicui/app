@@ -91,7 +91,6 @@
           </div>
       </div>
 
-      <div class="new-talk-btn"><i class="iconfont icon-jia"></i></div>
   </div>
 
 </template>
@@ -125,6 +124,9 @@ export default {
         this.$router.push({
           path: `/exchange/details`,
         });
+    },
+    newTalk() {
+        
     },
   }
 
@@ -351,21 +353,5 @@ export default {
 .talk-event p:last-child i{
     font-size: 0.48rem;
 }
-.new-talk-btn{
-    width: .9rem;
-    height: .9rem;
-    border-radius: 50%;
-    background:rgba(255,84,131,0.85);
-    position: fixed;
-    right: 0.34rem;
-    bottom: 1.2rem;
-    z-index:20;
-    text-align: center;
-    line-height: .9rem;
-    box-shadow: 0 0.03rem 0.07rem rgba(0,0,0, 0.2);
-    i{
-        color: #fff;
-        font-size: 0.4rem;
-    }
-}
+
 </style>
