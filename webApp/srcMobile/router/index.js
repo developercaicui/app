@@ -9,13 +9,14 @@ const Note = r => require.ensure([], () => r(require('../containers/Note')), 'no
 const NoteList = r => require.ensure([], () => r(require('../containers/NoteList')), 'notelist');
 const NoteDetailsList = r => require.ensure([], () => r(require('../containers/NoteDetailsList')), 'notedetailslist');
 
-const Exchange = r => require.ensure([], () => r(require('../containers/Exchange')), 'exchange');
-const ExchangeListAll = r => require.ensure([], () => r(require('../containers/ExchangeListAll')), 'exchangelistall');
-
+import Exchange from '../containers/Exchange';
+import ExchangeListAll from '../containers/ExchangeListAll';
 import ExchangeListMe from '../containers/ExchangeListMe';
 import ExchangeDetails from '../containers/ExchangeDetails';
 import ExchangeSearch from '../containers/ExchangeSearch';
 import ExchangeNewTalk from '../containers/ExchangeNewTalk';
+// const Exchange = r => require.ensure([], () => r(require('../containers/Exchange')), 'exchange');
+// const ExchangeListAll = r => require.ensure([], () => r(require('../containers/ExchangeListAll')), 'exchangelistall');
 // const ExchangeListMe = r => require.ensure([], () => r(require('../containers/ExchangeListMe')), 'exchangelistme');
 // const ExchangeDetails = r => require.ensure([], () => r(require('../containers/ExchangeDetails')), 'exchangedetails');
 // const ExchangeSearch = r => require.ensure([], () => r(require('../containers/ExchangeSearch')), 'exchangesearch');

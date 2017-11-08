@@ -16,7 +16,7 @@ export default {
   //监听路由的路径，可以通过不同的路径去选择不同的切换效果  
   watch: {  
     '$route' (to, from) {  
-    	
+    	console.log(to)
       if(to.path == '/exchange/details' || to.path == '/exchange/search' || to.path == '/exchange/newtalk'){  
 
         this.transitionName = 'jump-right';  

@@ -1,93 +1,36 @@
 <template lang="html">
 
   <div id="content" class="talk-warp">
-      <div class="my-talk-list"> <!-- 用户信息--> 
+      <div class="my-talk-list" v-for="item in allList"> <!-- 用户信息--> 
           <div class="my-talk-wrap">
             <div class="talk-user clear-fix">
                 <div class="takl-user-photo">
-                    <img src="../../assets/img/touxiang.png" alt="">
+                    <img :src="item.headImg" alt="">
                 </div>
             <div class="talk-user-message clear-fix">
-                <p class="line-1"><span>张杰先生</span><img src="../../assets/img/userlevel.png" alt=""></p>
-                <p class="line-22"><span>2015-12-13 </span><span>14:17</span></p> 
+                <p class="line-1"><span>{{ item.nikeName }}</span><img src="../../assets/img/userlevel.png" alt="" v-if="item.levelimg"></p>
+                <p class="line-22" v-html='item.updateTime'></p> 
             </div>
           </div> <!-- 讨论内容--> 
           <div class="talk-content-describe" @click="openDetail()">
               <div class="current-talk">
-                <h5><span class="questions">#问答#</span>老师好，请问这道题为什么选a，不理解不理解不理解不理解不理解不理解</h5>
-                <p style="overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3; ">请问这个南烈中的转换成本的约当产量为什么不是氨 纶装完工转出数量加上氨纶服装期末wip就可以了？ 为什么还要加上完工转出的丝绸请问这个南烈中的转换成本的约当产量为什么不是氨 纶装完工转出数量加上氨纶服装期末wip就可以了？ 为什么还要加上完工转出的丝绸请问这个南烈中的转换成本的约当产量为什么不是氨 纶装完工转出数量加上氨纶服装期末wip就可以了？ 为什么还要加上完工转出的丝绸</p>
+                <h5>
+                  <span class="questions" v-if="item.bbstype==1">#问答#</span>
+                  <span class="discuss" v-else-if="item.bbstype==0">#讨论#</span>
+                  {{ item.title }}
+                </h5>
+                <p style="overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-box-orient:vertical;-webkit-line-clamp:3; ">{{ item.contentSummary }}</p>
               </div>
-              <ul class="pic-group">
-                <li onclick="openImageBrower()"><img src="../../assets/img/talkpic.png" alt=""></li>
-                <li onclick="openImageBrower()"><img src="../../assets/img/talkpic.png" alt=""></li>
-                <li onclick="openImageBrower()"><img src="../../assets/img/talkpic.png" alt=""></li>
-                <b>共4张</b>
+              <ul class="pic-group" v-if="item.imgPath">
+                  <li v-for="(imgPath,index) in setImgPath(item.imgPath)" v-if="index <= 2" :style="setBackground(imgPath)" ></li>
+                  <b v-if="setImgPath(item.imgPath).length>=3">共{{ setImgPath(item.imgPath).length }}张</b>
               </ul>
             </div>
           </div>
           <div class="talk-event">
               <span class="line"></span>
-              <p><i class="iconfont icon-good"></i>2</p>
-              <p><i class="iconfont icon-talk"></i>2</p>
-          </div>
-      </div>
-      <div class="my-talk-list"> <!-- 用户信息--> 
-          <div class="my-talk-wrap">
-            <div class="talk-user clear-fix">
-                <div class="takl-user-photo">
-                    <img src="../../assets/img/touxiang.png" alt="">
-                </div>
-            <div class="talk-user-message clear-fix">
-                <p class="line-1"><span>张杰先生</span><img src="../../assets/img/userlevel.png" alt=""></p>
-                <p class="line-22"><span>2015-12-13 </span><span>14:17</span></p> 
-            </div>
-          </div> <!-- 讨论内容--> 
-          <div class="talk-content-describe">
-              <div onclick="next()" class="current-talk">
-                <h5><span class="discuss">#讨论#</span>请问</h5>
-                <p>请问这个南烈中的转换成本的约当产量为什么不是氨 纶装完工转出数量加上氨纶服装期末wip就可以了？ 为什么还要加上完工转出的丝绸</p>
-              </div>
-              <ul class="pic-group">
-                <li style="background-image:url(../../assets/img/userlevel.png)" onclick="openImageBrower()"></li>
-                <li style="background-image:url(../../assets/img/userlevel.png)" onclick="openImageBrower()"></li>
-                <li style="background-image:url(../../assets/img/userlevel.png)" onclick="openImageBrower()"></li>
-                <b>共4张</b>
-              </ul>
-            </div>
-          </div>
-          <div class="talk-event">
-              <span class="line"></span>
-              <p><i class="iconfont icon-good"></i>2</p>
-              <p><i class="iconfont icon-talk"></i>2</p>
-          </div>
-      </div>
-      <div class="my-talk-list"> <!-- 用户信息--> 
-          <div class="my-talk-wrap">
-            <div class="talk-user clear-fix">
-                <div class="takl-user-photo">
-                    <img src="../../assets/img/touxiang.png" alt="">
-                </div>
-            <div class="talk-user-message clear-fix">
-                <p class="line-1"><span>张杰先生</span><img src="../../assets/img/userlevel.png" alt=""></p>
-                <p class="line-22"><span>2015-12-13 </span><span>14:17</span></p> 
-            </div>
-          </div> <!-- 讨论内容--> 
-          <div class="talk-content-describe">
-              <div onclick="next()" class="current-talk">
-                <h5>   </h5> <p>个个好chjfjudkudujdukdudud</p>
-              </div>
-              <ul class="pic-group">
-                <li style="background-image:url(../../assets/img/userlevel.png)" onclick="openImageBrower()"></li>
-                <li style="background-image:url(../../assets/img/userlevel.png)" onclick="openImageBrower()"></li>
-                <li style="background-image:url(../../assets/img/userlevel.png)" onclick="openImageBrower()"></li>
-                <b>共4张</b>
-              </ul>
-            </div>
-          </div>
-          <div class="talk-event">
-              <span class="line"></span>
-              <p><i class="iconfont icon-good"></i>2</p>
-              <p><i class="iconfont icon-talk"></i>2</p>
+              <p @click="praise(item, $event)"><i class="iconfont icon-good" ref="praiseBtn"></i>{{ item.praiseCount ? item.praiseCount : 0 }}</p>
+              <p><i class="iconfont icon-talk"></i>{{ item.replyCount ? item.replyCount : 0 }}</p>
           </div>
       </div>
 
@@ -97,9 +40,15 @@
 
 <script>
 
+import { praiseExchange } from 'IpadApi/port';
 
 export default {
-
+  props: {
+      allList: {
+          type: Array,
+          default: []
+      }
+  },
   components: {
   },
 
@@ -108,7 +57,9 @@ export default {
     }
   },
 
+  created() {
 
+  },
   mounted() {
 
     
@@ -117,17 +68,60 @@ export default {
 
   methods: {
 
-    setBg(imgsrc) {
-        return `background-image:url(${imgsrc})`
-    },
     openDetail() {
         this.$router.push({
           path: `/exchange/details`,
         });
     },
-    newTalk() {
-        
+    //设置背景图
+    setBackground(url) {
+      return `background-image:url(${this.getImgPath(url)})`
     },
+    //处理图片路径
+    setImgPath(imgPaths) {
+      let imgPath=imgPaths.split(',');
+      let imgPathArr=[];
+            for(let i in imgPath) {
+              if(!this.webApi.isEmpty(imgPath[i])) {
+                imgPathArr.push(imgPath[i]);
+              }
+            }
+            return imgPathArr;
+    },
+    //设置图片路径域名
+    getImgPath(imgPath) {
+      if(imgPath.length>0){
+          if(imgPath.substr(0,4)!="http"){
+             return this.webApi.cdnImgUrl+imgPath;
+          }else{
+            return imgPath;
+          }
+       }else{
+        return imgPath;
+       }
+    },
+    //点赞
+    praise(item,el) {
+        //       console.log(el.target.childNodes.innerText)
+        // return;
+        praiseExchange({
+            token: JSON.parse(this.webApi.getCookie('userInfo')).token,
+            id: item.id,
+            action: 2,
+        }).then(res => {
+            if(res.state == 'success'){
+                if(res.data.ispraise == 1){
+                    el.target.classList.remove("icon-good");
+                    el.target.classList.add("icon-good_pink");
+                    
+                }else{
+                    el.target.classList.remove("icon-good_pink");
+                    el.target.classList.add("icon-good");
+                }
+                item.praiseCount = res.data.totalCount;
+            }
+        })
+    }
   }
 
 }
@@ -159,7 +153,7 @@ export default {
   float: left;
   margin-left: 0.14rem;
   height: 0.8rem;
-  width: 86%;
+  width: 80%;
 }
 .talk-user-message .line-22 span {
   margin-right: 0.1rem;
@@ -181,12 +175,9 @@ export default {
   bottom: 0.05rem;
   width: 100%;
   line-height: 1;
-}
-.talk-user-message p:nth-child(2) span {
   font-size: 0.22rem;
   color: #666;
   vertical-align: middle;
-  margin-right: 0.12rem;
 }
 .talk-user-message .line-1 > img {
   max-height: 0.3rem;
@@ -250,16 +241,7 @@ export default {
 .my-talk-wrap .current-talk {
   position: relative;
 }
-.my-talk-wrap .current-talk:before {
-  content: '';
-  position: absolute;
-  z-index: 1;
-  left: -0.3rem;
-  right: -0.3rem;
-  top: -1.1rem;
-  bottom: -3.5rem;
-  background: rgba(0,0,0,0);
-}
+
 .my-talk-wrap .voice-player,
 .my-talk-wrap ul.pic-group li {
   position: relative;
@@ -338,6 +320,9 @@ export default {
           color: #cab2b8;
           padding-right: 0.1rem;
           font-size: 0.4rem;
+      }
+      i.icon-good_pink{
+          color: $themeColor;
       }
     }
     span{

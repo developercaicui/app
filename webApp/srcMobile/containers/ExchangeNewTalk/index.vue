@@ -3,39 +3,47 @@
   <div class="node-list-wrap" ref="nodeListWrap">
 
     <header class="head">
-      <a href="javascript:;" class="iconfont icon-article-back"></a>
+      <a href="javascript:;" class="iconfont icon-article-back" @click="backPreviousPage"></a>
       <span>发布新帖</span>
       <a href="javascript:;" @click="searchNoteList">发布</a>
     </header>
   
-    <main class="ipt-wrap">
+    <main class="ipt-wrap" style="margin-top:.9rem;">
       <div>
-        <input type="text" name="" value="12312321312"/>
-        <a href="javascript:;" class="iconfont icon-jiantou-copy-copy look-all"></a>
+          <div class="talk-type" @click="showMenu">
+              <p>{{typeList[currentType]}}</p><i class="iconfont icon-angle-down"></i>
+          </div>
+          <div class="talk-type-menu" v-show="isShowMenu" @click="selectType">
+              <p>{{typeList[menuType]}}</p>
+          </div>
+          <input type="text" placeholder="输入你的标题">
       </div>
       <div>
         <textarea placeholder="问答、讨论内容"></textarea>
       </div>
     </main>
 
-    <uploadPicture></uploadPicture>
+    <!-- <uploadPicture></uploadPicture> -->
 
   </div>
 </template>
 
 <script>
 
-import allList from './subpage/all_list';
+// import uploadPicture from '../../components/uploadPicture';
 
 export default {
 
   components: {
-    allList,
+    // uploadPicture,
   },
 
   data() {
     return {
-      
+        typeList: ['问答','讨论'],
+        currentType: 0,
+        menuType: 1,
+        isShowMenu: false,
     }
   },
 
@@ -52,14 +60,32 @@ export default {
 
     // 返回上一页
     backPreviousPage() {
+
       this.$router.go(-1);
+
     },
 
-    // 搜索交流
     searchNoteList() {
-      this.isHinddenSearch = true;
+
     },
 
+    //切换发帖类型
+    selectType(type) {
+
+       let initType = this.currentType;
+
+       this.currentType = this.menuType;
+
+       this.menuType = initType;
+
+       this.isShowMenu = !this.isShowMenu;
+
+    },
+    showMenu() {
+
+        this.isShowMenu = !this.isShowMenu;
+
+    }
 
 
   }
@@ -112,17 +138,19 @@ export default {
   
   .ipt-wrap{
       background-color: #fff;
-      margin-top: .3rem;
       height: 100%;
       > div{
         @extend .relative;
+        line-height: .9rem;
         &:nth-of-type(1){
-          @include wh(100%, 1rem);
+          @include wh(100%, .9rem);
           border-bottom: 1px solid #E4E4E4;
-          padding: 0 .3rem;
+          padding: 0 .1rem;
           input {
             @include fc(.3rem, #333);
-            @include wh(5.6rem, .9rem);
+            @include wh(5rem, .5rem);
+            margin-left: 0.2rem;
+            margin-top: -0.15rem;
           }
           .look-all{
             @extend .ab;
@@ -142,6 +170,51 @@ export default {
         }
 
       }
+    }
+    .talk-type{
+        width: 1.6rem;
+        height: 100%;
+        text-align: center;
+        font-size: 0.3rem;
+        font-weight: bold;
+        color: $themeColor;
+        position: relative;
+        display:inline-block;
+        p{
+          display: inline-block;
+          padding-right: 0.1rem;
+        }
+        &:after{
+          content: "";
+          width: 0.05rem;
+          height: 0.5rem;
+          background: #f2f2f2;
+          position: absolute;
+          right: 0;
+          top: 0.2rem;
+        }
+    }
+    
+    .talk-type-menu{
+        width: 1.7rem;
+        height: 100%;
+        text-align: center;
+        font-size: 0.3rem;
+        font-weight: bold;
+        color: #999999;
+        position: absolute;
+        display: inline-block;
+        left: 0;
+        top: .9rem;
+        z-index: 10;
+        border: 2px solid #f2f2f2;
+        border-top:none;
+        border-left:none;
+        background: #fff;
+        p{
+          display: inline-block;
+          padding-right: 0.2rem;
+        }
     }
 }
 

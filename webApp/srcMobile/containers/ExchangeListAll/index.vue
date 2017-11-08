@@ -49,9 +49,14 @@ export default {
   created() {
 
   },
+  computed: {
 
+  },
+
+  watch: {
+
+  },
   mounted() {
-
 
   },
 

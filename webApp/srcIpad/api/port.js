@@ -144,3 +144,6 @@ export const getNodeDetail = params => { return axios.get(`${requestUrl}/api/stu
 export const exchangeReply = params => { return axios.post(`${requestUrl}/api/studytools/bbsreply/v1.0`, qs.stringify(params), headers.urlencoded).then(res => res.data).catch(err => err) };
 // 新建交流
 export const newExchange= params => { return axios.post(`${requestUrl}/api/studytools/bbssave/v1.0`, qs.stringify(params), headers.urlencoded).then(res => res.data).catch(err => err) };
+
+//交流点赞
+export const praiseExchange = params => { return axios.get(`${requestUrl}/api/studytools/bbs_praise/v1.0?${qs.stringify(params)}`, {}).then(res => res.data).catch(err => err) };
