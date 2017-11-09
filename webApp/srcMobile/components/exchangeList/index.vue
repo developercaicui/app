@@ -1,14 +1,15 @@
 <template lang="html">
 
   <div id="content" class="talk-warp">
-      <div class="my-talk-list" v-for="item in allList"> <!-- 用户信息--> 
+    
+      <div class="my-talk-list" v-for="(item,key) in allList"> <!-- 用户信息--> 
           <div class="my-talk-wrap">
             <div class="talk-user clear-fix">
                 <div class="takl-user-photo">
                     <img :src="item.headImg" alt="">
                 </div>
             <div class="talk-user-message clear-fix">
-                <p class="line-1"><span>{{ item.nikeName }}</span><img src="../../assets/img/userlevel.png" alt="" v-if="item.levelimg"></p>
+                <p class="line-1"><span>{{ item.nikeName }}</span><img src="../../assets/img/userlevel.png" alt="" v-if="item.userlevel==4"></p>
                 <p class="line-22" v-html='item.updateTime'></p> 
             </div>
           </div> <!-- 讨论内容--> 
@@ -29,7 +30,7 @@
           </div>
           <div class="talk-event">
               <span class="line"></span>
-              <p @click="praise(item, $event)"><i class="iconfont icon-good" ref="praiseBtn"></i>{{ item.praiseCount ? item.praiseCount : 0 }}</p>
+              <p @click="praise(item.id, key, $event)"><i class="iconfont icon-good" ref="praiseBtn"></i>{{ item.praiseCount ? item.praiseCount : 0 }}</p>
               <p><i class="iconfont icon-talk"></i>{{ item.replyCount ? item.replyCount : 0 }}</p>
           </div>
       </div>
@@ -40,6 +41,7 @@
 
 <script>
 
+import { mapGetters, mapActions, mapMutations } from 'vuex';
 import { praiseExchange } from 'IpadApi/port';
 
 export default {
@@ -60,14 +62,49 @@ export default {
   created() {
 
   },
+  computed: {
+
+    ...mapGetters([
+       'getAllExchangeList',
+    ]),
+
+  },
+
+  watch: {
+
+    // getAllExchangeList(data) {
+
+    //   // this.updataList([1,2,3])
+
+    //   // this.$store.commit('GET_ME_EXCHANGE_LIST', _d);
+
+    //   this.allList = data;
+
+    // }
+
+  },
   mounted() {
 
-    
+    // if(typeof this.getAllExchangeList == 'object' && this.getAllExchangeList.length ==0) {
+    //   this.fetchExchangeList()
+    // }
+
+    // 
+    // 
 
   },
 
   methods: {
 
+    ...mapMutations([
+      'updateAllListPraise'
+    ]),
+    
+    ...mapActions([
+
+      'fetchExchangeList'
+
+    ]),
     openDetail() {
         this.$router.push({
           path: `/exchange/details`,
@@ -101,12 +138,11 @@ export default {
        }
     },
     //点赞
-    praise(item,el) {
-        //       console.log(el.target.childNodes.innerText)
-        // return;
+    praise(id,key,el) {
+
         praiseExchange({
             token: JSON.parse(this.webApi.getCookie('userInfo')).token,
-            id: item.id,
+            id: id,
             action: 2,
         }).then(res => {
             if(res.state == 'success'){
@@ -118,7 +154,10 @@ export default {
                     el.target.classList.remove("icon-good_pink");
                     el.target.classList.add("icon-good");
                 }
-                item.praiseCount = res.data.totalCount;
+                
+                this.updateAllListPraise({index: key, num: res.data.totalCount})
+            }else{
+                this.webApi.alert("点赞失败！");
             }
         })
     }
@@ -331,7 +370,7 @@ export default {
       display: block;
       background: #eee;
       position: absolute;
-      left: 3.8rem;
+      left: 3.5rem;
       top: 0.2rem;
     }
 }

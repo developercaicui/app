@@ -363,7 +363,7 @@ export default {
 
 <style lang="scss" scoped>
 
- @import '../../../assets/style/mixin';
+ @import '../../assets/style/mixin';
 
 	.slide-refresh-wrap{
 		background-color: #F3F3F3;
@@ -374,7 +374,7 @@ export default {
 
 	.slide-refresh-content{
 		position: relative;
-		background-color: #fff;
+		/* background-color: #fff; */
 		height:auto;
 		z-index: 9;
 	}

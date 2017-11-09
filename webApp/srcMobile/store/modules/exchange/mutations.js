@@ -10,6 +10,10 @@ const mutations = {
     state.meList = list;
   },
 
+  updateAllListPraise(state, { index,  num }) {
+  	state.allList[index].praiseCount = num;
+  }
+
 };
 
 export default mutations;

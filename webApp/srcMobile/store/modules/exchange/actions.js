@@ -1,4 +1,4 @@
-
+import state from './state';
 import * as types from './mutations-types';
 import webApi from 'api/api';
 import {
@@ -9,7 +9,8 @@ import {
  } from 'IpadApi/port';
 
 export const fetchExchangeList =  ({ commit }, params) =>{
-
+  console.log(state.allList)
+  
   webApi.loadingData();
 
   getExchangeList(params).then(res => {
