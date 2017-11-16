@@ -22,8 +22,8 @@
         <allList></allList>
     </main>
 
-    <search v-show="isHinddenSearch" @closeNoteSearch="closeNoteSearch"></search>
-
+    <div class="new-talk-btn" @click="newTalk()"><i class="iconfont icon-jia"></i></div>
+    
   </div>
 
 </template>
@@ -31,45 +31,32 @@
 <script>
 
 import allList from './subpage/all_list';
-import search from './subpage/search';
 
 export default {
 
   components: {
     allList,
-    search
   },
 
   data() {
     return {
       isShowMenu: false,
       menulist: ["最新回复","发帖时间","精华讨论","回复数量"],
-      defaultTabIndex: 0,
-      touchStartX: 0,
-      touchOldX: 0,
-      screenWidth: 0,
-      touchIsMove: true,
       isHinddenSearch: false,
-      specificValue: 0 // 导航滑动比值
     }
   },
 
   created() {
 
   },
+  computed: {
 
+  },
+
+  watch: {
+
+  },
   mounted() {
-
-    // let OHTML = document.documentElement;
-    // let oScreenWidth = OHTML.clientWidth || OHTML.getBoundingClientRect().width;
-    // let oScreenHeight = OHTML.clientHeight || OHTML.getBoundingClientRect().height;
-    // let oSpan = this.$refs.navWrap.querySelectorAll('span');
-    //
-    //
-    // this.specificValue = (oSpan[1].offsetLeft - (oSpan[0].offsetLeft + oSpan[0].offsetWidth)) / oScreenWidth;
-    // this.screenWidth = oScreenWidth;
-    // this.$refs.nodeListWrap.style.cssText = `width: ${oScreenWidth}px;`;
-    // this.$refs.listWrap.style.cssText = `height: ${oScreenHeight}px; width: ${oScreenWidth * 2}px; overflow: hidden;`;
 
   },
 
@@ -82,17 +69,18 @@ export default {
         this.isShowMenu = !this.isShowMenu;
     },
 
-    // 关闭搜索
-    closeNoteSearch(flag) {
-      this.isHinddenSearch = flag;
-    },
-
     // 搜索交流
     searchNoteList() {
-      this.isHinddenSearch = true;
+        this.$router.push({
+          path: `/exchange/search`,
+        });
     },
-
-
+    //新建交流
+    newTalk() {
+        this.$router.push({
+          path: `/exchange/newtalk`,
+        });
+    },
 
   }
 
@@ -213,4 +201,21 @@ export default {
   border-bottom: 1px solid #fff;
 }
 
+.new-talk-btn{
+    width: .9rem;
+    height: .9rem;
+    border-radius: 50%;
+    background:rgba(255,84,131,0.85);
+    position: fixed;
+    right: 0.34rem;
+    bottom: 1.2rem;
+    z-index:20;
+    text-align: center;
+    line-height: .9rem;
+    box-shadow: 0 0.03rem 0.07rem rgba(0,0,0, 0.2);
+    i{
+        color: #fff;
+        font-size: 0.4rem;
+    }
+}
 </style>

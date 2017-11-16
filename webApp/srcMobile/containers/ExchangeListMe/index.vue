@@ -21,7 +21,6 @@
         <meList></meList>
     </main>
 
-    <search v-show="isHinddenSearch" @closeNoteSearch="closeNoteSearch"></search>
 
   </div>
 
@@ -30,13 +29,11 @@
 <script>
 
 import meList from './subpage/me_list';
-import search from './subpage/search';
 
 export default {
 
   components: {
     meList,
-    search
   },
 
   data() {

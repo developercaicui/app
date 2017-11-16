@@ -374,7 +374,7 @@ export default {
 
 	.slide-refresh-content{
 		position: relative;
-		background-color: #fff;
+		/* background-color: #fff; */
 		height:auto;
 		z-index: 9;
 	}
