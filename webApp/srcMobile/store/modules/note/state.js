@@ -1,8 +1,9 @@
 const state = {
 
-  meList: [],
-  
-  allList: [],
+  meNoteList: [],
+  allNoteList: [],
+  noteDetailsList: [],
+  selectCourseList: [],
 
 };
 

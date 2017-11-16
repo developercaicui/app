@@ -2,39 +2,17 @@
 
   <article class="tmp-details-list-wrap">
 
-    <section class="list">
+    <section class="list" :data-id="item.id" :data-section="JSON.stringify(item)" v-for="item in list" @click="openDetails">
       <div class="cont">
-        <h1>请问这个撒旦撒旦撒大叔大婶多请问这个撒旦撒旦撒大叔大婶多请问这个撒旦撒旦撒大叔大婶多</h1>
+        <h1>{{ item.contentSummary }}</h1>
         <div class="cont-details">
-          <time>13:52</time>
-          <span>显示</span>
-          <time>2017-9-10&nbsp;&nbsp;15:20</time>
+          <time v-show="item.taskType === 'video'">13:52</time>
+          <span>{{ item.nikeName }}</span>
+          <time>{{ item.newTime }}</time>
         </div>
       </div>
-      <div class="pic">
-        <img src="http://www.caicui.com/upload/openCourse/2017/10/17/DDF5B2125C3842C9B3CFD0BA4230864A.png"/>
-      </div>
-    </section>
-
-    <section class="list">
-      <div class="cont">
-        <h1>请问这个撒旦撒旦撒大叔大婶多请问这个撒旦撒旦撒大叔大婶多请问这个撒旦撒旦撒大叔大婶多</h1>
-        <div class="cont-details">
-          <time>13:52</time>
-          <span>用户名最长显示</span>
-          <time>2017-9-10&nbsp;&nbsp;15:20</time>
-        </div>
-      </div>
-    </section>
-
-    <section class="list">
-      <div class="cont">
-        <h1>请问这个撒旦撒旦撒大叔大婶多请问这个撒旦撒旦撒大叔大婶多请问这个撒旦撒旦撒大叔大婶多</h1>
-        <div class="cont-details">
-          <time>13:52</time>
-          <span>超出最长超出最长超出最长超出最长</span>
-          <time>2017-9-10&nbsp;&nbsp;15:20</time>
-        </div>
+      <div class="pic" v-if="item.allPic && item.allPic.length > 0">
+        <img :src="item.allPic[0]"/>
       </div>
     </section>
 
@@ -47,20 +25,35 @@
 
 export default {
 
-  components: {
-  },
+  props: {
+		'list': {
+			type: Array,
+			default: []
+		},
+	},
 
   data() {
     return {
     }
   },
 
+  created() {
+  },
 
   mounted() {
-
   },
 
   methods: {
+
+    openDetails(ev) {
+
+      let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+
+			this.$router.push({
+				path: `/note/details/${encodeURIComponent(oSection.dataset.section)}`,
+			});
+
+    },
 
   }
 
@@ -75,7 +68,6 @@ export default {
 
   .list{
     @extend .borderBox;
-    height: 1.8rem;
     border-bottom: 1px solid #EFEFEF;
     padding: .4rem .25rem;
     display: flex;
@@ -87,19 +79,23 @@ export default {
 
   .cont-details{
     @include fc(.26rem, #999);
+    @include wh(100%, .33rem);
     margin-top: .32rem;
+    overflow: hidden;
+    white-space: nowrap;
     span{
       @extend .text-ellipsis;
       display: inline-block;
       font-size: .24rem;
-      height: .24rem; max-width: 1.9rem;
+      max-width: 1.7rem;
       transform: translate3d(0,.03rem,0);
-      margin-right: .2rem; margin-left: .16rem;
+      margin-right: .2rem;
     }
     time{
       display: inline-block;
       &:nth-of-type(1){
         text-indent: .3rem;
+        margin-right: .16rem;
         &:before{
           content: '';
           @extend .ab;

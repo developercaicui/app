@@ -7,12 +7,18 @@ const Exam = r => require.ensure([], () => r(require('srcIpad/page/Exam')), 'exa
 const Index = r => require.ensure([], () => r(require('../containers/Index')), 'index');
 const Note = r => require.ensure([], () => r(require('../containers/Note')), 'note');
 const NoteList = r => require.ensure([], () => r(require('../containers/NoteList')), 'notelist');
+const NoteMeList = r => require.ensure([], () => r(require('../containers/NoteMeList')), 'notemelist');
 const NoteDetailsList = r => require.ensure([], () => r(require('../containers/NoteDetailsList')), 'notedetailslist');
+const NoteDetails = r => require.ensure([], () => r(require('../containers/NoteDetails')), 'notedetails');
+const NoteEdit = r => require.ensure([], () => r(require('../containers/NoteEdit')), 'noteedit');
+const NewNote = r => require.ensure([], () => r(require('../containers/NewNote')), 'newNote');
+const NewNoteSelectSection = r => require.ensure([], () => r(require('../containers/NewNote/subpage/select_section')), 'selectsection');
 
 const Exchange = r => require.ensure([], () => r(require('../containers/Exchange')), 'exchange');
 const ExchangeListAll = r => require.ensure([], () => r(require('../containers/ExchangeListAll')), 'exchangelistall');
 const ExchangeListMe = r => require.ensure([], () => r(require('../containers/ExchangeListMe')), 'exchangelistme');
 const ExchangeDetails = r => require.ensure([], () => r(require('../containers/ExchangeDetails')), 'exchangedetails');
+
 
 export default  new VueRouter({
   mode: 'hash',
@@ -31,10 +37,24 @@ export default  new VueRouter({
       children: [{
         path: 'list', // 笔记列表
         component: NoteList,
-
       },{
-        path: 'detailslist', // 详情列表
+        path: 'melist', // 我的个人笔记列表
+        component: NoteMeList
+      },{
+        path: 'detailslist/:data', // 详情列表
         component: NoteDetailsList
+      },{
+        path: 'details/:data', // 详情
+        component: NoteDetails
+      },{
+        path: 'new', // 新建笔记
+        component: NewNote,
+      },{
+        path: 'selectsection/:data', // 新建笔记章节选择
+        component: NewNoteSelectSection
+      },{
+        path: 'edit/:data', // 编辑笔记
+        component: NoteEdit,
       }]
     },{
       path: '/exchange',

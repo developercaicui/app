@@ -3,6 +3,7 @@ import App from './App';
 import VueRouter from 'vue-router';
 import { Spinner, DatetimePicker } from 'mint-ui';
 import fastclick from 'fastclick';
+import PicPreview from './base/PicPreview/init';
 
 import store from './store';
 import router from './router/index';
@@ -16,6 +17,7 @@ import vConsole from 'vconsole';
 
 fastclick.attach(document.body);
 
+Vue.use(PicPreview)
 Vue.use(VueRouter);
 Vue.component(Spinner.name, Spinner); // loading
 

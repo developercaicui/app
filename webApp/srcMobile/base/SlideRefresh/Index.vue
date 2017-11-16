@@ -32,7 +32,7 @@ export default {
 	props: {
 		topMaxDistance: {
 			type: Number,
-			default: 75
+			default: 50
 		},
 		topPullText: {
 			type: String,
@@ -52,7 +52,7 @@ export default {
 		},
 		bottomMaxDistance: {
 			type: Number,
-			default: 75
+			default: 50
 		},
 		bottomPullText: {
 			type: String,
@@ -92,7 +92,7 @@ export default {
 			startTime: new Date().getTime(),
 			isBottomShow: true,
 			isTopShow: true,
-			spanColor: process.env.NODE_ENV.includes('developZbgedu') ? '#FF366D' : '#00a185'
+			spanColor: process.env.THEME_COLOR
     }
   },
 
@@ -240,7 +240,7 @@ export default {
 	      this.startY = touch.pageY;
 	    }
 
-			if(document.body.scrollTop <= 20 || document.body.scrollTop >= (this.contentHeight-this.screenHeight)) {
+			if(document.body.scrollTop <= 10 || document.body.scrollTop >= (this.contentHeight-this.screenHeight)) {
 
 				moveY = (touch.pageY-this.startY) /3;
 
@@ -249,8 +249,8 @@ export default {
 				// 下拉
 				if(moveY > 0 && this.isTopShow) {
 
-					if(moveY < 50) this.topStatus = 'pull';
-					if(moveY > 60) this.topStatus = 'drop';
+					if(moveY < 30) this.topStatus = 'pull';
+					if(moveY > 45) this.topStatus = 'drop';
 
 					this.isDirection = 'top';
 
@@ -263,8 +263,8 @@ export default {
 				// 上拉
 				if(moveY < 0 && this.isBottomShow){
 
-					if(Math.abs(moveY) < 50) this.bottomStatus = 'pull';
-					if(Math.abs(moveY) > 60) this.bottomStatus = 'drop';
+					if(Math.abs(moveY) < 30) this.bottomStatus = 'pull';
+					if(Math.abs(moveY) > 45) this.bottomStatus = 'drop';
 
 					this.isDirection = 'bottom';
 
@@ -363,12 +363,12 @@ export default {
 
 <style lang="scss" scoped>
 
- @import '../../../assets/style/mixin';
+ @import '../../assets/style/mixin';
 
 	.slide-refresh-wrap{
 		background-color: #F3F3F3;
 		position: relative;
-		overflow:hidden;
+		overflow: hidden;
 		@include wh(100%, auto);
 	}
 
@@ -383,7 +383,7 @@ export default {
 	  @extend .ab;
 	 	@include fc(.24rem, #333);
 	 	@extend .flexCenter;
-		left: 0; right: 0; height: 1.5rem;
+		left: 0; right: 0; height: 1rem;
 	 	z-index: 1;
 	 	span{
 	 		text-align: center;

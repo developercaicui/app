@@ -9,7 +9,8 @@ const api  = {
     remCount() {
 
       const OHTML = document.documentElement;
-      const screenWidth = OHTML.clientWidth || OHTML.getBoundingClientRect().width;
+      const screenWidth =OHTML.getBoundingClientRect().width || OHTML.clientWidth;
+      const screenHeight = OHTML.getBoundingClientRect().height || OHTML.clientHeiht;
 
       let designWidth = 750;
       let initialRem = designWidth / 100;
@@ -17,6 +18,8 @@ const api  = {
       OHTML.dataset.device = this.getDeviceType();
       OHTML.dataset.dpr = window.devicePixelRatio;
       OHTML.style.fontSize = `${screenWidth / initialRem}px`;
+
+      if(screenWidth > screenHeight) OHTML.style.fontSize = `${parseInt(getComputedStyle(OHTML, null)['fontSize'])/2}px`;
 
     },
 
@@ -39,20 +42,23 @@ const api  = {
       */
     resManage(res) {
 
-    const newRes = {
-      code: 1,
-      data: [],
-      state: 'error',
-      msg: '数据异常，请稍后再试！',
-    };
+      const newRes = {
+        code: 1,
+        data: [],
+        state: 'error',
+        msg: '数据异常，请稍后再试！',
+      };
 
-     console.log(this.getObjectType(res).includes('object Object'));
+      if(!this.getObjectType(res).includes('object Object')) return newRes;
 
+    },
 
-     if(!this.getObjectType(res).includes('object Object')) return newRes;
-
-
-    }
+    /**
+     * 关闭数据加载load动画
+     */
+    closeLoadingData() {
+      document.querySelector('#dataLoading') && document.body.removeChild(document.querySelector('#dataLoading'));
+    },
 
 };
 

@@ -16,11 +16,13 @@
     </nav>
 
     <main ref="listWrap" @touchstart.stop="bindTouchMove('start', $event)" @touchmove.stop="bindTouchMove('move', $event)" @touchend.stop="bindTouchMove('end', $event)">
-        <meList></meList>
-        <allList></allList>
+        <me-list></me-list>
+        <all-list></all-list>
     </main>
 
-    <search v-show="isHinddenSearch" @closeNoteSearch="closeNoteSearch"></search>
+    <transition name="fade">
+      <search v-show="isHinddenSearch" :isOpen="isHinddenSearch" @closeNoteSearch="closeNoteSearch"></search>
+    </transition>
 
   </div>
 
@@ -135,6 +137,11 @@ export default {
           _moveX = _touch.pageX;
 
           let __x = _moveX - this.touchStartX;
+
+          if(Math.abs(__x) < 20) {
+            this.touchIsMove = false;
+            break;
+          }
 
           if(__x > 0 && this.defaultTabIndex == 0) {
             this.touchIsMove = false;

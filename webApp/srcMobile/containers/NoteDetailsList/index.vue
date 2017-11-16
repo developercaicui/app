@@ -9,7 +9,7 @@
     </header>
 
     <main class="cont">
-      <detailsList></detailsList>
+      <details-list :list="getNoteDetailsList"></details-list>
     </main>
 
   </div>
@@ -18,6 +18,7 @@
 
 <script type="text/ecmascript-6">
 
+import { mapActions, mapGetters } from 'vuex';
 import detailsList from "components/NoteDetailsList";
 
 export default {
@@ -28,15 +29,31 @@ export default {
 
   data() {
     return {
-
+      params: {},
+      list: [],
     }
   },
 
   computed: {
 
+    ...mapGetters([
+      'getNoteDetailsList'
+    ])
+
   },
 
   created() {
+
+    this.params = JSON.parse(this.$route.params.data || {});
+
+    this.fetchNoteDetailsList({
+      pageNo: 1,
+      pageSize: 20,
+      charpterid: this.params.id,
+      ordertype: 1,
+      self: this.params.self,
+      token: this.webApi.getCookie('token')
+    });
 
   },
 
@@ -44,9 +61,6 @@ export default {
 
   },
 
-  mounted() {
-
-  },
 
   methods: {
 
@@ -55,6 +69,10 @@ export default {
     backPreviousPage() {
       this.$router.go(-1);
     },
+
+    ...mapActions([
+      'fetchNoteDetailsList'
+    ])
 
 
   }

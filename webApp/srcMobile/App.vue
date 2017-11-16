@@ -21,7 +21,7 @@ export default {
   },
 
 
-  mounted() {
+  created() {
 
     // rem计算
     this.webApi.remCount();

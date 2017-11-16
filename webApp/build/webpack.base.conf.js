@@ -18,6 +18,7 @@ module.exports = {
     publicPath: env.NODE_ENV.includes('build') ? config.build.assetsPublicPath : config.dev.assetsPublicPath,
     filename: '[name].js'
   },
+  devtool: 'inline-source-map',
   resolve: {
     extensions: ['', '.js', '.vue'],
     fallback: [path.join(__dirname, '../node_modules')],

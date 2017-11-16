@@ -4,14 +4,14 @@
 
     <header class="head">
       <div class="ipt-search">
-        <input type="text" name="" value="" placeholder="搜一下" />
+        <input type="text" placeholder="搜一下" @keyup.13="handleScreen" ref="ipt"/>
         <a href="javascript:;" class="iconfont icon-jia"></a>
       </div>
       <a href="javascript:;" @click="handleCloseSearch">取消</a>
     </header>
 
     <article class="cont-wrap">
-      <detailsList></detailsList>
+      <details-list :list="list"></details-list>
     </article>
   </main>
 
@@ -19,6 +19,7 @@
 
 <script type="text/ecmascript-6">
 
+import { searchhNote } from 'IpadApi/port';
 import detailsList from "components/NoteDetailsList";
 
 export default {
@@ -27,9 +28,30 @@ export default {
     detailsList,
   },
 
+  props: {
+    isOpen: {
+      type: Boolean,
+      default: false
+    }
+  },
+
+  watch: {
+
+    isOpen(flag) {
+
+      if(!flag) return;
+
+      setTimeout(() =>{
+        this.$refs.ipt.focus();
+      }, 600);
+
+    }
+
+  },
+
   data() {
     return {
-
+      list: [],
     }
   },
 
@@ -37,12 +59,63 @@ export default {
 
   },
 
+
   methods: {
 
     // 取消搜索
     handleCloseSearch() {
       this.$emit('closeNoteSearch', false);
     },
+
+    // 监听用户搜索
+    handleScreen(ev) {
+
+      if(!ev.target.value) {
+        this.webApi.alert('关键词不能为空');
+        return;
+      }
+
+      this.searchArticle(ev.target.value);
+
+    },
+
+    // 搜索
+    searchArticle(keywords) {
+
+      searchhNote({
+        token: this.webApi.getCookie('token'),
+			  keyWords: keywords,
+			  findType: 1,
+			  pageNo: 1,
+			  pageSize: 20
+      })
+
+      .then(res =>{
+
+        if(!res || res.state != 'success'){
+          this.webApi.alert('搜索失败，请稍后再试');
+          return false;
+        }
+
+
+       let _date;
+
+       this.list = res.data.map(item =>{
+
+          _date = new Date( item.updateTime * 1000 );
+
+          item.newTime = `${_date.getFullYear()}-${this.webApi.isSmallTen(_date.getMonth() + 1)}-${this.webApi.isSmallTen(_date.getDate())}  ${this.webApi.isSmallTen(_date.getHours())}:${this.webApi.isSmallTen(_date.getMinutes())}`;
+          item.progress = `${ this.webApi.formatType(item.taskType, item.taskprogress) }`;
+
+          item.imgPath != ',' && item.imgPath.length && (item.allPic = item.imgPath.split(',').map(src => `${this.webApi.cdnImgUrl}${src}`));
+
+          return item;
+        });
+
+
+      });
+
+    }
 
   }
 

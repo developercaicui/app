@@ -21,10 +21,13 @@ export const fetchActivityList =  ({ commit }) =>{
 
 }
 
-export const fetchCourseList =  ({ commit }) =>{
+export const fetchCourseList =  ({ commit }, { isLoad }) =>{
 
   let learningCourseList = [];
   let userInfo = JSON.parse(webApi.getCookie('userInfo')) || {};
+
+  isLoad && webApi.loadingData();
+
 
   // 最近所学课程
   getLearningCourse({
@@ -37,7 +40,8 @@ export const fetchCourseList =  ({ commit }) =>{
   .then(res =>{
 
     if(!res || res.state != 'success'){
-      webApi.alert('网络异常，请稍后再试');
+      webApi.closeLoadingData();
+      webApi.alert('在学课程列表获取失败，请稍后再试！');
       return false;
     }
 
@@ -82,7 +86,8 @@ export const fetchCourseList =  ({ commit }) =>{
   .then(res =>{
 
     if(!res || res.state != 'success'){
-      webApi.alert('网络异常，请稍后再试');
+      webApi.closeLoadingData();
+      webApi.alert('在学课程列表获取失败，请稍后再试！');
       return false;
     }
 
@@ -152,8 +157,10 @@ export const fetchCourseList =  ({ commit }) =>{
   })
   .then(res =>{
 
+    webApi.closeLoadingData();
+
     if(!res || res.state != 'success'){
-      webApi.alert('网络异常，请稍后再试');
+      webApi.alert('获取失败，请稍后再试！');
       return false;
     }
 

@@ -1,9 +1,12 @@
 <template lang="html">
 
-  <div class="index-wrap">
-    <courseList></courseList>
-    <activityList></activityList>
-  </div>
+  <SlideRefresh @top-status-change="topStatusChange">
+    <div class="index-wrap">
+        <courseList></courseList>
+        <activityList></activityList>
+    </div>
+  </SlideRefresh>
+
 
 </template>
 
@@ -11,12 +14,14 @@
 
 import activityList from './subpage/activity_list';
 import courseList from './subpage/course_list';
+import SlideRefresh from 'base/SlideRefresh';
 
 export default {
 
   components: {
     activityList,
-    courseList
+    courseList,
+    SlideRefresh
   },
 
   data() {
@@ -33,6 +38,14 @@ export default {
     this.webApi.setCookie('userInfo', JSON.stringify(this.$route.query));
     this.webApi.setCookie('token', this.$route.query.token);
 
+  },
+
+  methods: {
+
+		topStatusChange(status) {
+      console.log(status)
+		}
+
   }
 
 }
@@ -45,7 +58,7 @@ export default {
  .index-wrap{
    font-size: 0; line-height: 1;
    background-color: #fff;
-   min-height: 100%;
+   height: 100%; overflow: auto;
  }
 
 </style>

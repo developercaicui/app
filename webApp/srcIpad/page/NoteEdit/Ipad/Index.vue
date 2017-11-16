@@ -107,8 +107,11 @@ export default {
 			this.clientType = this.data.detailsData.clientType;
 			this.defaultPicLen = this.data.detailsData.picAllPath.length;
 			this.allPicPath = `${this.data.detailsData.picAllPath.join(',')},`;
+
 			this.data.detailsData.picAllPath.map(src =>{
 
+				console.log(src);
+				
 				this.allUploadPic.push({
 					src: `${this.webApi.cdnImgUrl}${src}`,
 					path: src,
@@ -222,7 +225,7 @@ export default {
 			this.allUploadPic = this.allUploadPic.filter((item, index) => index != removeIndex && item);
 
 			if(this.type == 'edit') this.allPicPath = (this.allUploadPic.map(item => item.path || '')).join(',');
-			
+
 			this.isUploadSuccess--;
 
 		},
@@ -245,7 +248,7 @@ export default {
 				return false;
 			}
 
-			if(this.type != 'edit') this.isUploadSuccess = 0;	
+			if(this.type != 'edit') this.isUploadSuccess = 0;
 
 			if(this.type == 'edit' && this.defaultPicLen != this.isUploadSuccess) {
 				this.subForm();
@@ -288,7 +291,7 @@ export default {
 		},
 
 
-		subForm() {	
+		subForm() {
 
 			this.$emit('submit-data', {
 				type: this.type,

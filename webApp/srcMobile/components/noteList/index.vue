@@ -1,14 +1,41 @@
 <template lang="html">
 
-  <article class="tmp-list-wrap" ref="tmpListWrap">
+  <article class="tmp-list-wrap">
 
-    <section class="list-details">
-      <h1>PART A Business organis...</h1>
-      <div class="t-list">
-        <p>Chapter 1 - Organisation and Types jhsk khhjd...</p>
-        <span class="iconfont icon-bianji">&nbsp;2</span>
-      </div>
-    </section>
+    <template v-for="item in list">
+
+      <section class="list-details">
+        <h1>{{ item.courseName }}</h1>
+
+        <template v-for="twoItem in item.children">
+
+            <div v-if="twoItem.nodeNum != 0" class="t-list" :data-id="twoItem.id">
+              <p @click.stop="shrinkList">{{ twoItem.chapterTitle }}</p>
+              <span style="display: none;"class="iconfont icon-bianji">&nbsp;</span>
+            </div>
+
+            <template v-for="threeItem in twoItem.children">
+
+              <div v-if="threeItem.nodeNum != 0" class="t-list t-list-three" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)"  @click.stop="openNoteDetails($event, threeItem.isLeaf)" :data-id="threeItem.id">
+                <p :data-nodenum="threeItem.nodeNum">{{ threeItem.chapterTitle }}</p>
+                <span class="iconfont icon-bianji" v-if="threeItem.nodeNum > 0 && threeItem.isLeaf">{{ threeItem.nodeNum }}</span>
+              </div>
+
+              <template v-for="fourItem in threeItem.children">
+                <div v-if="fourItem.nodeNum != 0" class="t-list t-list-four" :data-chapter="JSON.stringify(threeItem)" :data-chaptertwo="JSON.stringify(fourItem)" @click.stop="openNoteDetails($event, true)" :data-id="fourItem.id">
+                  <p :data-nodenum="fourItem.nodeNum">{{ fourItem.chapterTitle }}</p>
+                  <span class="iconfont icon-bianji" v-if="fourItem.nodeNum > 0">{{ fourItem.nodeNum }}</span>
+                </div>
+              </template>
+
+            </template>
+
+         </template>
+
+      </section>
+
+    </template>
+
   </article>
 
 </template>
@@ -18,25 +45,46 @@
 
 export default {
 
-  components: {
-  },
+  props: {
+		list: {
+			type: Array,
+			default: []
+		},
+    self: {
+      type: Number,
+      default: 1 // 默认自己
+    }
+	},
+
 
   data() {
     return {
     }
   },
 
+  watch: {
 
-  mounted() {
-
-    let OHTML = document.documentElement;
-    let oScreenWidth = OHTML.clientWidth || OHTML.getBoundingClientRect().width;
-
-    this.$refs.tmpListWrap.style.cssText = `width: ${oScreenWidth}px; overflow-x: hidden;`;
+    list() {
+    }
 
   },
 
   methods: {
+
+    // 打开详情
+    openNoteDetails(ev, isOff) {
+
+			let _obj = ev.target;
+
+			if(_obj.dataset.nodenum < 1 || !isOff) return;
+
+			let oDiv = this.webApi.recursiveParentNode(ev.target, 'div');
+
+      this.$router.push({
+				path: `/note/detailslist/${encodeURIComponent(JSON.stringify(Object.assign({self: this.self}, JSON.parse(oDiv.dataset.chapter), JSON.parse(oDiv.dataset.chaptertwo))))}`,
+			});
+
+		},
 
   }
 
@@ -48,9 +96,8 @@ export default {
 @import "../../assets/style/mixin";
 
 .tmp-list-wrap{
-  @include wh(100%, auto);
-  float: left;
   background-color: #fff;
+  padding-bottom: 1.6rem;
 }
 
 
@@ -81,6 +128,14 @@ export default {
     @include fc(.26rem, $themeColor);
   }
 
+}
+
+.t-list-three{
+  padding-left: .4rem;
+}
+
+.t-list-four{
+  padding-left: .6rem;
 }
 
 </style>

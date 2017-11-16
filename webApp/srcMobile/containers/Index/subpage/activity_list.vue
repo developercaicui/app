@@ -4,12 +4,26 @@
 
     <div class="title">
       <h1>中博活动</h1>
-      <a href="javascript:;" class="iconfont text-move">MORE&nbsp;</a>
+      <a href="javascript:;" class="iconfont text-move look-all" @click="lookAllActivity">MORE&nbsp;</a>
     </div>
 
-    <figure class="list" v-for="item, index in list" :data-href="item.url">
+    <figure class="list" v-for="item, index in list" :data-href="item.url" v-if="index < 1">
       <img :src="item.src" :title="item.title"/>
     </figure>
+
+    <transition name="fade">
+      <div class="all-list-wrap" v-show="isShowAllList">
+        <div class="all-list">
+          <header class="head">
+            <a href="javascript:;" class="iconfont icon-article-back" @click="lookAllActivity"></a>
+            <span>活动列表</span>
+          </header>
+          <figure class="list" v-for="item, index in list" :data-href="item.url">
+            <img :src="item.src" :title="item.title"/>
+          </figure>
+        </div>
+      </div>
+   </transition>
 
   </main>
 
@@ -23,7 +37,8 @@ export default {
 
   data() {
     return {
-      list: []
+      list: [],
+      isShowAllList: false,
     }
   },
 
@@ -61,6 +76,10 @@ export default {
     ...mapActions([
       'fetchActivityList'
     ]),
+
+    lookAllActivity() {
+      this.isShowAllList = !this.isShowAllList;
+    },
 
   }
 
@@ -103,6 +122,44 @@ export default {
       @include wh(100%, 2.23rem);
     }
 
+  }
+
+  .all-list-wrap{
+    position: fixed;
+    left: 0; right: 0; bottom: 0; top: 0;
+    z-index: 11;
+    background-color: #fff;
+    .list{
+      margin-bottom: .2rem;
+      padding: 0 .3rem;
+    }
+    .head{
+
+      @extend .relative;
+      text-align: center;
+      height: 1rem; border-bottom: 1px solid #EFEFEF;
+      @extend .flexCenter;
+      margin-bottom: .5rem;
+      background-color: #fff;
+
+      span{
+        @include fc($headerSize, #202020);
+      }
+      a{
+        @extend .ab;
+        @include wh(.9rem, .9rem);
+        @include fc(.36rem, $themeColor);
+        @extend .flexCenter;
+        &:nth-of-type(1){
+          left: 0; font-size: .44rem;
+        }
+      }
+
+    }
+  }
+  .all-list{
+    height: 100%;
+    overflow-y: auto;
   }
 
 }

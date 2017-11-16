@@ -75,7 +75,7 @@ export default {
 
   created() {
 
-    this.fetchCourseList();
+    this.fetchCourseList({isLoad: true});
 
   },
 
@@ -102,6 +102,7 @@ export default {
 .course-list-wrap{
 
    @extend .relative;
+   transition: .3s;
 
   .title{
     position: relative;
