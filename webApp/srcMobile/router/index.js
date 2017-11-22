@@ -5,6 +5,7 @@ const Login = r => require.ensure([], () => r(require('srcIpad/page/Login')), 'l
 const Exam = r => require.ensure([], () => r(require('srcIpad/page/Exam')), 'exam');;
 
 const Index = r => require.ensure([], () => r(require('../containers/Index')), 'index');
+const MyMsg = r => require.ensure([], () => r(require('../containers/MyMsg')), 'mymsg');
 const Note = r => require.ensure([], () => r(require('../containers/Note')), 'note');
 const NoteList = r => require.ensure([], () => r(require('../containers/NoteList')), 'notelist');
 const NoteMeList = r => require.ensure([], () => r(require('../containers/NoteMeList')), 'notemelist');
@@ -39,6 +40,9 @@ export default  new VueRouter({
     },{
       path: '/index', // 首页
       component: Index
+    },{
+      path: '/msg', // 消息列表
+      component: MyMsg
     },{
       path: '/note',
       component: Note,

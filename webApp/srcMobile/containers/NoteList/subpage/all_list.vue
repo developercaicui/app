@@ -1,6 +1,9 @@
 <template lang="html">
   <div class="note-all-list-wrap" ref="noteAllListWrap">
-    <note-list :list="allList" :self="params.self"></note-list>
+    <slide-refresh @top-status-change="topStatusChange">
+      <note-list :list="allList" :self="params.self"></note-list>
+      <img class="no-data" v-show="isNoData" src="../../../assets/img/404.svg"/>
+    </slide-refresh>
   </div>
 </template>
 
@@ -8,11 +11,14 @@
 
 import { mapActions, mapGetters } from 'vuex';
 import noteList from 'components/noteList';
+import slideRefresh from 'base/SlideRefresh';
+
 
 export default {
 
   components: {
-    noteList
+    noteList,
+    slideRefresh
   },
 
   data() {
@@ -22,6 +28,7 @@ export default {
         self: 0, // 1代表自己 0代表全部
         courseid: 'ff8080814dad5062014db32051b801a2',
       },
+      isNoData: false,
       allList: [],
     }
   },
@@ -32,7 +39,10 @@ export default {
       token: this.webApi.getCookie('token')
     });
 
-    this.fetchAllNoteList(this.params);
+    if (this.getAllNoteList.length == 0)
+      this.fetchAllNoteList(this.params);
+    else
+      this.allList = this.getAllNoteList;
 
   },
 
@@ -58,10 +68,19 @@ export default {
       this.allList = data;
     },
 
+    allList(list) {
+      this.isNoData = list.length == 0 ? true : false ;
+    }
+
   },
 
 
   methods: {
+
+    topStatusChange(status) {
+      status == 'loading'  && this.fetchAllNoteList(this.params);
+    },
+
     ...mapActions([
       'fetchAllNoteList'
     ])
@@ -74,9 +93,9 @@ export default {
 <style lang="scss" scoped>
 
 .note-all-list-wrap{
+  position: relative;
   float: left; height: 100%;
   overflow-y: auto;
-  background-color: #f60;
 }
 
 </style>

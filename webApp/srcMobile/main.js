@@ -13,6 +13,7 @@ import webApi from './api/api';
 import vConsole from 'vconsole';
 
 // 开启调试模式
+
 // if(__DEV__) new vConsole();
 
 fastclick.attach(document.body);
@@ -22,7 +23,6 @@ Vue.use(VueRouter);
 Vue.component(Spinner.name, Spinner); // loading
 
 Vue.prototype.webApi = webApi;
-
 
 console.log(`%c\n${process.env.HELP.replace(/\/n/g,'\n\n')}`, 'color: red');
 

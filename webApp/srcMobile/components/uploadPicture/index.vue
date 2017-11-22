@@ -2,7 +2,7 @@
 
   <footer class="tmp-foot">
     <a href="javascript:;" class="iconfont icon-pic" v-show="isOpenUpload" @click.stop="handleOpenUpload">
-      <span class="msg-num">{{ pictureList.length }}</span>
+      <span class="msg-num" v-show="pictureList.length != 0">{{ pictureList.length }}</span>
     </a>
     <div class="select-btn" @click.stop="handleCutStatus" ref="isPublicDiv" v-show="isOpenUpload && isPublicStyle"><span>{{ isPublicText }}</span><i></i></div>
     <section class="pic-upload" v-show="!isOpenUpload">

@@ -179,6 +179,13 @@ $commTopWhite: #fff; // 公用白色
 
 }
 
+.no-data{
+  @extend .ab;
+  @include wh(2.2rem, 2.2rem);
+  left: 50%; top: 50%;
+  transform: translate3d(-50%, -50%, 0);
+}
+
 
 @keyframes rotate {
   100% {

@@ -31,10 +31,14 @@ export const fetchSelectCourseList = ({ commit }, params) =>{
 
 export const fetchNoteDetailsList = ({ commit }, params) =>{
 
+  webApi.loadingData();
+
   getNoteDetailsList(params)
 
   .then(res =>{
 
+    webApi.closeLoadingData();
+    
     if(!res || res.state != 'success'){
       res = {
         data: [],
@@ -66,9 +70,16 @@ export const fetchNoteDetailsList = ({ commit }, params) =>{
 
 export const fetchMeNoteList =  ({ commit }, params) =>{
 
+  if(params.hasOwnProperty('isLoad')) {
+    delete params['isLoad'];
+    webApi.loadingData();
+  }
+
   getNoteList(params)
 
   .then(res =>{
+
+    webApi.closeLoadingData();
 
      if(!res || res.state != 'success'){
        res = {
@@ -88,9 +99,17 @@ export const fetchMeNoteList =  ({ commit }, params) =>{
 
 export const fetchAllNoteList = ({ commit }, params) =>{
 
+  if(params.hasOwnProperty('isLoad')) {
+    delete params['isLoad'];
+    webApi.loadingData();
+  }
+
   getCourseNoteList(params)
 
   .then(res =>{
+
+     webApi.closeLoadingData();
+
 
      if(!res || res.state != 'success'){
        res = {

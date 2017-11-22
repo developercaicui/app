@@ -44,8 +44,12 @@ export default {
   },
 
   created() {
+
+    document.documentElement.style.height = '100%';
+
     this.data = Object.assign(this.data, JSON.parse(this.$route.params.data));
     this.data.allPic && this._picListInit();
+
   },
 
   methods: {

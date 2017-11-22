@@ -5,24 +5,26 @@
     <template v-for="item in list">
 
       <section class="list-details">
-        <h1>{{ item.courseName }}</h1>
+        <h1>
+          <span>{{ item.courseName }}</span>
+        </h1>
 
         <template v-for="twoItem in item.children">
 
             <div v-if="twoItem.nodeNum != 0" class="t-list" :data-id="twoItem.id">
-              <p @click.stop="shrinkList">{{ twoItem.chapterTitle }}</p>
+              <p @click.prevent="shrinkList">{{ twoItem.chapterTitle }}</p>
               <span style="display: none;"class="iconfont icon-bianji">&nbsp;</span>
             </div>
 
             <template v-for="threeItem in twoItem.children">
 
-              <div v-if="threeItem.nodeNum != 0" class="t-list t-list-three" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)"  @click.stop="openNoteDetails($event, threeItem.isLeaf)" :data-id="threeItem.id">
+              <div v-if="threeItem.nodeNum != 0" class="t-list t-list-three" :data-chapter="JSON.stringify(twoItem)" :data-chaptertwo="JSON.stringify(threeItem)"  @click.prevent="openNoteDetails($event, threeItem.isLeaf)" :data-id="threeItem.id">
                 <p :data-nodenum="threeItem.nodeNum">{{ threeItem.chapterTitle }}</p>
                 <span class="iconfont icon-bianji" v-if="threeItem.nodeNum > 0 && threeItem.isLeaf">{{ threeItem.nodeNum }}</span>
               </div>
 
               <template v-for="fourItem in threeItem.children">
-                <div v-if="fourItem.nodeNum != 0" class="t-list t-list-four" :data-chapter="JSON.stringify(threeItem)" :data-chaptertwo="JSON.stringify(fourItem)" @click.stop="openNoteDetails($event, true)" :data-id="fourItem.id">
+                <div v-if="fourItem.nodeNum != 0" class="t-list t-list-four" :data-chapter="JSON.stringify(threeItem)" :data-chaptertwo="JSON.stringify(fourItem)" @click.prevent="openNoteDetails($event, true)" :data-id="fourItem.id">
                   <p :data-nodenum="fourItem.nodeNum">{{ fourItem.chapterTitle }}</p>
                   <span class="iconfont icon-bianji" v-if="fourItem.nodeNum > 0">{{ fourItem.nodeNum }}</span>
                 </div>
@@ -97,16 +99,20 @@ export default {
 
 .tmp-list-wrap{
   background-color: #fff;
-  padding-bottom: 1.6rem;
+  padding-bottom: 0rem;
 }
 
 
 .list-details{
   h1{
-    @include wh(100%, 1.08rem);
+    @include wh(6.8rem, 1.08rem);
     @include fc(.32rem, #202020);
     @extend .textYcenter;
     text-indent: .3rem;
+    span{
+      display: inline-block;
+      @extend .text-ellipsis;
+    }
   }
 }
 .t-list{

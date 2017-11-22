@@ -4,10 +4,10 @@
 
     <div class="title">
       <h1>在学课程</h1>
-      <a href="javascript:;" class="iconfont text-move">MORE&nbsp;</a>
+      <router-link to="/course/learning" class="iconfont text-move">MORE&nbsp;</router-link>
     </div>
 
-    <section class="list" v-for="item, index in list" :data-data="JSON.stringify(item)" v-if="index < 2">
+    <section @click="handleSendCouseInfo" class="list" v-for="item, index in list" :data-data="JSON.stringify(item)" v-if="index < 2">
 
 			<div class="info">
 				<h1>{{ item.courseName }}</h1>
@@ -23,7 +23,7 @@
 
     <section class="list-no-data" v-show="list.length === 0 && isRequest">
       <h1>您还没有课程</h1>
-      <a href="javascript:;">开始新课程</a>
+      <router-link to="/course/learning">开始新课程</router-link>
     </section>
 
   </main>
@@ -35,6 +35,13 @@
 import { mapGetters, mapActions } from 'vuex';
 
 export default {
+
+  props: {
+    isUpdateList: {
+       type: Boolean,
+       default: false
+    }
+  },
 
   data() {
     return {
@@ -52,6 +59,10 @@ export default {
   },
 
   watch: {
+
+    isUpdateList(flag) {
+      flag && this.fetchCourseList({isLoad: true});
+    },
 
     getCourseList(arr) {
 
@@ -74,20 +85,27 @@ export default {
   },
 
   created() {
-
-    this.fetchCourseList({isLoad: true});
-
-  },
-
-  mounted() {
-
+    this.getCourseList.length != 0 ? this.list = this.getCourseList : this.fetchCourseList({isLoad: false}) ;
   },
 
   methods: {
 
     ...mapActions([
       'fetchCourseList'
-    ])
+    ]),
+
+    handleSendCouseInfo(ev) {
+
+      let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
+			let data = JSON.parse(oSection.dataset.data);
+
+			if(data.lockStatus && data.lockStatus != 0 ){
+				this.webApi.alert('当前的课程已锁定,续费后即可解锁！');
+				return false;
+			}
+
+			g.targetLearningCourses(oA.dataset.data);
+    },
 
   }
 

@@ -1,6 +1,9 @@
 <template lang="html">
   <div class="note-me-list-wrap" ref="noteMeListWrap">
-    <note-list :list="meList" :self="params.self"></note-list>
+    <slide-refresh @top-status-change="topStatusChange">
+      <note-list :list="meList" :self="params.self"></note-list>
+      <img class="no-data" v-show="isNoData" src="../../../assets/img/404.svg"/>
+    </slide-refresh>
   </div>
 </template>
 
@@ -8,11 +11,13 @@
 
 import { mapActions, mapGetters } from 'vuex';
 import noteList from 'components/noteList';
+import slideRefresh from 'base/SlideRefresh';
 
 export default {
 
   components: {
-    noteList
+    noteList,
+    slideRefresh
   },
 
   data() {
@@ -21,6 +26,7 @@ export default {
         token: '',
         self: 1, // 1代表自己 0代表全部
       },
+      isNoData: false,
       meList: [],
     }
   },
@@ -31,7 +37,7 @@ export default {
       token: this.webApi.getCookie('token')
     });
 
-    this.fetchMeNoteList(this.params);
+    this.getMeNoteList.length == 0 ? this.fetchMeNoteList(this.params) : this.meList = this.getMeNoteList;
 
   },
 
@@ -47,7 +53,11 @@ export default {
 
     getMeNoteList(data) {
       this.meList = data;
-    }
+    },
+
+    meList(list) {
+      this.isNoData = list.length == 0 ? true : false;
+    },
 
   },
 
@@ -61,6 +71,11 @@ export default {
   },
 
   methods: {
+
+    topStatusChange(status) {
+      status == 'loading' && this.fetchMeNoteList(this.params);
+    },
+
     ...mapActions([
       'fetchMeNoteList'
     ])

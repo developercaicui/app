@@ -56,7 +56,6 @@ export default {
   },
 
   created() {
-
   },
 
   mounted() {
@@ -172,13 +171,17 @@ export default {
           if (!this.touchIsMove) {
             this.navBarMove(this.defaultTabIndex);
             break;
-          };
+          }
 
           if (this.screenWidth/3 < Math.abs(_endX - this.touchStartX)) {
             this.defaultTabIndex = this.defaultTabIndex == 0 ? 1 : 0 ;
           }
 
           this.touchOldX = this.defaultTabIndex * this.screenWidth;
+
+          if(Math.abs(_endX - this.touchStartX) < this.screenWidth / 4 && this.touchOldX < this.screenWidth) {
+            this.touchOldX = 0;
+          }
 
           this.webApi.addCss(this.$refs.listWrap, {
             transition: `.4s`

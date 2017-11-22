@@ -73,7 +73,7 @@ export default {
 		distanceTop: {
 			type: Number,
 			default: 0
-		}
+		},
 	},
 
   data() {
@@ -88,6 +88,7 @@ export default {
 			bottomText: '', // 文字提示
 			bottomStatus: '', // 状态
 			isDirection: '',
+			cssStyle: '',
 			moveY: 0,
 			startTime: new Date().getTime(),
 			isBottomShow: true,
@@ -101,6 +102,7 @@ export default {
 		if(!this.$parent.bottomStatusChange) this.isBottomShow = false;
 		if(!this.$parent.topStatusChange) this.isTopShow = false;
 
+		this.cssStyle = `background-color: ${this.backColor}`
 	},
 
 	mounted() {
@@ -374,7 +376,7 @@ export default {
 
 	.slide-refresh-content{
 		position: relative;
-		/* background-color: #fff; */
+		background-color: #fff;
 		height:auto;
 		z-index: 9;
 	}
@@ -385,6 +387,7 @@ export default {
 	 	@extend .flexCenter;
 		left: 0; right: 0; height: 1rem;
 	 	z-index: 1;
+		background-color: #f3f3f3;
 	 	span{
 	 		text-align: center;
 	 	}

@@ -44,8 +44,8 @@ export default {
 
 .v-wrap{
   @include wh(100%, 100%);
-  background-color: transparent;
-  //overflow: hidden;
+  background-color: #fff;
+  overflow: hidden;
 }
 
 </style>

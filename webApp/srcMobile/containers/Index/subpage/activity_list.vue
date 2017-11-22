@@ -7,7 +7,7 @@
       <a href="javascript:;" class="iconfont text-move look-all" @click="lookAllActivity">MORE&nbsp;</a>
     </div>
 
-    <figure class="list" v-for="item, index in list" :data-href="item.url" v-if="index < 1">
+    <figure class="list" v-for="item, index in list" :data-href="item.url" v-if="index < 1" @click="handleOpenActivity">
       <img :src="item.src" :title="item.title"/>
     </figure>
 
@@ -18,7 +18,7 @@
             <a href="javascript:;" class="iconfont icon-article-back" @click="lookAllActivity"></a>
             <span>活动列表</span>
           </header>
-          <figure class="list" v-for="item, index in list" :data-href="item.url">
+          <figure class="list" v-for="item, index in list" :data-href="item.url" @click="handleOpenActivity">
             <img :src="item.src" :title="item.title"/>
           </figure>
         </div>
@@ -80,6 +80,12 @@ export default {
     lookAllActivity() {
       this.isShowAllList = !this.isShowAllList;
     },
+
+    // 打开活动页
+		handleOpenActivity(ev) {
+			let oFigure = this.webApi.recursiveParentNode(ev.target, 'figure');
+			!oFigure.dataset.href ? this.webApi.alert('活动已过期', 1500) : g.openActivityPage(oFigure.dataset.href) ;
+		},
 
   }
 

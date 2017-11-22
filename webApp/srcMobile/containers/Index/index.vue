@@ -2,7 +2,7 @@
 
   <SlideRefresh @top-status-change="topStatusChange">
     <div class="index-wrap">
-        <courseList></courseList>
+        <courseList :is-update-list="isUpdateCourseList"></courseList>
         <activityList></activityList>
     </div>
   </SlideRefresh>
@@ -26,7 +26,7 @@ export default {
 
   data() {
     return {
-
+      isUpdateCourseList: false,
     }
   },
 
@@ -43,7 +43,12 @@ export default {
   methods: {
 
 		topStatusChange(status) {
-      console.log(status)
+      if(status == 'loading') {
+        this.isUpdateCourseList = true;
+        setTimeout(()=>{
+          this.isUpdateCourseList = false;
+        },100);
+      }
 		}
 
   }

@@ -5,7 +5,7 @@
     <header class="head">
       <a href="javascript:;" class="iconfont icon-article-back" @click="backPreviousPage"></a>
       <span>课程笔记</span>
-      <a href="javascript:;" class="iconfont icon-jia"></a>
+      <a href="javascript:;" class="iconfont icon-jia hide" @click="handleNewNote"></a>
     </header>
 
     <main class="cont">
@@ -18,7 +18,8 @@
 
 <script type="text/ecmascript-6">
 
-import { mapActions, mapGetters } from 'vuex';
+import { mapActions, mapGetters, mapMutations } from 'vuex';
+import a from 'vuex';
 import detailsList from "components/NoteDetailsList";
 
 export default {
@@ -46,6 +47,8 @@ export default {
 
     this.params = JSON.parse(this.$route.params.data || {});
 
+    this.setDetailsList([]);
+
     this.fetchNoteDetailsList({
       pageNo: 1,
       pageSize: 20,
@@ -57,12 +60,20 @@ export default {
 
   },
 
-  watch: {
-
-  },
-
-
   methods: {
+
+    handleNewNote() {
+
+      let data = {
+        taskType: 'new',
+        isEdit: false,
+      }
+
+      this.$router.push({
+        path: `/note/edit/${encodeURIComponent(JSON.stringify(Object.assign(this.params, data)))}`
+      });
+
+    },
 
 
     // 返回上一页
@@ -72,7 +83,11 @@ export default {
 
     ...mapActions([
       'fetchNoteDetailsList'
-    ])
+    ]),
+
+    ...mapMutations({
+      'setDetailsList': 'SET_NOTE_DETAILS_LIST'
+    })
 
 
   }
@@ -95,6 +110,7 @@ export default {
 
   text-align: center;
   height: 1rem; border-bottom: 1px solid #EFEFEF;
+  background-color: #fff;
   @extend .flexCenter;
 
   span{
@@ -110,6 +126,9 @@ export default {
     }
     &:nth-of-type(2){
       right: 0;
+    }
+    &.hide{
+      visibility: hidden;
     }
   }
 
