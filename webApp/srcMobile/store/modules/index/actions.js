@@ -85,6 +85,8 @@ export const fetchCourseList =  ({ commit }, { isLoad }) =>{
 
   .then(res =>{
 
+    !isLoad && g.closeLoading();
+
     if(!res || res.state != 'success'){
       webApi.closeLoadingData();
       webApi.alert('在学课程列表获取失败，请稍后再试！');
