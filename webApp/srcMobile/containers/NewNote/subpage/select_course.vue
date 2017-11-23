@@ -58,9 +58,13 @@ export default {
   methods: {
 
     openSectionList(ev) {
+
+      let _obj = ev.target.nodeName.toLowerCase() == 'aside' ? ev.target.parentNode : ev.target ;
+
       this.$router.push({
-				path: `/note/selectsection/${encodeURIComponent(JSON.stringify(this.list[ev.target.dataset.index]))}`,
+				path: `/note/selectsection/${encodeURIComponent(JSON.stringify(this.list[_obj.dataset.index]))}`,
 			});
+      
     },
 
 

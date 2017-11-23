@@ -156,6 +156,12 @@ export default {
       };
 
 
+      if(!this.picList || this.picList.length == 0) {
+        this.$emit('load-upload', params);
+        return;
+      }
+
+
       function sendUpload(data) {
         _this.callUpload(_this.pictureList[i], callback);
       }
