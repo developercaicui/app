@@ -73,7 +73,7 @@ export default {
   methods: {
 
     topStatusChange(status) {
-      status == 'loading' && this.fetchMeNoteList(this.params);
+      status == 'loading' && this.fetchMeNoteList(Object.assign(this.params, {isLoad: true}));
     },
 
     ...mapActions([

@@ -38,7 +38,7 @@ export const fetchNoteDetailsList = ({ commit }, params) =>{
   .then(res =>{
 
     webApi.closeLoadingData();
-    
+
     if(!res || res.state != 'success'){
       res = {
         data: [],
@@ -70,7 +70,9 @@ export const fetchNoteDetailsList = ({ commit }, params) =>{
 
 export const fetchMeNoteList =  ({ commit }, params) =>{
 
-  if(params.hasOwnProperty('isLoad')) {
+  let _isLoad = params.hasOwnProperty('isLoad');
+
+  if(_isLoad) {
     delete params['isLoad'];
     webApi.loadingData();
   }
@@ -79,7 +81,7 @@ export const fetchMeNoteList =  ({ commit }, params) =>{
 
   .then(res =>{
 
-    webApi.closeLoadingData();
+    _isLoad ? webApi.closeLoadingData() : g.closeLoading() ;
 
      if(!res || res.state != 'success'){
        res = {
@@ -99,7 +101,10 @@ export const fetchMeNoteList =  ({ commit }, params) =>{
 
 export const fetchAllNoteList = ({ commit }, params) =>{
 
-  if(params.hasOwnProperty('isLoad')) {
+
+  let _isLoad = params.hasOwnProperty('isLoad');
+
+  if(_isLoad) {
     delete params['isLoad'];
     webApi.loadingData();
   }
@@ -108,8 +113,7 @@ export const fetchAllNoteList = ({ commit }, params) =>{
 
   .then(res =>{
 
-     webApi.closeLoadingData();
-
+     _isLoad ? webApi.closeLoadingData() : g.closeLoading() ;
 
      if(!res || res.state != 'success'){
        res = {
@@ -119,7 +123,7 @@ export const fetchAllNoteList = ({ commit }, params) =>{
        }
      }
 
-     commit(types.SET_ALL_NOTE_LIST, [res.data]) ;
+     commit(types.SET_ALL_NOTE_LIST, res.state == 'error' ? [] : [res.data]) ;
 
    });
 

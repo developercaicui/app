@@ -111,7 +111,7 @@ export default {
 			this.data.detailsData.picAllPath.map(src =>{
 
 				console.log(src);
-				
+
 				this.allUploadPic.push({
 					src: `${this.webApi.cdnImgUrl}${src}`,
 					path: src,

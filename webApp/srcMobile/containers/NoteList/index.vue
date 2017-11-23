@@ -3,7 +3,7 @@
   <div class="node-list-wrap" ref="nodeListWrap">
 
     <header class="head">
-      <a href="javascript:;" class="iconfont icon-article-back"></a>
+      <a href="javascript:;" class="iconfont icon-article-back" @click="backCourseList"></a>
       <span>课程笔记</span>
       <a href="javascript:;" class="iconfont icon-sousuo2" @click="searchNoteList"></a>
     </header>
@@ -15,7 +15,7 @@
       <div class="bar" ref="navBar"></div>
     </nav>
 
-    <main ref="listWrap" @touchstart.stop="bindTouchMove('start', $event)" @touchmove.stop="bindTouchMove('move', $event)" @touchend.stop="bindTouchMove('end', $event)">
+    <main ref="listWrap">
         <me-list></me-list>
         <all-list></all-list>
     </main>
@@ -92,6 +92,11 @@ export default {
 
     },
 
+    // 返回原生在学课程
+    backCourseList() {
+      g.closeNewNote();
+    },
+
     // 关闭搜索
     closeNoteSearch(flag) {
       this.isHinddenSearch = flag;
@@ -137,7 +142,7 @@ export default {
 
           let __x = _moveX - this.touchStartX;
 
-          if(Math.abs(__x) < 20) {
+          if(Math.abs(__x) < this.screenWidth/12) {
             this.touchIsMove = false;
             break;
           }

@@ -53,7 +53,7 @@ export default {
 
     // 屏幕旋转监听（全局）
     window.addEventListener("orientationchange", ev => this.webApi.remCount(), false);
-    window.addEventListener("resize", ev => this.webApi.remCount(), false);
+    // window.addEventListener("resize", ev => this.webApi.remCount(), false);
 
     // 更新值
     this.$store.commit('updateDeviceInfo', {

@@ -36,8 +36,11 @@ export default {
   created() {
 
     Object.assign(this.params, {
-      token: this.webApi.getCookie('token')
+      token: this.webApi.getCookie('token'),
+      courseid: this.$route.query.courseId
     });
+
+    console.log(this.$route.query);
 
     if (this.getAllNoteList.length == 0)
       this.fetchAllNoteList(this.params);
@@ -78,7 +81,7 @@ export default {
   methods: {
 
     topStatusChange(status) {
-      status == 'loading'  && this.fetchAllNoteList(this.params);
+      status == 'loading'  && this.fetchAllNoteList(Object.assign(this.params, {isLoad: true}));
     },
 
     ...mapActions([

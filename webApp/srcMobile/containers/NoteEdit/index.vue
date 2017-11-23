@@ -74,7 +74,7 @@ export default {
 
   created() {
 
-    this.data = Object.assign(this.data, JSON.parse(this.$route.params.data));
+    this.data = Object.assign(this.data, JSON.parse(this.$route.params.data), this.$route.query);
 
     this.params.clientType = this.webApi.getDeviceType() == 'mobile' ? 'aphone' : 'ipad' ;
     this.params.token = this.webApi.getCookie('token');

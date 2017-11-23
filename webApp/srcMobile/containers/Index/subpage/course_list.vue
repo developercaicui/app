@@ -4,10 +4,12 @@
 
     <div class="title">
       <h1>在学课程</h1>
-      <router-link to="/course/learning" class="iconfont text-move">MORE&nbsp;</router-link>
+      <a href="javascript:;" class="iconfont text-move" @click="moreCourseList">MORE&nbsp;</a>
     </div>
 
     <section @click="handleSendCouseInfo" class="list" v-for="item, index in list" :data-data="JSON.stringify(item)" v-if="index < 2">
+
+      <div class="back"></div>
 
 			<div class="info">
 				<h1>{{ item.courseName }}</h1>
@@ -19,6 +21,20 @@
 			</div>
       <div class="progress"><span :data-process="item.studyProportion"></span></div>
 
+    </section>
+
+    <section class="load-list-style" v-if="isDefaultLoadStart">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
+    </section>
+
+    <section class="load-list-style" v-if="isDefaultLoadStart">
+      <div></div>
+      <div></div>
+      <div></div>
+      <div></div>
     </section>
 
     <section class="list-no-data" v-show="list.length === 0 && isRequest">
@@ -47,6 +63,7 @@ export default {
     return {
       list: [],
       isRequest: false,
+      isDefaultLoadStart: true
     }
   },
 
@@ -66,8 +83,11 @@ export default {
 
     getCourseList(arr) {
 
+
       this.list = arr;
       this.isRequest = true;
+      this.isDefaultLoadStart = false;
+      if(!arr || arr.length == 0) return;
 
       setTimeout(() =>{
 
@@ -94,6 +114,11 @@ export default {
       'fetchCourseList'
     ]),
 
+    // 打开课程列表
+    moreCourseList() {
+      g.moreCourseList();
+    },
+
     handleSendCouseInfo(ev) {
 
       let oSection = this.webApi.recursiveParentNode(ev.target, 'section');
@@ -104,7 +129,7 @@ export default {
 				return false;
 			}
 
-			g.targetLearningCourses(oA.dataset.data);
+			g.targetLearningCourses(oSection.dataset.data);
     },
 
   }
@@ -138,13 +163,47 @@ export default {
   }
 
 
-  .list, .list-no-data{
+  .list, .list-no-data, .load-list-style{
 
     @extend .relative;
     @extend .show;
     height: 3rem; padding: .35rem;
     @extend .borderBox;
     background-color: #4a90e2;
+
+  }
+
+  .load-list-style{
+
+    background-color: #f4f4f4;
+
+    div{
+
+      @extend .ab;
+      background-color: #ececec;
+      border-radius: .04rem;
+
+      &:nth-of-type(1){
+        @include wh(6.4rem, .32rem);
+        top: .45rem;
+      }
+
+      &:nth-of-type(2){
+        @include wh(2.1rem, .32rem);
+        top: .96rem;
+      }
+
+      &:nth-of-type(3){
+        @include wh(2.8rem, .32rem);
+        top: 1.45rem;
+      }
+
+      &:nth-of-type(4){
+        @include wh(6.5rem, .1rem);
+        bottom: .6rem;
+      }
+
+    }
 
   }
 

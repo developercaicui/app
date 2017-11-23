@@ -7,7 +7,7 @@
       <a href="javascript:;" class="iconfont text-move look-all" @click="lookAllActivity">MORE&nbsp;</a>
     </div>
 
-    <figure class="list" v-for="item, index in list" :data-href="item.url" v-if="index < 1" @click="handleOpenActivity">
+    <figure class="list" v-for="item, index in list" :data-href="item.url" v-if="index < 5" @click="handleOpenActivity">
       <img :src="item.src" :title="item.title"/>
     </figure>
 

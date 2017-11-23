@@ -16,6 +16,7 @@ var g = {
   getClassCourseData: getClassCourseData,
   clickToPlayVido: clickToPlayVido,
   closeLoading: closeLoading,
+  moreCourseList: moreCourseList,
 }
 
 
@@ -34,6 +35,10 @@ function setCookie(key, value, days = 30) {
   expires = "expires=" + d.toUTCString();
   document.cookie = `${key}=${value};${days}`;
 
+}
+
+function moreCourseList(){
+  g.device == 'ios' ? caicui.moreClass() : window.course.moreClass();
 }
 
 // 跳转到登录页
@@ -100,7 +105,7 @@ function closeSetting(data = {}) {
 
 //在学课程跳转课程详情页
 function getClassCourseData(data = {}) {
-  
+
   g.device == 'ios' ? caicui.getOnlineCourseData(data) : window.course.getClassCourseData(data);
 
 }

@@ -35,6 +35,7 @@ export default {
     this.webApi.delCookie('userInfo');
 		this.webApi.delCookie('token');
 
+    this.webApi.setCookie('isTargetLogin', 'false');
     this.webApi.setCookie('userInfo', JSON.stringify(this.$route.query));
     this.webApi.setCookie('token', this.$route.query.token);
 
