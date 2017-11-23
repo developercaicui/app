@@ -2,20 +2,22 @@
 
   <div class="node-list-wrap" ref="nodeListWrap">
 
-    <header class="head">
-      <a href="javascript:;" class="iconfont icon-article-back" @click="backCourseList"></a>
-      <span>课程笔记</span>
-      <a href="javascript:;" class="iconfont icon-sousuo2" @click="searchNoteList"></a>
-    </header>
+    <div class="top-head">
+      <header class="head">
+        <a href="javascript:;" class="iconfont icon-article-back" @click="backCourseList"></a>
+        <span>课程笔记</span>
+        <a href="javascript:;" class="iconfont icon-sousuo2" @click="searchNoteList"></a>
+      </header>
 
-    <nav class="nav" ref="navWrap">
-      <template v-for="item, index in tabList">
-        <a href="javascript:;" :data-index="index" @click="bindSelectType"><span>{{ item }}</span></a>
-      </template>
-      <div class="bar" ref="navBar"></div>
-    </nav>
+      <nav class="nav" ref="navWrap">
+        <template v-for="item, index in tabList">
+          <a href="javascript:;" :data-index="index" @click="bindSelectType"><span>{{ item }}</span></a>
+        </template>
+        <div class="bar" ref="navBar"></div>
+      </nav>
+    </div>
 
-    <main ref="listWrap">
+    <main ref="listWrap" class="list-cont">
         <me-list></me-list>
         <all-list></all-list>
     </main>
@@ -218,6 +220,18 @@ export default {
   font-size: 0; line-height: 1;
   min-height: 100%;
   overflow-y: auto; overflow-x: hidden;
+}
+
+.list-cont{
+  margin-top: 1.6rem;
+}
+
+.top-head{
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: 1.6rem;
+  background-color: #fff;
+  z-index: 21;
 }
 
 .head{

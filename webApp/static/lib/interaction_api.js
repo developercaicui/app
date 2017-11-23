@@ -48,7 +48,7 @@ function targetLogin() {
 
 // 关闭新建页
 function closeNewNote() {
-  g.device == 'ios' ? caicui.hiddenAddNoteViewOrRequestView('jj') : window.course.back();
+  g.device == 'ios' ? caicui.popController('jj') : window.course.back();
 }
 
 // 退回登录页面

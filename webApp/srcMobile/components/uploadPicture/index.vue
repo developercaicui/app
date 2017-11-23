@@ -96,6 +96,11 @@ export default {
       this.isOpenUpload = true;
     },
 
+    // 清空图片列表
+    handleEmptyList() {
+      this.pictureList = [];
+    },
+
     // input控件发生变化
     changeLoadPicture(ev) {
 
