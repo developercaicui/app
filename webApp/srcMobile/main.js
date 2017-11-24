@@ -14,8 +14,7 @@ import webApi from './api/api';
 import vConsole from 'vconsole';
 
 // 开启调试模式
-
-if(__DEV__) new vConsole();
+// if(__DEV__) new vConsole();
 
 // fastclick.attach(document.body);
 

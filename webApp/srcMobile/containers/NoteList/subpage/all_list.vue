@@ -27,6 +27,8 @@ export default {
         token: '',
         self: 0, // 1代表自己 0代表全部
         courseid: 'ff8080814dad5062014db32051b801a2',
+        pageNo: 1,
+        pageSize: 10
       },
       isNoData: false,
       allList: [],
@@ -37,10 +39,8 @@ export default {
 
     Object.assign(this.params, {
       token: this.webApi.getCookie('token'),
-      courseid: this.$route.query.courseId
+      courseid: this.$route.query.courseId || ''
     });
-
-    console.log(this.$route.query);
 
     if (this.getAllNoteList.length == 0)
       this.fetchAllNoteList(this.params);

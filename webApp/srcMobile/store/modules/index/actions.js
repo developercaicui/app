@@ -34,7 +34,7 @@ export const fetchCourseList =  ({ commit }, { isLoad }) =>{
     verTT: new Date().getTime(),
     token: userInfo.token,
     pageNo: 1,
-    pageSize: 999
+    pageSize: 10
   })
 
   .then(res =>{

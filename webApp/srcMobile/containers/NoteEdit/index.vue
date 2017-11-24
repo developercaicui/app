@@ -79,11 +79,13 @@ export default {
     this.params.clientType = this.webApi.getDeviceType() == 'mobile' ? 'aphone' : 'ipad' ;
     this.params.token = this.webApi.getCookie('token');
 
+
   },
 
   mounted() {
     this.data.isEdit ? this.edit() : this.newNote();
     this.$refs.ipt.setAttribute('disabled', 'disabled');
+    this.$el.parentNode.style.height = '100%';
   },
 
   methods: {
