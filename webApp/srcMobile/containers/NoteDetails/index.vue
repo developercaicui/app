@@ -52,6 +52,10 @@ export default {
 
   },
 
+  mounted() {
+    this.$el.parentNode.style.height = '100%';
+  },
+
   methods: {
 
     // 图片列表初始
