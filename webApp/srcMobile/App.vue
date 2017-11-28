@@ -30,6 +30,12 @@ export default {
     // window.addEventListener("orientationchange", ev => this.webApi.remCount(), false);
     // window.addEventListener("resize", ev => this.webApi.remCount(), false);
 
+    let arr = ['/note/melist', '/note/list', ''];
+
+
+    window.disposeReturnKey = (hash) =>{
+      Object.is((arr.filter(item => item.includes(hash)))[0], true) ? g.closeNewNote() : this.$router.go(-1);
+    }
 
   },
 
@@ -46,6 +52,10 @@ export default {
   @include wh(100%, 100%);
   background-color: #fff;
   overflow: hidden;
+}
+
+.mint-actionsheet-listitem, .mint-actionsheet-button{
+  font-size: .3rem;
 }
 
 </style>

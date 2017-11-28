@@ -330,7 +330,7 @@ export default {
 		 figure{
 		 	height: 100%;
 		 }
-		 
+
 		 &:nth-of-type(3n){
 			 margin-left: 0rem;
 		 }

@@ -10,7 +10,7 @@
 
     <main class="ipt-wrap">
       <div :class="!data.isEdit ? '' : 'title-stop'">
-        <input type="text" v-model="params.chapterName" ref="ipt"/>
+        <input type="text" v-model="iptTitle" ref="ipt"/>
         <a href="javascript:;" @click.stop="handleBackPage" class="iconfont icon-jiantou-copy-copy look-all" v-if="!data.isEdit"></a>
       </div>
       <div>
@@ -42,6 +42,7 @@ export default {
       picList: [], // 图片列表
       isStartUpload: false, // 是否开始上传
       isPublicStyle: true, // 选择状态按钮
+      iptTitle: '', // 标题
       data: {
         isEdit: false
       },
@@ -74,11 +75,12 @@ export default {
 
   created() {
 
-    this.data = Object.assign(this.data, JSON.parse(this.$route.params.data), this.$route.query);
+    let _data = this.$route.params.data == 'null' ? {} : JSON.parse(this.$route.params.data);
+
+    this.data = Object.assign(this.data, _data , this.$route.query);
 
     this.params.clientType = this.webApi.getDeviceType() == 'mobile' ? 'aphone' : 'ipad' ;
     this.params.token = this.webApi.getCookie('token');
-
 
   },
 
@@ -92,16 +94,23 @@ export default {
 
     // 新建笔记
     newNote() {
-      this.params.chapterName = this.data.chapterTitle;
+
+      this.iptTitle = this.params.chapterName = this.data.chapterTitle;
       this.params.taskType = this.data.taskType;
       this.params.title = 'title';
       this.title = '新建笔记';
+
+      // 视频新建笔记
+      if(this.$route.params.data == 'null') {
+        this.iptTitle = this.params.taskName = this.data.taskName;
+      }
+
     },
 
     // 编辑状态需要初始做的事情
     edit() {
       this.params.chapterId = this.data.charpterId;
-      this.params.chapterName = this.data.chaptername;
+      this.iptTitle = this.params.chapterName = this.data.chaptername;
       this.params.content = this.data.contentSummary;
       this.params.title = 'title';
       this.title = '编辑笔记';
@@ -110,7 +119,6 @@ export default {
       this.params.courseName = this.data.coursename;
 
       this.data.imgPath.split(',').map(src =>{
-
 
         if(!src && !src.includes('upload')) return;
 
@@ -131,7 +139,7 @@ export default {
 
     // 返回上一页
     handleBackPage() {
-      this.$router.go(-1);
+      document.referrer == '' ? g.closeNewNote() : this.$router.go(-1);
     },
 
     // 等待上传
@@ -175,7 +183,7 @@ export default {
           this.webApi.alert(`${tip}笔记成功`, 1500);
 
           setTimeout(() =>{
-            this.$router.push(`/note/list`);
+            document.referrer == '' ? g.closeNewNote() : this.$router.push(`/note/list`) ;
           },2000);
 
       })
@@ -184,8 +192,15 @@ export default {
 
     // 提交
     subForm() {
+
+      if(this.params.content.length > 10) {
+        this.webApi.alert('内容不可小于10个字符！')
+      }
+
+
       this.handleFocusState();
       this.isStartUpload = true;
+
     },
 
   }

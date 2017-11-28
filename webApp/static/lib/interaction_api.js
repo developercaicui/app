@@ -19,6 +19,14 @@ var g = {
   moreCourseList: moreCourseList,
 }
 
+// 给安卓调用返回键
+function monitorAndroidBack() {
+  disposeReturnKey(location.href);
+}
+
+setTimeout(()=>{
+  monitorAndroidBack();
+},2000)
 
 // 存Cookie
 function setCookie(key, value, days = 30) {
@@ -51,7 +59,7 @@ function closeNewNote() {
   g.device == 'ios' ? caicui.popController('jj') : window.course.back();
 }
 
-// 退回登录页面
+// 退回登录页面hiddenAddNoteViewOrRequestView
 function backLogin() {
   g.device == 'ios' ? clickBtn.registerBack('reg') : window.course.back();
 }

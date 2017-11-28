@@ -14,6 +14,7 @@ const NoteDetails = r => require.ensure([], () => r(require('../containers/NoteD
 const NoteEdit = r => require.ensure([], () => r(require('../containers/NoteEdit')), 'noteedit');
 const NewNote = r => require.ensure([], () => r(require('../containers/NewNote')), 'newNote');
 const NewNoteSelectSection = r => require.ensure([], () => r(require('../containers/NewNote/subpage/select_section')), 'selectsection');
+const AgainHearing = r => require.ensure([], () => r(require('../containers/AgainHearing')), 'againhearing');
 
 import Exchange from '../containers/Exchange';
 import ExchangeListAll from '../containers/ExchangeListAll';
@@ -68,6 +69,9 @@ export default  new VueRouter({
         path: 'edit/:data', // 编辑笔记
         component: NoteEdit,
       }]
+    },{
+      path: '/again',
+      component: AgainHearing
     },{
       path: '/exchange',
       component: Exchange,

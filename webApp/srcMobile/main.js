@@ -2,7 +2,7 @@ import Vue from 'vue';
 import App from './App';
 import VueRouter from 'vue-router';
 import VueTouch from 'vue-touch';
-import { Spinner, DatetimePicker } from 'mint-ui';
+import { Spinner, DatetimePicker, Actionsheet } from 'mint-ui';
 import fastclick from 'fastclick';
 import PicPreview from './base/PicPreview/init';
 
@@ -14,14 +14,16 @@ import webApi from './api/api';
 import vConsole from 'vconsole';
 
 // 开启调试模式
-// if(__DEV__) new vConsole();
+if(__DEV__) new vConsole();
 
 // fastclick.attach(document.body);
 
 Vue.use(PicPreview)
 Vue.use(VueRouter);
 Vue.use(VueTouch, {name: 'v-touch'});
-Vue.component(Spinner.name, Spinner); // loading
+Vue.component(DatetimePicker.name, DatetimePicker);
+Vue.component(Spinner.name, Spinner);
+Vue.component(Actionsheet.name, Actionsheet);
 
 Vue.prototype.webApi = webApi;
 
