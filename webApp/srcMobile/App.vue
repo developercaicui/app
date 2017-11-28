@@ -30,11 +30,11 @@ export default {
     // window.addEventListener("orientationchange", ev => this.webApi.remCount(), false);
     // window.addEventListener("resize", ev => this.webApi.remCount(), false);
 
-    let arr = ['/note/melist', '/note/list', ''];
+    let arr = ['note/melist', 'note/list'];
+    let _HREF = window.location.href;
 
-
-    window.disposeReturnKey = (hash) =>{
-      Object.is((arr.filter(item => item.includes(hash)))[0], true) ? g.closeNewNote() : this.$router.go(-1);
+    window.disposeReturnKey = () =>{
+      (arr.filter(item => _HREF.includes(item)))[0] ? g.closeNewNote() : this.$router.go(-1);
     }
 
   },

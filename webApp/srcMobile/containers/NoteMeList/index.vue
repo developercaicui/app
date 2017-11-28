@@ -3,7 +3,7 @@
   <div class="node-list-wrap" ref="nodeListWrap">
 
     <header class="head">
-      <a href="javascript:;" class="iconfont icon-article-back"></a>
+      <a href="javascript:;" @click="handleBackPage" class="iconfont icon-article-back"></a>
       <span>我的笔记</span>
       <a href="javascript:;" class="iconfont icon-sousuo2" @click="searchNoteList"></a>
       <router-link class="iconfont icon-jia" to="/note/new"></router-link>
@@ -62,6 +62,11 @@ export default {
   },
 
   methods: {
+
+    // 关闭我的列表
+    handleBackPage() {
+      g.closeNewNote();
+    },
 
     // 关闭搜索
     closeNoteSearch(flag) {

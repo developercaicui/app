@@ -102,6 +102,7 @@ export default {
 
       // 视频新建笔记
       if(this.$route.params.data == 'null') {
+        this.data.isEdit = true;
         this.iptTitle = this.params.taskName = this.data.taskName;
       }
 

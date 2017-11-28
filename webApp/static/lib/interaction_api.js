@@ -21,12 +21,8 @@ var g = {
 
 // 给安卓调用返回键
 function monitorAndroidBack() {
-  disposeReturnKey(location.href);
+  disposeReturnKey();
 }
-
-setTimeout(()=>{
-  monitorAndroidBack();
-},2000)
 
 // 存Cookie
 function setCookie(key, value, days = 30) {
